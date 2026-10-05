@@ -106,16 +106,18 @@ function ClientDetail() {
 
   const save = useMutation({
     mutationFn: async () => {
-      const payload: Record<string, unknown> = {};
+      let dureeValue: number | null;
       if (duree.trim() === "") {
-        payload.duree_acces_jours = null;
+        dureeValue = null;
       } else {
         const n = Number(duree);
         if (!Number.isFinite(n) || n < 0) throw new Error("Durée d'accès invalide");
-        payload.duree_acces_jours = Math.round(n);
+        dureeValue = Math.round(n);
       }
-      payload.note_interne = note;
-      const { error } = await supabase.from("clients").update(payload).eq("id", id);
+      const { error } = await supabase
+        .from("clients")
+        .update({ duree_acces_jours: dureeValue, note_interne: note })
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
