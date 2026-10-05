@@ -21,6 +21,8 @@ import { Route as AdminAudiosIndexRouteImport } from './routes/admin/audios.inde
 import { Route as AdminAudiosIdRouteImport } from './routes/admin/audios.$id'
 import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients.index'
 import { Route as AdminClientsIdRouteImport } from './routes/admin/clients.$id'
+import { Route as AdminSpotsIndexRouteImport } from './routes/admin/spots.index'
+import { Route as AdminSpotsIdRouteImport } from './routes/admin/spots.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +84,16 @@ const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   path: '/clients/$id',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminSpotsIndexRoute = AdminSpotsIndexRouteImport.update({
+  id: '/spots/',
+  path: '/spots/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminSpotsIdRoute = AdminSpotsIdRouteImport.update({
+  id: '/spots/$id',
+  path: '/spots/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -93,9 +105,11 @@ export interface FileRoutesByFullPath {
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/spots/$id': typeof AdminSpotsIdRoute
   '/admin/abonnes/': typeof AdminAbonnesIndexRoute
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
+  '/admin/spots/': typeof AdminSpotsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -106,9 +120,11 @@ export interface FileRoutesByTo {
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/spots/$id': typeof AdminSpotsIdRoute
   '/admin/abonnes': typeof AdminAbonnesIndexRoute
   '/admin/audios': typeof AdminAudiosIndexRoute
   '/admin/clients': typeof AdminClientsIndexRoute
+  '/admin/spots': typeof AdminSpotsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -121,9 +137,11 @@ export interface FileRoutesById {
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/spots/$id': typeof AdminSpotsIdRoute
   '/admin/abonnes/': typeof AdminAbonnesIndexRoute
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
+  '/admin/spots/': typeof AdminSpotsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,9 +155,11 @@ export interface FileRouteTypes {
     | '/admin/abonnes/$id'
     | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/spots/$id'
     | '/admin/abonnes/'
     | '/admin/audios/'
     | '/admin/clients/'
+    | '/admin/spots/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -150,9 +170,11 @@ export interface FileRouteTypes {
     | '/admin/abonnes/$id'
     | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/spots/$id'
     | '/admin/abonnes'
     | '/admin/audios'
     | '/admin/clients'
+    | '/admin/spots'
   id:
     | '__root__'
     | '/'
@@ -164,9 +186,11 @@ export interface FileRouteTypes {
     | '/admin/abonnes/$id'
     | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/spots/$id'
     | '/admin/abonnes/'
     | '/admin/audios/'
     | '/admin/clients/'
+    | '/admin/spots/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -262,6 +286,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClientsIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/spots/': {
+      id: '/admin/spots/'
+      path: '/spots'
+      fullPath: '/admin/spots/'
+      preLoaderRoute: typeof AdminSpotsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/spots/$id': {
+      id: '/admin/spots/$id'
+      path: '/spots/$id'
+      fullPath: '/admin/spots/$id'
+      preLoaderRoute: typeof AdminSpotsIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
@@ -271,9 +309,11 @@ interface AdminRouteRouteChildren {
   AdminAbonnesIdRoute: typeof AdminAbonnesIdRoute
   AdminAudiosIdRoute: typeof AdminAudiosIdRoute
   AdminClientsIdRoute: typeof AdminClientsIdRoute
+  AdminSpotsIdRoute: typeof AdminSpotsIdRoute
   AdminAbonnesIndexRoute: typeof AdminAbonnesIndexRoute
   AdminAudiosIndexRoute: typeof AdminAudiosIndexRoute
   AdminClientsIndexRoute: typeof AdminClientsIndexRoute
+  AdminSpotsIndexRoute: typeof AdminSpotsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
@@ -282,9 +322,11 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminAbonnesIdRoute: AdminAbonnesIdRoute,
   AdminAudiosIdRoute: AdminAudiosIdRoute,
   AdminClientsIdRoute: AdminClientsIdRoute,
+  AdminSpotsIdRoute: AdminSpotsIdRoute,
   AdminAbonnesIndexRoute: AdminAbonnesIndexRoute,
   AdminAudiosIndexRoute: AdminAudiosIndexRoute,
   AdminClientsIndexRoute: AdminClientsIndexRoute,
+  AdminSpotsIndexRoute: AdminSpotsIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
