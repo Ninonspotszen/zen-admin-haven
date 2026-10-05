@@ -1,5 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import {
+  CalendarDays,
+  Clock,
+  KeyRound,
+  Link2,
+  Save,
+  Wallet,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/clients/$id")({
@@ -16,26 +26,415 @@ export const Route = createFileRoute("/admin/clients/$id")({
   component: ClientDetail,
 });
 
+type Client = {
+  id: string;
+  nom: string;
+  type: string | null;
+  pack_souscrit: string | null;
+  statut: string | null;
+  duree_acces_jours: number | null;
+  date_pilote_fin: string | null;
+  date_renouvellement: string | null;
+  montant: number | null;
+  note_interne: string | null;
+};
+
+type Spot = {
+  id: string;
+  nom: string | null;
+  statut: string | null;
+  shortio_url: string | null;
+  pin_code: string | null;
+};
+
+type AudioRow = {
+  id: string;
+  visible: boolean;
+  audio_id: string | null;
+  audios: {
+    statut: string | null;
+    titre_fr: string | null;
+    audios_traductions: { titre: string }[];
+  } | null;
+};
+
 function ClientDetail() {
   const { id } = Route.useParams();
-  const { data, isLoading } = useQuery({
-    queryKey: ["client", id],
+  const qc = useQueryClient();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["client-detail", id],
     queryFn: async () => {
-      const { data, error } = await supabase.from("clients").select("*").eq("id", id).maybeSingle();
-      if (error) throw error;
-      return data;
+      const [{ data: client, error: e1 }, { data: spots, error: e2 }, { data: clientAudios, error: e3 }] =
+        await Promise.all([
+          supabase.from("clients").select("*").eq("id", id).maybeSingle(),
+          supabase
+            .from("spots")
+            .select("id, nom, statut, shortio_url, pin_code")
+            .eq("client_id", id)
+            .order("created_at", { ascending: true }),
+          supabase
+            .from("client_audios")
+            .select(
+              "id, visible, audio_id, audios(statut, titre_fr, audios_traductions(titre))",
+            )
+            .eq("client_id", id),
+        ]);
+      if (e1) throw e1;
+      if (e2) throw e2;
+      if (e3) throw e3;
+      return {
+        client: (client ?? null) as Client | null,
+        spots: (spots ?? []) as Spot[],
+        audios: (clientAudios ?? []) as AudioRow[],
+      };
     },
   });
 
+  const client = data?.client ?? null;
+
+  const [duree, setDuree] = useState<string>("");
+  const [note, setNote] = useState<string>("");
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => {
+    if (client) {
+      setDuree(client.duree_acces_jours != null ? String(client.duree_acces_jours) : "");
+      setNote(client.note_interne ?? "");
+      setDirty(false);
+    }
+  }, [client]);
+
+  const save = useMutation({
+    mutationFn: async () => {
+      let dureeValue: number | null;
+      if (duree.trim() === "") {
+        dureeValue = null;
+      } else {
+        const n = Number(duree);
+        if (!Number.isFinite(n) || n < 0) throw new Error("Durée d'accès invalide");
+        dureeValue = Math.round(n);
+      }
+      const { error } = await supabase
+        .from("clients")
+        .update({ duree_acces_jours: dureeValue, note_interne: note })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Modifications enregistrées");
+      setDirty(false);
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+      qc.invalidateQueries({ queryKey: ["clients-b2b"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleVisible = useMutation({
+    mutationFn: async (row: { id: string; visible: boolean }) => {
+      const { error } = await supabase
+        .from("client_audios")
+        .update({ visible: !row.visible })
+        .eq("id", row.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (isLoading) {
+    return (
+      <div className="rounded-2xl border bg-card px-6 py-10 text-center text-muted-foreground">
+        Chargement…
+      </div>
+    );
+  }
+  if (error || !client) {
+    return (
+      <div className="rounded-2xl border bg-card px-6 py-10 text-center text-destructive">
+        {(error as Error)?.message || "Client introuvable"}
+      </div>
+    );
+  }
+
   return (
     <div>
+      {/* Fil d'ariane */}
       <Link to="/admin/clients" className="text-sm text-muted-foreground hover:text-foreground">
         ← Retour aux clients
       </Link>
-      <h1 className="mt-4 font-serif text-3xl font-bold text-foreground">
-        {isLoading ? "Chargement…" : (data?.nom ?? "Client introuvable")}
-      </h1>
-      <p className="mt-2 text-sm text-muted-foreground">La fiche détaillée arrive bientôt.</p>
+
+      {/* En-tête */}
+      <div className="mt-4 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div className="flex items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-accent font-serif text-lg font-semibold text-accent-foreground">
+            {client.nom.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")}
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">{client.nom}</h1>
+              <StatutBadge statut={client.statut} />
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {[client.pack_souscrit, client.type].filter(Boolean).join(" · ") || "—"}
+            </p>
+          </div>
+        </div>
+        <button
+          disabled={save.isPending || !dirty}
+          onClick={() => save.mutate()}
+          className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+        >
+          <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
+        </button>
+      </div>
+
+      {/* Section Spots */}
+      <Section
+        title="Spots"
+        subtitle={`${data!.spots.length} spot${data!.spots.length > 1 ? "s" : ""} lié${data!.spots.length > 1 ? "s" : ""} à ce client`}
+      >
+        {data!.spots.length === 0 ? (
+          <p className="px-6 py-8 text-center text-sm text-muted-foreground">Aucun spot pour ce client</p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="border-b bg-secondary/50">
+              <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="px-6 py-3.5">Nom</th>
+                <th className="px-4 py-3.5">Statut</th>
+                <th className="px-4 py-3.5">Lien court</th>
+                <th className="px-6 py-3.5">Code PIN</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data!.spots.map((s) => (
+                <tr key={s.id} className="border-b last:border-0">
+                  <td className="px-6 py-4 font-semibold text-foreground">{s.nom ?? "—"}</td>
+                  <td className="px-4 py-4">
+                    <SpotBadge statut={s.statut} />
+                  </td>
+                  <td className="px-4 py-4">
+                    {s.shortio_url ? (
+                      <a
+                        href={s.shortio_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-1.5 text-primary hover:underline"
+                      >
+                        <Link2 className="h-3.5 w-3.5" /> {s.shortio_url}
+                      </a>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {s.pin_code ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary px-2 py-1 font-mono text-xs font-semibold text-secondary-foreground">
+                        <KeyRound className="h-3 w-3" /> {s.pin_code}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </Section>
+
+      {/* Section Audios assignés */}
+      <Section
+        title="Audios assignés"
+        subtitle={`${data!.audios.length} audio${data!.audios.length > 1 ? "s" : ""} visible${data!.audios.length > 1 ? "s" : ""} pour ce client`}
+      >
+        {data!.audios.length === 0 ? (
+          <p className="px-6 py-8 text-center text-sm text-muted-foreground">Aucun audio assigné à ce client</p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="border-b bg-secondary/50">
+              <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <th className="px-6 py-3.5">Titre</th>
+                <th className="px-4 py-3.5">Statut audio</th>
+                <th className="px-6 py-3.5 text-right">Visible</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data!.audios.map((a) => {
+                const titre =
+                  a.audios?.audios_traductions?.find((t) => t.titre)?.titre ??
+                  a.audios?.titre_fr ??
+                  "—";
+                return (
+                  <tr key={a.id} className="border-b last:border-0">
+                    <td className="px-6 py-4 font-semibold text-foreground">{titre}</td>
+                    <td className="px-4 py-4">
+                      <AudioBadge statut={a.audios?.statut ?? null} />
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <Toggle
+                        checked={a.visible}
+                        disabled={toggleVisible.isPending}
+                        onChange={() => toggleVisible.mutate({ id: a.id, visible: a.visible })}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </Section>
+
+      {/* Section Accès */}
+      <Section title="Accès" subtitle="Durée et échéances du contrat">
+        <div className="grid gap-5 p-6 md:grid-cols-2">
+          <Field label="Durée d'accès (jours)" icon={Clock}>
+            <input
+              type="number"
+              min={0}
+              value={duree}
+              onChange={(e) => {
+                setDuree(e.target.value);
+                setDirty(true);
+              }}
+              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30"
+            />
+          </Field>
+          <Field label="Montant (€/an)" icon={Wallet}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {client.montant != null ? `${client.montant.toLocaleString("fr-FR")} €/an` : "—"}
+            </div>
+          </Field>
+          <Field label="Fin du pilote" icon={CalendarDays}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
+              {client.date_pilote_fin
+                ? new Date(client.date_pilote_fin).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+                : "—"}
+            </div>
+          </Field>
+          <Field label="Renouvellement" icon={CalendarDays}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
+              {client.date_renouvellement
+                ? new Date(client.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+                : "—"}
+            </div>
+          </Field>
+        </div>
+      </Section>
+
+      {/* Section Notes */}
+      <Section title="Notes" subtitle="Note interne — jamais visible par le client">
+        <div className="p-6">
+          <textarea
+            rows={4}
+            value={note}
+            onChange={(e) => {
+              setNote(e.target.value);
+              setDirty(true);
+            }}
+            placeholder="Ajouter une note interne…"
+            className="w-full resize-y rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring/30"
+          />
+        </div>
+      </Section>
+
+      {/* Pied de page : sauvegarde */}
+      <div className="mt-6 flex justify-end">
+        <button
+          disabled={save.isPending || !dirty}
+          onClick={() => save.mutate()}
+          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+        >
+          <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
+        </button>
+      </div>
     </div>
+  );
+}
+
+function Section({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-6 overflow-hidden rounded-2xl border bg-card">
+      <div className="border-b px-6 py-4">
+        <h2 className="font-serif text-lg font-semibold text-foreground">{title}</h2>
+        <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Field({ label, icon: Icon, children }: { label: string; icon: typeof Clock; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <Icon className="h-3.5 w-3.5" /> {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function StatutBadge({ statut }: { statut: string | null }) {
+  const styles: Record<string, string> = {
+    Pilote: "bg-warning text-warning-foreground",
+    "Actif annuel": "bg-accent text-accent-foreground",
+    "En attente de paiement": "bg-secondary text-secondary-foreground",
+    Suspendu: "bg-destructive/10 text-destructive",
+  };
+  return (
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ${styles[statut ?? ""] ?? "bg-secondary text-muted-foreground"}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      {statut ?? "—"}
+    </span>
+  );
+}
+
+function SpotBadge({ statut }: { statut: string | null }) {
+  const styles: Record<string, string> = {
+    actif: "bg-accent text-accent-foreground",
+    inactif: "bg-secondary text-secondary-foreground",
+  };
+  return (
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ${styles[statut ?? ""] ?? "bg-secondary text-muted-foreground"}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      {statut ?? "—"}
+    </span>
+  );
+}
+
+function AudioBadge({ statut }: { statut: string | null }) {
+  const styles: Record<string, string> = {
+    publié: "bg-accent text-accent-foreground",
+    brouillon: "bg-secondary text-secondary-foreground",
+  };
+  return (
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ${styles[statut ?? ""] ?? "bg-secondary text-muted-foreground"}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      {statut ?? "—"}
+    </span>
+  );
+}
+
+function Toggle({ checked, disabled, onChange }: { checked: boolean; disabled?: boolean; onChange: () => void }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={onChange}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${
+        checked ? "bg-primary" : "bg-input"
+      }`}
+    >
+      <span
+        className={`inline-block h-5 w-5 rounded-full bg-card shadow transition ${
+          checked ? "translate-x-5" : "translate-x-0.5"
+        }`}
+      />
+    </button>
   );
 }
