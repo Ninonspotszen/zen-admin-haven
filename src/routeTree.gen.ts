@@ -15,9 +15,10 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminAbonnesRouteImport } from './routes/admin/abonnes'
-import { Route as AdminAudiosRouteImport } from './routes/admin/audios'
 import { Route as AdminConfigurationRouteImport } from './routes/admin/configuration'
 import { Route as AdminSpotsRouteImport } from './routes/admin/spots'
+import { Route as AdminAudiosIndexRouteImport } from './routes/admin/audios.index'
+import { Route as AdminAudiosIdRouteImport } from './routes/admin/audios.$id'
 import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients.index'
 import { Route as AdminClientsIdRouteImport } from './routes/admin/clients.$id'
 
@@ -51,11 +52,6 @@ const AdminAbonnesRoute = AdminAbonnesRouteImport.update({
   path: '/abonnes',
   getParentRoute: () => AdminRouteRoute,
 } as any)
-const AdminAudiosRoute = AdminAudiosRouteImport.update({
-  id: '/audios',
-  path: '/audios',
-  getParentRoute: () => AdminRouteRoute,
-} as any)
 const AdminConfigurationRoute = AdminConfigurationRouteImport.update({
   id: '/configuration',
   path: '/configuration',
@@ -64,6 +60,16 @@ const AdminConfigurationRoute = AdminConfigurationRouteImport.update({
 const AdminSpotsRoute = AdminSpotsRouteImport.update({
   id: '/spots',
   path: '/spots',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAudiosIndexRoute = AdminAudiosIndexRouteImport.update({
+  id: '/audios/',
+  path: '/audios/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAudiosIdRoute = AdminAudiosIdRouteImport.update({
+  id: '/audios/$id',
+  path: '/audios/$id',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminClientsIndexRoute = AdminClientsIndexRouteImport.update({
@@ -83,11 +89,12 @@ export interface FileRoutesByFullPath {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/admin/abonnes': typeof AdminAbonnesRoute
-  '/admin/audios': typeof AdminAudiosRoute
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -95,11 +102,12 @@ export interface FileRoutesByTo {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/admin/abonnes': typeof AdminAbonnesRoute
-  '/admin/audios': typeof AdminAudiosRoute
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/audios': typeof AdminAudiosIndexRoute
   '/admin/clients': typeof AdminClientsIndexRoute
 }
 export interface FileRoutesById {
@@ -109,11 +117,12 @@ export interface FileRoutesById {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/admin/abonnes': typeof AdminAbonnesRoute
-  '/admin/audios': typeof AdminAudiosRoute
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
 }
 export interface FileRouteTypes {
@@ -124,11 +133,12 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/admin/abonnes'
-    | '/admin/audios'
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin/'
+    | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/audios/'
     | '/admin/clients/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -136,11 +146,12 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/admin/abonnes'
-    | '/admin/audios'
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin'
+    | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/audios'
     | '/admin/clients'
   id:
     | '__root__'
@@ -149,11 +160,12 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/admin/abonnes'
-    | '/admin/audios'
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin/'
+    | '/admin/audios/$id'
     | '/admin/clients/$id'
+    | '/admin/audios/'
     | '/admin/clients/'
   fileRoutesById: FileRoutesById
 }
@@ -208,13 +220,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAbonnesRouteImport
       parentRoute: typeof AdminRouteRoute
     }
-    '/admin/audios': {
-      id: '/admin/audios'
-      path: '/audios'
-      fullPath: '/admin/audios'
-      preLoaderRoute: typeof AdminAudiosRouteImport
-      parentRoute: typeof AdminRouteRoute
-    }
     '/admin/configuration': {
       id: '/admin/configuration'
       path: '/configuration'
@@ -227,6 +232,20 @@ declare module '@tanstack/react-router' {
       path: '/spots'
       fullPath: '/admin/spots'
       preLoaderRoute: typeof AdminSpotsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/audios/': {
+      id: '/admin/audios/'
+      path: '/audios'
+      fullPath: '/admin/audios/'
+      preLoaderRoute: typeof AdminAudiosIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/audios/$id': {
+      id: '/admin/audios/$id'
+      path: '/audios/$id'
+      fullPath: '/admin/audios/$id'
+      preLoaderRoute: typeof AdminAudiosIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/clients/': {
@@ -248,21 +267,23 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminAbonnesRoute: typeof AdminAbonnesRoute
-  AdminAudiosRoute: typeof AdminAudiosRoute
   AdminConfigurationRoute: typeof AdminConfigurationRoute
   AdminSpotsRoute: typeof AdminSpotsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAudiosIdRoute: typeof AdminAudiosIdRoute
   AdminClientsIdRoute: typeof AdminClientsIdRoute
+  AdminAudiosIndexRoute: typeof AdminAudiosIndexRoute
   AdminClientsIndexRoute: typeof AdminClientsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminAbonnesRoute: AdminAbonnesRoute,
-  AdminAudiosRoute: AdminAudiosRoute,
   AdminConfigurationRoute: AdminConfigurationRoute,
   AdminSpotsRoute: AdminSpotsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAudiosIdRoute: AdminAudiosIdRoute,
   AdminClientsIdRoute: AdminClientsIdRoute,
+  AdminAudiosIndexRoute: AdminAudiosIndexRoute,
   AdminClientsIndexRoute: AdminClientsIndexRoute,
 }
 
