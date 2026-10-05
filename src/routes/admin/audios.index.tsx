@@ -283,7 +283,10 @@ function NewAudioDialog({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
           e.preventDefault();
-          if (!titre.trim()) return toast.error("Le titre est obligatoire");
+          if (!titre.trim()) {
+            toast.error("Le titre est obligatoire");
+            return;
+          }
           create.mutate();
         }}
         className="w-full max-w-lg rounded-2xl border bg-card p-6 shadow-xl"
