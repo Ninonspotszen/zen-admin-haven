@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AdminPlaceholder } from "./index";
 
 export const Route = createFileRoute("/admin/configuration")({
   head: () => ({
@@ -12,5 +11,12 @@ export const Route = createFileRoute("/admin/configuration")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => <AdminPlaceholder title="Configuration" />,
+  component: () => (
+    <div>
+      <h1 className="text-2xl font-semibold text-foreground">Configuration</h1>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Cette section sera construite prochainement.
+      </p>
+    </div>
+  ),
 });
