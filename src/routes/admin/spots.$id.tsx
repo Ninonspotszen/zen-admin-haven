@@ -1,49 +1,60 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Copy, Download, ExternalLink, Sun, CloudSun, Sunset, Moon } from "lucide-react";
+import QRCode from "qrcode";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/spots/$id")({
   head: () => ({
     meta: [
-      { title: "Fiche spot · Spots Zen Admin" },
-      { name: "description", content: "Configuration détaillée d'un spot." },
-      { property: "og:title", content: "Fiche spot · Spots Zen Admin" },
-      { property: "og:description", content: "Configuration détaillée d'un spot." },
+      { title: "Configuration du spot · Spots Zen Admin" },
+      { name: "description", content: "Programmation, accès, activité et QR code d'un spot." },
+      { property: "og:title", content: "Configuration du spot · Spots Zen Admin" },
+      { property: "og:description", content: "Programmation, accès, activité et QR code d'un spot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: SpotDetail,
+  component: SpotConfig,
 });
 
-const MOMENTS = ["Matin", "Journée", "Soir", "Nuit"];
+const CRENEAUX = [
+  { key: "Matin", label: "Matin", heures: "6h – 12h", icon: Sun },
+  { key: "Journée", label: "Journée", heures: "12h – 17h", icon: CloudSun },
+  { key: "Soir", label: "Soir", heures: "17h – 22h", icon: Sunset },
+  { key: "Nuit", label: "Nuit", heures: "22h – 6h", icon: Moon },
+] as const;
 
-type Form = {
-  nom: string; description: string; photo_url: string; latitude: string;
-  longitude: string; pin_code: string; shortio_url: string; statut: string;
-};
+function creneauForHour(h: number) {
+  if (h >= 6 && h < 12) return "Matin";
+  if (h >= 12 && h < 17) return "Journée";
+  if (h >= 17 && h < 22) return "Soir";
+  return "Nuit";
+}
 
 type SA = {
-  id: string; ordre: number | null; mis_en_avant: boolean | null;
-  mis_en_avant_moment: string | null; audio_id: string | null;
+  id: string; ordre: number | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null;
   audio: { statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
 };
+const titreOf = (a: SA) =>
+  a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
 
-function SpotDetail() {
+const card = "rounded-2xl border bg-card p-6 space-y-4";
+const input = "w-full rounded-xl border bg-background px-3 py-2 text-sm";
+
+function SpotConfig() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
-  const [form, setForm] = useState<Form | null>(null);
 
   const spot = useQuery({
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours)").eq("id", id).single();
       if (error) throw error;
-      return data as typeof data & { client: { id: string; nom: string } | null };
+      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null } | null };
     },
   });
 
@@ -52,133 +63,238 @@ function SpotDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("spot_audios")
-        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio_id, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
-        .eq("spot_id", id)
-        .order("ordre");
+        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
+        .eq("spot_id", id).order("ordre");
       if (error) throw error;
       return (data ?? []) as unknown as SA[];
     },
   });
 
+  const ecoutes = useQuery({
+    queryKey: ["spot-ecoutes", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("ecoutes").select("duree_ecoute_sec, timestamp, audio:audio_id(duree_secondes)")
+        .eq("spot_id", id).limit(10000);
+      if (error) throw error;
+      return (data ?? []) as unknown as { duree_ecoute_sec: number | null; timestamp: string | null; audio: { duree_secondes: number | null } | null }[];
+    },
+  });
+
+  // Section 1
+  const [nom, setNom] = useState("");
+  const [shortUrl, setShortUrl] = useState("");
   useEffect(() => {
-    const s = spot.data;
-    if (s) setForm({
-      nom: s.nom ?? "", description: s.description ?? "", photo_url: s.photo_url ?? "",
-      latitude: s.latitude?.toString() ?? "", longitude: s.longitude?.toString() ?? "",
-      pin_code: s.pin_code ?? "", shortio_url: s.shortio_url ?? "", statut: s.statut ?? "actif",
-    });
+    if (spot.data) { setNom(spot.data.nom ?? ""); setShortUrl(spot.data.shortio_url ?? ""); }
   }, [spot.data]);
-
-  const save = useMutation({
-    mutationFn: async (f: Form) => {
-      const num = (v: string) => (v.trim() === "" ? null : Number(v.replace(",", ".")));
-      const lat = num(f.latitude), lng = num(f.longitude);
-      if ((lat !== null && isNaN(lat)) || (lng !== null && isNaN(lng))) throw new Error("Latitude/longitude invalides");
-      const { error } = await supabase.from("spots").update({
-        nom: f.nom || null, description: f.description || null, photo_url: f.photo_url || null,
-        latitude: lat, longitude: lng, pin_code: f.pin_code || null,
-        shortio_url: f.shortio_url || null, statut: f.statut,
-      }).eq("id", id);
+  const saveSpot = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("spots").update({ nom: nom || null, shortio_url: shortUrl || null }).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => {
-      toast.success("Spot sauvegardé");
-      qc.invalidateQueries({ queryKey: ["spot-detail", id] });
-      qc.invalidateQueries({ queryKey: ["spots-list"] });
-    },
+    onSuccess: () => { toast.success("Spot sauvegardé"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const updateSA = useMutation({
-    mutationFn: async (p: { id: string; patch: { ordre?: number; mis_en_avant?: boolean; mis_en_avant_moment?: string | null } }) => {
-      const { error } = await supabase.from("spot_audios").update(p.patch).eq("id", p.id);
-      if (error) throw error;
+  // Section 2
+  const setFeatured = useMutation({
+    mutationFn: async ({ moment, saId }: { moment: string; saId: string }) => {
+      const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
+        .eq("spot_id", id).eq("mis_en_avant_moment", moment).neq("id", saId);
+      if (r1.error) throw r1.error;
+      const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).eq("id", saId);
+      if (r2.error) throw r2.error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["spot-audios", id] }),
+    onSuccess: () => { toast.success("Programmation mise à jour"); qc.invalidateQueries({ queryKey: ["spot-audios", id] }); },
     onError: (e: Error) => toast.error(e.message),
   });
 
-  if (spot.isLoading || !form) return <p className="text-muted-foreground">Chargement…</p>;
-  if (spot.error) return <p className="text-destructive">Spot introuvable.</p>;
+  // Section 3
+  const [duree, setDuree] = useState("");
+  useEffect(() => { setDuree(spot.data?.client?.duree_acces_jours?.toString() ?? ""); }, [spot.data]);
+  const saveDuree = useMutation({
+    mutationFn: async () => {
+      const clientId = spot.data?.client?.id;
+      if (!clientId) throw new Error("Aucun client associé à ce spot");
+      const v = Number(duree);
+      if (!Number.isInteger(v) || v < 1 || v > 90) throw new Error("La durée doit être comprise entre 1 et 90 jours");
+      const { error } = await supabase.from("clients").update({ duree_acces_jours: v }).eq("id", clientId);
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Durée d'accès mise à jour pour tous les spots du client"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
-  const set = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setForm({ ...form, [k]: e.target.value });
-  const input = "w-full rounded-xl border bg-background px-3 py-2 text-sm";
+  // Section 4
+  const stats = useMemo(() => {
+    const rows = ecoutes.data ?? [];
+    const total = rows.length;
+    const durees = rows.map((r) => r.duree_ecoute_sec).filter((d): d is number => d != null);
+    const moy = durees.length ? durees.reduce((a, b) => a + b, 0) / durees.length / 60 : 0;
+    const ratios = rows
+      .filter((r) => r.duree_ecoute_sec != null && r.audio?.duree_secondes)
+      .map((r) => Math.min(1, r.duree_ecoute_sec! / r.audio!.duree_secondes!));
+    const completion = ratios.length ? (ratios.reduce((a, b) => a + b, 0) / ratios.length) * 100 : null;
+    const parCreneau: Record<string, number> = { Matin: 0, Journée: 0, Soir: 0, Nuit: 0 };
+    rows.forEach((r) => { if (r.timestamp) parCreneau[creneauForHour(new Date(r.timestamp).getHours())]!++; });
+    return { total, moy, completion, parCreneau };
+  }, [ecoutes.data]);
+
+  // Section 5
+  const [qrData, setQrData] = useState<string | null>(null);
+  useEffect(() => {
+    if (!shortUrl) { setQrData(null); return; }
+    QRCode.toDataURL(shortUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
+  }, [shortUrl]);
+  const slug = (spot.data?.slug || nom || "spot").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const download = (href: string, ext: string) => {
+    const a = document.createElement("a"); a.href = href; a.download = `qr-${slug}.${ext}`; a.click();
+  };
+  const downloadSvg = async () => {
+    const svg = await QRCode.toString(shortUrl, { type: "svg", margin: 2 });
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    download(url, "svg"); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const shortioDashboard = (() => {
+    try { const u = new URL(shortUrl); return `https://app.short.io/users/dashboard?search=${encodeURIComponent(u.host + u.pathname)}`; }
+    catch { return "https://app.short.io"; }
+  })();
+
+  if (spot.isLoading) return <p className="text-muted-foreground">Chargement…</p>;
+  if (spot.error || !spot.data) return <p className="text-destructive">Spot introuvable.</p>;
+
+  const now = creneauForHour(new Date().getHours());
+  const maxCreneau = Math.max(1, ...Object.values(stats.parCreneau));
 
   return (
     <div className="space-y-6">
       <Link to="/admin/spots" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Retour aux spots
       </Link>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="font-serif text-3xl">{form.nom || "Spot sans nom"}</h1>
-          <p className="text-sm text-muted-foreground">Client : {spot.data?.client?.nom ?? "—"}</p>
-        </div>
-        <button onClick={() => save.mutate(form)} disabled={save.isPending}
-          className="rounded-full bg-primary text-primary-foreground px-6 py-2 text-sm disabled:opacity-50">
-          {save.isPending ? "Sauvegarde…" : "Sauvegarder"}
-        </button>
+      <div>
+        <h1 className="font-serif text-3xl">{nom || "Spot sans nom"}</h1>
+        <p className="text-sm text-muted-foreground">Client : {spot.data.client?.nom ?? "—"}</p>
       </div>
 
-      <section className="rounded-2xl border bg-card p-6 grid gap-4 md:grid-cols-2">
-        <h2 className="font-serif text-xl md:col-span-2">Informations</h2>
-        <label className="space-y-1 text-sm">Nom<input className={input} value={form.nom} onChange={set("nom")} /></label>
-        <label className="space-y-1 text-sm">Statut
-          <select className={input} value={form.statut} onChange={set("statut")}>
-            <option value="actif">actif</option>
-            <option value="inactif">inactif</option>
-          </select>
-        </label>
-        <label className="space-y-1 text-sm md:col-span-2">Description<textarea rows={3} className={input} value={form.description} onChange={set("description")} /></label>
-        <label className="space-y-1 text-sm md:col-span-2">URL de la photo<input className={input} value={form.photo_url} onChange={set("photo_url")} /></label>
-        {form.photo_url && <img src={form.photo_url} alt="" className="md:col-span-2 h-40 w-full object-cover rounded-xl" />}
-        <label className="space-y-1 text-sm">Latitude<input className={input} value={form.latitude} onChange={set("latitude")} /></label>
-        <label className="space-y-1 text-sm">Longitude<input className={input} value={form.longitude} onChange={set("longitude")} /></label>
-        <label className="space-y-1 text-sm">Code PIN<input className={`${input} font-mono`} value={form.pin_code} onChange={set("pin_code")} /></label>
-        <label className="space-y-1 text-sm">Lien court<input className={input} value={form.shortio_url} onChange={set("shortio_url")} /></label>
-      </section>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          {/* Section 1 */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Infos spot</h2>
+            <div className="grid gap-4 md:grid-cols-[1fr_auto] items-start">
+              <div className="space-y-3">
+                <label className="block space-y-1 text-sm">Nom du spot<input className={input} value={nom} onChange={(e) => setNom(e.target.value)} /></label>
+                <label className="block space-y-1 text-sm">Lien Short.io<input className={input} value={shortUrl} onChange={(e) => setShortUrl(e.target.value)} placeholder="https://…" /></label>
+                <p className="text-xs text-muted-foreground">Ce lien redirige dynamiquement les visiteurs vers l'application.</p>
+                <button onClick={() => saveSpot.mutate()} disabled={saveSpot.isPending}
+                  className="rounded-full bg-primary text-primary-foreground px-6 py-2 text-sm disabled:opacity-50">
+                  {saveSpot.isPending ? "Sauvegarde…" : "Sauvegarder"}
+                </button>
+              </div>
+              {qrData && <img src={qrData} alt="QR code du spot" className="h-32 w-32 rounded-xl border" />}
+            </div>
+          </section>
 
-      <section className="rounded-2xl border bg-card p-6 space-y-4">
-        <h2 className="font-serif text-xl">Audios du spot</h2>
-        {audios.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p> :
-          (audios.data ?? []).length === 0 ? <p className="text-sm text-muted-foreground">Aucun audio lié.</p> : (
-          <table className="w-full text-sm">
-            <thead className="text-left text-muted-foreground border-b">
-              <tr><th className="py-2">Ordre</th><th>Titre</th><th>Statut</th><th>Mis en avant</th><th>Moment</th></tr>
-            </thead>
-            <tbody>
-              {audios.data!.map((a) => {
-                const titre = a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "—";
-                return (
-                  <tr key={a.id} className="border-b last:border-0">
-                    <td className="py-2">
-                      <input type="number" defaultValue={a.ordre ?? 0} className="w-16 rounded-lg border bg-background px-2 py-1"
-                        onBlur={(e) => { const v = Number(e.target.value); if (!isNaN(v) && v !== a.ordre) updateSA.mutate({ id: a.id, patch: { ordre: v } }); }} />
-                    </td>
-                    <td>{titre}</td>
-                    <td><span className={`px-3 py-1 rounded-full text-xs ${a.audio?.statut === "publié" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>{a.audio?.statut ?? "—"}</span></td>
-                    <td>
-                      <button role="switch" aria-checked={!!a.mis_en_avant}
-                        onClick={() => updateSA.mutate({ id: a.id, patch: { mis_en_avant: !a.mis_en_avant } })}
-                        className={`relative h-6 w-11 rounded-full transition ${a.mis_en_avant ? "bg-primary" : "bg-muted"}`}>
-                        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-background transition ${a.mis_en_avant ? "left-5" : "left-0.5"}`} />
-                      </button>
-                    </td>
-                    <td>
-                      <select value={a.mis_en_avant_moment ?? ""} className="rounded-lg border bg-background px-2 py-1"
-                        onChange={(e) => updateSA.mutate({ id: a.id, patch: { mis_en_avant_moment: e.target.value || null } })}>
-                        <option value="">—</option>
-                        {MOMENTS.map((m) => <option key={m} value={m}>{m}</option>)}
+          {/* Section 2 */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Programmation dynamique des audios</h2>
+            <p className="text-sm text-muted-foreground">L'audio mis en avant change automatiquement selon l'heure de la visite.</p>
+            {audios.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p> : (
+              <div className="grid gap-3 md:grid-cols-2">
+                {CRENEAUX.map((c) => {
+                  const list = audios.data ?? [];
+                  const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
+                  const Icon = c.icon;
+                  return (
+                    <div key={c.key} className={`rounded-xl border p-4 space-y-2 ${now === c.key ? "border-primary bg-primary/5" : ""}`}>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2 font-medium"><Icon className="h-4 w-4 text-primary" />{c.label}</span>
+                        <span className="text-xs text-muted-foreground">{c.heures}{now === c.key && " · en cours"}</span>
+                      </div>
+                      <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
+                      <select value="" disabled={list.length === 0 || setFeatured.isPending} className={input}
+                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, saId: e.target.value })}>
+                        <option value="">Changer d'audio…</option>
+                        {list.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}{a.audio?.statut === "brouillon" ? " (brouillon)" : ""}</option>)}
                       </select>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </section>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {audios.data?.length === 0 && <p className="text-sm text-muted-foreground">Aucun audio lié à ce spot.</p>}
+          </section>
+
+          {/* Section 4 */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Activité du spot</h2>
+            {ecoutes.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p> : (
+              <>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <Stat label="Écoutes cumulées" value={stats.total.toLocaleString("fr-FR")} />
+                  <Stat label="Durée moyenne" value={`${stats.moy.toFixed(1).replace(".", ",")} min`} />
+                  <Stat label="Taux de complétion" value={stats.completion == null ? "—" : `${Math.round(stats.completion)} %`} />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Répartition par créneau</p>
+                  {CRENEAUX.map((c) => (
+                    <div key={c.key} className="flex items-center gap-3 text-sm">
+                      <span className="w-16">{c.label}</span>
+                      <div className="flex-1 h-3 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full bg-primary rounded-full" style={{ width: `${(stats.parCreneau[c.key]! / maxCreneau) * 100}%` }} />
+                      </div>
+                      <span className="w-10 text-right text-muted-foreground">{stats.parCreneau[c.key]}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </section>
+        </div>
+
+        <div className="space-y-6">
+          {/* Section 3 */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Durée d'accès visiteurs</h2>
+            <div className="flex gap-2 items-center">
+              <input type="number" min={1} max={90} className={input} value={duree} onChange={(e) => setDuree(e.target.value)} disabled={!spot.data.client} />
+              <span className="text-sm text-muted-foreground">jours</span>
+            </div>
+            <p className="text-xs text-muted-foreground">Durée commune à tous les spots de ce client · Configurable jusqu'à 90 jours selon l'abonnement</p>
+            <button onClick={() => saveDuree.mutate()} disabled={saveDuree.isPending || !spot.data.client}
+              className="rounded-full border px-5 py-2 text-sm disabled:opacity-50">Modifier</button>
+          </section>
+
+          {/* Section 5 */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">QR code</h2>
+            {qrData ? <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />
+              : <p className="text-sm text-muted-foreground">Renseigne un lien Short.io pour générer le QR code.</p>}
+            <p className="text-sm break-all text-center">{shortUrl || "—"}</p>
+            <div className="grid gap-2">
+              <button disabled={!shortUrl} onClick={() => navigator.clipboard.writeText(shortUrl).then(() => toast.success("Lien copié"))}
+                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm disabled:opacity-50"><Copy className="h-4 w-4" />Copier le lien</button>
+              <div className="grid grid-cols-2 gap-2">
+                <button disabled={!qrData} onClick={() => qrData && download(qrData, "png")}
+                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />PNG</button>
+                <button disabled={!shortUrl} onClick={downloadSvg}
+                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />SVG</button>
+              </div>
+              <a href={shortioDashboard} target="_blank" rel="noreferrer"
+                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><ExternalLink className="h-4 w-4" />Ouvrir sur Short.io</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border p-4">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="font-serif text-2xl">{value}</p>
     </div>
   );
 }
