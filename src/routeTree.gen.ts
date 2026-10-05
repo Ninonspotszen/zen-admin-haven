@@ -18,6 +18,8 @@ import { Route as AdminAbonnesRouteImport } from './routes/admin/abonnes'
 import { Route as AdminAudiosRouteImport } from './routes/admin/audios'
 import { Route as AdminConfigurationRouteImport } from './routes/admin/configuration'
 import { Route as AdminSpotsRouteImport } from './routes/admin/spots'
+import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients.index'
+import { Route as AdminClientsIdRouteImport } from './routes/admin/clients.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +66,16 @@ const AdminSpotsRoute = AdminSpotsRouteImport.update({
   path: '/spots',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminClientsIndexRoute = AdminClientsIndexRouteImport.update({
+  id: '/clients/',
+  path: '/clients/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
+  id: '/clients/$id',
+  path: '/clients/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +87,8 @@ export interface FileRoutesByFullPath {
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,6 +99,8 @@ export interface FileRoutesByTo {
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/clients': typeof AdminClientsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,6 +113,8 @@ export interface FileRoutesById {
   '/admin/configuration': typeof AdminConfigurationRoute
   '/admin/spots': typeof AdminSpotsRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,6 +128,8 @@ export interface FileRouteTypes {
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin/'
+    | '/admin/clients/$id'
+    | '/admin/clients/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,6 +140,8 @@ export interface FileRouteTypes {
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin'
+    | '/admin/clients/$id'
+    | '/admin/clients'
   id:
     | '__root__'
     | '/'
@@ -131,6 +153,8 @@ export interface FileRouteTypes {
     | '/admin/configuration'
     | '/admin/spots'
     | '/admin/'
+    | '/admin/clients/$id'
+    | '/admin/clients/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,6 +229,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSpotsRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/clients/': {
+      id: '/admin/clients/'
+      path: '/clients'
+      fullPath: '/admin/clients/'
+      preLoaderRoute: typeof AdminClientsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/clients/$id': {
+      id: '/admin/clients/$id'
+      path: '/clients/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AdminClientsIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
@@ -214,6 +252,8 @@ interface AdminRouteRouteChildren {
   AdminConfigurationRoute: typeof AdminConfigurationRoute
   AdminSpotsRoute: typeof AdminSpotsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminClientsIdRoute: typeof AdminClientsIdRoute
+  AdminClientsIndexRoute: typeof AdminClientsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
@@ -222,6 +262,8 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminConfigurationRoute: AdminConfigurationRoute,
   AdminSpotsRoute: AdminSpotsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminClientsIdRoute: AdminClientsIdRoute,
+  AdminClientsIndexRoute: AdminClientsIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
