@@ -93,7 +93,7 @@ function AbonnesPage() {
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">Abonnés & Ambassadeurs</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {abonnes.length} abonnés · {counts.actif} actifs · {counts.ambassadeur} ambassadeurs
+          {abonnes.length} abonnés · {counts["actif"]} actifs · {counts["ambassadeur"]} ambassadeurs
         </p>
       </div>
 
