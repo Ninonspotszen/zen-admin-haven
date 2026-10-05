@@ -149,7 +149,10 @@ function ClientsPage() {
 
   function sendEmail(c: ClientRow) {
     const to = c.emails_autorises?.[0];
-    if (!to) return toast.info("Aucun email enregistré pour ce client");
+    if (!to) {
+      toast.info("Aucun email enregistré pour ce client");
+      return;
+    }
     window.location.href = `mailto:${to}`;
   }
 
