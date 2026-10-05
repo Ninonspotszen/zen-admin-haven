@@ -49,45 +49,47 @@ function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <span className="text-lg font-semibold text-foreground">Spots Zen</span>
-          <div className="flex items-center gap-3">
-            <div className="text-right">
-              <p className="text-sm font-medium text-foreground">Ninon Godin</p>
-              <p className="text-xs text-muted-foreground">
-                Admin · {profile.email ?? "bonjour@spotszen.fr"}
-              </p>
-            </div>
+      <header className="sticky top-0 z-30 border-b bg-card shadow-sm">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-8">
+          <div className="flex items-center gap-8">
+            <span className="font-serif text-xl font-semibold text-primary">Spots Zen</span>
+            <nav className="flex items-center gap-1.5">
+              {TABS.map((tab) => {
+                const active = tab.exact
+                  ? pathname === tab.to
+                  : pathname.startsWith(tab.to);
+                return (
+                  <Link
+                    key={tab.to}
+                    to={tab.to}
+                    className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
+                      active
+                        ? "bg-accent font-semibold text-accent-foreground"
+                        : "font-medium text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                    }`}
+                  >
+                    {tab.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+          <div className="flex items-center gap-2.5 border-l pl-4">
             <button
               onClick={handleSignOut}
               title="Se déconnecter"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-accent text-xs font-semibold text-accent-foreground"
             >
               NG
             </button>
+            <div>
+              <p className="text-xs font-semibold leading-tight text-foreground">Ninon Godin</p>
+              <p className="text-[11px] leading-tight text-muted-foreground">
+                Admin · {profile.email ?? "bonjour@spotszen.fr"}
+              </p>
+            </div>
           </div>
         </div>
-        <nav className="mx-auto flex max-w-7xl gap-1 px-6">
-          {TABS.map((tab) => {
-            const active = tab.exact
-              ? pathname === tab.to
-              : pathname.startsWith(tab.to);
-            return (
-              <Link
-                key={tab.to}
-                to={tab.to}
-                className={`border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
-                  active
-                    ? "border-primary text-foreground"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab.label}
-              </Link>
-            );
-          })}
-        </nav>
       </header>
       <main className="mx-auto max-w-7xl px-6 py-8">
         <Outlet />
