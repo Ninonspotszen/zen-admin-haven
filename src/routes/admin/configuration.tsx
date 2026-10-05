@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AdminPlaceholder } from "./index";
 
 export const Route = createFileRoute("/admin/configuration")({
   head: () => ({
