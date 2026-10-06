@@ -225,13 +225,34 @@ function ClientDetail() {
             </p>
           </div>
         </div>
-        <button
-          disabled={save.isPending || !dirty}
-          onClick={() => save.mutate()}
-          className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
-        >
-          <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            disabled={activateEmail.isPending}
+            onClick={() => activateEmail.mutate(client.id)}
+            className="flex w-fit items-center gap-2 rounded-xl border border-input bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary disabled:opacity-50"
+          >
+            <Send className="h-4 w-4 text-muted-foreground" />
+            {activateEmail.isPending ? "Envoi en cours…" : "Activer le compte"}
+          </button>
+          {client.statut !== "Suspendu" && (
+            <button
+              disabled={suspend.isPending}
+              onClick={() => {
+                if (confirm(`Suspendre le compte de ${client.nom} ?`)) suspend.mutate();
+              }}
+              className="flex w-fit items-center gap-2 rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2.5 text-sm font-semibold text-destructive transition hover:bg-destructive/20 disabled:opacity-50"
+            >
+              <UserX className="h-4 w-4" /> {suspend.isPending ? "Suspension…" : "Passer en Suspendu"}
+            </button>
+          )}
+          <button
+            disabled={save.isPending || !dirty}
+            onClick={() => save.mutate()}
+            className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+          >
+            <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
+          </button>
+        </div>
       </div>
 
       {/* Section Spots */}
