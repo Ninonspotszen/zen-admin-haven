@@ -36,10 +36,12 @@ function creneauForHour(h: number) {
 
 type SA = {
   id: string; ordre: number | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null;
-  audio: { id: string; statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
+  audio: { id: string; statut: string | null; titre_fr: string | null; groupe_slug: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
 };
 const titreOf = (a: SA) =>
   a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
+// Une version par voix = une ligne audios distincte, regroupées par groupe_slug (repli : titre fr)
+const groupeOf = (a: SA) => a.audio?.groupe_slug || titreOf(a);
 
 const card = "rounded-2xl border bg-card p-6 space-y-4";
 const input = "w-full rounded-xl border bg-background px-3 py-2 text-sm";
@@ -107,7 +109,8 @@ function SpotConfig() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("spot_audios")
-        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(id, statut, titre_fr, audios_traductions(langue, titre))")
+        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(id, statut, titre_fr, groupe_slug, audios_traductions(langue, titre))")
+        .eq("audio.audios_traductions.langue", "fr")
         .eq("spot_id", id).order("ordre");
       if (error) throw error;
       return (data ?? []) as unknown as SA[];
@@ -142,11 +145,14 @@ function SpotConfig() {
 
   // Section 2
   const setFeatured = useMutation({
-    mutationFn: async ({ moment, saId }: { moment: string; saId: string }) => {
+    mutationFn: async ({ moment, groupe }: { moment: string; groupe: string }) => {
+      // Toutes les versions (voix F / M) du même audio sont mises en avant ensemble
+      const ids = (audios.data ?? []).filter((a) => groupeOf(a) === groupe).map((a) => a.id);
+      if (ids.length === 0) throw new Error("Audio introuvable");
       const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
-        .eq("spot_id", id).eq("mis_en_avant_moment", moment).neq("id", saId);
+        .eq("spot_id", id).eq("mis_en_avant_moment", moment);
       if (r1.error) throw r1.error;
-      const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).eq("id", saId);
+      const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).in("id", ids);
       if (r2.error) throw r2.error;
     },
     onSuccess: () => { toast.success("Programmation mise à jour"); qc.invalidateQueries({ queryKey: ["spot-audios", id] }); },
@@ -249,10 +255,10 @@ function SpotConfig() {
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
                   const list = audios.data ?? [];
-                  // Déduplication par audio_id : une seule option par audio (les traductions existent en une ligne par voix)
+                  // Une seule option par audio : les versions F / M sont regroupées (le visiteur choisit sa voix dans la PWA)
                   const options = Array.from(
-                    new Map(list.map((a) => [a.audio?.id ?? a.id, a] as const)).values(),
-                  );
+                    new Map(list.map((a) => [groupeOf(a), a] as const)).entries(),
+                  ).sort((x, y) => titreOf(x[1]).localeCompare(titreOf(y[1]), "fr"));
                   const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
                   const Icon = c.icon;
                   return (
@@ -263,9 +269,9 @@ function SpotConfig() {
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
                       <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
-                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, saId: e.target.value })}>
+                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, groupe: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {options.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}</option>)}
+                        {options.map(([g, a]) => <option key={g} value={g}>{titreOf(a)}</option>)}
                       </select>
                     </div>
                   );
