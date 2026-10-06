@@ -133,7 +133,7 @@ function SpotConfig() {
   }, [spot.data]);
   const saveSpot = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("spots").update({ nom: nom || null, shortio_url: shortUrl || null }).eq("id", id);
+      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: shortUrl || null }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Spot sauvegardé"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
@@ -153,21 +153,12 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  // Section 3
-  const [duree, setDuree] = useState("");
-  useEffect(() => { setDuree(spot.data?.client?.duree_acces_jours?.toString() ?? ""); }, [spot.data]);
-  const saveDuree = useMutation({
-    mutationFn: async () => {
-      const clientId = spot.data?.client?.id;
-      if (!clientId) throw new Error("Aucun client associé à ce spot");
-      const v = Number(duree);
-      if (!Number.isInteger(v) || v < 1 || v > 90) throw new Error("La durée doit être comprise entre 1 et 90 jours");
-      const { error } = await supabase.from("clients").update({ duree_acces_jours: v }).eq("id", clientId);
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Durée d'accès mise à jour pour tous les spots du client"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); },
-    onError: (e: Error) => toast.error(e.message),
-  });
+  // Section 3 — paramètres d'accès (lecture seule)
+  const dureeJours = spot.data?.client?.duree_acces_jours ?? null;
+  const debut = spot.data?.client?.date_debut_acces ?? null;
+  const fin = debut && dureeJours != null
+    ? new Date(new Date(debut).getTime() + dureeJours * 86400000)
+    : null;
 
   // Section 4
   const stats = useMemo(() => {
