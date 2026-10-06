@@ -43,7 +43,21 @@ type Client = {
   montant: number | null;
   note_interne: string | null;
   date_debut_acces: string | null;
+  frequence_facturation: string | null;
+  mois_offerts: number | null;
+  date_debut: string | null;
 };
+
+// Date de renouvellement = date_debut + mois_offerts + (1 mois si Mensuel, 12 mois si Annuel)
+function computeRenewal(debut: string, moisOfferts: string, frequence: string): string {
+  if (!debut) return "";
+  const d = new Date(`${debut}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
+  const duree = frequence === "Mensuel" ? 1 : 12;
+  d.setMonth(d.getMonth() + offerts + duree);
+  return d.toISOString().slice(0, 10);
+}
 
 const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif annuel", "Suspendu"];
 const fieldInput = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
