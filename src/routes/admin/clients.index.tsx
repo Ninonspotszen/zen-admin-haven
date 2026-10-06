@@ -307,6 +307,105 @@ function ClientsPage() {
           </div>
         </div>
       </div>
+
+      <CreateClientDialog open={createOpen} onClose={() => setCreateOpen(false)} />
+    </div>
+  );
+}
+
+const PACKS = ["Découverte", "Essentiel", "Premium"] as const;
+const inputCls = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
+
+function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const [nom, setNom] = useState("");
+  const [type, setType] = useState("");
+  const [pack, setPack] = useState<string>("Découverte");
+  const [statut, setStatut] = useState<string>("En attente de paiement");
+  const [email, setEmail] = useState("");
+  const [note, setNote] = useState("");
+
+  const create = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase
+        .from("clients")
+        .insert({
+          nom: nom.trim(),
+          type: type.trim() || null,
+          pack_souscrit: pack,
+          statut,
+          emails_autorises: email.trim() ? [email.trim()] : null,
+          note_interne: note.trim() || null,
+        })
+        .select("id")
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success("Client créé");
+      qc.invalidateQueries({ queryKey: ["clients-b2b"] });
+      onClose();
+      navigate({ to: "/admin/clients/$id", params: { id: data.id } });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 p-4" onClick={onClose}>
+      <div
+        className="w-full max-w-lg rounded-2xl border bg-card p-6 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="font-serif text-xl font-bold text-foreground">Nouveau client B2B</h2>
+        <div className="mt-5 space-y-4">
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Nom *</label>
+            <input value={nom} onChange={(e) => setNom(e.target.value)} className={inputCls} placeholder="Ex. Hôtel du Lac" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Type d'établissement</label>
+            <input value={type} onChange={(e) => setType(e.target.value)} className={inputCls} placeholder="Ex. Hôtel, Spa, Cabinet…" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pack souscrit</label>
+              <select value={pack} onChange={(e) => setPack(e.target.value)} className={inputCls}>
+                {PACKS.map((p) => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Statut</label>
+              <select value={statut} onChange={(e) => setStatut(e.target.value)} className={inputCls}>
+                {STATUTS.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email de contact</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} placeholder="contact@etablissement.fr" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Note interne</label>
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} className={`${inputCls} resize-y`} />
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end gap-3">
+          <button onClick={onClose} className="rounded-xl border border-input bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary">
+            Annuler
+          </button>
+          <button
+            disabled={!nom.trim() || create.isPending}
+            onClick={() => create.mutate()}
+            className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+          >
+            {create.isPending ? "Création…" : "Créer le client"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
