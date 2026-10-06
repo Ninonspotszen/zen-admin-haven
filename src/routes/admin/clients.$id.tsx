@@ -179,7 +179,7 @@ function ClientDetail() {
   });
 
   const activateEmail = useMutation({
-    mutationFn: useServerFn(triggerActivationEmail),
+    mutationFn: (clientId: string) => triggerActivationEmail({ data: clientId }),
     onSuccess: () => {
       toast.success("Email d'accès envoyé au client");
       qc.invalidateQueries({ queryKey: ["client-detail", id] });
