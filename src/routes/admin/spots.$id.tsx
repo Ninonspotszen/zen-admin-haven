@@ -268,9 +268,9 @@ function SpotConfig() {
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
                       <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
-                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, groupe: e.target.value })}>
+                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, audioId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {options.map(([g, a]) => <option key={g} value={g}>{titreOf(a)}</option>)}
+                        {options.map(([aid, a]) => <option key={aid} value={aid}>{titreOf(a)}</option>)}
                       </select>
                     </div>
                   );
