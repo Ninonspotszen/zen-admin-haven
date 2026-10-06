@@ -309,10 +309,31 @@ function ClientDetail() {
         )}
       </Section>
 
+      {/* Section Stats d'écoute */}
+      <Section
+        title="Statistiques d'écoute"
+        subtitle={`Écoutes cumulées sur les ${data!.spots.length} spot${data!.spots.length > 1 ? "s" : ""} de ce client`}
+      >
+        <div className="grid gap-5 p-6 md:grid-cols-2">
+          <Field label="Écoutes cumulées" icon={Headphones}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {data!.ecoutes.total.toLocaleString("fr-FR")}
+            </div>
+          </Field>
+          <Field label="Durée moyenne d'écoute" icon={Clock}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {data!.ecoutes.moyenneMin != null
+                ? `${Math.floor(data!.ecoutes.moyenneMin)} min ${String(Math.round((data!.ecoutes.moyenneMin % 1) * 60)).padStart(2, "0")} s`
+                : "—"}
+            </div>
+          </Field>
+        </div>
+      </Section>
+
       {/* Section Audios assignés */}
       <Section
         title="Audios assignés"
-        subtitle={`${data!.audios.length} audio${data!.audios.length > 1 ? "s" : ""} visible${data!.audios.length > 1 ? "s" : ""} pour ce client`}
+        subtitle="Visible dans la PWA : audio publié + visible activé"
       >
         {data!.audios.length === 0 ? (
           <p className="px-6 py-8 text-center text-sm text-muted-foreground">Aucun audio assigné à ce client</p>
@@ -331,6 +352,7 @@ function ClientDetail() {
                   a.audios?.audios_traductions?.find((t) => t.titre)?.titre ??
                   a.audios?.titre_fr ??
                   "—";
+                const brouillon = a.audios?.statut === "brouillon";
                 return (
                   <tr key={a.id} className="border-b last:border-0">
                     <td className="px-6 py-4 font-semibold text-foreground">{titre}</td>
