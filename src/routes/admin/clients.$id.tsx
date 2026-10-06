@@ -133,12 +133,10 @@ function ClientDetail() {
 
   const client = data?.client ?? null;
 
-  const [duree, setDuree] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
   const [statut, setStatut] = useState("");
-  const [debut, setDebut] = useState("");
   const [frequence, setFrequence] = useState("");
   const [montant, setMontant] = useState("");
   const [moisOfferts, setMoisOfferts] = useState("");
@@ -466,34 +464,6 @@ function ClientDetail() {
             </tbody>
           </table>
         )}
-      </Section>
-
-      {/* Section Accès */}
-      <Section title="Accès" subtitle="Durée et échéances du contrat">
-        <div className="grid gap-5 p-6 md:grid-cols-2">
-          <Field label="Durée d'accès (jours)" icon={Clock}>
-            <input
-              type="number"
-              min={0}
-              value={duree}
-              onChange={(e) => {
-                setDuree(e.target.value);
-                setDirty(true);
-              }}
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30"
-            />
-          </Field>
-          <Field label="Début d'accès" icon={CalendarDays}>
-            <input type="date" value={debut} onChange={(e) => edit(setDebut)(e.target.value)} className={fieldInput} />
-          </Field>
-          <Field label="Fin du pilote" icon={CalendarDays}>
-            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
-              {client.date_pilote_fin
-                ? new Date(client.date_pilote_fin).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-                : "—"}
-            </div>
-          </Field>
-        </div>
       </Section>
 
       {/* Section Facturation */}
