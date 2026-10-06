@@ -133,10 +133,10 @@ function ClientsPage() {
   const actifs = clients.filter((c) => c.statut !== "Suspendu").length;
 
   function exportCsv() {
-    const head = ["Nom", "Type", "Statut", "Paiement", "Montant (€/an)", "Fin pilote", "Renouvellement", "Écoutes"];
+    const head = ["Nom", "Type", "Pack souscrit", "Statut", "Paiement", "Montant (€/an)", "Fin pilote", "Renouvellement", "Note interne", "Écoutes"];
     const rows = visible.map((c) => [
-      c.nom, c.type ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "",
-      c.date_pilote_fin ?? "", c.date_renouvellement ?? "", c.ecoutes,
+      c.nom, c.type ?? "", c.pack_souscrit ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "",
+      c.date_pilote_fin ?? "", c.date_renouvellement ?? "", c.note_interne ?? "", c.ecoutes,
     ]);
     const csv = [head, ...rows]
       .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(";"))
@@ -218,9 +218,14 @@ function ClientsPage() {
           <thead className="border-b bg-secondary/50">
             <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <th className="px-6 py-4">Établissement</th>
+              <th className="px-4 py-4">Type</th>
+              <th className="px-4 py-4">Pack</th>
               <th className="px-4 py-4">Statut</th>
               <th className="px-4 py-4">Paiement</th>
+              <th className="px-4 py-4 text-right">Montant</th>
+              <th className="px-4 py-4">Renouvellement</th>
               <th className="px-4 py-4">Alerte</th>
+              <th className="px-4 py-4">Note interne</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
