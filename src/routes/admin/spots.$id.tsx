@@ -238,7 +238,6 @@ function SpotConfig() {
                   {saveSpot.isPending ? "Sauvegarde…" : "Sauvegarder"}
                 </button>
               </div>
-              {qrData && <img src={qrData} alt="QR code du spot" className="h-32 w-32 rounded-xl border" />}
             </div>
           </section>
 
@@ -272,6 +271,38 @@ function SpotConfig() {
             {audios.data?.length === 0 && <p className="text-sm text-muted-foreground">Aucun audio lié à ce spot.</p>}
           </section>
 
+          {/* Catalogue audio */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Catalogue audio</h2>
+            <p className="text-sm text-muted-foreground">Brouillon = invisible pour tous. Le bouton masque un audio publié pour ce client uniquement.</p>
+            {!clientId ? <p className="text-sm text-muted-foreground">Aucun client associé à ce spot.</p>
+              : catalogue.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p>
+              : (catalogue.data ?? []).length === 0 ? <p className="text-sm text-muted-foreground">Aucun audio assigné.</p>
+              : (
+                <ul className="divide-y">
+                  {catalogue.data!.map((ca) => {
+                    const brouillon = ca.audio?.statut !== "publié";
+                    const on = !!ca.visible && !brouillon;
+                    const titre = ca.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? ca.audio?.titre_fr ?? "Sans titre";
+                    return (
+                      <li key={ca.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                        <div>
+                          <p className="font-medium">{titre}</p>
+                          <p className="text-xs text-muted-foreground">{brouillon ? "Brouillon — invisible pour tous" : ca.visible ? "Visible" : "Masqué pour ce client"}</p>
+                        </div>
+                        <button type="button" role="switch" aria-checked={on} aria-label="Visibilité"
+                          disabled={brouillon || toggleVisible.isPending}
+                          onClick={() => toggleVisible.mutate({ caId: ca.id, visible: !ca.visible })}
+                          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition disabled:opacity-40 ${on ? "bg-primary" : "bg-input"}`}>
+                          <span className={`inline-block h-5 w-5 rounded-full bg-background shadow transition ${on ? "translate-x-5" : "translate-x-0.5"}`} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+          </section>
+
           {/* Section 4 */}
           <section className={card}>
             <h2 className="font-serif text-xl">Activité du spot</h2>
@@ -300,36 +331,39 @@ function SpotConfig() {
         </div>
 
         <div className="space-y-6">
-          {/* Section 3 */}
+          {/* Accès & QR Code */}
           <section className={card}>
-            <h2 className="font-serif text-xl">Durée d'accès visiteurs</h2>
-            <div className="flex gap-2 items-center">
-              <input type="number" min={1} max={90} className={input} value={duree} onChange={(e) => setDuree(e.target.value)} disabled={!spot.data.client} />
-              <span className="text-sm text-muted-foreground">jours</span>
-            </div>
-            <p className="text-xs text-muted-foreground">Durée commune à tous les spots de ce client · Configurable jusqu'à 90 jours selon l'abonnement</p>
-            <button onClick={() => saveDuree.mutate()} disabled={saveDuree.isPending || !spot.data.client}
-              className="rounded-full border px-5 py-2 text-sm disabled:opacity-50">Modifier</button>
+            <h2 className="font-serif text-xl">Accès & QR Code</h2>
+            <p className="rounded-xl bg-secondary px-3 py-2 text-sm break-all font-mono">{pwaUrl.replace("https://", "")}</p>
+            <button onClick={() => navigator.clipboard.writeText(pwaUrl).then(() => toast.success("Lien copié"))}
+              className="flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><Copy className="h-4 w-4" />Copier le lien</button>
+            {qrData && <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />}
+            <button disabled={!qrData} onClick={downloadPng}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger le QR code</button>
           </section>
 
-          {/* Section 5 */}
+          {/* Paramètres d'accès */}
           <section className={card}>
-            <h2 className="font-serif text-xl">QR code</h2>
-            {qrData ? <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />
-              : <p className="text-sm text-muted-foreground">Renseigne un lien Short.io pour générer le QR code.</p>}
-            <p className="text-sm break-all text-center">{shortUrl || "—"}</p>
-            <div className="grid gap-2">
-              <button disabled={!shortUrl} onClick={() => navigator.clipboard.writeText(shortUrl).then(() => toast.success("Lien copié"))}
-                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm disabled:opacity-50"><Copy className="h-4 w-4" />Copier le lien</button>
-              <div className="grid grid-cols-2 gap-2">
-                <button disabled={!qrData} onClick={() => qrData && download(qrData, "png")}
-                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />PNG</button>
-                <button disabled={!shortUrl} onClick={downloadSvg}
-                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />SVG</button>
-              </div>
-              <a href={shortioDashboard} target="_blank" rel="noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><ExternalLink className="h-4 w-4" />Ouvrir sur Short.io</a>
-            </div>
+            <h2 className="font-serif text-xl">Paramètres d'accès</h2>
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Durée d'accès</dt><dd className="font-medium">{dureeJours != null ? `${dureeJours} jours` : "—"}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Début d'accès</dt><dd className="font-medium">{debut ? new Date(debut).toLocaleDateString("fr-FR") : "—"}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Fin d'accès (calculée)</dt><dd className="font-medium">{fin ? fin.toLocaleDateString("fr-FR") : "—"}</dd></div>
+            </dl>
+            <p className="text-xs text-muted-foreground">
+              Durée commune à tous les spots de ce client · modifiable depuis la{" "}
+              {spot.data.client ? <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">fiche client</Link> : "fiche client"}.
+            </p>
+          </section>
+
+          {/* Note interne */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Note interne</h2>
+            <textarea className={`${input} min-h-28`} value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} placeholder="Notes visibles uniquement par l'admin…" />
+            <button onClick={() => saveNote.mutate()} disabled={saveNote.isPending}
+              className="rounded-full bg-primary text-primary-foreground px-5 py-2 text-sm disabled:opacity-50">
+              {saveNote.isPending ? "Enregistrement…" : "Enregistrer"}
+            </button>
           </section>
         </div>
       </div>
