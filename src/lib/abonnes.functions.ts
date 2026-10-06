@@ -25,9 +25,25 @@ export const giftAccess = createServerFn({ method: "POST" })
       .toISOString()
       .slice(0, 10);
 
+    // abonnes_b2c.id référence auth.users : on crée (ou réutilise) le compte auth.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: created, error: createError } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      email_confirm: true,
+      user_metadata: { prenom: data.prenom ?? null, nom: data.nom ?? null, source: "acces_offert" },
+    });
+    let userId = created?.user?.id;
+    if (!userId) {
+      // Le compte existe peut-être déjà : on le retrouve par email.
+      const { data: list } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+      userId = list?.users?.find((u) => u.email?.toLowerCase() === data.email.toLowerCase())?.id;
+    }
+    if (!userId) throw new Error(createError?.message ?? "Impossible de créer le compte utilisateur");
+
     const { data: inserted, error } = await context.supabase
       .from("abonnes_b2c")
       .insert({
+        id: userId,
         email: data.email,
         prenom: data.prenom || null,
         statut: "offert",
