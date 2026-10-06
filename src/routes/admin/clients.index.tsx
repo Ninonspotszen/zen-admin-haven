@@ -231,13 +231,13 @@ function ClientsPage() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
             )}
             {error && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
             )}
             {!isLoading && !error && visible.length === 0 && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Aucun client</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Aucun client</td></tr>
             )}
             {visible.map((c) => (
               <tr
@@ -251,23 +251,31 @@ function ClientsPage() {
                       {initials(c.nom)}
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-foreground">{c.nom}</span>
-                        {c.montant != null && (
-                          <span className="rounded-md bg-secondary px-2 py-0.5 font-mono text-[11px] font-semibold text-secondary-foreground">
-                            {fmtEuro(c.montant)} €/an
-                          </span>
-                        )}
-                      </div>
+                      <span className="font-semibold text-foreground">{c.nom}</span>
                       <div className="mt-0.5 text-xs text-muted-foreground">
-                        {c.type ?? "—"} · <span className="text-primary">{c.ecoutes} écoutes</span>
+                        <span className="text-primary">{c.ecoutes} écoutes</span>
                       </div>
                     </div>
                   </div>
                 </td>
+                <td className="px-4 py-5 text-muted-foreground">{c.type ?? "—"}</td>
+                <td className="px-4 py-5 text-muted-foreground">{c.pack_souscrit ?? "—"}</td>
                 <td className="px-4 py-5"><StatutBadge statut={c.statut} /></td>
                 <td className="px-4 py-5"><Paiement c={c} /></td>
+                <td className="px-4 py-5 text-right">
+                  {c.montant != null ? (
+                    <span className="font-mono text-xs font-semibold text-foreground">{fmtEuro(c.montant)} €/an</span>
+                  ) : (
+                    <span className="text-muted-foreground">—</span>
+                  )}
+                </td>
+                <td className="px-4 py-5 text-xs text-muted-foreground whitespace-nowrap">
+                  {c.date_renouvellement ? monthYear(c.date_renouvellement) : "—"}
+                </td>
                 <td className="px-4 py-5"><Alerte c={c} /></td>
+                <td className="max-w-44 truncate px-4 py-5 text-xs text-muted-foreground" title={c.note_interne ?? undefined}>
+                  {c.note_interne || "—"}
+                </td>
                 <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center justify-end gap-2">
                     <ActionBtn icon={Eye} label="Voir" onClick={() => navigate({ to: "/admin/clients/$id", params: { id: c.id } })} />
