@@ -275,12 +275,9 @@ function SpotConfig() {
             {audios.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p> : (
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
-                  const list = audios.data ?? [];
-                  // Une seule option par audio_id (les voix F/M sont dans audios_traductions ; le visiteur choisit sa voix dans la PWA)
-                  const options = Array.from(
-                    new Map(list.filter((a) => audioIdOf(a)).map((a) => [audioIdOf(a), a] as const)).entries(),
-                  ).sort((x, y) => titreOf(x[1]).localeCompare(titreOf(y[1]), "fr"));
-                  const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
+                  const current = (audios.data ?? []).find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
+                  const libOptions = Array.from(new Map((audioLibrary.data ?? []).map((a) => [a.id, a] as const)).entries())
+                    .sort((x, y) => titreLib(x[1]).localeCompare(titreLib(y[1]), "fr"));
                   const Icon = c.icon;
                   return (
                     <div key={c.key} className={`rounded-xl border p-4 space-y-2 ${now === c.key ? "border-primary bg-primary/5" : ""}`}>
@@ -289,17 +286,16 @@ function SpotConfig() {
                         <span className="text-xs text-muted-foreground">{c.heures}{now === c.key && " · en cours"}</span>
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
-                      <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
+                      <select value="" disabled={libOptions.length === 0 || setFeatured.isPending} className={input}
                         onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, audioId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {options.map(([aid, a]) => <option key={aid} value={aid}>{titreOf(a)}</option>)}
+                        {libOptions.map(([aid, a]) => <option key={aid} value={aid}>{titreLib(a)}</option>)}
                       </select>
                     </div>
                   );
                 })}
               </div>
             )}
-            {audios.data?.length === 0 && <p className="text-sm text-muted-foreground">Aucun audio lié à ce spot.</p>}
           </section>
 
           {/* Catalogue audio */}
