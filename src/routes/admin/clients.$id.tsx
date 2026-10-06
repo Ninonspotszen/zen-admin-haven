@@ -171,15 +171,7 @@ function ClientDetail() {
 
   const save = useMutation({
     mutationFn: async () => {
-      let dureeValue: number | null;
       if (!nom.trim()) throw new Error("Le nom du client est obligatoire");
-      if (duree.trim() === "") {
-        dureeValue = null;
-      } else {
-        const n = Number(duree);
-        if (!Number.isFinite(n) || n < 0) throw new Error("Durée d'accès invalide");
-        dureeValue = Math.round(n);
-      }
       let montantValue: number | null = null;
       if (montant.trim() !== "") {
         const m = Number(montant);
