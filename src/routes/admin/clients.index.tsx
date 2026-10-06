@@ -420,6 +420,35 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email de contact</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} placeholder="contact@etablissement.fr" />
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fréquence de facturation</label>
+              <select value={frequence} onChange={(e) => updateBilling(setFrequence)(e.target.value)} className={inputCls}>
+                <option value="">—</option>
+                <option value="Mensuel">Mensuel</option>
+                <option value="Annuel">Annuel</option>
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Montant (€)</label>
+              <input type="number" min={0} step="0.01" value={montant} onChange={(e) => setMontant(e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Mois offerts</label>
+              <input type="number" min={0} step={1} value={moisOfferts} onChange={(e) => updateBilling(setMoisOfferts)(e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date de début</label>
+              <input type="date" value={dateDebut} onChange={(e) => updateBilling(setDateDebut)(e.target.value)} className={inputCls} />
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date de renouvellement</label>
+            <input type="date" value={renouvellement} onChange={(e) => setRenouvellement(e.target.value)} className={inputCls} />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Calculée automatiquement : date de début + mois offerts + {frequence === "Mensuel" ? "1 mois" : "12 mois"} — modifiable manuellement
+            </p>
+          </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Note interne</label>
             <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} className={`${inputCls} resize-y`} />
