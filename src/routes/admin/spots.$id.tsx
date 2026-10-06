@@ -198,9 +198,28 @@ function SpotConfig() {
       <Link to="/admin/spots" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Retour aux spots
       </Link>
-      <div>
-        <h1 className="font-serif text-3xl">{nom || "Spot sans nom"}</h1>
-        <p className="text-sm text-muted-foreground">Client : {spot.data.client?.nom ?? "—"}</p>
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+        <div>
+          <h1 className="font-serif text-3xl">{nom || "Spot sans nom"}</h1>
+          <p className="text-sm text-muted-foreground">{spot.data.adresse || "Adresse non renseignée"}</p>
+          <p className="text-sm text-muted-foreground">
+            Client :{" "}
+            {spot.data.client ? (
+              <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">{spot.data.client.nom}</Link>
+            ) : "—"}
+          </p>
+        </div>
+        <label className="flex items-center gap-3 rounded-full border bg-card px-4 py-2 text-sm">
+          <span className="font-medium">{spot.data.statut === "actif" ? "Actif" : "Inactif"}</span>
+          <button
+            type="button" role="switch" aria-checked={spot.data.statut === "actif"} aria-label="Statut du spot"
+            disabled={toggleStatut.isPending}
+            onClick={() => toggleStatut.mutate(spot.data.statut !== "actif")}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${spot.data.statut === "actif" ? "bg-primary" : "bg-input"}`}
+          >
+            <span className={`inline-block h-5 w-5 rounded-full bg-background shadow transition ${spot.data.statut === "actif" ? "translate-x-5" : "translate-x-0.5"}`} />
+          </button>
+        </label>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -211,6 +230,7 @@ function SpotConfig() {
             <div className="grid gap-4 md:grid-cols-[1fr_auto] items-start">
               <div className="space-y-3">
                 <label className="block space-y-1 text-sm">Nom du spot<input className={input} value={nom} onChange={(e) => setNom(e.target.value)} /></label>
+                <label className="block space-y-1 text-sm">Lieu / adresse<input className={input} value={adresse} onChange={(e) => setAdresse(e.target.value)} /></label>
                 <label className="block space-y-1 text-sm">Lien Short.io<input className={input} value={shortUrl} onChange={(e) => setShortUrl(e.target.value)} placeholder="https://…" /></label>
                 <p className="text-xs text-muted-foreground">Ce lien redirige dynamiquement les visiteurs vers l'application.</p>
                 <button onClick={() => saveSpot.mutate()} disabled={saveSpot.isPending}
