@@ -180,13 +180,6 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  // Section 3 — paramètres d'accès (lecture seule)
-  const dureeJours = spot.data?.client?.duree_acces_jours ?? null;
-  const debut = spot.data?.client?.date_debut_acces ?? null;
-  const fin = debut && dureeJours != null
-    ? new Date(new Date(debut).getTime() + dureeJours * 86400000)
-    : null;
-
   // Section 4
   const stats = useMemo(() => {
     const rows = ecoutes.data ?? [];
@@ -367,20 +360,6 @@ function SpotConfig() {
             {qrData && <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />}
             <button disabled={!qrData} onClick={downloadPng}
               className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger le QR code</button>
-          </section>
-
-          {/* Paramètres d'accès */}
-          <section className={card}>
-            <h2 className="font-serif text-xl">Paramètres d'accès</h2>
-            <dl className="space-y-3 text-sm">
-              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Durée d'accès</dt><dd className="font-medium">{dureeJours != null ? `${dureeJours} jours` : "—"}</dd></div>
-              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Début d'accès</dt><dd className="font-medium">{debut ? new Date(debut).toLocaleDateString("fr-FR") : "—"}</dd></div>
-              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Fin d'accès (calculée)</dt><dd className="font-medium">{fin ? fin.toLocaleDateString("fr-FR") : "—"}</dd></div>
-            </dl>
-            <p className="text-xs text-muted-foreground">
-              Durée commune à tous les spots de ce client · modifiable depuis la{" "}
-              {spot.data.client ? <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">fiche client</Link> : "fiche client"}.
-            </p>
           </section>
 
           {/* Note interne */}
