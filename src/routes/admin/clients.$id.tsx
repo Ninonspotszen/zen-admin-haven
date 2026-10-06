@@ -187,12 +187,10 @@ function ClientDetail() {
       const { error } = await supabase
         .from("clients")
         .update({
-          duree_acces_jours: dureeValue,
           note_interne: note || null,
           nom: nom.trim(),
           type: type.trim() || null,
           statut: statut || null,
-          date_debut_acces: debut || null,
           frequence_facturation: frequence || null,
           montant: montantValue,
           mois_offerts: moisOffertsValue,
