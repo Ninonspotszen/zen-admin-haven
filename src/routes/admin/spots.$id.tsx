@@ -151,7 +151,7 @@ function SpotConfig() {
         .from("audios")
         .select("id, titre_fr, audios_traductions(langue, titre)")
         .eq("statut", "publié")
-        .eq("type", "Méditation")
+        .neq("type", "Musique")
         .eq("audios_traductions.langue", "fr");
       if (error) throw error;
       return (data ?? []) as unknown as { id: string; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] }[];
