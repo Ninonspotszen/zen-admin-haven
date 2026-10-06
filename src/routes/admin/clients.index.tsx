@@ -83,8 +83,6 @@ async function fetchClients(): Promise<ClientRow[]> {
 
 const isPaid = (c: ClientRow) => c.statut_paiement === "Virement reçu";
 const fmtEuro = (n: number) => n.toLocaleString("fr-FR");
-const initials = (nom: string) =>
-  nom.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("");
 const daysUntil = (d: string) => Math.ceil((new Date(d).getTime() - Date.now()) / 86400000);
 const monthYear = (d: string) =>
   new Date(d).toLocaleDateString("fr-FR", { month: "short", year: "numeric" });
@@ -94,6 +92,7 @@ function ClientsPage() {
   const qc = useQueryClient();
   const [filter, setFilter] = useState<Filter>("Tous");
   const [search, setSearch] = useState("");
+  const [createOpen, setCreateOpen] = useState(false);
 
   const { data: clients = [], isLoading, error } = useQuery({
     queryKey: ["clients-b2b"],
