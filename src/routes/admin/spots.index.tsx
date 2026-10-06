@@ -32,6 +32,7 @@ function SpotsList() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [statut, setStatut] = useState("tous");
+  const [createOpen, setCreateOpen] = useState(false);
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["spots-list"],
     queryFn: async () => {
