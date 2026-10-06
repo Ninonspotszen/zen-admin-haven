@@ -315,6 +315,17 @@ function ClientsPage() {
 
 const inputCls = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
+// Date de renouvellement = date_debut + mois_offerts + (1 mois si Mensuel, 12 mois si Annuel)
+function computeRenewal(debut: string, moisOfferts: string, frequence: string): string {
+  if (!debut) return "";
+  const d = new Date(`${debut}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
+  const duree = frequence === "Mensuel" ? 1 : 12;
+  d.setMonth(d.getMonth() + offerts + duree);
+  return d.toISOString().slice(0, 10);
+}
+
 function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -323,9 +334,36 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
   const [statut, setStatut] = useState<string>("En attente de paiement");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
+  const [frequence, setFrequence] = useState("");
+  const [montant, setMontant] = useState("");
+  const [moisOfferts, setMoisOfferts] = useState("");
+  const [dateDebut, setDateDebut] = useState("");
+  const [renouvellement, setRenouvellement] = useState("");
+
+  // Recalcule la date de renouvellement dès que début, mois offerts ou fréquence changent
+  const updateBilling = (setter: (v: string) => void) => (v: string) => {
+    setter(v);
+    const f = setter === setFrequence ? v : frequence;
+    const m = setter === setMoisOfferts ? v : moisOfferts;
+    const d = setter === setDateDebut ? v : dateDebut;
+    const calc = computeRenewal(d, m, f);
+    if (calc) setRenouvellement(calc);
+  };
 
   const create = useMutation({
     mutationFn: async () => {
+      let montantValue: number | null = null;
+      if (montant.trim() !== "") {
+        const m = Number(montant);
+        if (!Number.isFinite(m) || m < 0) throw new Error("Montant invalide");
+        montantValue = m;
+      }
+      let moisOffertsValue: number | null = null;
+      if (moisOfferts.trim() !== "") {
+        const mo = Number(moisOfferts);
+        if (!Number.isInteger(mo) || mo < 0) throw new Error("Mois offerts invalide (entier ≥ 0)");
+        moisOffertsValue = mo;
+      }
       const { data, error } = await supabase
         .from("clients")
         .insert({
@@ -334,6 +372,11 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
           statut,
           emails_autorises: email.trim() ? [email.trim()] : null,
           note_interne: note.trim() || null,
+          frequence_facturation: frequence || null,
+          montant: montantValue,
+          mois_offerts: moisOffertsValue,
+          date_debut: dateDebut || null,
+          date_renouvellement: renouvellement || null,
         })
         .select("id")
         .single();
