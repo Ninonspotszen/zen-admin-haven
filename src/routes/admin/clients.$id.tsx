@@ -41,7 +41,12 @@ type Client = {
   date_renouvellement: string | null;
   montant: number | null;
   note_interne: string | null;
+  date_debut_acces: string | null;
 };
+
+const PACKS = ["Découverte", "Essentiel", "Premium"];
+const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif annuel", "Suspendu"];
+const fieldInput = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
 type Spot = {
   id: string;
@@ -116,14 +121,25 @@ function ClientDetail() {
 
   const [duree, setDuree] = useState<string>("");
   const [note, setNote] = useState<string>("");
+  const [nom, setNom] = useState("");
+  const [type, setType] = useState("");
+  const [pack, setPack] = useState("");
+  const [statut, setStatut] = useState("");
+  const [debut, setDebut] = useState("");
   const [dirty, setDirty] = useState(false);
   useEffect(() => {
     if (client) {
       setDuree(client.duree_acces_jours != null ? String(client.duree_acces_jours) : "");
       setNote(client.note_interne ?? "");
+      setNom(client.nom);
+      setType(client.type ?? "");
+      setPack(client.pack_souscrit ?? "");
+      setStatut(client.statut ?? "");
+      setDebut(client.date_debut_acces ?? "");
       setDirty(false);
     }
   }, [client]);
+  const edit = (setter: (v: string) => void) => (v: string) => { setter(v); setDirty(true); };
 
   const save = useMutation({
     mutationFn: async () => {
@@ -137,7 +153,15 @@ function ClientDetail() {
       }
       const { error } = await supabase
         .from("clients")
-        .update({ duree_acces_jours: dureeValue, note_interne: note })
+        .update({
+          duree_acces_jours: dureeValue,
+          note_interne: note || null,
+          nom: nom.trim(),
+          type: type.trim() || null,
+          pack_souscrit: pack || null,
+          statut: statut || null,
+          date_debut_acces: debut || null,
+        })
         .eq("id", id);
       if (error) throw error;
     },
