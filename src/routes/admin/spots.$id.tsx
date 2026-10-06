@@ -36,7 +36,7 @@ function creneauForHour(h: number) {
 
 type SA = {
   id: string; ordre: number | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null;
-  audio: { statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
+  audio: { id: string; statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
 };
 const titreOf = (a: SA) =>
   a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
