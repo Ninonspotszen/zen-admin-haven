@@ -254,9 +254,9 @@ function SpotConfig() {
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
                   const list = audios.data ?? [];
-                  // Une seule option par audio : les versions F / M sont regroupées (le visiteur choisit sa voix dans la PWA)
+                  // Une seule option par audio_id (les voix F/M sont dans audios_traductions ; le visiteur choisit sa voix dans la PWA)
                   const options = Array.from(
-                    new Map(list.map((a) => [groupeOf(a), a] as const)).entries(),
+                    new Map(list.filter((a) => audioIdOf(a)).map((a) => [audioIdOf(a), a] as const)).entries(),
                   ).sort((x, y) => titreOf(x[1]).localeCompare(titreOf(y[1]), "fr"));
                   const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
                   const Icon = c.icon;
