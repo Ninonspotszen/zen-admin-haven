@@ -40,8 +40,8 @@ type SA = {
 };
 const titreOf = (a: SA) =>
   a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
-// Une version par voix = une ligne audios distincte, regroupées par groupe_slug (repli : titre fr)
-const groupeOf = (a: SA) => a.audio?.groupe_slug || titreOf(a);
+// Chaque audio guidé = un seul audio_id ; les voix F/M vivent dans audios_traductions sous ce même audio_id
+const audioIdOf = (a: SA) => a.audio?.id ?? "";
 
 const card = "rounded-2xl border bg-card p-6 space-y-4";
 const input = "w-full rounded-xl border bg-background px-3 py-2 text-sm";
@@ -145,9 +145,8 @@ function SpotConfig() {
 
   // Section 2
   const setFeatured = useMutation({
-    mutationFn: async ({ moment, groupe }: { moment: string; groupe: string }) => {
-      // Toutes les versions (voix F / M) du même audio sont mises en avant ensemble
-      const ids = (audios.data ?? []).filter((a) => groupeOf(a) === groupe).map((a) => a.id);
+    mutationFn: async ({ moment, audioId }: { moment: string; audioId: string }) => {
+      const ids = (audios.data ?? []).filter((a) => audioIdOf(a) === audioId).map((a) => a.id);
       if (ids.length === 0) throw new Error("Audio introuvable");
       const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
         .eq("spot_id", id).eq("mis_en_avant_moment", moment);
@@ -255,9 +254,9 @@ function SpotConfig() {
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
                   const list = audios.data ?? [];
-                  // Une seule option par audio : les versions F / M sont regroupées (le visiteur choisit sa voix dans la PWA)
+                  // Une seule option par audio_id (les voix F/M sont dans audios_traductions ; le visiteur choisit sa voix dans la PWA)
                   const options = Array.from(
-                    new Map(list.map((a) => [groupeOf(a), a] as const)).entries(),
+                    new Map(list.filter((a) => audioIdOf(a)).map((a) => [audioIdOf(a), a] as const)).entries(),
                   ).sort((x, y) => titreOf(x[1]).localeCompare(titreOf(y[1]), "fr"));
                   const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
                   const Icon = c.icon;
@@ -269,9 +268,9 @@ function SpotConfig() {
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
                       <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
-                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, groupe: e.target.value })}>
+                        onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, audioId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {options.map(([g, a]) => <option key={g} value={g}>{titreOf(a)}</option>)}
+                        {options.map(([aid, a]) => <option key={aid} value={aid}>{titreOf(a)}</option>)}
                       </select>
                     </div>
                   );
