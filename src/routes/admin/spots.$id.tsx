@@ -36,7 +36,7 @@ function creneauForHour(h: number) {
 
 type SA = {
   id: string; ordre: number | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null;
-  audio: { statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
+  audio: { id: string; statut: string | null; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] } | null;
 };
 const titreOf = (a: SA) =>
   a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
@@ -107,7 +107,7 @@ function SpotConfig() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("spot_audios")
-        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
+        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(id, statut, titre_fr, audios_traductions(langue, titre))")
         .eq("spot_id", id).order("ordre");
       if (error) throw error;
       return (data ?? []) as unknown as SA[];
@@ -249,6 +249,10 @@ function SpotConfig() {
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
                   const list = audios.data ?? [];
+                  // Déduplication par audio_id : une seule option par audio (les traductions existent en une ligne par voix)
+                  const options = Array.from(
+                    new Map(list.map((a) => [a.audio?.id ?? a.id, a] as const)).values(),
+                  );
                   const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
                   const Icon = c.icon;
                   return (
@@ -258,10 +262,10 @@ function SpotConfig() {
                         <span className="text-xs text-muted-foreground">{c.heures}{now === c.key && " · en cours"}</span>
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
-                      <select value="" disabled={list.length === 0 || setFeatured.isPending} className={input}
+                      <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
                         onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, saId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {list.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}{a.audio?.statut === "brouillon" ? " (brouillon)" : ""}</option>)}
+                        {options.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}</option>)}
                       </select>
                     </div>
                   );
