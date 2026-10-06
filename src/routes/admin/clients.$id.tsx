@@ -237,10 +237,7 @@ function ClientDetail() {
 
       {/* En-tête */}
       <div className="mt-4 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border bg-accent font-serif text-lg font-semibold text-accent-foreground">
-            {client.nom.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")}
-          </div>
+        <div>
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">{client.nom}</h1>
