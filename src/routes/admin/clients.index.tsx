@@ -315,6 +315,17 @@ function ClientsPage() {
 
 const inputCls = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
+// Date de renouvellement = date_debut + mois_offerts + (1 mois si Mensuel, 12 mois si Annuel)
+function computeRenewal(debut: string, moisOfferts: string, frequence: string): string {
+  if (!debut) return "";
+  const d = new Date(`${debut}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
+  const duree = frequence === "Mensuel" ? 1 : 12;
+  d.setMonth(d.getMonth() + offerts + duree);
+  return d.toISOString().slice(0, 10);
+}
+
 function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -323,9 +334,36 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
   const [statut, setStatut] = useState<string>("En attente de paiement");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
+  const [frequence, setFrequence] = useState("");
+  const [montant, setMontant] = useState("");
+  const [moisOfferts, setMoisOfferts] = useState("");
+  const [dateDebut, setDateDebut] = useState("");
+  const [renouvellement, setRenouvellement] = useState("");
+
+  // Recalcule la date de renouvellement dès que début, mois offerts ou fréquence changent
+  const updateBilling = (setter: (v: string) => void) => (v: string) => {
+    setter(v);
+    const f = setter === setFrequence ? v : frequence;
+    const m = setter === setMoisOfferts ? v : moisOfferts;
+    const d = setter === setDateDebut ? v : dateDebut;
+    const calc = computeRenewal(d, m, f);
+    if (calc) setRenouvellement(calc);
+  };
 
   const create = useMutation({
     mutationFn: async () => {
+      let montantValue: number | null = null;
+      if (montant.trim() !== "") {
+        const m = Number(montant);
+        if (!Number.isFinite(m) || m < 0) throw new Error("Montant invalide");
+        montantValue = m;
+      }
+      let moisOffertsValue: number | null = null;
+      if (moisOfferts.trim() !== "") {
+        const mo = Number(moisOfferts);
+        if (!Number.isInteger(mo) || mo < 0) throw new Error("Mois offerts invalide (entier ≥ 0)");
+        moisOffertsValue = mo;
+      }
       const { data, error } = await supabase
         .from("clients")
         .insert({
@@ -334,6 +372,11 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
           statut,
           emails_autorises: email.trim() ? [email.trim()] : null,
           note_interne: note.trim() || null,
+          frequence_facturation: frequence || null,
+          montant: montantValue,
+          mois_offerts: moisOffertsValue,
+          date_debut: dateDebut || null,
+          date_renouvellement: renouvellement || null,
         })
         .select("id")
         .single();
@@ -376,6 +419,35 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email de contact</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} placeholder="contact@etablissement.fr" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fréquence de facturation</label>
+              <select value={frequence} onChange={(e) => updateBilling(setFrequence)(e.target.value)} className={inputCls}>
+                <option value="">—</option>
+                <option value="Mensuel">Mensuel</option>
+                <option value="Annuel">Annuel</option>
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Montant (€)</label>
+              <input type="number" min={0} step="0.01" value={montant} onChange={(e) => setMontant(e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Mois offerts</label>
+              <input type="number" min={0} step={1} value={moisOfferts} onChange={(e) => updateBilling(setMoisOfferts)(e.target.value)} className={inputCls} />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date de début</label>
+              <input type="date" value={dateDebut} onChange={(e) => updateBilling(setDateDebut)(e.target.value)} className={inputCls} />
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Date de renouvellement</label>
+            <input type="date" value={renouvellement} onChange={(e) => setRenouvellement(e.target.value)} className={inputCls} />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Calculée automatiquement : date de début + mois offerts + {frequence === "Mensuel" ? "1 mois" : "12 mois"} — modifiable manuellement
+            </p>
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Note interne</label>
