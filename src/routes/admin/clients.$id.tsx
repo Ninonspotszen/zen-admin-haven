@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
+  Building2,
+  Package,
   CalendarDays,
   Clock,
   Headphones,
@@ -144,6 +146,7 @@ function ClientDetail() {
   const save = useMutation({
     mutationFn: async () => {
       let dureeValue: number | null;
+      if (!nom.trim()) throw new Error("Le nom du client est obligatoire");
       if (duree.trim() === "") {
         dureeValue = null;
       } else {
@@ -277,6 +280,31 @@ function ClientDetail() {
           </button>
         </div>
       </div>
+
+      {/* Section Informations (édition en ligne) */}
+      <Section title="Informations" subtitle="Modifie puis clique sur « Sauvegarder les modifications »">
+        <div className="grid gap-5 p-6 md:grid-cols-2">
+          <Field label="Nom du client" icon={Building2}>
+            <input value={nom} onChange={(e) => edit(setNom)(e.target.value)} maxLength={200} className={fieldInput} />
+          </Field>
+          <Field label="Type d'établissement" icon={Building2}>
+            <input value={type} onChange={(e) => edit(setType)(e.target.value)} maxLength={100} placeholder="Hôtel, spa, entreprise…" className={fieldInput} />
+          </Field>
+          <Field label="Pack souscrit" icon={Package}>
+            <select value={pack} onChange={(e) => edit(setPack)(e.target.value)} className={fieldInput}>
+              <option value="">—</option>
+              {PACKS.map((p) => <option key={p} value={p}>{p}</option>)}
+              {pack && !PACKS.includes(pack) && <option value={pack}>{pack}</option>}
+            </select>
+          </Field>
+          <Field label="Statut" icon={Package}>
+            <select value={statut} onChange={(e) => edit(setStatut)(e.target.value)} className={fieldInput}>
+              <option value="">—</option>
+              {STATUTS_CLIENT.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </Field>
+        </div>
+      </Section>
 
       {/* Section Spots */}
       <Section
@@ -420,6 +448,9 @@ function ClientDetail() {
               }}
               className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30"
             />
+          </Field>
+          <Field label="Début d'accès" icon={CalendarDays}>
+            <input type="date" value={debut} onChange={(e) => edit(setDebut)(e.target.value)} className={fieldInput} />
           </Field>
           <Field label="Montant (€/an)" icon={Wallet}>
             <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
