@@ -143,6 +143,59 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  // Catalogue audio du spot (spot_audios)
+  const [assignOpen, setAssignOpen] = useState(false);
+  const spotCatalogue = useQuery({
+    queryKey: ["spot-catalogue-sa", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("spot_audios").select("id, ordre, actif, audio_id, audio:audio_id(id, titre_fr)")
+        .eq("spot_id", id).order("ordre");
+      if (error) throw error;
+      return (data ?? []) as unknown as { id: string; ordre: number | null; actif: boolean; audio_id: string | null; audio: { id: string; titre_fr: string | null } | null }[];
+    },
+  });
+  const activeAssigned = (spotCatalogue.data ?? []).filter((s) => s.actif);
+  const publishedAudios = useQuery({
+    queryKey: ["audios-published"],
+    enabled: assignOpen,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("audios").select("id, titre_fr").eq("statut", "publié").order("titre_fr");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+  const availableAudios = (publishedAudios.data ?? []).filter((a) => !activeAssigned.some((s) => s.audio_id === a.id));
+  const refreshCatalogue = () => {
+    qc.invalidateQueries({ queryKey: ["spot-catalogue-sa", id] });
+    qc.invalidateQueries({ queryKey: ["spot-audios", id] });
+  };
+  const assign = useMutation({
+    mutationFn: async (audioId: string) => {
+      const existing = (spotCatalogue.data ?? []).find((s) => s.audio_id === audioId);
+      if (existing) {
+        const { error } = await supabase.from("spot_audios").update({ actif: true }).eq("id", existing.id);
+        if (error) throw error;
+        return;
+      }
+      const { data: maxRow } = await supabase.from("spot_audios").select("ordre").eq("spot_id", id)
+        .order("ordre", { ascending: false }).limit(1).maybeSingle();
+      const ordre = (maxRow?.ordre ?? 0) + 1;
+      const { error } = await supabase.from("spot_audios").insert({ spot_id: id, audio_id: audioId, client_id: clientId, actif: true, ordre });
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Audio assigné"); setAssignOpen(false); refreshCatalogue(); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const deactivate = useMutation({
+    mutationFn: async (saId: string) => {
+      const { error } = await supabase.from("spot_audios").update({ actif: false }).eq("id", saId);
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Audio désactivé"); refreshCatalogue(); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   // Section 2 — sélection globale dans la bibliothèque (audios de type Méditation publiés, sans filtre par spot)
   const audioLibrary = useQuery({
     queryKey: ["audio-library"],
@@ -293,35 +346,55 @@ function SpotConfig() {
 
           {/* Catalogue audio */}
           <section className={card}>
-            <h2 className="font-serif text-xl">Catalogue audio</h2>
-            <p className="text-sm text-muted-foreground">Brouillon = invisible pour tous. Le bouton masque un audio publié pour ce client uniquement.</p>
-            {!clientId ? <p className="text-sm text-muted-foreground">Aucun client associé à ce spot.</p>
-              : catalogue.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p>
-              : (catalogue.data ?? []).length === 0 ? <p className="text-sm text-muted-foreground">Aucun audio assigné.</p>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-serif text-xl">Catalogue audio</h2>
+              <button type="button" onClick={() => setAssignOpen(true)}
+                className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
+                + Assigner un audio
+              </button>
+            </div>
+            {spotCatalogue.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p>
+              : activeAssigned.length === 0 ? <p className="text-sm text-muted-foreground">Aucun audio assigné.</p>
               : (
                 <ul className="divide-y">
-                  {catalogue.data!.map((ca) => {
-                    const brouillon = ca.audio?.statut !== "publié";
-                    const on = !!ca.visible && !brouillon;
-                    const titre = ca.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? ca.audio?.titre_fr ?? "Sans titre";
-                    return (
-                      <li key={ca.id} className="flex items-center justify-between gap-3 py-3 text-sm">
-                        <div>
-                          <p className="font-medium">{titre}</p>
-                          <p className="text-xs text-muted-foreground">{brouillon ? "Brouillon — invisible pour tous" : ca.visible ? "Visible" : "Masqué pour ce client"}</p>
-                        </div>
-                        <button type="button" role="switch" aria-checked={on} aria-label="Visibilité"
-                          disabled={brouillon || toggleVisible.isPending}
-                          onClick={() => toggleVisible.mutate({ caId: ca.id, visible: !ca.visible })}
-                          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition disabled:opacity-40 ${on ? "bg-primary" : "bg-input"}`}>
-                          <span className={`inline-block h-5 w-5 rounded-full bg-background shadow transition ${on ? "translate-x-5" : "translate-x-0.5"}`} />
-                        </button>
-                      </li>
-                    );
-                  })}
+                  {activeAssigned.map((sa) => (
+                    <li key={sa.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                      <p className="font-medium">{sa.audio?.titre_fr ?? "Sans titre"}</p>
+                      <button type="button" disabled={deactivate.isPending}
+                        onClick={() => deactivate.mutate(sa.id)}
+                        className="rounded-full border px-3 py-1 text-xs hover:bg-muted disabled:opacity-40">
+                        Désactiver
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               )}
           </section>
+
+          {assignOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 p-4" onClick={() => setAssignOpen(false)}>
+              <div className="max-h-[80vh] w-full max-w-md overflow-y-auto rounded-2xl border bg-card p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="font-serif text-lg">Assigner un audio</h3>
+                  <button type="button" onClick={() => setAssignOpen(false)} className="text-sm text-muted-foreground hover:text-foreground">Fermer</button>
+                </div>
+                {publishedAudios.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p>
+                  : availableAudios.length === 0 ? <p className="text-sm text-muted-foreground">Tous les audios publiés sont déjà assignés.</p>
+                  : (
+                    <ul className="divide-y">
+                      {availableAudios.map((a) => (
+                        <li key={a.id}>
+                          <button type="button" disabled={assign.isPending} onClick={() => assign.mutate(a.id)}
+                            className="w-full rounded-lg px-2 py-3 text-left text-sm hover:bg-muted disabled:opacity-40">
+                            {a.titre_fr ?? "Sans titre"}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+              </div>
+            </div>
+          )}
 
           {/* Section 4 */}
           <section className={card}>
