@@ -55,6 +55,7 @@ function AbonnesPage() {
   const [statut, setStatut] = useState<string>("Tous");
   const [formule, setFormule] = useState<string>("Toutes");
   const [search, setSearch] = useState("");
+  const [gifting, setGifting] = useState(false);
 
   const { data: abonnes = [], isLoading, error } = useQuery({
     queryKey: ["abonnes"],
@@ -93,11 +94,19 @@ function AbonnesPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">Abonnés & Ambassadeurs</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {abonnes.length} abonnés · {counts["actif"]} actifs · {counts["ambassadeur"]} ambassadeurs
-        </p>
+      <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">Abonnés & Ambassadeurs</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {abonnes.length} abonnés · {counts["actif"]} actifs · {counts["ambassadeur"]} ambassadeurs · {counts["offert"]} accès offerts
+          </p>
+        </div>
+        <button
+          onClick={() => setGifting(true)}
+          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+        >
+          <Gift className="h-4 w-4" /> Offrir un accès
+        </button>
       </div>
 
       <div className="mb-6 flex flex-col gap-4 rounded-2xl border bg-card p-4 lg:flex-row lg:items-center lg:justify-between">
@@ -159,7 +168,10 @@ function AbonnesPage() {
                 className="cursor-pointer border-b last:border-0 transition hover:bg-secondary/40"
               >
                 <td className="px-6 py-4">
-                  <div className="font-semibold text-foreground">{a.email}</div>
+                  <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                    {a.statut === "offert" && <Gift className="h-3.5 w-3.5 text-accent-foreground" />}
+                    {a.email}
+                  </div>
                   {a.prenom && <div className="mt-0.5 text-xs text-muted-foreground">{a.prenom}</div>}
                 </td>
                 <td className="px-4 py-4 text-foreground">{a.formule ?? "—"}</td>
@@ -173,6 +185,131 @@ function AbonnesPage() {
           </tbody>
         </table>
       </div>
+
+      {gifting && <GiftAccessPanel onClose={() => setGifting(false)} />}
+    </div>
+  );
+}
+
+function GiftAccessPanel({ onClose }: { onClose: () => void }) {
+  const qc = useQueryClient();
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [spotId, setSpotId] = useState("");
+  const [duree, setDuree] = useState("30");
+  const [codeParrainage, setCodeParrainage] = useState("");
+  const [message, setMessage] = useState("");
+
+  const { data: spots = [] } = useQuery({
+    queryKey: ["spots-list"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("spots").select("id, nom").order("nom");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const gift = useMutation({
+    mutationFn: () =>
+      giftAccess({
+        data: {
+          prenom: prenom || undefined,
+          nom: nom || undefined,
+          email: email.trim(),
+          spotId: spotId || undefined,
+          dureeJours: Number(duree) || 30,
+          codeParrainage: codeParrainage || undefined,
+          message: message || undefined,
+        },
+      }),
+    onSuccess: (r) => {
+      toast.success(
+        r.webhookSent
+          ? "Accès offert créé et email déclenché"
+          : "Accès offert créé (webhook Make non configuré — aucun email envoyé)",
+      );
+      qc.invalidateQueries({ queryKey: ["abonnes"] });
+      onClose();
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const input = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
+  const label = "mb-1 block text-xs font-semibold text-muted-foreground";
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-foreground/30" onClick={onClose}>
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!email.trim()) toast.error("L'email est obligatoire");
+          else gift.mutate();
+        }}
+        className="h-full w-full max-w-md overflow-y-auto border-l bg-card p-6 shadow-xl"
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-foreground">
+            <Gift className="h-5 w-5 text-primary" /> Nouvel accès offert
+          </h2>
+          <button type="button" onClick={onClose} aria-label="Fermer" className="text-muted-foreground hover:text-foreground">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={label}>Prénom</label>
+              <input className={input} value={prenom} onChange={(e) => setPrenom(e.target.value)} maxLength={100} />
+            </div>
+            <div>
+              <label className={label}>Nom</label>
+              <input className={input} value={nom} onChange={(e) => setNom(e.target.value)} maxLength={100} />
+            </div>
+          </div>
+          <div>
+            <label className={label}>Email *</label>
+            <input className={input} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} autoFocus />
+          </div>
+          <div>
+            <label className={label}>Spot associé</label>
+            <select className={input} value={spotId} onChange={(e) => setSpotId(e.target.value)}>
+              <option value="">Aucun</option>
+              {spots.map((s) => (
+                <option key={s.id} value={s.id}>{s.nom ?? s.id}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={label}>Durée d'accès (jours)</label>
+            <input className={input} type="number" min={1} max={365} value={duree} onChange={(e) => setDuree(e.target.value)} />
+          </div>
+          <div>
+            <label className={label}>Code parrainage (optionnel)</label>
+            <input className={input} value={codeParrainage} onChange={(e) => setCodeParrainage(e.target.value)} maxLength={50} />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Si un code parrainage est renseigné, l'ambassadeur associé sera notifié.
+            </p>
+          </div>
+          <div>
+            <label className={label}>Message personnalisé (optionnel)</label>
+            <textarea className={`${input} min-h-24`} value={message} onChange={(e) => setMessage(e.target.value)} maxLength={1000} />
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end gap-3">
+          <button type="button" onClick={onClose} className="rounded-xl border border-input px-4 py-2 text-sm font-semibold text-foreground hover:bg-secondary">
+            Annuler
+          </button>
+          <button
+            type="submit"
+            disabled={gift.isPending}
+            className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+          >
+            {gift.isPending ? "Envoi…" : "Envoyer l'accès"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
