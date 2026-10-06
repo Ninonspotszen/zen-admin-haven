@@ -145,12 +145,10 @@ function ClientDetail() {
   const [dirty, setDirty] = useState(false);
   useEffect(() => {
     if (client) {
-      setDuree(client.duree_acces_jours != null ? String(client.duree_acces_jours) : "");
       setNote(client.note_interne ?? "");
       setNom(client.nom);
       setType(client.type ?? "");
       setStatut(client.statut ?? "");
-      setDebut(client.date_debut_acces ?? "");
       setFrequence(client.frequence_facturation ?? "");
       setMontant(client.montant != null ? String(client.montant) : "");
       setMoisOfferts(client.mois_offerts != null ? String(client.mois_offerts) : "");
