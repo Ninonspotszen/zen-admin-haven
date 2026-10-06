@@ -1,16 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   CalendarDays,
   Clock,
+  Headphones,
   KeyRound,
   Link2,
   Save,
+  Send,
+  UserX,
   Wallet,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { triggerActivationEmail } from "@/lib/clients.functions";
 
 export const Route = createFileRoute("/admin/clients/$id")({
   head: () => ({
@@ -83,10 +88,27 @@ function ClientDetail() {
       if (e1) throw e1;
       if (e2) throw e2;
       if (e3) throw e3;
+      // Statistiques d'écoute : écoutes des spots de ce client
+      const spotIds = (spots ?? []).map((s) => s.id);
+      let total = 0;
+      let moyenneMin: number | null = null;
+      if (spotIds.length) {
+        const { data: ecoutes, error: e4 } = await supabase
+          .from("ecoutes")
+          .select("duree_ecoute_sec")
+          .in("spot_id", spotIds);
+        if (e4) throw e4;
+        const valeurs = (ecoutes ?? [])
+          .map((e) => e.duree_ecoute_sec)
+          .filter((v): v is number => v != null);
+        total = (ecoutes ?? []).length;
+        moyenneMin = valeurs.length ? valeurs.reduce((a, b) => a + b, 0) / valeurs.length / 60 : null;
+      }
       return {
         client: (client ?? null) as Client | null,
         spots: (spots ?? []) as Spot[],
         audios: (clientAudios ?? []) as AudioRow[],
+        ecoutes: { total, moyenneMin },
       };
     },
   });
