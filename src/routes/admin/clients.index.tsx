@@ -46,6 +46,7 @@ type ClientRow = {
   id: string;
   nom: string;
   type: string | null;
+  pack_souscrit: string | null;
   statut: string | null;
   statut_paiement: string | null;
   date_pilote_fin: string | null;
@@ -53,6 +54,7 @@ type ClientRow = {
   montant: number | null;
   domaine_email: string | null;
   emails_autorises: string[] | null;
+  note_interne: string | null;
   ecoutes: number;
 };
 
@@ -60,7 +62,7 @@ async function fetchClients(): Promise<ClientRow[]> {
   const { data: clients, error } = await supabase
     .from("clients")
     .select(
-      "id, nom, type, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, domaine_email, emails_autorises, spots(id)",
+      "id, nom, type, pack_souscrit, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, domaine_email, emails_autorises, note_interne, spots(id)",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -131,10 +133,10 @@ function ClientsPage() {
   const actifs = clients.filter((c) => c.statut !== "Suspendu").length;
 
   function exportCsv() {
-    const head = ["Nom", "Type", "Statut", "Paiement", "Montant (€/an)", "Fin pilote", "Renouvellement", "Écoutes"];
+    const head = ["Nom", "Type", "Pack souscrit", "Statut", "Paiement", "Montant (€/an)", "Fin pilote", "Renouvellement", "Note interne", "Écoutes"];
     const rows = visible.map((c) => [
-      c.nom, c.type ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "",
-      c.date_pilote_fin ?? "", c.date_renouvellement ?? "", c.ecoutes,
+      c.nom, c.type ?? "", c.pack_souscrit ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "",
+      c.date_pilote_fin ?? "", c.date_renouvellement ?? "", c.note_interne ?? "", c.ecoutes,
     ]);
     const csv = [head, ...rows]
       .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(";"))
@@ -216,21 +218,26 @@ function ClientsPage() {
           <thead className="border-b bg-secondary/50">
             <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <th className="px-6 py-4">Établissement</th>
+              <th className="px-4 py-4">Type</th>
+              <th className="px-4 py-4">Pack</th>
               <th className="px-4 py-4">Statut</th>
               <th className="px-4 py-4">Paiement</th>
+              <th className="px-4 py-4 text-right">Montant</th>
+              <th className="px-4 py-4">Renouvellement</th>
               <th className="px-4 py-4">Alerte</th>
+              <th className="px-4 py-4">Note interne</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
             )}
             {error && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
             )}
             {!isLoading && !error && visible.length === 0 && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Aucun client</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Aucun client</td></tr>
             )}
             {visible.map((c) => (
               <tr
@@ -244,23 +251,31 @@ function ClientsPage() {
                       {initials(c.nom)}
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-foreground">{c.nom}</span>
-                        {c.montant != null && (
-                          <span className="rounded-md bg-secondary px-2 py-0.5 font-mono text-[11px] font-semibold text-secondary-foreground">
-                            {fmtEuro(c.montant)} €/an
-                          </span>
-                        )}
-                      </div>
+                      <span className="font-semibold text-foreground">{c.nom}</span>
                       <div className="mt-0.5 text-xs text-muted-foreground">
-                        {c.type ?? "—"} · <span className="text-primary">{c.ecoutes} écoutes</span>
+                        <span className="text-primary">{c.ecoutes} écoutes</span>
                       </div>
                     </div>
                   </div>
                 </td>
+                <td className="px-4 py-5 text-muted-foreground">{c.type ?? "—"}</td>
+                <td className="px-4 py-5 text-muted-foreground">{c.pack_souscrit ?? "—"}</td>
                 <td className="px-4 py-5"><StatutBadge statut={c.statut} /></td>
                 <td className="px-4 py-5"><Paiement c={c} /></td>
+                <td className="px-4 py-5 text-right">
+                  {c.montant != null ? (
+                    <span className="font-mono text-xs font-semibold text-foreground">{fmtEuro(c.montant)} €/an</span>
+                  ) : (
+                    <span className="text-muted-foreground">—</span>
+                  )}
+                </td>
+                <td className="px-4 py-5 text-xs text-muted-foreground whitespace-nowrap">
+                  {c.date_renouvellement ? monthYear(c.date_renouvellement) : "—"}
+                </td>
                 <td className="px-4 py-5"><Alerte c={c} /></td>
+                <td className="max-w-44 truncate px-4 py-5 text-xs text-muted-foreground" title={c.note_interne ?? undefined}>
+                  {c.note_interne || "—"}
+                </td>
                 <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
                   <div className="flex items-center justify-end gap-2">
                     <ActionBtn icon={Eye} label="Voir" onClick={() => navigate({ to: "/admin/clients/$id", params: { id: c.id } })} />
@@ -333,20 +348,27 @@ function Paiement({ c }: { c: ClientRow }) {
 }
 
 function Alerte({ c }: { c: ClientRow }) {
-  let label: string | null = null;
+  // Badge orange : fin de pilote à 30 jours ou moins
   if (c.statut === "Pilote" && c.date_pilote_fin) {
     const d = daysUntil(c.date_pilote_fin);
-    if (d <= 15) label = d < 0 ? `Pilote terminé (J+${-d})` : `J-${d} fin pilote`;
-  } else if (c.statut === "Actif annuel" && c.date_renouvellement) {
-    const d = daysUntil(c.date_renouvellement);
-    if (d <= 30) label = d < 0 ? "Renouvellement dépassé" : `J-${d} renouvellement`;
+    if (d <= 30)
+      return (
+        <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+          <AlertTriangle className="h-3 w-3" /> {d < 0 ? `Pilote terminé (J+${-d})` : `J-${d} fin pilote`}
+        </span>
+      );
   }
-  if (!label) return <span className="text-muted-foreground">—</span>;
-  return (
-    <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning px-2.5 py-1 text-xs font-semibold text-warning-foreground">
-      <AlertTriangle className="h-3 w-3" /> {label}
-    </span>
-  );
+  // Badge jaune : renouvellement à 30 jours ou moins
+  if (c.statut === "Actif annuel" && c.date_renouvellement) {
+    const d = daysUntil(c.date_renouvellement);
+    if (d <= 30)
+      return (
+        <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning/50 px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+          <AlertTriangle className="h-3 w-3" /> {d < 0 ? "Renouvellement dépassé" : `J-${d} renouvellement`}
+        </span>
+      );
+  }
+  return <span className="text-muted-foreground">—</span>;
 }
 
 function ActionBtn({ icon: Icon, label, onClick }: { icon: typeof Eye; label: string; onClick: () => void }) {
