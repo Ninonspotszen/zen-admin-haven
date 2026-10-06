@@ -143,16 +143,38 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  // Section 2
+  // Section 2 — sélection globale dans la bibliothèque (audios de type Méditation publiés, sans filtre par spot)
+  const audioLibrary = useQuery({
+    queryKey: ["audio-library"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("audios")
+        .select("id, titre_fr, audios_traductions(langue, titre)")
+        .eq("statut", "publié")
+        .eq("type", "Méditation")
+        .eq("audios_traductions.langue", "fr");
+      if (error) throw error;
+      return (data ?? []) as unknown as { id: string; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] }[];
+    },
+  });
+  const titreLib = (a: { titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] | null }) =>
+    a.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.titre_fr ?? "Sans titre";
+
   const setFeatured = useMutation({
     mutationFn: async ({ moment, audioId }: { moment: string; audioId: string }) => {
-      const ids = (audios.data ?? []).filter((a) => audioIdOf(a) === audioId).map((a) => a.id);
-      if (ids.length === 0) throw new Error("Audio introuvable");
       const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
         .eq("spot_id", id).eq("mis_en_avant_moment", moment);
       if (r1.error) throw r1.error;
-      const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).in("id", ids);
-      if (r2.error) throw r2.error;
+      const { data: existing, error: e0 } = await supabase
+        .from("spot_audios").select("id").eq("spot_id", id).eq("audio_id", audioId);
+      if (e0) throw e0;
+      if (existing && existing.length > 0) {
+        const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).in("id", existing.map((r) => r.id));
+        if (r2.error) throw r2.error;
+      } else {
+        const r2 = await supabase.from("spot_audios").insert({ spot_id: id, audio_id: audioId, mis_en_avant: true, mis_en_avant_moment: moment });
+        if (r2.error) throw r2.error;
+      }
     },
     onSuccess: () => { toast.success("Programmation mise à jour"); qc.invalidateQueries({ queryKey: ["spot-audios", id] }); },
     onError: (e: Error) => toast.error(e.message),
@@ -253,12 +275,9 @@ function SpotConfig() {
             {audios.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p> : (
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
-                  const list = audios.data ?? [];
-                  // Une seule option par audio_id (les voix F/M sont dans audios_traductions ; le visiteur choisit sa voix dans la PWA)
-                  const options = Array.from(
-                    new Map(list.filter((a) => audioIdOf(a)).map((a) => [audioIdOf(a), a] as const)).entries(),
-                  ).sort((x, y) => titreOf(x[1]).localeCompare(titreOf(y[1]), "fr"));
-                  const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
+                  const current = (audios.data ?? []).find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
+                  const libOptions = Array.from(new Map((audioLibrary.data ?? []).map((a) => [a.id, a] as const)).entries())
+                    .sort((x, y) => titreLib(x[1]).localeCompare(titreLib(y[1]), "fr"));
                   const Icon = c.icon;
                   return (
                     <div key={c.key} className={`rounded-xl border p-4 space-y-2 ${now === c.key ? "border-primary bg-primary/5" : ""}`}>
@@ -267,17 +286,16 @@ function SpotConfig() {
                         <span className="text-xs text-muted-foreground">{c.heures}{now === c.key && " · en cours"}</span>
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
-                      <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
+                      <select value="" disabled={libOptions.length === 0 || setFeatured.isPending} className={input}
                         onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, audioId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {options.map(([aid, a]) => <option key={aid} value={aid}>{titreOf(a)}</option>)}
+                        {libOptions.map(([aid, a]) => <option key={aid} value={aid}>{titreLib(a)}</option>)}
                       </select>
                     </div>
                   );
                 })}
               </div>
             )}
-            {audios.data?.length === 0 && <p className="text-sm text-muted-foreground">Aucun audio lié à ce spot.</p>}
           </section>
 
           {/* Catalogue audio */}
