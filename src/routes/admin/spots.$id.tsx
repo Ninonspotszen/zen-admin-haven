@@ -107,7 +107,7 @@ function SpotConfig() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("spot_audios")
-        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
+        .select("id, ordre, mis_en_avant, mis_en_avant_moment, audio:audio_id(id, statut, titre_fr, audios_traductions(langue, titre))")
         .eq("spot_id", id).order("ordre");
       if (error) throw error;
       return (data ?? []) as unknown as SA[];
