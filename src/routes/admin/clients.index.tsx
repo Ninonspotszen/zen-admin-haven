@@ -321,7 +321,7 @@ function computeRenewal(debut: string, moisOfferts: string, frequence: string): 
   const d = new Date(`${debut}T00:00:00`);
   if (Number.isNaN(d.getTime())) return "";
   const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
-  const duree = frequence === "Mensuel" ? 1 : 12;
+  const duree = frequence === "Mensuel" ? 0 : 12;
   d.setMonth(d.getMonth() + offerts + duree);
   return d.toISOString().slice(0, 10);
 }
