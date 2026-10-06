@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import { Gift, Search, Sparkles, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { giftAccess } from "@/lib/abonnes.functions";
 
 export const Route = createFileRoute("/admin/abonnes/")({
   head: () => ({
@@ -42,6 +44,7 @@ export function StatutBadge({ statut }: { statut: string | null }) {
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold ${STATUT_STYLE[s] ?? "bg-secondary text-muted-foreground"}`}>
       {s === "ambassadeur" && <Sparkles className="h-3 w-3" />}
+      {s === "offert" && <Gift className="h-3 w-3" />}
       {s.charAt(0).toUpperCase() + s.slice(1)}
     </span>
   );
