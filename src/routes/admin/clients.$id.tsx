@@ -165,6 +165,28 @@ function ClientDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const suspend = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("clients").update({ statut: "Suspendu" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Compte passé en Suspendu");
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+      qc.invalidateQueries({ queryKey: ["clients-b2b"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const activateEmail = useMutation({
+    mutationFn: useServerFn(triggerActivationEmail),
+    onSuccess: () => {
+      toast.success("Email d'accès envoyé au client");
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   if (isLoading) {
     return (
       <div className="rounded-2xl border bg-card px-6 py-10 text-center text-muted-foreground">
