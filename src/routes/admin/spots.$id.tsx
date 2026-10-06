@@ -143,16 +143,38 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  // Section 2
+  // Section 2 — sélection globale dans la bibliothèque (audios de type Méditation publiés, sans filtre par spot)
+  const audioLibrary = useQuery({
+    queryKey: ["audio-library"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("audios")
+        .select("id, titre_fr, audios_traductions(langue, titre)")
+        .eq("statut", "publié")
+        .eq("type", "Méditation")
+        .eq("audios_traductions.langue", "fr");
+      if (error) throw error;
+      return (data ?? []) as unknown as { id: string; titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] }[];
+    },
+  });
+  const titreLib = (a: { titre_fr: string | null; audios_traductions: { langue: string; titre: string }[] | null }) =>
+    a.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.titre_fr ?? "Sans titre";
+
   const setFeatured = useMutation({
     mutationFn: async ({ moment, audioId }: { moment: string; audioId: string }) => {
-      const ids = (audios.data ?? []).filter((a) => audioIdOf(a) === audioId).map((a) => a.id);
-      if (ids.length === 0) throw new Error("Audio introuvable");
       const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
         .eq("spot_id", id).eq("mis_en_avant_moment", moment);
       if (r1.error) throw r1.error;
-      const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).in("id", ids);
-      if (r2.error) throw r2.error;
+      const { data: existing, error: e0 } = await supabase
+        .from("spot_audios").select("id").eq("spot_id", id).eq("audio_id", audioId);
+      if (e0) throw e0;
+      if (existing && existing.length > 0) {
+        const r2 = await supabase.from("spot_audios").update({ mis_en_avant: true, mis_en_avant_moment: moment }).in("id", existing.map((r) => r.id));
+        if (r2.error) throw r2.error;
+      } else {
+        const r2 = await supabase.from("spot_audios").insert({ spot_id: id, audio_id: audioId, mis_en_avant: true, mis_en_avant_moment: moment });
+        if (r2.error) throw r2.error;
+      }
     },
     onSuccess: () => { toast.success("Programmation mise à jour"); qc.invalidateQueries({ queryKey: ["spot-audios", id] }); },
     onError: (e: Error) => toast.error(e.message),
