@@ -52,10 +52,54 @@ function SpotConfig() {
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours, date_debut_acces)").eq("id", id).single();
       if (error) throw error;
-      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null } | null };
+      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null; date_debut_acces: string | null } | null };
     },
+  });
+
+  const clientId = spot.data?.client_id ?? null;
+  const catalogue = useQuery({
+    queryKey: ["spot-catalogue", clientId],
+    enabled: !!clientId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("client_audios")
+        .select("id, visible, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
+        .eq("client_id", clientId!)
+        .order("priorite");
+      if (error) throw error;
+      return (data ?? []) as unknown as { id: string; visible: boolean | null; audio: SA["audio"] }[];
+    },
+  });
+  const toggleVisible = useMutation({
+    mutationFn: async ({ caId, visible }: { caId: string; visible: boolean }) => {
+      const { error } = await supabase.from("client_audios").update({ visible }).eq("id", caId);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["spot-catalogue", clientId] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleStatut = useMutation({
+    mutationFn: async (actif: boolean) => {
+      const { error } = await supabase.from("spots").update({ statut: actif ? "actif" : "inactif" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const [note, setNote] = useState("");
+  const [adresse, setAdresse] = useState("");
+  useEffect(() => { setNote(spot.data?.note_interne ?? ""); setAdresse(spot.data?.adresse ?? ""); }, [spot.data]);
+  const saveNote = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("spots").update({ note_interne: note || null }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Note enregistrée"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const audios = useQuery({
