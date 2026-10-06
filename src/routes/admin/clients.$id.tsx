@@ -486,11 +486,6 @@ function ClientDetail() {
           <Field label="Début d'accès" icon={CalendarDays}>
             <input type="date" value={debut} onChange={(e) => edit(setDebut)(e.target.value)} className={fieldInput} />
           </Field>
-          <Field label="Montant (€/an)" icon={Wallet}>
-            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
-              {client.montant != null ? `${client.montant.toLocaleString("fr-FR")} €/an` : "—"}
-            </div>
-          </Field>
           <Field label="Fin du pilote" icon={CalendarDays}>
             <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
               {client.date_pilote_fin
@@ -498,12 +493,47 @@ function ClientDetail() {
                 : "—"}
             </div>
           </Field>
-          <Field label="Renouvellement" icon={CalendarDays}>
-            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
-              {client.date_renouvellement
-                ? new Date(client.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-                : "—"}
-            </div>
+        </div>
+      </Section>
+
+      {/* Section Facturation */}
+      <Section title="Facturation" subtitle="Virement bancaire — la date de renouvellement se calcule automatiquement, reste modifiable">
+        <div className="grid gap-5 p-6 md:grid-cols-2">
+          <Field label="Fréquence de facturation" icon={Wallet}>
+            <select value={frequence} onChange={(e) => updateBilling(setFrequence)(e.target.value)} className={fieldInput}>
+              <option value="">—</option>
+              <option value="Mensuel">Mensuel</option>
+              <option value="Annuel">Annuel</option>
+            </select>
+          </Field>
+          <Field label="Montant (€)" icon={Wallet}>
+            <input
+              type="number"
+              min={0}
+              step="0.01"
+              value={montant}
+              onChange={(e) => edit(setMontant)(e.target.value)}
+              className={fieldInput}
+            />
+          </Field>
+          <Field label="Mois offerts" icon={CalendarDays}>
+            <input
+              type="number"
+              min={0}
+              step={1}
+              value={moisOfferts}
+              onChange={(e) => updateBilling(setMoisOfferts)(e.target.value)}
+              className={fieldInput}
+            />
+          </Field>
+          <Field label="Date de début" icon={CalendarDays}>
+            <input type="date" value={dateDebut} onChange={(e) => updateBilling(setDateDebut)(e.target.value)} className={fieldInput} />
+          </Field>
+          <Field label="Date de renouvellement" icon={CalendarDays}>
+            <input type="date" value={renouvellement} onChange={(e) => edit(setRenouvellement)(e.target.value)} className={fieldInput} />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Calculée : date de début + mois offerts + {frequence === "Mensuel" ? "1 mois" : "12 mois"} — modifiable manuellement
+            </p>
           </Field>
         </div>
       </Section>
