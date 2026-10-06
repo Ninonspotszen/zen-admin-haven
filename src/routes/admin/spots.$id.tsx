@@ -145,9 +145,8 @@ function SpotConfig() {
 
   // Section 2
   const setFeatured = useMutation({
-    mutationFn: async ({ moment, groupe }: { moment: string; groupe: string }) => {
-      // Toutes les versions (voix F / M) du même audio sont mises en avant ensemble
-      const ids = (audios.data ?? []).filter((a) => groupeOf(a) === groupe).map((a) => a.id);
+    mutationFn: async ({ moment, audioId }: { moment: string; audioId: string }) => {
+      const ids = (audios.data ?? []).filter((a) => audioIdOf(a) === audioId).map((a) => a.id);
       if (ids.length === 0) throw new Error("Audio introuvable");
       const r1 = await supabase.from("spot_audios").update({ mis_en_avant: false })
         .eq("spot_id", id).eq("mis_en_avant_moment", moment);
