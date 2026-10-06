@@ -6,3 +6,4 @@
 - [ ] Fiche spot : section Paramètres d'accès (durée lecture seule, date début, date fin calculée)
 - [ ] Fiche spot : section Note interne + Enregistrer
 - [ ] Colonnes manquantes : spots.adresse, spots.note_interne, clients.date_debut_acces
+- [ ] Fiche client : édition en ligne nom, type, pack (Découverte/Essentiel/Premium), statut, note + Sauvegarder
