@@ -5,12 +5,16 @@ import { toast } from "sonner";
 import {
   CalendarDays,
   Clock,
+  Headphones,
   KeyRound,
   Link2,
   Save,
+  Send,
+  UserX,
   Wallet,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { triggerActivationEmail } from "@/lib/clients.functions";
 
 export const Route = createFileRoute("/admin/clients/$id")({
   head: () => ({
@@ -83,10 +87,27 @@ function ClientDetail() {
       if (e1) throw e1;
       if (e2) throw e2;
       if (e3) throw e3;
+      // Statistiques d'écoute : écoutes des spots de ce client
+      const spotIds = (spots ?? []).map((s) => s.id);
+      let total = 0;
+      let moyenneMin: number | null = null;
+      if (spotIds.length) {
+        const { data: ecoutes, error: e4 } = await supabase
+          .from("ecoutes")
+          .select("duree_ecoute_sec")
+          .in("spot_id", spotIds);
+        if (e4) throw e4;
+        const valeurs = (ecoutes ?? [])
+          .map((e) => e.duree_ecoute_sec)
+          .filter((v): v is number => v != null);
+        total = (ecoutes ?? []).length;
+        moyenneMin = valeurs.length ? valeurs.reduce((a, b) => a + b, 0) / valeurs.length / 60 : null;
+      }
       return {
         client: (client ?? null) as Client | null,
         spots: (spots ?? []) as Spot[],
         audios: (clientAudios ?? []) as AudioRow[],
+        ecoutes: { total, moyenneMin },
       };
     },
   });
@@ -143,6 +164,28 @@ function ClientDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const suspend = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("clients").update({ statut: "Suspendu" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Compte passé en Suspendu");
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+      qc.invalidateQueries({ queryKey: ["clients-b2b"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const activateEmail = useMutation({
+    mutationFn: (clientId: string) => triggerActivationEmail({ data: clientId }),
+    onSuccess: () => {
+      toast.success("Email d'accès envoyé au client");
+      qc.invalidateQueries({ queryKey: ["client-detail", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   if (isLoading) {
     return (
       <div className="rounded-2xl border bg-card px-6 py-10 text-center text-muted-foreground">
@@ -181,13 +224,34 @@ function ClientDetail() {
             </p>
           </div>
         </div>
-        <button
-          disabled={save.isPending || !dirty}
-          onClick={() => save.mutate()}
-          className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
-        >
-          <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            disabled={activateEmail.isPending}
+            onClick={() => activateEmail.mutate(client.id)}
+            className="flex w-fit items-center gap-2 rounded-xl border border-input bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary disabled:opacity-50"
+          >
+            <Send className="h-4 w-4 text-muted-foreground" />
+            {activateEmail.isPending ? "Envoi en cours…" : "Activer le compte"}
+          </button>
+          {client.statut !== "Suspendu" && (
+            <button
+              disabled={suspend.isPending}
+              onClick={() => {
+                if (confirm(`Suspendre le compte de ${client.nom} ?`)) suspend.mutate();
+              }}
+              className="flex w-fit items-center gap-2 rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2.5 text-sm font-semibold text-destructive transition hover:bg-destructive/20 disabled:opacity-50"
+            >
+              <UserX className="h-4 w-4" /> {suspend.isPending ? "Suspension…" : "Passer en Suspendu"}
+            </button>
+          )}
+          <button
+            disabled={save.isPending || !dirty}
+            onClick={() => save.mutate()}
+            className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
+          >
+            <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
+          </button>
+        </div>
       </div>
 
       {/* Section Spots */}
@@ -244,10 +308,31 @@ function ClientDetail() {
         )}
       </Section>
 
+      {/* Section Stats d'écoute */}
+      <Section
+        title="Statistiques d'écoute"
+        subtitle={`Écoutes cumulées sur les ${data!.spots.length} spot${data!.spots.length > 1 ? "s" : ""} de ce client`}
+      >
+        <div className="grid gap-5 p-6 md:grid-cols-2">
+          <Field label="Écoutes cumulées" icon={Headphones}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {data!.ecoutes.total.toLocaleString("fr-FR")}
+            </div>
+          </Field>
+          <Field label="Durée moyenne d'écoute" icon={Clock}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {data!.ecoutes.moyenneMin != null
+                ? `${Math.floor(data!.ecoutes.moyenneMin)} min ${String(Math.round((data!.ecoutes.moyenneMin % 1) * 60)).padStart(2, "0")} s`
+                : "—"}
+            </div>
+          </Field>
+        </div>
+      </Section>
+
       {/* Section Audios assignés */}
       <Section
         title="Audios assignés"
-        subtitle={`${data!.audios.length} audio${data!.audios.length > 1 ? "s" : ""} visible${data!.audios.length > 1 ? "s" : ""} pour ce client`}
+        subtitle="Visible dans la PWA : audio publié + visible activé"
       >
         {data!.audios.length === 0 ? (
           <p className="px-6 py-8 text-center text-sm text-muted-foreground">Aucun audio assigné à ce client</p>
@@ -266,6 +351,7 @@ function ClientDetail() {
                   a.audios?.audios_traductions?.find((t) => t.titre)?.titre ??
                   a.audios?.titre_fr ??
                   "—";
+                const brouillon = a.audios?.statut === "brouillon";
                 return (
                   <tr key={a.id} className="border-b last:border-0">
                     <td className="px-6 py-4 font-semibold text-foreground">{titre}</td>
@@ -273,11 +359,20 @@ function ClientDetail() {
                       <AudioBadge statut={a.audios?.statut ?? null} />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <Toggle
-                        checked={a.visible}
-                        disabled={toggleVisible.isPending}
-                        onChange={() => toggleVisible.mutate({ id: a.id, visible: a.visible })}
-                      />
+                      {brouillon ? (
+                        <span
+                          className="text-xs text-muted-foreground"
+                          title="Audio en brouillon : invisible pour tous les clients, sans exception"
+                        >
+                          Brouillon — invisible pour tous
+                        </span>
+                      ) : (
+                        <Toggle
+                          checked={a.visible}
+                          disabled={toggleVisible.isPending}
+                          onChange={() => toggleVisible.mutate({ id: a.id, visible: a.visible })}
+                        />
+                      )}
                     </td>
                   </tr>
                 );
