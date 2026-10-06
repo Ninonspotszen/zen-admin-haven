@@ -348,20 +348,27 @@ function Paiement({ c }: { c: ClientRow }) {
 }
 
 function Alerte({ c }: { c: ClientRow }) {
-  let label: string | null = null;
+  // Badge orange : fin de pilote à 30 jours ou moins
   if (c.statut === "Pilote" && c.date_pilote_fin) {
     const d = daysUntil(c.date_pilote_fin);
-    if (d <= 15) label = d < 0 ? `Pilote terminé (J+${-d})` : `J-${d} fin pilote`;
-  } else if (c.statut === "Actif annuel" && c.date_renouvellement) {
-    const d = daysUntil(c.date_renouvellement);
-    if (d <= 30) label = d < 0 ? "Renouvellement dépassé" : `J-${d} renouvellement`;
+    if (d <= 30)
+      return (
+        <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+          <AlertTriangle className="h-3 w-3" /> {d < 0 ? `Pilote terminé (J+${-d})` : `J-${d} fin pilote`}
+        </span>
+      );
   }
-  if (!label) return <span className="text-muted-foreground">—</span>;
-  return (
-    <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning px-2.5 py-1 text-xs font-semibold text-warning-foreground">
-      <AlertTriangle className="h-3 w-3" /> {label}
-    </span>
-  );
+  // Badge jaune : renouvellement à 30 jours ou moins
+  if (c.statut === "Actif annuel" && c.date_renouvellement) {
+    const d = daysUntil(c.date_renouvellement);
+    if (d <= 30)
+      return (
+        <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning/50 px-2.5 py-1 text-xs font-semibold text-warning-foreground">
+          <AlertTriangle className="h-3 w-3" /> {d < 0 ? "Renouvellement dépassé" : `J-${d} renouvellement`}
+        </span>
+      );
+  }
+  return <span className="text-muted-foreground">—</span>;
 }
 
 function ActionBtn({ icon: Icon, label, onClick }: { icon: typeof Eye; label: string; onClick: () => void }) {
