@@ -184,6 +184,18 @@ function ClientDetail() {
         if (!Number.isFinite(n) || n < 0) throw new Error("Durée d'accès invalide");
         dureeValue = Math.round(n);
       }
+      let montantValue: number | null = null;
+      if (montant.trim() !== "") {
+        const m = Number(montant);
+        if (!Number.isFinite(m) || m < 0) throw new Error("Montant invalide");
+        montantValue = m;
+      }
+      let moisOffertsValue: number | null = null;
+      if (moisOfferts.trim() !== "") {
+        const mo = Number(moisOfferts);
+        if (!Number.isInteger(mo) || mo < 0) throw new Error("Mois offerts invalide (entier ≥ 0)");
+        moisOffertsValue = mo;
+      }
       const { error } = await supabase
         .from("clients")
         .update({
@@ -193,6 +205,11 @@ function ClientDetail() {
           type: type.trim() || null,
           statut: statut || null,
           date_debut_acces: debut || null,
+          frequence_facturation: frequence || null,
+          montant: montantValue,
+          mois_offerts: moisOffertsValue,
+          date_debut: dateDebut || null,
+          date_renouvellement: renouvellement || null,
         })
         .eq("id", id);
       if (error) throw error;
