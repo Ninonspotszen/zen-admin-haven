@@ -34,7 +34,6 @@ const TABS = [
   { to: "/admin/audios", label: "Audios", exact: false },
   { to: "/admin/abonnes", label: "Abonnés", exact: false },
   { to: "/admin/spots", label: "Spots", exact: false },
-  { to: "/admin/configuration", label: "Configuration", exact: false },
 ] as const;
 
 function AdminLayout() {

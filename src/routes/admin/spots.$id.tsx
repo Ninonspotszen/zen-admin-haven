@@ -52,10 +52,54 @@ function SpotConfig() {
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours, date_debut_acces)").eq("id", id).single();
       if (error) throw error;
-      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null } | null };
+      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null; date_debut_acces: string | null } | null };
     },
+  });
+
+  const clientId = spot.data?.client_id ?? null;
+  const catalogue = useQuery({
+    queryKey: ["spot-catalogue", clientId],
+    enabled: !!clientId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("client_audios")
+        .select("id, visible, audio:audio_id(statut, titre_fr, audios_traductions(langue, titre))")
+        .eq("client_id", clientId!)
+        .order("priorite");
+      if (error) throw error;
+      return (data ?? []) as unknown as { id: string; visible: boolean | null; audio: SA["audio"] }[];
+    },
+  });
+  const toggleVisible = useMutation({
+    mutationFn: async ({ caId, visible }: { caId: string; visible: boolean }) => {
+      const { error } = await supabase.from("client_audios").update({ visible }).eq("id", caId);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["spot-catalogue", clientId] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleStatut = useMutation({
+    mutationFn: async (actif: boolean) => {
+      const { error } = await supabase.from("spots").update({ statut: actif ? "actif" : "inactif" }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const [note, setNote] = useState("");
+  const [adresse, setAdresse] = useState("");
+  useEffect(() => { setNote(spot.data?.note_interne ?? ""); setAdresse(spot.data?.adresse ?? ""); }, [spot.data]);
+  const saveNote = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("spots").update({ note_interne: note || null }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Note enregistrée"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const audios = useQuery({
@@ -89,7 +133,7 @@ function SpotConfig() {
   }, [spot.data]);
   const saveSpot = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("spots").update({ nom: nom || null, shortio_url: shortUrl || null }).eq("id", id);
+      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: shortUrl || null }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Spot sauvegardé"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
@@ -109,21 +153,12 @@ function SpotConfig() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  // Section 3
-  const [duree, setDuree] = useState("");
-  useEffect(() => { setDuree(spot.data?.client?.duree_acces_jours?.toString() ?? ""); }, [spot.data]);
-  const saveDuree = useMutation({
-    mutationFn: async () => {
-      const clientId = spot.data?.client?.id;
-      if (!clientId) throw new Error("Aucun client associé à ce spot");
-      const v = Number(duree);
-      if (!Number.isInteger(v) || v < 1 || v > 90) throw new Error("La durée doit être comprise entre 1 et 90 jours");
-      const { error } = await supabase.from("clients").update({ duree_acces_jours: v }).eq("id", clientId);
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Durée d'accès mise à jour pour tous les spots du client"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); },
-    onError: (e: Error) => toast.error(e.message),
-  });
+  // Section 3 — paramètres d'accès (lecture seule)
+  const dureeJours = spot.data?.client?.duree_acces_jours ?? null;
+  const debut = spot.data?.client?.date_debut_acces ?? null;
+  const fin = debut && dureeJours != null
+    ? new Date(new Date(debut).getTime() + dureeJours * 86400000)
+    : null;
 
   // Section 4
   const stats = useMemo(() => {
@@ -140,25 +175,17 @@ function SpotConfig() {
     return { total, moy, completion, parCreneau };
   }, [ecoutes.data]);
 
-  // Section 5
+  // Section Accès & QR — URL PWA spotszen.fr/spot/[slug]
+  const slug = (spot.data?.slug || nom || "spot").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const pwaUrl = `https://spotszen.fr/spot/${slug}`;
   const [qrData, setQrData] = useState<string | null>(null);
   useEffect(() => {
-    if (!shortUrl) { setQrData(null); return; }
-    QRCode.toDataURL(shortUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
-  }, [shortUrl]);
-  const slug = (spot.data?.slug || nom || "spot").toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const download = (href: string, ext: string) => {
-    const a = document.createElement("a"); a.href = href; a.download = `qr-${slug}.${ext}`; a.click();
+    QRCode.toDataURL(pwaUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
+  }, [pwaUrl]);
+  const downloadPng = () => {
+    if (!qrData) return;
+    const a = document.createElement("a"); a.href = qrData; a.download = `qr-${slug}.png`; a.click();
   };
-  const downloadSvg = async () => {
-    const svg = await QRCode.toString(shortUrl, { type: "svg", margin: 2 });
-    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
-    download(url, "svg"); setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-  const shortioDashboard = (() => {
-    try { const u = new URL(shortUrl); return `https://app.short.io/users/dashboard?search=${encodeURIComponent(u.host + u.pathname)}`; }
-    catch { return "https://app.short.io"; }
-  })();
 
   if (spot.isLoading) return <p className="text-muted-foreground">Chargement…</p>;
   if (spot.error || !spot.data) return <p className="text-destructive">Spot introuvable.</p>;
@@ -171,9 +198,28 @@ function SpotConfig() {
       <Link to="/admin/spots" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Retour aux spots
       </Link>
-      <div>
-        <h1 className="font-serif text-3xl">{nom || "Spot sans nom"}</h1>
-        <p className="text-sm text-muted-foreground">Client : {spot.data.client?.nom ?? "—"}</p>
+      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
+        <div>
+          <h1 className="font-serif text-3xl">{nom || "Spot sans nom"}</h1>
+          <p className="text-sm text-muted-foreground">{spot.data.adresse || "Adresse non renseignée"}</p>
+          <p className="text-sm text-muted-foreground">
+            Client :{" "}
+            {spot.data.client ? (
+              <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">{spot.data.client.nom}</Link>
+            ) : "—"}
+          </p>
+        </div>
+        <label className="flex items-center gap-3 rounded-full border bg-card px-4 py-2 text-sm">
+          <span className="font-medium">{spot.data.statut === "actif" ? "Actif" : "Inactif"}</span>
+          <button
+            type="button" role="switch" aria-checked={spot.data.statut === "actif"} aria-label="Statut du spot"
+            disabled={toggleStatut.isPending}
+            onClick={() => toggleStatut.mutate(spot.data.statut !== "actif")}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${spot.data.statut === "actif" ? "bg-primary" : "bg-input"}`}
+          >
+            <span className={`inline-block h-5 w-5 rounded-full bg-background shadow transition ${spot.data.statut === "actif" ? "translate-x-5" : "translate-x-0.5"}`} />
+          </button>
+        </label>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -184,6 +230,7 @@ function SpotConfig() {
             <div className="grid gap-4 md:grid-cols-[1fr_auto] items-start">
               <div className="space-y-3">
                 <label className="block space-y-1 text-sm">Nom du spot<input className={input} value={nom} onChange={(e) => setNom(e.target.value)} /></label>
+                <label className="block space-y-1 text-sm">Lieu / adresse<input className={input} value={adresse} onChange={(e) => setAdresse(e.target.value)} /></label>
                 <label className="block space-y-1 text-sm">Lien Short.io<input className={input} value={shortUrl} onChange={(e) => setShortUrl(e.target.value)} placeholder="https://…" /></label>
                 <p className="text-xs text-muted-foreground">Ce lien redirige dynamiquement les visiteurs vers l'application.</p>
                 <button onClick={() => saveSpot.mutate()} disabled={saveSpot.isPending}
@@ -191,7 +238,6 @@ function SpotConfig() {
                   {saveSpot.isPending ? "Sauvegarde…" : "Sauvegarder"}
                 </button>
               </div>
-              {qrData && <img src={qrData} alt="QR code du spot" className="h-32 w-32 rounded-xl border" />}
             </div>
           </section>
 
@@ -225,6 +271,38 @@ function SpotConfig() {
             {audios.data?.length === 0 && <p className="text-sm text-muted-foreground">Aucun audio lié à ce spot.</p>}
           </section>
 
+          {/* Catalogue audio */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Catalogue audio</h2>
+            <p className="text-sm text-muted-foreground">Brouillon = invisible pour tous. Le bouton masque un audio publié pour ce client uniquement.</p>
+            {!clientId ? <p className="text-sm text-muted-foreground">Aucun client associé à ce spot.</p>
+              : catalogue.isLoading ? <p className="text-sm text-muted-foreground">Chargement…</p>
+              : (catalogue.data ?? []).length === 0 ? <p className="text-sm text-muted-foreground">Aucun audio assigné.</p>
+              : (
+                <ul className="divide-y">
+                  {catalogue.data!.map((ca) => {
+                    const brouillon = ca.audio?.statut !== "publié";
+                    const on = !!ca.visible && !brouillon;
+                    const titre = ca.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? ca.audio?.titre_fr ?? "Sans titre";
+                    return (
+                      <li key={ca.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                        <div>
+                          <p className="font-medium">{titre}</p>
+                          <p className="text-xs text-muted-foreground">{brouillon ? "Brouillon — invisible pour tous" : ca.visible ? "Visible" : "Masqué pour ce client"}</p>
+                        </div>
+                        <button type="button" role="switch" aria-checked={on} aria-label="Visibilité"
+                          disabled={brouillon || toggleVisible.isPending}
+                          onClick={() => toggleVisible.mutate({ caId: ca.id, visible: !ca.visible })}
+                          className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition disabled:opacity-40 ${on ? "bg-primary" : "bg-input"}`}>
+                          <span className={`inline-block h-5 w-5 rounded-full bg-background shadow transition ${on ? "translate-x-5" : "translate-x-0.5"}`} />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+          </section>
+
           {/* Section 4 */}
           <section className={card}>
             <h2 className="font-serif text-xl">Activité du spot</h2>
@@ -253,36 +331,39 @@ function SpotConfig() {
         </div>
 
         <div className="space-y-6">
-          {/* Section 3 */}
+          {/* Accès & QR Code */}
           <section className={card}>
-            <h2 className="font-serif text-xl">Durée d'accès visiteurs</h2>
-            <div className="flex gap-2 items-center">
-              <input type="number" min={1} max={90} className={input} value={duree} onChange={(e) => setDuree(e.target.value)} disabled={!spot.data.client} />
-              <span className="text-sm text-muted-foreground">jours</span>
-            </div>
-            <p className="text-xs text-muted-foreground">Durée commune à tous les spots de ce client · Configurable jusqu'à 90 jours selon l'abonnement</p>
-            <button onClick={() => saveDuree.mutate()} disabled={saveDuree.isPending || !spot.data.client}
-              className="rounded-full border px-5 py-2 text-sm disabled:opacity-50">Modifier</button>
+            <h2 className="font-serif text-xl">Accès & QR Code</h2>
+            <p className="rounded-xl bg-secondary px-3 py-2 text-sm break-all font-mono">{pwaUrl.replace("https://", "")}</p>
+            <button onClick={() => navigator.clipboard.writeText(pwaUrl).then(() => toast.success("Lien copié"))}
+              className="flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><Copy className="h-4 w-4" />Copier le lien</button>
+            {qrData && <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />}
+            <button disabled={!qrData} onClick={downloadPng}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger le QR code</button>
           </section>
 
-          {/* Section 5 */}
+          {/* Paramètres d'accès */}
           <section className={card}>
-            <h2 className="font-serif text-xl">QR code</h2>
-            {qrData ? <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />
-              : <p className="text-sm text-muted-foreground">Renseigne un lien Short.io pour générer le QR code.</p>}
-            <p className="text-sm break-all text-center">{shortUrl || "—"}</p>
-            <div className="grid gap-2">
-              <button disabled={!shortUrl} onClick={() => navigator.clipboard.writeText(shortUrl).then(() => toast.success("Lien copié"))}
-                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm disabled:opacity-50"><Copy className="h-4 w-4" />Copier le lien</button>
-              <div className="grid grid-cols-2 gap-2">
-                <button disabled={!qrData} onClick={() => qrData && download(qrData, "png")}
-                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />PNG</button>
-                <button disabled={!shortUrl} onClick={downloadSvg}
-                  className="flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />SVG</button>
-              </div>
-              <a href={shortioDashboard} target="_blank" rel="noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><ExternalLink className="h-4 w-4" />Ouvrir sur Short.io</a>
-            </div>
+            <h2 className="font-serif text-xl">Paramètres d'accès</h2>
+            <dl className="space-y-3 text-sm">
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Durée d'accès</dt><dd className="font-medium">{dureeJours != null ? `${dureeJours} jours` : "—"}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Début d'accès</dt><dd className="font-medium">{debut ? new Date(debut).toLocaleDateString("fr-FR") : "—"}</dd></div>
+              <div className="flex justify-between gap-2"><dt className="text-muted-foreground">Fin d'accès (calculée)</dt><dd className="font-medium">{fin ? fin.toLocaleDateString("fr-FR") : "—"}</dd></div>
+            </dl>
+            <p className="text-xs text-muted-foreground">
+              Durée commune à tous les spots de ce client · modifiable depuis la{" "}
+              {spot.data.client ? <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">fiche client</Link> : "fiche client"}.
+            </p>
+          </section>
+
+          {/* Note interne */}
+          <section className={card}>
+            <h2 className="font-serif text-xl">Note interne</h2>
+            <textarea className={`${input} min-h-28`} value={note} onChange={(e) => setNote(e.target.value)} maxLength={2000} placeholder="Notes visibles uniquement par l'admin…" />
+            <button onClick={() => saveNote.mutate()} disabled={saveNote.isPending}
+              className="rounded-full bg-primary text-primary-foreground px-5 py-2 text-sm disabled:opacity-50">
+              {saveNote.isPending ? "Enregistrement…" : "Enregistrer"}
+            </button>
           </section>
         </div>
       </div>

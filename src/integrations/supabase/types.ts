@@ -319,6 +319,7 @@ export type Database = {
         Row: {
           couleur_primaire: string | null
           created_at: string | null
+          date_debut_acces: string | null
           date_pilote_fin: string | null
           date_renouvellement: string | null
           domaine_email: string | null
@@ -340,6 +341,7 @@ export type Database = {
         Insert: {
           couleur_primaire?: string | null
           created_at?: string | null
+          date_debut_acces?: string | null
           date_pilote_fin?: string | null
           date_renouvellement?: string | null
           domaine_email?: string | null
@@ -361,6 +363,7 @@ export type Database = {
         Update: {
           couleur_primaire?: string | null
           created_at?: string | null
+          date_debut_acces?: string | null
           date_pilote_fin?: string | null
           date_renouvellement?: string | null
           domaine_email?: string | null
@@ -554,6 +557,7 @@ export type Database = {
       }
       spots: {
         Row: {
+          adresse: string | null
           client_id: string | null
           created_at: string | null
           description: string | null
@@ -561,6 +565,7 @@ export type Database = {
           latitude: number | null
           longitude: number | null
           nom: string | null
+          note_interne: string | null
           photo_url: string | null
           pin_code: string | null
           shortio_url: string | null
@@ -568,6 +573,7 @@ export type Database = {
           statut: string | null
         }
         Insert: {
+          adresse?: string | null
           client_id?: string | null
           created_at?: string | null
           description?: string | null
@@ -575,6 +581,7 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           nom?: string | null
+          note_interne?: string | null
           photo_url?: string | null
           pin_code?: string | null
           shortio_url?: string | null
@@ -582,6 +589,7 @@ export type Database = {
           statut?: string | null
         }
         Update: {
+          adresse?: string | null
           client_id?: string | null
           created_at?: string | null
           description?: string | null
@@ -589,6 +597,7 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           nom?: string | null
+          note_interne?: string | null
           photo_url?: string | null
           pin_code?: string | null
           shortio_url?: string | null

@@ -1,9 +1,9 @@
 # Roadmap
 
-- [ ] Supprimer l'onglet « Configuration » de la navigation
-- [ ] Fiche spot : section Accès & QR Code (spotszen.fr/spot/[slug])
-- [ ] Fiche spot : section Catalogue audio (client_audios du client du spot, toggle visible)
-- [ ] Fiche spot : section Paramètres d'accès (durée lecture seule, date début, date fin calculée)
-- [ ] Fiche spot : section Note interne + Enregistrer
-- [ ] Colonnes manquantes : spots.adresse, spots.note_interne, clients.date_debut_acces
-- [ ] Fiche client : édition en ligne nom, type, pack (Découverte/Essentiel/Premium), statut, note + Sauvegarder
+- [x] Supprimer l'onglet « Configuration » de la navigation
+- [x] Fiche spot : section Accès & QR Code (spotszen.fr/spot/[slug])
+- [x] Fiche spot : section Catalogue audio (client_audios du client du spot, toggle visible)
+- [x] Fiche spot : section Paramètres d'accès (durée lecture seule, date début, date fin calculée)
+- [x] Fiche spot : section Note interne + Enregistrer
+- [x] Colonnes manquantes : spots.adresse, spots.note_interne, clients.date_debut_acces
+- [x] Fiche client : édition en ligne nom, type, pack (Découverte/Essentiel/Premium), statut, note + Sauvegarder
