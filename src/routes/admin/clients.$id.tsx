@@ -139,6 +139,11 @@ function ClientDetail() {
   const [type, setType] = useState("");
   const [statut, setStatut] = useState("");
   const [debut, setDebut] = useState("");
+  const [frequence, setFrequence] = useState("");
+  const [montant, setMontant] = useState("");
+  const [moisOfferts, setMoisOfferts] = useState("");
+  const [dateDebut, setDateDebut] = useState("");
+  const [renouvellement, setRenouvellement] = useState("");
   const [dirty, setDirty] = useState(false);
   useEffect(() => {
     if (client) {
@@ -148,9 +153,24 @@ function ClientDetail() {
       setType(client.type ?? "");
       setStatut(client.statut ?? "");
       setDebut(client.date_debut_acces ?? "");
+      setFrequence(client.frequence_facturation ?? "");
+      setMontant(client.montant != null ? String(client.montant) : "");
+      setMoisOfferts(client.mois_offerts != null ? String(client.mois_offerts) : "");
+      setDateDebut(client.date_debut ?? "");
+      setRenouvellement(client.date_renouvellement ?? "");
       setDirty(false);
     }
   }, [client]);
+  // Recalcule la date de renouvellement dès que début, mois offerts ou fréquence changent
+  const updateBilling = (setter: (v: string) => void) => (v: string) => {
+    setter(v);
+    setDirty(true);
+    const f = setter === setFrequence ? v : frequence;
+    const m = setter === setMoisOfferts ? v : moisOfferts;
+    const d = setter === setDateDebut ? v : dateDebut;
+    const calc = computeRenewal(d, m, f);
+    if (calc) setRenouvellement(calc);
+  };
   const edit = (setter: (v: string) => void) => (v: string) => { setter(v); setDirty(true); };
 
   const save = useMutation({
