@@ -40,8 +40,8 @@ type SA = {
 };
 const titreOf = (a: SA) =>
   a.audio?.audios_traductions?.find((t) => t.langue === "fr")?.titre ?? a.audio?.titre_fr ?? "Sans titre";
-// Une version par voix = une ligne audios distincte, regroupées par groupe_slug (repli : titre fr)
-const groupeOf = (a: SA) => a.audio?.groupe_slug || titreOf(a);
+// Chaque audio guidé = un seul audio_id ; les voix F/M vivent dans audios_traductions sous ce même audio_id
+const audioIdOf = (a: SA) => a.audio?.id ?? "";
 
 const card = "rounded-2xl border bg-card p-6 space-y-4";
 const input = "w-full rounded-xl border bg-background px-3 py-2 text-sm";
