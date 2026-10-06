@@ -246,16 +246,9 @@ function ClientsPage() {
                 className="cursor-pointer border-b last:border-0 transition hover:bg-secondary/40"
               >
                 <td className="px-6 py-5">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-accent font-serif font-semibold text-accent-foreground">
-                      {initials(c.nom)}
-                    </div>
-                    <div>
-                      <span className="font-semibold text-foreground">{c.nom}</span>
-                      <div className="mt-0.5 text-xs text-muted-foreground">
-                        <span className="text-primary">{c.ecoutes} écoutes</span>
-                      </div>
-                    </div>
+                  <span className="font-semibold text-foreground">{c.nom}</span>
+                  <div className="mt-0.5 text-xs text-muted-foreground">
+                    <span className="text-primary">{c.ecoutes} écoutes</span>
                   </div>
                 </td>
                 <td className="px-4 py-5 text-muted-foreground">{c.type ?? "—"}</td>
