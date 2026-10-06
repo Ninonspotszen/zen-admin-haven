@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Plus, Search, X } from "lucide-react";
+import { Languages, Plus, Search, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/audios/")({
@@ -24,10 +24,15 @@ export type AudioListRow = {
   reference_interne: string | null;
   statut: string | null;
   duree_secondes: number | null;
+  image_url: string | null;
+  note_production: string | null;
   type: string | null;
   moment: string | null;
+  public_cible: string | null;
   titre: string;
   voix: string[];
+  langues: string[];
+  musique_suite_titre: string | null;
 };
 
 export const VOIX_LABEL: Record<string, string> = { F: "Voix féminine", M: "Voix masculine" };
@@ -35,27 +40,63 @@ export const VOIX_LABEL: Record<string, string> = { F: "Voix féminine", M: "Voi
 export const fmtDuree = (s: number | null) =>
   s == null ? "—" : `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 
-async function fetchAudios(): Promise<AudioListRow[]> {
-  const { data, error } = await supabase
-    .from("audios")
-    .select("id, reference_interne, statut, duree_secondes, type, moment, titre_fr, audios_traductions(titre, voix, langue)")
-    .order("created_at", { ascending: false });
+const LANGUES = ["fr", "en", "de", "nl", "es"] as const;
+
+type TradRow = { audio_id: string; langue: string; titre: string; voix: string | null; cloudinary_url: string | null };
+type FiltreRow = { audio_id: string; valeur: string; filtres: { nom: string } | null };
+
+async function fetchAudios(): Promise<{ rows: AudioListRow[]; traductions: TradRow[] }> {
+  const [{ data: audios, error }, { data: trads, error: e2 }, { data: filtreRows, error: e3 }] = await Promise.all([
+    supabase
+      .from("audios")
+      .select("id, reference_interne, statut, duree_secondes, image_url, note_production, musique_suite_id, type, moment, public_cible, titre_fr")
+      .order("created_at", { ascending: false }),
+    supabase.from("audios_traductions").select("audio_id, langue, titre, voix, cloudinary_url"),
+    supabase.from("audio_filtres").select("audio_id, valeur, filtres(nom)"),
+  ]);
   if (error) throw error;
-  return (data ?? []).map((a) => {
-    const fr = ((a.audios_traductions as { titre: string; voix: string | null; langue: string }[]) ?? []).filter(
-      (t) => t.langue === "fr",
-    );
+  if (e2) throw e2;
+  if (e3) throw e3;
+
+  const tradsByAudio = new Map<string, TradRow[]>();
+  for (const t of (trads ?? []) as TradRow[]) {
+    const list = tradsByAudio.get(t.audio_id) ?? [];
+    list.push(t);
+    tradsByAudio.set(t.audio_id, list);
+  }
+  const frTitre = (audioId: string) =>
+    tradsByAudio.get(audioId)?.find((t) => t.langue === "fr")?.titre ?? null;
+
+  const filtresByAudio = new Map<string, Map<string, string>>();
+  for (const f of (filtreRows ?? []) as FiltreRow[]) {
+    const nom = f.filtres?.nom;
+    if (!nom) continue;
+    const m = filtresByAudio.get(f.audio_id) ?? new Map<string, string>();
+    m.set(nom, f.valeur);
+    filtresByAudio.set(f.audio_id, m);
+  }
+
+  const rows = (audios ?? []).map((a) => {
+    const ts = tradsByAudio.get(a.id) ?? [];
+    const fr = ts.filter((t) => t.langue === "fr");
+    const f = filtresByAudio.get(a.id);
     return {
       id: a.id,
       reference_interne: a.reference_interne,
       statut: a.statut,
       duree_secondes: a.duree_secondes,
-      type: a.type,
-      moment: a.moment,
+      image_url: a.image_url,
+      note_production: a.note_production,
+      type: f?.get("Type") ?? a.type,
+      moment: f?.get("Moment") ?? a.moment,
+      public_cible: f?.get("Public") ?? a.public_cible,
       titre: fr[0]?.titre ?? a.titre_fr ?? "Sans titre",
       voix: [...new Set(fr.map((t) => t.voix).filter((v): v is string => v === "F" || v === "M"))],
+      langues: [...new Set(ts.map((t) => t.langue))],
+      musique_suite_titre: a.musique_suite_id ? frTitre(a.musique_suite_id) : null,
     };
   });
+  return { rows, traductions: (trads ?? []) as TradRow[] };
 }
 
 type StatutFilter = "Tous" | "publié" | "brouillon";
@@ -69,7 +110,20 @@ function AudiosPage() {
   const [search, setSearch] = useState("");
   const [creating, setCreating] = useState(false);
 
-  const { data: audios = [], isLoading, error } = useQuery({ queryKey: ["audios"], queryFn: fetchAudios });
+  const { data, isLoading, error } = useQuery({ queryKey: ["audios"], queryFn: fetchAudios });
+  const audios = data?.rows ?? [];
+
+  const langStats = useMemo(() => {
+    const total = audios.length;
+    const byLang = new Map<string, Set<string>>();
+    for (const t of data?.traductions ?? []) {
+      if (!t.cloudinary_url) continue;
+      const s = byLang.get(t.langue) ?? new Set<string>();
+      s.add(t.audio_id);
+      byLang.set(t.langue, s);
+    }
+    return LANGUES.map((l) => ({ langue: l, valides: byLang.get(l)?.size ?? 0, total }));
+  }, [data, audios.length]);
 
   const toggle = useMutation({
     mutationFn: async (a: AudioListRow) => {
@@ -159,21 +213,26 @@ function AudiosPage() {
           <thead className="border-b bg-secondary/50">
             <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               <th className="px-6 py-4">Audio / Titre</th>
+              <th className="px-4 py-4">Type</th>
+              <th className="px-4 py-4">Moment</th>
+              <th className="px-4 py-4">Public</th>
               <th className="px-4 py-4">Voix</th>
               <th className="px-4 py-4">Durée</th>
+              <th className="px-4 py-4">Langues</th>
+              <th className="px-4 py-4">Musique en suite</th>
               <th className="px-4 py-4">Statut</th>
               <th className="px-6 py-4 text-right">Publication</th>
             </tr>
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
             )}
             {error && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
             )}
             {!isLoading && !error && visible.length === 0 && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Aucun audio</td></tr>
+              <tr><td colSpan={10} className="px-6 py-10 text-center text-muted-foreground">Aucun audio</td></tr>
             )}
             {visible.map((a) => {
               const pub = a.statut === "publié";
@@ -184,13 +243,30 @@ function AudiosPage() {
                   className="cursor-pointer border-b last:border-0 transition hover:bg-secondary/40"
                 >
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-foreground">{a.titre}</div>
-                    <div className="mt-0.5 text-xs text-muted-foreground">
-                      {a.reference_interne ? `#${a.reference_interne}` : ""}
-                      {a.type ? ` · ${a.type}` : ""}
-                      {a.moment ? ` · ${a.moment}` : ""}
+                    <div className="flex items-center gap-3">
+                      {a.image_url ? (
+                        <img src={a.image_url} alt="" className="h-10 w-10 shrink-0 rounded-lg object-cover" />
+                      ) : (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-xs font-bold text-muted-foreground">
+                          {a.titre.slice(0, 1).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="font-semibold text-foreground">{a.titre}</div>
+                        <div className="mt-0.5 text-xs text-muted-foreground">
+                          {a.reference_interne ? `#${a.reference_interne}` : "—"}
+                        </div>
+                        {a.note_production && (
+                          <div className="mt-0.5 max-w-52 truncate text-xs italic text-muted-foreground" title={a.note_production}>
+                            {a.note_production}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </td>
+                  <td className="px-4 py-4 text-foreground">{a.type ?? "—"}</td>
+                  <td className="px-4 py-4 text-foreground">{a.moment ?? "—"}</td>
+                  <td className="px-4 py-4 text-foreground">{a.public_cible ?? "—"}</td>
                   <td className="px-4 py-4">
                     <div className="flex flex-wrap gap-1">
                       {a.voix.map((v) => (
@@ -201,6 +277,26 @@ function AudiosPage() {
                     </div>
                   </td>
                   <td className="px-4 py-4 tabular-nums text-foreground">{fmtDuree(a.duree_secondes)}</td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-1">
+                      {LANGUES.map((l) => {
+                        const dispo = a.langues.includes(l);
+                        return (
+                          <span
+                            key={l}
+                            className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${
+                              dispo ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground/50"
+                            }`}
+                          >
+                            {l}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </td>
+                  <td className="max-w-40 truncate px-4 py-4 text-muted-foreground" title={a.musique_suite_titre ?? undefined}>
+                    {a.musique_suite_titre ?? "—"}
+                  </td>
                   <td className="px-4 py-4">
                     <span
                       className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
@@ -233,6 +329,32 @@ function AudiosPage() {
             })}
           </tbody>
         </table>
+      </div>
+
+      <div className="mt-8 rounded-2xl border bg-card p-6">
+        <div className="mb-4 flex items-center gap-2">
+          <Languages className="h-5 w-5 text-primary" />
+          <h2 className="font-serif text-xl font-bold text-foreground">Traductions</h2>
+        </div>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Fichiers audio validés (URL Cloudinary renseignée) par langue, sur {audios.length} audios au catalogue.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {langStats.map((l) => {
+            const pct = l.total > 0 ? Math.round((l.valides / l.total) * 100) : 0;
+            return (
+              <div key={l.langue} className="rounded-xl border bg-background p-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{l.langue}</div>
+                <div className="mt-1 font-serif text-lg font-bold text-foreground">
+                  {l.langue.toUpperCase()} : {l.valides}/{l.total} validés
+                </div>
+                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
+                  <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {creating && <NewAudioDialog onClose={() => setCreating(false)} />}
