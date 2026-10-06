@@ -133,12 +133,10 @@ function ClientDetail() {
 
   const client = data?.client ?? null;
 
-  const [duree, setDuree] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
   const [statut, setStatut] = useState("");
-  const [debut, setDebut] = useState("");
   const [frequence, setFrequence] = useState("");
   const [montant, setMontant] = useState("");
   const [moisOfferts, setMoisOfferts] = useState("");
@@ -147,12 +145,10 @@ function ClientDetail() {
   const [dirty, setDirty] = useState(false);
   useEffect(() => {
     if (client) {
-      setDuree(client.duree_acces_jours != null ? String(client.duree_acces_jours) : "");
       setNote(client.note_interne ?? "");
       setNom(client.nom);
       setType(client.type ?? "");
       setStatut(client.statut ?? "");
-      setDebut(client.date_debut_acces ?? "");
       setFrequence(client.frequence_facturation ?? "");
       setMontant(client.montant != null ? String(client.montant) : "");
       setMoisOfferts(client.mois_offerts != null ? String(client.mois_offerts) : "");
@@ -175,15 +171,7 @@ function ClientDetail() {
 
   const save = useMutation({
     mutationFn: async () => {
-      let dureeValue: number | null;
       if (!nom.trim()) throw new Error("Le nom du client est obligatoire");
-      if (duree.trim() === "") {
-        dureeValue = null;
-      } else {
-        const n = Number(duree);
-        if (!Number.isFinite(n) || n < 0) throw new Error("Durée d'accès invalide");
-        dureeValue = Math.round(n);
-      }
       let montantValue: number | null = null;
       if (montant.trim() !== "") {
         const m = Number(montant);
@@ -199,12 +187,10 @@ function ClientDetail() {
       const { error } = await supabase
         .from("clients")
         .update({
-          duree_acces_jours: dureeValue,
           note_interne: note || null,
           nom: nom.trim(),
           type: type.trim() || null,
           statut: statut || null,
-          date_debut_acces: debut || null,
           frequence_facturation: frequence || null,
           montant: montantValue,
           mois_offerts: moisOffertsValue,
@@ -466,34 +452,6 @@ function ClientDetail() {
             </tbody>
           </table>
         )}
-      </Section>
-
-      {/* Section Accès */}
-      <Section title="Accès" subtitle="Durée et échéances du contrat">
-        <div className="grid gap-5 p-6 md:grid-cols-2">
-          <Field label="Durée d'accès (jours)" icon={Clock}>
-            <input
-              type="number"
-              min={0}
-              value={duree}
-              onChange={(e) => {
-                setDuree(e.target.value);
-                setDirty(true);
-              }}
-              className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30"
-            />
-          </Field>
-          <Field label="Début d'accès" icon={CalendarDays}>
-            <input type="date" value={debut} onChange={(e) => edit(setDebut)(e.target.value)} className={fieldInput} />
-          </Field>
-          <Field label="Fin du pilote" icon={CalendarDays}>
-            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm text-foreground">
-              {client.date_pilote_fin
-                ? new Date(client.date_pilote_fin).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-                : "—"}
-            </div>
-          </Field>
-        </div>
       </Section>
 
       {/* Section Facturation */}
