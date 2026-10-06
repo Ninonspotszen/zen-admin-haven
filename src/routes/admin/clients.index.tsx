@@ -46,6 +46,7 @@ type ClientRow = {
   id: string;
   nom: string;
   type: string | null;
+  pack_souscrit: string | null;
   statut: string | null;
   statut_paiement: string | null;
   date_pilote_fin: string | null;
@@ -53,6 +54,7 @@ type ClientRow = {
   montant: number | null;
   domaine_email: string | null;
   emails_autorises: string[] | null;
+  note_interne: string | null;
   ecoutes: number;
 };
 
@@ -60,7 +62,7 @@ async function fetchClients(): Promise<ClientRow[]> {
   const { data: clients, error } = await supabase
     .from("clients")
     .select(
-      "id, nom, type, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, domaine_email, emails_autorises, spots(id)",
+      "id, nom, type, pack_souscrit, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, domaine_email, emails_autorises, note_interne, spots(id)",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
