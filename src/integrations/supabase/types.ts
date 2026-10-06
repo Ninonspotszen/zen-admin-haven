@@ -319,16 +319,19 @@ export type Database = {
         Row: {
           couleur_primaire: string | null
           created_at: string | null
+          date_debut: string | null
           date_debut_acces: string | null
           date_pilote_fin: string | null
           date_renouvellement: string | null
           domaine_email: string | null
           duree_acces_jours: number | null
           emails_autorises: string[] | null
+          frequence_facturation: string | null
           id: string
           langue_preferee: string | null
           logo_url: string | null
           mode_acces: string | null
+          mois_offerts: number | null
           montant: number | null
           nom: string
           note_interne: string | null
@@ -341,16 +344,19 @@ export type Database = {
         Insert: {
           couleur_primaire?: string | null
           created_at?: string | null
+          date_debut?: string | null
           date_debut_acces?: string | null
           date_pilote_fin?: string | null
           date_renouvellement?: string | null
           domaine_email?: string | null
           duree_acces_jours?: number | null
           emails_autorises?: string[] | null
+          frequence_facturation?: string | null
           id?: string
           langue_preferee?: string | null
           logo_url?: string | null
           mode_acces?: string | null
+          mois_offerts?: number | null
           montant?: number | null
           nom: string
           note_interne?: string | null
@@ -363,16 +369,19 @@ export type Database = {
         Update: {
           couleur_primaire?: string | null
           created_at?: string | null
+          date_debut?: string | null
           date_debut_acces?: string | null
           date_pilote_fin?: string | null
           date_renouvellement?: string | null
           domaine_email?: string | null
           duree_acces_jours?: number | null
           emails_autorises?: string[] | null
+          frequence_facturation?: string | null
           id?: string
           langue_preferee?: string | null
           logo_url?: string | null
           mode_acces?: string | null
+          mois_offerts?: number | null
           montant?: number | null
           nom?: string
           note_interne?: string | null
