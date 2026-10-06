@@ -313,7 +313,6 @@ function ClientsPage() {
   );
 }
 
-const PACKS = ["Découverte", "Essentiel", "Premium"] as const;
 const inputCls = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
 function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -321,7 +320,6 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
   const navigate = useNavigate();
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
-  const [pack, setPack] = useState<string>("Découverte");
   const [statut, setStatut] = useState<string>("En attente de paiement");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
@@ -333,7 +331,6 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
         .insert({
           nom: nom.trim(),
           type: type.trim() || null,
-          pack_souscrit: pack,
           statut,
           emails_autorises: email.trim() ? [email.trim()] : null,
           note_interne: note.trim() || null,
@@ -370,19 +367,11 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Type d'établissement</label>
             <input value={type} onChange={(e) => setType(e.target.value)} className={inputCls} placeholder="Ex. Hôtel, Spa, Cabinet…" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pack souscrit</label>
-              <select value={pack} onChange={(e) => setPack(e.target.value)} className={inputCls}>
-                {PACKS.map((p) => <option key={p} value={p}>{p}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Statut</label>
-              <select value={statut} onChange={(e) => setStatut(e.target.value)} className={inputCls}>
-                {STATUTS.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Statut</label>
+            <select value={statut} onChange={(e) => setStatut(e.target.value)} className={inputCls}>
+              {STATUTS.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email de contact</label>

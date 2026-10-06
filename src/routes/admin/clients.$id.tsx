@@ -36,7 +36,6 @@ type Client = {
   id: string;
   nom: string;
   type: string | null;
-  pack_souscrit: string | null;
   statut: string | null;
   duree_acces_jours: number | null;
   date_pilote_fin: string | null;
@@ -46,7 +45,6 @@ type Client = {
   date_debut_acces: string | null;
 };
 
-const PACKS = ["Découverte", "Essentiel", "Premium"];
 const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif annuel", "Suspendu"];
 const fieldInput = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
@@ -125,7 +123,6 @@ function ClientDetail() {
   const [note, setNote] = useState<string>("");
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
-  const [pack, setPack] = useState("");
   const [statut, setStatut] = useState("");
   const [debut, setDebut] = useState("");
   const [dirty, setDirty] = useState(false);
@@ -135,7 +132,6 @@ function ClientDetail() {
       setNote(client.note_interne ?? "");
       setNom(client.nom);
       setType(client.type ?? "");
-      setPack(client.pack_souscrit ?? "");
       setStatut(client.statut ?? "");
       setDebut(client.date_debut_acces ?? "");
       setDirty(false);
@@ -161,7 +157,6 @@ function ClientDetail() {
           note_interne: note || null,
           nom: nom.trim(),
           type: type.trim() || null,
-          pack_souscrit: pack || null,
           statut: statut || null,
           date_debut_acces: debut || null,
         })
@@ -243,9 +238,7 @@ function ClientDetail() {
               <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">{client.nom}</h1>
               <StatutBadge statut={client.statut} />
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {[client.pack_souscrit, client.type].filter(Boolean).join(" · ") || "—"}
-            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{client.type || "—"}</p>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -286,13 +279,6 @@ function ClientDetail() {
           </Field>
           <Field label="Type d'établissement" icon={Building2}>
             <input value={type} onChange={(e) => edit(setType)(e.target.value)} maxLength={100} placeholder="Hôtel, spa, entreprise…" className={fieldInput} />
-          </Field>
-          <Field label="Pack souscrit" icon={Package}>
-            <select value={pack} onChange={(e) => edit(setPack)(e.target.value)} className={fieldInput}>
-              <option value="">—</option>
-              {PACKS.map((p) => <option key={p} value={p}>{p}</option>)}
-              {pack && !PACKS.includes(pack) && <option value={pack}>{pack}</option>}
-            </select>
           </Field>
           <Field label="Statut" icon={Package}>
             <select value={statut} onChange={(e) => edit(setStatut)(e.target.value)} className={fieldInput}>
