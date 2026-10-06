@@ -249,6 +249,10 @@ function SpotConfig() {
               <div className="grid gap-3 md:grid-cols-2">
                 {CRENEAUX.map((c) => {
                   const list = audios.data ?? [];
+                  // Déduplication par audio_id : une seule option par audio (les traductions existent en une ligne par voix)
+                  const options = Array.from(
+                    new Map(list.map((a) => [a.audio?.id ?? a.id, a] as const)).values(),
+                  );
                   const current = list.find((a) => a.mis_en_avant && a.mis_en_avant_moment === c.key);
                   const Icon = c.icon;
                   return (
@@ -258,10 +262,10 @@ function SpotConfig() {
                         <span className="text-xs text-muted-foreground">{c.heures}{now === c.key && " · en cours"}</span>
                       </div>
                       <p className="text-sm">{current ? titreOf(current) : <span className="text-muted-foreground">Aucun audio programmé</span>}</p>
-                      <select value="" disabled={list.length === 0 || setFeatured.isPending} className={input}
+                      <select value="" disabled={options.length === 0 || setFeatured.isPending} className={input}
                         onChange={(e) => e.target.value && setFeatured.mutate({ moment: c.key, saId: e.target.value })}>
                         <option value="">Changer d'audio…</option>
-                        {list.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}{a.audio?.statut === "brouillon" ? " (brouillon)" : ""}</option>)}
+                        {options.map((a) => <option key={a.id} value={a.id}>{titreOf(a)}</option>)}
                       </select>
                     </div>
                   );
