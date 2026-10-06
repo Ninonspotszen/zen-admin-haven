@@ -57,9 +57,17 @@ function SpotsList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-serif text-3xl">Configuration des spots</h1>
-        <p className="text-muted-foreground text-sm">{data.length} spots</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-3xl">Configuration des spots</h1>
+          <p className="text-muted-foreground text-sm">{data.length} spots</p>
+        </div>
+        <button
+          onClick={() => setCreateOpen(true)}
+          className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+        >
+          <Plus className="h-4 w-4" /> Nouveau spot
+        </button>
       </div>
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative">
