@@ -360,11 +360,20 @@ function ClientDetail() {
                       <AudioBadge statut={a.audios?.statut ?? null} />
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <Toggle
-                        checked={a.visible}
-                        disabled={toggleVisible.isPending}
-                        onChange={() => toggleVisible.mutate({ id: a.id, visible: a.visible })}
-                      />
+                      {brouillon ? (
+                        <span
+                          className="text-xs text-muted-foreground"
+                          title="Audio en brouillon : invisible pour tous les clients, sans exception"
+                        >
+                          Brouillon — invisible pour tous
+                        </span>
+                      ) : (
+                        <Toggle
+                          checked={a.visible}
+                          disabled={toggleVisible.isPending}
+                          onChange={() => toggleVisible.mutate({ id: a.id, visible: a.visible })}
+                        />
+                      )}
                     </td>
                   </tr>
                 );
