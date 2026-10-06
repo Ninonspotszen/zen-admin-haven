@@ -175,25 +175,17 @@ function SpotConfig() {
     return { total, moy, completion, parCreneau };
   }, [ecoutes.data]);
 
-  // Section 5
+  // Section Accès & QR — URL PWA spotszen.fr/spot/[slug]
+  const slug = (spot.data?.slug || nom || "spot").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const pwaUrl = `https://spotszen.fr/spot/${slug}`;
   const [qrData, setQrData] = useState<string | null>(null);
   useEffect(() => {
-    if (!shortUrl) { setQrData(null); return; }
-    QRCode.toDataURL(shortUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
-  }, [shortUrl]);
-  const slug = (spot.data?.slug || nom || "spot").toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const download = (href: string, ext: string) => {
-    const a = document.createElement("a"); a.href = href; a.download = `qr-${slug}.${ext}`; a.click();
+    QRCode.toDataURL(pwaUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
+  }, [pwaUrl]);
+  const downloadPng = () => {
+    if (!qrData) return;
+    const a = document.createElement("a"); a.href = qrData; a.download = `qr-${slug}.png`; a.click();
   };
-  const downloadSvg = async () => {
-    const svg = await QRCode.toString(shortUrl, { type: "svg", margin: 2 });
-    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
-    download(url, "svg"); setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-  const shortioDashboard = (() => {
-    try { const u = new URL(shortUrl); return `https://app.short.io/users/dashboard?search=${encodeURIComponent(u.host + u.pathname)}`; }
-    catch { return "https://app.short.io"; }
-  })();
 
   if (spot.isLoading) return <p className="text-muted-foreground">Chargement…</p>;
   if (spot.error || !spot.data) return <p className="text-destructive">Spot introuvable.</p>;
