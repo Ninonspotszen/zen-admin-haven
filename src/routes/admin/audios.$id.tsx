@@ -19,6 +19,9 @@ export const Route = createFileRoute("/admin/audios/$id")({
   component: AudioDetail,
 });
 
+type VoiceBlock = { titre: string; description: string; url: string };
+const emptyVoice: VoiceBlock = { titre: "", description: "", url: "" };
+
 function AudioDetail() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
@@ -35,15 +38,20 @@ function AudioDetail() {
     },
   });
 
-  const [f, setF] = useState({ titre: "", description: "", voix: "aucune", type: "", moment: "", public_cible: "", duree: "", statut: "brouillon", note: "" });
-  const fr = data?.audios_traductions?.find((t) => t.langue === "fr");
+  const [f, setF] = useState({ titre: "", type: "", moment: "", public_cible: "", duree: "", statut: "brouillon", note: "" });
+  const [fem, setFem] = useState<VoiceBlock>(emptyVoice);
+  const [masc, setMasc] = useState<VoiceBlock>(emptyVoice);
+
+  const trads: { id: string; langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null }[] =
+    data?.audios_traductions ?? [];
+  const femRow = trads.find((t) => t.langue === "fr" && t.voix === "feminine");
+  const mascRow = trads.find((t) => t.langue === "fr" && t.voix === "masculine");
+  const aucuneRow = trads.find((t) => t.langue === "fr" && t.voix === "aucune");
 
   useEffect(() => {
     if (!data) return;
     setF({
-      titre: fr?.titre ?? data.titre_fr ?? "",
-      description: fr?.description ?? "",
-      voix: fr?.voix ?? "aucune",
+      titre: data.titre_fr ?? aucuneRow?.titre ?? "",
       type: data.type ?? "",
       moment: data.moment ?? "",
       public_cible: data.public_cible ?? "",
@@ -51,6 +59,8 @@ function AudioDetail() {
       statut: data.statut ?? "brouillon",
       note: data.note_production ?? "",
     });
+    setFem(femRow ? { titre: femRow.titre ?? "", description: femRow.description ?? "", url: femRow.cloudinary_url ?? "" } : emptyVoice);
+    setMasc(mascRow ? { titre: mascRow.titre ?? "", description: mascRow.description ?? "", url: mascRow.cloudinary_url ?? "" } : emptyVoice);
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const save = useMutation({
@@ -68,11 +78,36 @@ function AudioDetail() {
         })
         .eq("id", id);
       if (error) throw error;
-      const tr = { titre: f.titre, description: f.description || null, voix: f.voix };
-      const { error: e2 } = fr
-        ? await supabase.from("audios_traductions").update(tr).eq("id", fr.id)
-        : await supabase.from("audios_traductions").insert({ ...tr, audio_id: id, langue: "fr" });
-      if (e2) throw e2;
+
+      // Synchronise le titre d'un éventuel enregistrement "aucune" (musique)
+      if (aucuneRow && aucuneRow.titre !== f.titre) {
+        const { error: eA } = await supabase.from("audios_traductions").update({ titre: f.titre }).eq("id", aucuneRow.id);
+        if (eA) throw eA;
+      }
+
+      const upsertVoice = async (
+        row: typeof femRow,
+        voix: string,
+        block: VoiceBlock,
+        setBlock: (b: VoiceBlock) => void,
+      ) => {
+        const payload = { titre: block.titre, description: block.description || null, cloudinary_url: block.url || null };
+        if (row) {
+          const { error: e } = await supabase.from("audios_traductions").update(payload).eq("id", row.id);
+          if (e) throw e;
+        } else if (block.titre || block.description || block.url) {
+          const { data: inserted, error: e } = await supabase
+            .from("audios_traductions")
+            .insert({ audio_id: id, langue: "fr", voix, ...payload })
+            .select("id")
+            .single();
+          if (e) throw e;
+          if (inserted) setBlock(block);
+        }
+      };
+
+      await upsertVoice(femRow, "feminine", fem, setFem);
+      await upsertVoice(mascRow, "masculine", masc, setMasc);
     },
     onSuccess: () => {
       toast.success("Modifications enregistrées");
@@ -90,6 +125,27 @@ function AudioDetail() {
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setF((p) => ({ ...p, [k]: e.target.value }));
 
+  const voiceBlock = (
+    title: string,
+    subtitle: string,
+    block: VoiceBlock,
+    setBlock: React.Dispatch<React.SetStateAction<VoiceBlock>>,
+  ) => {
+    const setV = (k: keyof VoiceBlock) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setBlock((p) => ({ ...p, [k]: e.target.value }));
+    return (
+      <div className="rounded-2xl border bg-card p-5">
+        <h2 className="font-serif text-lg font-semibold text-foreground">{title}</h2>
+        <p className="mb-3 text-xs text-muted-foreground">{subtitle}</p>
+        <div className="space-y-3">
+          <div><label className={label}>Titre</label><input className={input} value={block.titre} onChange={setV("titre")} /></div>
+          <div><label className={label}>Description</label><textarea rows={3} className={input} value={block.description} onChange={setV("description")} /></div>
+          <div><label className={label}>URL Cloudinary</label><input className={input} value={block.url} onChange={setV("url")} /></div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="mx-auto max-w-3xl">
       <Link to="/admin/audios" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
@@ -97,24 +153,15 @@ function AudioDetail() {
       </Link>
       <h1 className="font-serif text-3xl font-bold text-foreground">{f.titre || "Sans titre"}</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        {data.reference_interne ? `#${data.reference_interne}` : ""} · {data.audios_traductions?.length ?? 0} version(s)
+        {data.reference_interne ? `#${data.reference_interne}` : ""} · {trads.length} version(s)
       </p>
 
       <div className="mt-6 grid gap-4 rounded-2xl border bg-card p-6 sm:grid-cols-2">
         <div className="sm:col-span-2"><label className={label}>Titre (français)</label><input className={input} value={f.titre} onChange={set("titre")} /></div>
-        <div className="sm:col-span-2"><label className={label}>Description</label><textarea rows={3} className={input} value={f.description} onChange={set("description")} /></div>
         <div><label className={label}>Type</label><input className={input} value={f.type} onChange={set("type")} /></div>
         <div><label className={label}>Moment</label><input className={input} value={f.moment} onChange={set("moment")} /></div>
         <div><label className={label}>Public</label><input className={input} value={f.public_cible} onChange={set("public_cible")} /></div>
         <div><label className={label}>Durée (secondes)</label><input type="number" min={0} className={input} value={f.duree} onChange={set("duree")} /></div>
-        <div>
-          <label className={label}>Voix</label>
-          <select className={input} value={f.voix} onChange={set("voix")}>
-            <option value="F">Voix féminine</option>
-            <option value="M">Voix masculine</option>
-            <option value="aucune">Aucune voix</option>
-          </select>
-        </div>
         <div>
           <label className={label}>Statut</label>
           <select className={input} value={f.statut} onChange={set("statut")}>
@@ -123,6 +170,11 @@ function AudioDetail() {
           </select>
         </div>
         <div className="sm:col-span-2"><label className={label}>Note de production</label><textarea rows={3} className={input} value={f.note} onChange={set("note")} /></div>
+      </div>
+
+      <div className="mt-6 space-y-4">
+        {voiceBlock("Voix féminine", "Version lue par la voix féminine", fem, setFem)}
+        {voiceBlock("Voix masculine", "Version lue par la voix masculine", masc, setMasc)}
       </div>
 
       <div className="mt-6 flex justify-end">
