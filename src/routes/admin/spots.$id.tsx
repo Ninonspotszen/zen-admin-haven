@@ -54,9 +54,9 @@ function SpotConfig() {
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours, date_debut_acces)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom)").eq("id", id).single();
       if (error) throw error;
-      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null; date_debut_acces: string | null } | null };
+      return data as typeof data & { client: { id: string; nom: string } | null };
     },
   });
 
