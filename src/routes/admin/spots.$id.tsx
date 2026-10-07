@@ -10,9 +10,9 @@ export const Route = createFileRoute("/admin/spots/$id")({
   head: () => ({
     meta: [
       { title: "Configuration du spot · Spots Zen Admin" },
-      { name: "description", content: "Programmation, accès, activité et QR code d'un spot." },
+      { name: "description", content: "Programmation, catalogue, activité et QR code d'un spot." },
       { property: "og:title", content: "Configuration du spot · Spots Zen Admin" },
-      { property: "og:description", content: "Programmation, accès, activité et QR code d'un spot." },
+      { property: "og:description", content: "Programmation, catalogue, activité et QR code d'un spot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
