@@ -10,9 +10,9 @@ export const Route = createFileRoute("/admin/spots/$id")({
   head: () => ({
     meta: [
       { title: "Configuration du spot · Spots Zen Admin" },
-      { name: "description", content: "Programmation, accès, activité et QR code d'un spot." },
+      { name: "description", content: "Programmation, catalogue, activité et QR code d'un spot." },
       { property: "og:title", content: "Configuration du spot · Spots Zen Admin" },
-      { property: "og:description", content: "Programmation, accès, activité et QR code d'un spot." },
+      { property: "og:description", content: "Programmation, catalogue, activité et QR code d'un spot." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -54,9 +54,9 @@ function SpotConfig() {
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom, duree_acces_jours, date_debut_acces)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom)").eq("id", id).single();
       if (error) throw error;
-      return data as typeof data & { client: { id: string; nom: string; duree_acces_jours: number | null; date_debut_acces: string | null } | null };
+      return data as typeof data & { client: { id: string; nom: string } | null };
     },
   });
 
