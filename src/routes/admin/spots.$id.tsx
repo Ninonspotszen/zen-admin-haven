@@ -172,7 +172,10 @@ function SpotConfig() {
   };
   const assign = useMutation({
     mutationFn: async (audioId: string) => {
-      const existing = (spotCatalogue.data ?? []).find((s) => s.audio_id === audioId);
+      // Vérification en base à l'instant même : jamais d'INSERT si (spot_id, audio_id) existe déjà
+      const { data: existing, error: eCheck } = await supabase
+        .from("spot_audios").select("id").eq("spot_id", id).eq("audio_id", audioId).maybeSingle();
+      if (eCheck) throw eCheck;
       if (existing) {
         const { error } = await supabase.from("spot_audios").update({ actif: true }).eq("id", existing.id);
         if (error) throw error;
