@@ -35,7 +35,7 @@ const LANGS = ["fr", "en", "de", "nl", "es"] as const;
 
 /* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
 const PAGE_CSS = `
-.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#E8E4DC;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#FFFFFF;--sz-menu-hover:#F8F6F2;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
+.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#E8E4DC;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#F8F6F2;--sz-menu-hover:#E8E4DC;--sz-bar:rgba(248,246,242,0.85);--sz-player:#F8F6F2;--sz-thumb:#EAF3E6;
 font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
 .dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#1A1F1A;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
 .sz .serif{font-family:"Playfair Display",Georgia,serif}
