@@ -671,7 +671,31 @@ export type Database = {
       }
     }
     Functions: {
+      get_audio_public: { Args: { p_audio: string }; Returns: Json }
+      get_spot_catalog: { Args: { p_id: string; p_pin: string }; Returns: Json }
+      get_spot_public: {
+        Args: { p_id: string }
+        Returns: {
+          adresse: string
+          client_nom: string
+          description: string
+          duree_acces_jours: number
+          id: string
+          mode_acces: string
+          nom: string
+          photo_url: string
+          statut: string
+        }[]
+      }
       is_admin: { Args: never; Returns: boolean }
+      register_spot_visit: {
+        Args: { p_id: string; p_visitor: string }
+        Returns: Json
+      }
+      verify_spot_pin: {
+        Args: { p_id: string; p_pin: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
