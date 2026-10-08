@@ -26,6 +26,7 @@ import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients.in
 import { Route as AdminClientsIdRouteImport } from './routes/admin/clients.$id'
 import { Route as AdminSpotsIndexRouteImport } from './routes/admin/spots.index'
 import { Route as AdminSpotsIdRouteImport } from './routes/admin/spots.$id'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +113,11 @@ const AdminSpotsIdRoute = AdminSpotsIdRouteImport.update({
   path: '/spots/$id',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/spots/$id': typeof AdminSpotsIdRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/abonnes/': typeof AdminAbonnesIndexRoute
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/spots/$id': typeof AdminSpotsIdRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/abonnes': typeof AdminAbonnesIndexRoute
   '/admin/audios': typeof AdminAudiosIndexRoute
   '/admin/clients': typeof AdminClientsIndexRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/admin/audios/$id': typeof AdminAudiosIdRoute
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/spots/$id': typeof AdminSpotsIdRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/abonnes/': typeof AdminAbonnesIndexRoute
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/admin/audios/$id'
     | '/admin/clients/$id'
     | '/admin/spots/$id'
+    | '/api/public/stripe-webhook'
     | '/admin/abonnes/'
     | '/admin/audios/'
     | '/admin/clients/'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/admin/audios/$id'
     | '/admin/clients/$id'
     | '/admin/spots/$id'
+    | '/api/public/stripe-webhook'
     | '/admin/abonnes'
     | '/admin/audios'
     | '/admin/clients'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/admin/audios/$id'
     | '/admin/clients/$id'
     | '/admin/spots/$id'
+    | '/api/public/stripe-webhook'
     | '/admin/abonnes/'
     | '/admin/audios/'
     | '/admin/clients/'
@@ -238,6 +250,7 @@ export interface RootRouteChildren {
   ConnexionRoute: typeof ConnexionRoute
   OffresRoute: typeof OffresRoute
   SpotsIdRoute: typeof SpotsIdRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -361,6 +374,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSpotsIdRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -401,6 +421,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConnexionRoute: ConnexionRoute,
   OffresRoute: OffresRoute,
   SpotsIdRoute: SpotsIdRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

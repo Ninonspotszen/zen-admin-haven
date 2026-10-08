@@ -30,6 +30,8 @@ export type Database = {
           spot_origine_id: string | null
           statut: string | null
           stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          user_id: string | null
         }
         Insert: {
           code_parrainage?: string | null
@@ -46,6 +48,8 @@ export type Database = {
           spot_origine_id?: string | null
           statut?: string | null
           stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          user_id?: string | null
         }
         Update: {
           code_parrainage?: string | null
@@ -62,6 +66,8 @@ export type Database = {
           spot_origine_id?: string | null
           statut?: string | null
           stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {

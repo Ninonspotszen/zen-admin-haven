@@ -30,13 +30,15 @@ type Abonne = {
   langue_preferee: string | null;
 };
 
-export const STATUTS = ["actif", "ambassadeur", "offert", "inactif"] as const;
+export const STATUTS = ["actif", "ambassadeur", "offert", "inactif", "paiement_echoue", "resilie"] as const;
 
 export const STATUT_STYLE: Record<string, string> = {
   actif: "bg-primary/15 text-primary",
   ambassadeur: "bg-amber-100 text-amber-800 border border-amber-300",
   offert: "bg-accent text-accent-foreground",
   inactif: "bg-secondary text-muted-foreground",
+  paiement_echoue: "bg-destructive/15 text-destructive",
+  resilie: "bg-muted text-muted-foreground line-through",
 };
 
 export function StatutBadge({ statut }: { statut: string | null }) {
