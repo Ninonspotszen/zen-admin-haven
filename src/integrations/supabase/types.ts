@@ -162,6 +162,7 @@ export type Database = {
           moment: string | null
           musique_suite_id: string | null
           note_production: string | null
+          ordre: number | null
           public_cible: string | null
           reference_interne: string | null
           slug: string | null
@@ -179,6 +180,7 @@ export type Database = {
           moment?: string | null
           musique_suite_id?: string | null
           note_production?: string | null
+          ordre?: number | null
           public_cible?: string | null
           reference_interne?: string | null
           slug?: string | null
@@ -196,6 +198,7 @@ export type Database = {
           moment?: string | null
           musique_suite_id?: string | null
           note_production?: string | null
+          ordre?: number | null
           public_cible?: string | null
           reference_interne?: string | null
           slug?: string | null
