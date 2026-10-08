@@ -4,6 +4,7 @@ import {
   Leaf, Flower2, Headphones, PersonStanding, Users, Languages, Smartphone, CircleCheck, Lock, ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { createCheckoutSession } from "@/lib/checkout.functions";
 
 export const Route = createFileRoute("/offres")({
   ssr: false,
@@ -49,6 +50,19 @@ function OffresPage() {
   const [lang, setLang] = useState("fr");
   const [langOpen, setLangOpen] = useState(false);
   const [items, setItems] = useState<Preview[]>([]);
+  const [busy, setBusy] = useState<string | null>(null);
+  const startCheckout = async (plan: "mensuel" | "annuel") => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { window.location.href = "/connexion"; return; }
+    setBusy(plan);
+    try {
+      const { url } = await createCheckoutSession({ data: { plan, origin: window.location.origin } });
+      window.location.href = url;
+    } catch {
+      setBusy(null);
+      alert("Le paiement n'a pas pu démarrer. Réessayez dans un instant.");
+    }
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem("sz_lang");
@@ -127,7 +141,7 @@ function OffresPage() {
             <p className="serif mt-2 text-[24px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/mois</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">1er mois offert</span>
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">Accès illimité sans engagement</p>
-            <a href="/checkout?plan=mensuel" className="mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">Commencer</a>
+            <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">Commencer</button>
           </div>
           <div className="ocard relative flex flex-col rounded-2xl p-5">
             <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">Meilleure offre</span>
@@ -135,7 +149,7 @@ function OffresPage() {
             <p className="serif mt-2 text-[24px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/an</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">2 mois offerts</span>
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">Soit 4 €/mois · Sérénité à l'année</p>
-            <a href="/checkout?plan=annuel" className="mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">Commencer</a>
+            <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">Commencer</button>
           </div>
         </section>
 
@@ -183,9 +197,9 @@ function OffresPage() {
         {/* FINAL CTA */}
         <section className="mt-12 px-6">
           <div className="ocard rounded-2xl p-6 text-center">
-            <a href="/checkout?plan=mensuel" className="flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#2D5A27] px-5 text-[15px] font-semibold text-[#F8F6F2]">
+            <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#2D5A27] px-5 text-[15px] font-semibold text-[#F8F6F2]">
               Commencer mon premier mois gratuit <ArrowRight className="h-4 w-4" aria-hidden />
-            </a>
+            </button>
             <p className="mt-3 text-[12px] text-[var(--o-sub)]">Puis 5 €/mois · Sans engagement · Résiliation en 1 clic</p>
           </div>
         </section>
