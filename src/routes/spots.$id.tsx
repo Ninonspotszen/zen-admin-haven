@@ -35,13 +35,14 @@ const LANGS = ["fr", "en", "de", "nl", "es"] as const;
 
 /* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
 const PAGE_CSS = `
-.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:#E8E4DC;--sz-chip-fg:#1C2E1E;--sz-chip-border:transparent;--sz-hair:#D8D2C5;--sz-card:#F8F6F2;--sz-card-border:transparent;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
+.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#FFFFFF;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#FFFFFF;--sz-menu-hover:#F8F6F2;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
 font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
-.dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.30);--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
+.dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#1A1F1A;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
 .sz .serif{font-family:"Playfair Display",Georgia,serif}
 .sz .noscroll{scrollbar-width:none}.sz .noscroll::-webkit-scrollbar{display:none}
-.sz .glass{backdrop-filter:blur(4px);background:rgba(255,255,255,0.20)}
-.sz .tag{background:rgba(15,20,16,0.6);color:#F0EDE8}
+.sz .glass{backdrop-filter:blur(4px);background:rgba(255,255,255,0.18)}
+.sz .glass6{backdrop-filter:blur(6px);background:rgba(255,255,255,0.18)}
+.sz .tag{background:rgba(15,20,16,0.65);color:#F0EDE8}
 .sz input[type=range]{accent-color:var(--sz-brand)}
 `;
 
@@ -147,16 +148,16 @@ function SpotPage() {
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
-          <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Spots Zen" className="h-8" />
+          <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Spots Zen" className="h-8 w-auto object-contain" />
           <div className="relative">
-            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full bg-[var(--sz-chip)] px-4 text-xs font-semibold text-[var(--sz-chip-fg)] ring-1 ring-[var(--sz-chip-border)]" aria-haspopup="listbox" aria-expanded={langOpen}>
+            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--sz-chip-border)] bg-transparent px-4 text-sm font-semibold text-[var(--sz-chip-fg)]" aria-haspopup="listbox" aria-expanded={langOpen}>
               {lang.toUpperCase()} <span aria-hidden>▾</span>
             </button>
             {langOpen && (
-              <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-2xl bg-[var(--sz-player)] py-1 shadow-lg ring-1 ring-[var(--sz-hair)]">
+              <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-[var(--sz-hair)] bg-[var(--sz-menu)] py-1 shadow-[0_4px_16px_rgba(28,46,30,0.08)]">
                 {LANGS.map((l) => (
                   <li key={l}>
-                    <button onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-xs font-semibold ${l === lang ? "text-[var(--sz-brand)]" : ""}`}>
+                    <button onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
                       {l.toUpperCase()}
                     </button>
                   </li>
@@ -170,8 +171,8 @@ function SpotPage() {
       <main className="mx-auto max-w-md px-5 pb-10">
         {state === "loading" && (
           <div className="mt-6 space-y-4">
-            <div className="aspect-video animate-pulse rounded-2xl bg-[var(--sz-chip)]" />
-            <div className="grid grid-cols-2 gap-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-chip)]" />)}</div>
+            <div className="aspect-video animate-pulse rounded-2xl bg-[var(--sz-hair)]" />
+            <div className="grid grid-cols-2 gap-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-hair)]" />)}</div>
           </div>
         )}
         {state === "notfound" && <Message title="Spot indisponible" text="Ce spot n'est pas disponible pour le moment." />}
@@ -186,7 +187,7 @@ function SpotPage() {
         )}
 
         {state === "pin" && (
-          <form onSubmit={submitPin} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-chip)] p-6 text-center">
+          <form onSubmit={submitPin} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
             <h2 className="serif text-xl font-medium">Entrez le code du spot</h2>
             <p className="mt-1 text-xs text-[var(--sz-muted)]">4 chiffres, indiqués sur l'affichette.</p>
             <input
@@ -206,12 +207,12 @@ function SpotPage() {
             {/* HERO */}
             {hero && (
               <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
-                {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#2D5A27]" />}
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(28,46,30,0.6)_100%)]" />
+                {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-3xl text-[#F0EDE8]">♪</div>}
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />
                 <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {moment}</span>
-                <span className="glass absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon size={22} color="#fff" /></span>
-                <div className="absolute inset-x-4 bottom-3">
-                  <p className="serif text-xl font-medium text-[#F0EDE8]">{titleOf(hero, lang)}</p>
+                <span className="glass6 absolute left-1/2 top-1/2 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon size={22} color="#fff" /></span>
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                  <p className="serif text-[22px] font-medium leading-tight text-[#F0EDE8]">{titleOf(hero, lang)}</p>
                   <p className="text-xs text-[rgba(240,237,232,0.75)]">{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
                 </div>
               </button>
@@ -221,7 +222,7 @@ function SpotPage() {
             <div className="noscroll -mx-5 mt-10 flex gap-2 overflow-x-auto px-5">
               {categories.map((c) => (
                 <button key={c} onClick={() => setFilter(c)}
-                  className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold ${c === filter ? "bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "bg-[var(--sz-chip)] text-[var(--sz-chip-fg)] ring-1 ring-inset ring-[var(--sz-chip-border)]"}`}>
+                  className={`shrink-0 rounded-full border px-5 py-2 text-xs font-semibold ${c === filter ? "border-[var(--sz-brand)] bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "border-[var(--sz-chip-border)] bg-transparent text-[var(--sz-chip-fg)]"}`}>
                   {c}
                 </button>
               ))}
@@ -231,16 +232,17 @@ function SpotPage() {
             {guided.length > 0 && (
               <section className="mt-10">
                 <Eyebrow>Immersions guidées</Eyebrow>
-                <div className="mt-4 grid grid-cols-2 gap-4">
+                <h3 className="serif mt-1 text-[22px] font-medium">Immersions guidées</h3>
+                <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] text-left">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
-                        {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#2D5A27]" />}
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(28,46,30,0.6)_100%)]" />
+                        {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-2xl text-[#F0EDE8]">♪</div>}
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(15,20,16,0.7)_100%)]" />
                         {(a.mis_en_avant_moment || a.moment) && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment || a.moment}</span>}
                         <span className="glass absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon color="#fff" /></span>
                       </div>
-                      <p className="serif mt-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
+                      <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
                       <p className="mt-0.5 px-1 pb-1 text-xs text-[var(--sz-muted)]">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
                     </button>
                   ))}
@@ -252,6 +254,7 @@ function SpotPage() {
             {music.length > 0 && (
               <section className="mt-10">
                 <Eyebrow>Musiques relaxantes</Eyebrow>
+                <h3 className="serif mt-1 text-[22px] font-medium">Musiques relaxantes</h3>
                 <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
                 <ul className="mt-3">
                   {music.map((a) => (
@@ -275,13 +278,12 @@ function SpotPage() {
 
       {/* LIGHT ISLAND */}
       {state === "catalog" && (
-        <section className="mx-auto max-w-md rounded-t-[2rem] bg-[#F0EDE8] px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-8 text-center">
-          <p className="serif text-lg font-medium text-[#1C2E1E]">Retrouvez ces audios chez vous ♡</p>
+        <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"><section className="rounded-3xl bg-[#F0EDE8] px-5 py-8 text-center">
+          <p className="serif whitespace-nowrap text-lg font-medium text-[#1C2E1E]">Retrouvez ces audios chez vous ♡</p>
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
             Abonnez-vous à Spots Zen →
           </a>
-          {selected && <div className="h-36" />}
-        </section>
+          </section>{selected && <div className="h-44" />}</div>
       )}
 
       {selected && <Player key={selected.id} audio={selected} lang={lang} spotId={id} onClose={() => setSelected(null)} />}
@@ -360,7 +362,7 @@ function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; 
           <div className="mt-4 grid grid-cols-2 gap-3">
             {voiced.map((t, i) => (
               <button key={i} onClick={() => { localStorage.setItem("sz_voice", t.voix ?? ""); setTrad(t); }}
-                className={`h-12 rounded-full text-sm font-semibold ${t.voix === savedVoice ? "bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "bg-[var(--sz-chip)] text-[var(--sz-chip-fg)] ring-1 ring-inset ring-[var(--sz-chip-border)]"}`}>
+                className={`h-12 rounded-full bg-[#EAF3E6] text-sm font-semibold text-[#2D5A27] ${t.voix === savedVoice ? "ring-2 ring-[#2D5A27]" : ""}`}>
                 {voiceLabel(t.voix)}
               </button>
             ))}
