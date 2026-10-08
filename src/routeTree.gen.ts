@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccesRefuseRouteImport } from './routes/acces-refuse'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BibliothequeRouteImport } from './routes/bibliotheque'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -44,6 +45,11 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliothequeRoute = BibliothequeRouteImport.update({
+  id: '/bibliotheque',
+  path: '/bibliotheque',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnexionRoute = ConnexionRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
     | '/connexion'
     | '/offres'
     | '/spots/$id'
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
     | '/connexion'
     | '/offres'
     | '/spots/$id'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
     | '/connexion'
     | '/offres'
     | '/spots/$id'
@@ -222,6 +234,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AccesRefuseRoute: typeof AccesRefuseRoute
   AuthRoute: typeof AuthRoute
+  BibliothequeRoute: typeof BibliothequeRoute
   ConnexionRoute: typeof ConnexionRoute
   OffresRoute: typeof OffresRoute
   SpotsIdRoute: typeof SpotsIdRoute
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bibliotheque': {
+      id: '/bibliotheque'
+      path: '/bibliotheque'
+      fullPath: '/bibliotheque'
+      preLoaderRoute: typeof BibliothequeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connexion': {
@@ -377,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AccesRefuseRoute: AccesRefuseRoute,
   AuthRoute: AuthRoute,
+  BibliothequeRoute: BibliothequeRoute,
   ConnexionRoute: ConnexionRoute,
   OffresRoute: OffresRoute,
   SpotsIdRoute: SpotsIdRoute,
