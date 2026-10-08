@@ -115,8 +115,8 @@ function BibliothequePage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate({ to: "/connexion", replace: true }); return; }
       setUserId(user.id);
-      const full = (user.user_metadata?.full_name as string | undefined)?.trim();
-      setPrenom(full ? full.split(/\s+/)[0] : user.email ?? "");
+      const full = (user.user_metadata?.["full_name"] as string | undefined)?.trim();
+      setPrenom(full ? full.split(/\s+/)[0] ?? "" : user.email ?? "");
       const { data } = await supabase
         .from("audios")
         .select("*, traductions:audios_traductions(*)")
