@@ -29,8 +29,6 @@ export const Route = createFileRoute("/spots/$id")({
 type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null };
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
 type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
-/* Raw shape of the direct audios query: embedded tables are renamed on mapping. */
-type RawAudio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; spot_audios: { mis_en_avant: boolean | null; mis_en_avant_moment: string | null }[] | null; audios_traductions: Trad[] | null };
 
 const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
@@ -139,20 +137,19 @@ function SpotPage() {
     /* The code stays mandatory: it is checked server-side before any audio is read. */
     const { data: pinOk } = await supabase.rpc("verify_spot_pin", { p_id: id, p_pin: p });
     if (pinOk !== true) return false;
-    const { data } = await supabase
-      .from("audios")
-      .select("id, slug, titre_fr, type, moment, image_url, duree_secondes, ordre, spot_audios!inner(mis_en_avant, mis_en_avant_moment, actif, spot_id), audios_traductions(langue, voix, titre, description, cloudinary_url)")
-      .eq("spot_audios.spot_id", id)
-      .eq("spot_audios.actif", true)
-      .order("ordre", { ascending: true, nullsFirst: false });
-    const rows = (data as unknown as RawAudio[] | null) ?? [];
-    setAudios(rows.map((r) => ({
-      id: r.id, slug: r.slug, ordre: r.ordre, titre_fr: r.titre_fr, type: r.type, moment: r.moment,
-      image_url: r.image_url, duree_secondes: r.duree_secondes,
-      mis_en_avant: r.spot_audios?.[0]?.mis_en_avant ?? null,
-      mis_en_avant_moment: r.spot_audios?.[0]?.mis_en_avant_moment ?? null,
-      traductions: r.audios_traductions ?? null,
-    })));
+    const { data } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p });
+    const rows = (data as unknown as (Omit<Audio, "slug"> & { slug?: string | null })[] | null) ?? [];
+    setAudios(
+      [...rows]
+        .sort((a, b) => (a.ordre ?? 0) - (b.ordre ?? 0))
+        .map((r) => ({
+          id: r.id, slug: r.slug ?? null, ordre: r.ordre, titre_fr: r.titre_fr, type: r.type, moment: r.moment,
+          image_url: r.image_url, duree_secondes: r.duree_secondes,
+          mis_en_avant: r.mis_en_avant ?? null,
+          mis_en_avant_moment: r.mis_en_avant_moment ?? null,
+          traductions: r.traductions ?? null,
+        })),
+    );
     sessionStorage.setItem(`sz_pin_${id}`, p);
     setState("catalog");
     return true;
