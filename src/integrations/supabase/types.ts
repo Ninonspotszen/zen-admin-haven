@@ -19,6 +19,7 @@ export type Database = {
           code_parrainage: string | null
           created_at: string | null
           date_fin_acces: string | null
+          date_renouvellement: string | null
           email: string
           formule: string | null
           id: string
@@ -34,6 +35,7 @@ export type Database = {
           code_parrainage?: string | null
           created_at?: string | null
           date_fin_acces?: string | null
+          date_renouvellement?: string | null
           email: string
           formule?: string | null
           id: string
@@ -49,6 +51,7 @@ export type Database = {
           code_parrainage?: string | null
           created_at?: string | null
           date_fin_acces?: string | null
+          date_renouvellement?: string | null
           email?: string
           formule?: string | null
           id?: string
