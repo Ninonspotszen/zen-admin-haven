@@ -46,24 +46,32 @@ function ConnexionPage() {
   const redirected = useRef(false);
 
   useEffect(() => {
+    // Choix mémorisé (même clé que S1) ; sinon français par défaut, jamais deviné depuis le navigateur.
     const saved = localStorage.getItem("sz_lang");
-    const nav = navigator.language.slice(0, 2);
     if (saved && (LANGS as readonly string[]).includes(saved)) setLang(saved);
-    else if ((LANGS as readonly string[]).includes(nav)) setLang(nav);
   }, []);
 
-  // Après connexion (Google OAuth ou Magic Link) : abonné actif → /bibliotheque, sinon → /offres.
+  // Après connexion : abonné actif → /bibliotheque, sinon → /offres.
+  // Dans abonnes_b2c, la colonne qui porte le compte est `id` (clé étrangère vers auth.users.id).
+  async function routeAfterAuth(userId: string) {
+    if (redirected.current) return;
+    redirected.current = true;
+    const { data: abo } = await supabase
+      .from("abonnes_b2c")
+      .select("id")
+      .eq("id", userId)
+      .eq("statut", "actif")
+      .maybeSingle();
+    navigate({ to: abo ? "/bibliotheque" : "/offres" });
+  }
+
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event !== "SIGNED_IN" || !session?.user || redirected.current) return;
-      redirected.current = true;
-      const { data: abo } = await supabase
-        .from("abonnes_b2c")
-        .select("id")
-        .eq("id", session.user.id)
-        .eq("statut", "actif")
-        .maybeSingle();
-      navigate({ to: abo ? "/bibliotheque" : "/offres" });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) void routeAfterAuth(session.user.id);
+    });
+    // Déjà connecté à l'ouverture du lien : on vérifie aussi.
+    void supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) void routeAfterAuth(data.session.user.id);
     });
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
