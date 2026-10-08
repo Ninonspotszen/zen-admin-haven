@@ -317,7 +317,8 @@ function Message({ title, text }: { title: string; text: string }) {
 }
 
 const PLAYER_CSS = `
-.szp{--background:#2C3328;--card:#2C3328;--popover:#2C3328;--muted:#2C3328;--secondary:#2C3328;--accent:#2C3328;background:#2C3328;color:#F0EDE8;font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif}
+.szp{--background:#1A1F1A;--card:#1A1F1A;--popover:#1A1F1A;--muted:#1A1F1A;--secondary:#1A1F1A;--accent:#1A1F1A;background:#1A1F1A;color:#F0EDE8;font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif}
+.szp,.szp *{box-sizing:border-box}
 .szp .serif{font-family:"Playfair Display",Georgia,serif}
 .szp .seek{-webkit-appearance:none;appearance:none;width:100%;height:14px;background:transparent;cursor:pointer}
 .szp .seek::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,#4A7A43 var(--p),rgba(255,255,255,0.20) var(--p))}
@@ -353,8 +354,10 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
 
   useEffect(() => {
     const prev = document.body.style.overflow;
+    const prevBg = document.body.style.backgroundColor;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
+    document.body.style.backgroundColor = "#1A1F1A";
+    return () => { document.body.style.overflow = prev; document.body.style.backgroundColor = prevBg; };
   }, []);
 
   useEffect(() => {
@@ -389,16 +392,16 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
   const mmss = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   const title = trad?.titre ?? titleOf(audio, lang);
   const desc = trad?.description;
-  const meta = [audio.type, audio.mis_en_avant_moment ?? audio.moment, fmt(audio.duree_secondes)].filter(Boolean).join(" · ");
+  const meta = [audio.type, audio.moment ?? audio.mis_en_avant_moment, fmt(audio.duree_secondes)].filter(Boolean).join(" · ").toUpperCase();
   const pct = dur ? Math.min(100, (time / dur) * 100) : 0;
 
   return (
     <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title}>
       <style>{PLAYER_CSS}</style>
       {audio.image_url && (
-        <div className="fixed inset-0 z-0" aria-hidden>
-          <img src={audio.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(44,51,40,0.85) 0%,rgba(44,51,40,0.60) 40%,rgba(44,51,40,0.85) 100%)" }} />
+        <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden>
+          <img src={audio.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ filter: "brightness(0.20) saturate(0.3)" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(15,20,15,0.80)" }} />
         </div>
       )}
       <div className="relative z-[1] mx-auto flex min-h-full max-w-md flex-col px-5 pb-[env(safe-area-inset-bottom)] pt-[calc(1rem+env(safe-area-inset-top))]">
