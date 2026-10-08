@@ -60,7 +60,7 @@ function ConnexionPage() {
       const { data: abo } = await supabase
         .from("abonnes_b2c")
         .select("id")
-        .eq("user_id", session.user.id)
+        .eq("id", session.user.id)
         .eq("statut", "actif")
         .maybeSingle();
       navigate({ to: abo ? "/bibliotheque" : "/offres" });
