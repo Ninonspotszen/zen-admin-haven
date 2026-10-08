@@ -13,7 +13,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     z.object({ plan: z.enum(["mensuel", "annuel"]), origin: z.string().url() }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    const key = process.env.STRIPE_SECRET_KEY;
+    const key = process.env['STRIPE_SECRET_KEY'];
     if (!key) throw new Error("Paiement indisponible");
     const origin = new URL(data.origin).origin;
     const body = new URLSearchParams({
