@@ -83,16 +83,16 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                 date_renouvellement: toDate(periodEnd),
               };
               const email = obj.customer_details?.email ?? obj.customer_email ?? null;
-              if (email) row.email = email;
+              if (email) row["email"] = email;
 
               const { data: existing } = await abonnes().select("id").eq("id", userId).maybeSingle();
               if (existing) {
                 const { error } = await abonnes().update(row).eq("id", userId);
                 if (error) throw error;
               } else {
-                if (!row.email) {
+                if (!row["email"]) {
                   const { data: u } = await supabaseAdmin.auth.admin.getUserById(userId);
-                  row.email = u?.user?.email ?? "";
+                  row["email"] = u?.user?.email ?? "";
                 }
                 const { error } = await abonnes().insert(row);
                 if (error) throw error;
