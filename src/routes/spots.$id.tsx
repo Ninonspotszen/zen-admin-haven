@@ -83,17 +83,10 @@ function SpotPage() {
   const [langOpen, setLangOpen] = useState(false);
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
-  const [dark, setDark] = useState(false);
-
   useEffect(() => {
     const saved = localStorage.getItem("sz_lang");
     const nav = navigator.language.slice(0, 2);
     setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "en"));
-    const sync = () => setDark(document.documentElement.classList.contains("dark"));
-    sync();
-    const obs = new MutationObserver(sync);
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => obs.disconnect();
   }, []);
 
   useEffect(() => {
