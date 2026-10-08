@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/spots/$id")({
@@ -29,19 +30,26 @@ type Spot = { id: string; nom: string | null; description: string | null; photo_
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
 type Audio = { id: string; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
-const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
 const LANGS = ["fr", "en", "de", "nl", "es"] as const;
 
 /* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
 const PAGE_CSS = `
-.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#E8E4DC;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#F8F6F2;--sz-menu-hover:#E8E4DC;--sz-bar:rgba(248,246,242,0.85);--sz-player:#F8F6F2;--sz-thumb:#EAF3E6;
+html:has(.sz),.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#6B7F6C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#F8F6F2;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#F8F6F2;--sz-menu-hover:#E8E4DC;--sz-bar:rgba(248,246,242,0.85);--sz-player:#F8F6F2;--sz-thumb:#EAF3E6;
 font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
-.dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#1A1F1A;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
+html.dark:has(.sz),html.dark .sz{--sz-bg:#0F1410;--sz-fg:#F8F6F2;--sz-muted:#A8B8A9;--sz-chip:transparent;--sz-chip-fg:#F8F6F2;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#0F1410;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#0F1410;--sz-thumb:rgba(45,90,39,0.25)}
 .sz .serif{font-family:"Playfair Display",Georgia,serif}
 .sz .noscroll{scrollbar-width:none}.sz .noscroll::-webkit-scrollbar{display:none}
-.sz .glass{backdrop-filter:blur(4px);background:rgba(255,255,255,0.18)}
-.sz .glass6{backdrop-filter:blur(6px);background:rgba(255,255,255,0.18)}
+html:has(.sz),.sz{--background:var(--sz-bg);--muted:var(--sz-bg);--secondary:var(--sz-bg);--accent:var(--sz-bg);--card:var(--sz-bg);--popover:var(--sz-bg);--foreground:var(--sz-fg);--card-foreground:var(--sz-fg);--popover-foreground:var(--sz-fg);--muted-foreground:var(--sz-muted);--secondary-foreground:var(--sz-fg);--accent-foreground:var(--sz-fg);--sz-play:#1C2E1E;--sz-placeholder:#C8C4BC}
+html.dark:has(.sz),html.dark .sz{--sz-play:#FFFFFF}
+body:has(.sz),.sz main,.sz section,.sz ul,.sz li{background:var(--sz-bg)}
+.sz .audio-card,.sz .audio-copy{background:transparent}
+.sz .audio-title{color:var(--sz-fg)}
+.sz .audio-duration{color:var(--sz-muted)}
+.sz .play-control{display:inline-flex;width:44px;height:44px;min-width:44px;flex-shrink:0;align-items:center;justify-content:center;border:1px solid var(--sz-play);border-radius:50%;background:transparent!important;color:var(--sz-play);padding:0;box-shadow:none}
+.sz .play-control svg{width:20px;height:20px}
+.sz .missing-image{display:flex;width:64px;height:64px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:var(--sz-placeholder);color:var(--sz-fg);font-size:24px}
+.sz .missing-thumb{width:48px;height:48px;font-size:20px}
 .sz .tag{background:rgba(15,20,16,0.65);color:#F0EDE8}
 .sz input[type=range]{accent-color:var(--sz-brand)}
 `;
@@ -141,8 +149,7 @@ function SpotPage() {
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
-          <img src={LOGO_LIGHT} alt="Spots Zen" style={{ height: 32, width: "auto", objectFit: "contain" }} className="dark:hidden" />
-          <img src={LOGO_DARK} alt="Spots Zen" style={{ height: 32, width: "auto", objectFit: "contain" }} className="hidden dark:block" />
+          <img src={LOGO_DARK} alt="Spots Zen" className="h-8 w-auto object-contain" />
           <div className="relative">
             <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--sz-chip-border)] bg-transparent px-4 text-sm font-semibold text-[var(--sz-chip-fg)]" aria-haspopup="listbox" aria-expanded={langOpen}>
               {lang.toUpperCase()} <span aria-hidden>▾</span>
@@ -201,13 +208,13 @@ function SpotPage() {
             {/* HERO */}
             {hero && (
               <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
-                {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-3xl text-[#F0EDE8]">♪</div>}
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />
+                {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
+                {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
                 {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
-                <span className="glass6 absolute left-1/2 top-1/2 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon size={22} color="#fff" /></span>
+                <span className="play-control absolute right-3 top-3"><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="serif text-[22px] font-medium leading-tight text-[#F0EDE8]">{titleOf(hero, lang)}</p>
-                  <p className="text-xs text-[rgba(240,237,232,0.75)]">{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
+                  <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
+                  <p className={`text-xs ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-duration"}`}>{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
                 </div>
               </button>
             )}
@@ -228,15 +235,15 @@ function SpotPage() {
                 <Eyebrow>Immersions guidées</Eyebrow>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
-                    <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[#E8E4DC] text-left dark:bg-[#0F1410]">
+                    <button key={a.id} onClick={() => setSelected(a)} className="audio-card rounded-2xl text-left">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
-                        {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-2xl text-[#F0EDE8]">♪</div>}
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(15,20,16,0.7)_100%)]" />
+                        {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
+                        
                         {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
-                        <span className="glass absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon color="#fff" /></span>
+                        <span className="play-control absolute bottom-3 right-3"><PlayIcon /></span>
                       </div>
-                      <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight text-[#1C2E1E] dark:text-[#F0EDE8]">{titleOf(a, lang)}</p>
-                      <p className="mt-0.5 px-1 pb-1 text-xs text-[#5A6B5C] dark:text-[#8B9B8B]">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
+                      <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
+                      <p className="audio-copy audio-duration mt-0.5 px-1 pb-1 text-xs">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
                     </button>
                   ))}
                 </div>
@@ -252,11 +259,11 @@ function SpotPage() {
                   {music.map((a) => (
                     <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
                       <Thumb audio={a} />
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold">{titleOf(a, lang)}</p>
-                        <p className="text-xs text-[var(--sz-muted)]">{fmt(a.duree_secondes)}</p>
+                      <div className="audio-copy min-w-0 flex-1">
+                        <p className="audio-title truncate text-sm font-semibold">{titleOf(a, lang)}</p>
+                        <p className="audio-duration text-xs">{fmt(a.duree_secondes)}</p>
                       </div>
-                      <button onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8E4DC]"><PlayIcon size={16} color="#5A6B5C" /></button>
+                      <Button variant="ghost" size="icon" onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="play-control"><PlayIcon /></Button>
                     </li>
                   ))}
                 </ul>
@@ -270,8 +277,8 @@ function SpotPage() {
 
       {/* LIGHT ISLAND */}
       {state === "catalog" && (
-        <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"><section className="rounded-3xl bg-[#F0EDE8] px-5 py-8 text-center">
-          <p className="serif whitespace-nowrap text-lg font-medium text-[#1C2E1E]">Retrouvez ces audios chez vous ♡</p>
+        <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"><section className="rounded-3xl bg-[var(--sz-bg)] px-5 py-8 text-center">
+          <p className="serif whitespace-nowrap text-lg font-medium text-[var(--sz-fg)]">Retrouvez ces audios chez vous ♡</p>
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
             Abonnez-vous à Spots Zen →
           </a>
@@ -290,7 +297,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 function Thumb({ audio }: { audio: Audio }) {
   return audio.image_url
     ? <img src={audio.image_url} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
-    : <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1A2E1A] text-[#F0EDE8]" aria-hidden>♪</span>;
+    : <span className="missing-image missing-thumb" aria-hidden>♪</span>;
 }
 
 function Message({ title, text }: { title: string; text: string }) {
@@ -343,7 +350,7 @@ function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; 
       <div className="mx-auto max-w-md">
         <div className="flex items-center gap-3">
           <Thumb audio={audio} />
-          <div className="min-w-0 flex-1">
+          <div className="audio-copy min-w-0 flex-1">
             <p className="serif truncate text-base font-medium">{title}</p>
             <p className="text-xs text-[var(--sz-muted)]">{trad ? voiceLabel(trad.voix) : "Choisissez une voix"}</p>
           </div>
@@ -370,9 +377,9 @@ function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; 
             <div className="flex justify-between text-[11px] text-[var(--sz-muted)]"><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
             <div className="mt-2 flex items-center justify-center gap-6">
               <button onClick={() => skip(-15)} aria-label="Reculer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">◀◀</button>
-              <button onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--sz-brand)] text-[var(--sz-on-brand)]">
-                {playing ? <span className="text-lg font-semibold">❚❚</span> : <PlayIcon size={22} />}
-              </button>
+              <Button variant="ghost" size="icon" onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="play-control">
+                {playing ? <span className="text-lg font-semibold">❚❚</span> : <PlayIcon />}
+              </Button>
               <button onClick={() => skip(15)} aria-label="Avancer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">▶▶</button>
             </div>
           </>
