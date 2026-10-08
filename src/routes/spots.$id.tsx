@@ -28,7 +28,9 @@ export const Route = createFileRoute("/spots/$id")({
 
 type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null };
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
-type Audio = { id: string; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
+type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
+/* Raw shape of the direct audios query: embedded tables are renamed on mapping. */
+type RawAudio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; spot_audios: { mis_en_avant: boolean | null; mis_en_avant_moment: string | null }[] | null; audios_traductions: Trad[] | null };
 
 const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
@@ -67,7 +69,7 @@ function currentMoment() {
   return "Nuit";
 }
 const fmt = (s: number | null) => (s ? `${Math.round(s / 60)} min` : "");
-const isMusic = (a: Audio) => a.type === "Musique" || (a.traductions ?? []).every((t) => !t.voix || t.voix === "aucune");
+const isMusic = (a: Audio) => a.type === "Musique";
 const voiceLabel = (v: string | null) => (v === "feminine" || v === "F" ? "Voix féminine" : v === "masculine" || v === "M" ? "Voix masculine" : "Sans voix");
 
 /* Rows that carry a playable file, in the selected language (FR fallback). */
@@ -111,7 +113,7 @@ function SpotPage() {
   useEffect(() => {
     const saved = localStorage.getItem("sz_lang");
     const nav = navigator.language.slice(0, 2);
-    setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "en"));
+    setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "fr"));
   }, []);
 
   useEffect(() => {
@@ -134,9 +136,23 @@ function SpotPage() {
   }, [id]);
 
   async function loadCatalog(p: string) {
-    const { data } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p });
-    if (data === null || data === undefined) return false;
-    setAudios((data as unknown as Audio[]) ?? []);
+    /* The code stays mandatory: it is checked server-side before any audio is read. */
+    const { data: pinOk } = await supabase.rpc("verify_spot_pin", { p_id: id, p_pin: p });
+    if (pinOk !== true) return false;
+    const { data } = await supabase
+      .from("audios")
+      .select("id, slug, titre_fr, type, moment, image_url, duree_secondes, ordre, spot_audios!inner(mis_en_avant, mis_en_avant_moment, actif, spot_id), audios_traductions(langue, voix, titre, description, cloudinary_url)")
+      .eq("spot_audios.spot_id", id)
+      .eq("spot_audios.actif", true)
+      .order("ordre", { ascending: true, nullsFirst: false });
+    const rows = (data as unknown as RawAudio[] | null) ?? [];
+    setAudios(rows.map((r) => ({
+      id: r.id, slug: r.slug, ordre: r.ordre, titre_fr: r.titre_fr, type: r.type, moment: r.moment,
+      image_url: r.image_url, duree_secondes: r.duree_secondes,
+      mis_en_avant: r.spot_audios?.[0]?.mis_en_avant ?? null,
+      mis_en_avant_moment: r.spot_audios?.[0]?.mis_en_avant_moment ?? null,
+      traductions: r.audios_traductions ?? null,
+    })));
     sessionStorage.setItem(`sz_pin_${id}`, p);
     setState("catalog");
     return true;
@@ -154,8 +170,9 @@ function SpotPage() {
   const moment = currentMoment();
   const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
   const hero = playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ?? playable[0];
-  const categories = ["Tous", "Visualisation", "Méditation", "Musique", "Respiration"];
-  const match = (a: Audio) => filter === "Tous" || a.type === filter;
+  const categories = ["Tous", "Méditation", "Respiration", "Musique", "Visualisation", "Enfant"];
+  const match = (a: Audio) =>
+    filter === "Tous" ? true : filter === "Enfant" ? a.moment === "enfant" : a.type === filter;
   const guided = audios.filter((a) => !isMusic(a) && match(a));
   const music = audios.filter((a) => isMusic(a) && match(a));
 
