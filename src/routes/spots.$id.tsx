@@ -148,7 +148,8 @@ function SpotPage() {
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
-          <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Spots Zen" className="h-8 w-auto object-contain" />
+          <img src={LOGO_LIGHT} alt="Spots Zen" style={{ height: 32, width: "auto", objectFit: "contain" }} className="dark:hidden" />
+          <img src={LOGO_DARK} alt="Spots Zen" style={{ height: 32, width: "auto", objectFit: "contain" }} className="hidden dark:block" />
           <div className="relative">
             <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--sz-chip-border)] bg-transparent px-4 text-sm font-semibold text-[var(--sz-chip-fg)]" aria-haspopup="listbox" aria-expanded={langOpen}>
               {lang.toUpperCase()} <span aria-hidden>▾</span>
