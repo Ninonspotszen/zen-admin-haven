@@ -30,23 +30,28 @@ type Spot = { id: string; nom: string | null; description: string | null; photo_
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
 type Audio = { id: string; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
+const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
 const LANGS = ["fr", "en", "de", "nl", "es"] as const;
 
 /* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
 const PAGE_CSS = `
-html:has(.sz),.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#6B7F6C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#F8F6F2;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#F8F6F2;--sz-menu-hover:#E8E4DC;--sz-bar:rgba(248,246,242,0.85);--sz-player:#F8F6F2;--sz-thumb:#EAF3E6;
+html:has(.sz),.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#F8F6F2;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#F8F6F2;--sz-menu-hover:#E8E4DC;--sz-bar:rgba(248,246,242,0.85);--sz-player:#F8F6F2;--sz-thumb:#EAF3E6;
 font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
-html.dark:has(.sz),html.dark .sz{--sz-bg:#0F1410;--sz-fg:#F8F6F2;--sz-muted:#A8B8A9;--sz-chip:transparent;--sz-chip-fg:#F8F6F2;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#0F1410;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#0F1410;--sz-thumb:rgba(45,90,39,0.25)}
+html.dark:has(.sz),html.dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F8F6F2;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#0F1410;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#0F1410;--sz-thumb:rgba(45,90,39,0.25)}
 .sz .serif{font-family:"Playfair Display",Georgia,serif}
 .sz .noscroll{scrollbar-width:none}.sz .noscroll::-webkit-scrollbar{display:none}
-html:has(.sz),.sz{--background:var(--sz-bg);--muted:var(--sz-bg);--secondary:var(--sz-bg);--accent:var(--sz-bg);--card:var(--sz-bg);--popover:var(--sz-bg);--foreground:var(--sz-fg);--card-foreground:var(--sz-fg);--popover-foreground:var(--sz-fg);--muted-foreground:var(--sz-muted);--secondary-foreground:var(--sz-fg);--accent-foreground:var(--sz-fg);--sz-play:#1C2E1E;--sz-placeholder:#C8C4BC}
+html:has(.sz),.sz{--background:var(--sz-bg);--muted:var(--sz-bg);--secondary:var(--sz-bg);--accent:var(--sz-bg);--card:var(--sz-bg);--popover:var(--sz-bg);--foreground:var(--sz-fg);--card-foreground:var(--sz-fg);--popover-foreground:var(--sz-fg);--muted-foreground:var(--sz-muted);--secondary-foreground:var(--sz-fg);--accent-foreground:var(--sz-fg);--sz-play:#1C2E1E;--sz-photo-play:#FFFFFF;--sz-placeholder:#C8C4BC}
 html.dark:has(.sz),html.dark .sz{--sz-play:#FFFFFF}
-body:has(.sz),.sz main,.sz section,.sz ul,.sz li{background:var(--sz-bg)}
+body:has(.sz),.sz main,.sz section,.sz ul,.sz li,.sz header,.sz main > div,.sz section > div{background:var(--sz-bg)}
 .sz .audio-card,.sz .audio-copy{background:transparent}
 .sz .audio-title{color:var(--sz-fg)}
 .sz .audio-duration{color:var(--sz-muted)}
 .sz .play-control{display:inline-flex;width:44px;height:44px;min-width:44px;flex-shrink:0;align-items:center;justify-content:center;border:1px solid var(--sz-play);border-radius:50%;background:transparent!important;color:var(--sz-play);padding:0;box-shadow:none}
+.sz .play-control.play-on-photo{border-color:var(--sz-photo-play);color:var(--sz-photo-play)}
+.sz .logo-for-dark{display:none}
+html.dark .sz .logo-for-light{display:none}
+html.dark .sz .logo-for-dark{display:block}
 .sz .play-control svg{width:20px;height:20px}
 .sz .missing-image{display:flex;width:64px;height:64px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;background:var(--sz-placeholder);color:var(--sz-fg);font-size:24px}
 .sz .missing-thumb{width:48px;height:48px;font-size:20px}
@@ -149,7 +154,8 @@ function SpotPage() {
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
-          <img src={LOGO_DARK} alt="Spots Zen" className="h-8 w-auto object-contain" />
+          <img src={LOGO_DARK} alt="Spots Zen" className="logo-for-light h-8 w-auto object-contain" />
+          <img src={LOGO_LIGHT} alt="Spots Zen" className="logo-for-dark h-8 w-auto object-contain" />
           <div className="relative">
             <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--sz-chip-border)] bg-transparent px-4 text-sm font-semibold text-[var(--sz-chip-fg)]" aria-haspopup="listbox" aria-expanded={langOpen}>
               {lang.toUpperCase()} <span aria-hidden>▾</span>
@@ -211,7 +217,7 @@ function SpotPage() {
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                 {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
                 {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
-                <span className="play-control absolute right-3 top-3"><PlayIcon /></span>
+                <span className={`play-control absolute right-3 top-3 ${hero.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
                   <p className={`text-xs ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-duration"}`}>{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
@@ -240,7 +246,7 @@ function SpotPage() {
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                         
                         {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
-                        <span className="play-control absolute bottom-3 right-3"><PlayIcon /></span>
+                        <span className={`play-control absolute bottom-3 right-3 ${a.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                       </div>
                       <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
                       <p className="audio-copy audio-duration mt-0.5 px-1 pb-1 text-xs">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
