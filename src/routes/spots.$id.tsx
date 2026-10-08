@@ -70,13 +70,25 @@ const fmt = (s: number | null) => (s ? `${Math.round(s / 60)} min` : "");
 const isMusic = (a: Audio) => a.type === "Musique" || (a.traductions ?? []).every((t) => !t.voix || t.voix === "aucune");
 const voiceLabel = (v: string | null) => (v === "feminine" || v === "F" ? "Voix féminine" : v === "masculine" || v === "M" ? "Voix masculine" : "Sans voix");
 
+/* Rows that carry a playable file, in the selected language (FR fallback). */
 function tradsFor(a: Audio, lang: string) {
   const all = (a.traductions ?? []).filter((t) => t.cloudinary_url);
   const inLang = all.filter((t) => t.langue === lang);
   return inLang.length ? inLang : all.filter((t) => t.langue === "fr");
 }
+/* Title/description come from audios_traductions for the selected language (FR fallback). */
+function rowsInLang(a: Audio, lang: string) {
+  const all = a.traductions ?? [];
+  const inLang = all.filter((t) => t.langue === lang);
+  return inLang.length ? inLang : all.filter((t) => t.langue === "fr");
+}
+const firstText = (...vals: (string | null | undefined)[]) => vals.find((v) => v && v.trim()) ?? null;
+function textOf(a: Audio, lang: string, field: "titre" | "description") {
+  const rows = rowsInLang(a, lang);
+  return firstText(...rows.map((t) => t[field]), ...rows.map((t) => (t[field] ?? "").trim() || null));
+}
 function titleOf(a: Audio, lang: string) {
-  return tradsFor(a, lang)[0]?.titre ?? a.titre_fr ?? "Audio";
+  return textOf(a, lang, "titre") ?? a.titre_fr ?? "";
 }
 
 function PlayIcon({ size = 18, color = "currentColor" }: { size?: number; color?: string }) {
@@ -390,8 +402,8 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
     requestAnimationFrame(() => { if (ref.current) ref.current.currentTime = t; });
   };
   const mmss = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
-  const title = trad?.titre ?? titleOf(audio, lang);
-  const desc = trad?.description;
+  const title = firstText(trad?.titre, textOf(audio, lang, "titre"), audio.titre_fr) ?? "";
+  const desc = firstText(trad?.description, textOf(audio, lang, "description"));
   const meta = [audio.type, audio.moment ?? audio.mis_en_avant_moment, fmt(audio.duree_secondes)].filter(Boolean).join(" · ").toUpperCase();
   const pct = dur ? Math.min(100, (time / dur) * 100) : 0;
 
