@@ -408,7 +408,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
   const pct = dur ? Math.min(100, (time / dur) * 100) : 0;
 
   return (
-    <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title}>
+    <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title || "Lecteur audio"}>
       <style>{PLAYER_CSS}</style>
       {audio.image_url && (
         <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden>
