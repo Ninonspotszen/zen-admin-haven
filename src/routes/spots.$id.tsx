@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/spots/$id")({
@@ -35,7 +35,7 @@ const LANGS = ["fr", "en", "de", "nl", "es"] as const;
 
 /* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
 const PAGE_CSS = `
-.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#FFFFFF;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#FFFFFF;--sz-menu-hover:#F8F6F2;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
+.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:transparent;--sz-chip-fg:#1C2E1E;--sz-chip-border:#D8D2C5;--sz-hair:#D8D2C5;--sz-card:#E8E4DC;--sz-card-border:rgba(195,185,156,0.35);--sz-menu:#FFFFFF;--sz-menu-hover:#F8F6F2;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
 font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
 .dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.35);--sz-menu:#1A1F1A;--sz-menu-hover:#0F1410;--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
 .sz .serif{font-family:"Playfair Display",Georgia,serif}
@@ -136,7 +136,7 @@ function SpotPage() {
   const moment = currentMoment();
   const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
   const hero = playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ?? playable[0];
-  const categories = useMemo(() => ["Tous", ...Array.from(new Set(audios.map((a) => a.type).filter((t): t is string => !!t)))], [audios]);
+  const categories = ["Tous", "Visualisation", "Méditation", "Musique", "Respiration"];
   const match = (a: Audio) => filter === "Tous" || a.type === filter;
   const guided = audios.filter((a) => !isMusic(a) && match(a));
   const music = audios.filter((a) => isMusic(a) && match(a));
@@ -209,7 +209,7 @@ function SpotPage() {
               <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-3xl text-[#F0EDE8]">♪</div>}
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />
-                <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {moment}</span>
+                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
                 <span className="glass6 absolute left-1/2 top-1/2 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon size={22} color="#fff" /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <p className="serif text-[22px] font-medium leading-tight text-[#F0EDE8]">{titleOf(hero, lang)}</p>
@@ -232,14 +232,13 @@ function SpotPage() {
             {guided.length > 0 && (
               <section className="mt-10">
                 <Eyebrow>Immersions guidées</Eyebrow>
-                <h3 className="serif mt-1 text-[22px] font-medium">Immersions guidées</h3>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] text-left">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-2xl text-[#F0EDE8]">♪</div>}
                         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(15,20,16,0.7)_100%)]" />
-                        {(a.mis_en_avant_moment || a.moment) && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment || a.moment}</span>}
+                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
                         <span className="glass absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon color="#fff" /></span>
                       </div>
                       <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
@@ -254,7 +253,6 @@ function SpotPage() {
             {music.length > 0 && (
               <section className="mt-10">
                 <Eyebrow>Musiques relaxantes</Eyebrow>
-                <h3 className="serif mt-1 text-[22px] font-medium">Musiques relaxantes</h3>
                 <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
                 <ul className="mt-3">
                   {music.map((a) => (
@@ -264,7 +262,7 @@ function SpotPage() {
                         <p className="truncate text-sm font-semibold">{titleOf(a, lang)}</p>
                         <p className="text-xs text-[var(--sz-muted)]">{fmt(a.duree_secondes)}</p>
                       </div>
-                      <button onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8E4DC]"><PlayIcon size={16} color="#2D5A27" /></button>
+                      <button onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8E4DC]"><PlayIcon size={16} color="#5A6B5C" /></button>
                     </li>
                   ))}
                 </ul>
@@ -298,7 +296,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 function Thumb({ audio }: { audio: Audio }) {
   return audio.image_url
     ? <img src={audio.image_url} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
-    : <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--sz-thumb)] text-[#2D5A27]" aria-hidden>♪</span>;
+    : <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1A2E1A] text-[#F0EDE8]" aria-hidden>♪</span>;
 }
 
 function Message({ title, text }: { title: string; text: string }) {
