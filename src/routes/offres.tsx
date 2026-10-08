@@ -74,7 +74,7 @@ function OffresPage() {
   const chooseLang = (l: string) => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); };
 
   const benefits = [
-    { Icon: Headphones, text: "16 audios d'immersion bien-être", strong: true },
+    { Icon: Headphones, text: "Des audios immersifs", strong: true },
     { Icon: PersonStanding, text: "Méditation · Respiration · Visualisation · Immersion sonore" },
     { Icon: Users, text: "Des parcours adaptés pour adultes et pour enfants" },
     { Icon: Languages, text: "Disponible en 5 langues : FR · EN · DE · NL · ES" },
@@ -155,12 +155,9 @@ function OffresPage() {
 
         {/* CATALOG PREVIEW */}
         <section className="mt-12">
-          <div className="flex items-start justify-between px-6">
-            <div>
-              <h2 className="serif text-[18px]">Aperçu du catalogue</h2>
-              <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />Réservé aux abonnés</p>
-            </div>
-            <span className="rounded-full border border-[var(--o-border)] px-3 py-1 text-xs">16 audios</span>
+          <div className="px-6">
+            <h2 className="serif text-[18px]">Aperçu du catalogue</h2>
+            <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />Réservé aux abonnés</p>
           </div>
           <div className="noscroll mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2">
             {items.map((a) => {
@@ -190,13 +187,6 @@ function OffresPage() {
               Commencer mon premier mois gratuit <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <p className="mt-3 text-[12px] text-[var(--o-sub)]">Puis 5 €/mois · Sans engagement · Résiliation en 1 clic</p>
-            <div className="mt-5 flex items-center justify-center gap-1.5 whitespace-nowrap border-t border-[var(--o-border)] pt-4 text-[11px] text-[var(--o-sub)]">
-              <span className="flex items-center gap-1"><Headphones className="h-3.5 w-3.5" aria-hidden />16 audios</span>
-              <span className="text-[#E5E1D8]">·</span>
-              <span className="flex items-center gap-1"><Languages className="h-3.5 w-3.5" aria-hidden />5 langues</span>
-              <span className="text-[#E5E1D8]">·</span>
-              <span className="flex items-center gap-1"><Smartphone className="h-3.5 w-3.5" aria-hidden />Sans application</span>
-            </div>
           </div>
         </section>
       </main>
