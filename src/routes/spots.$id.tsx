@@ -100,7 +100,7 @@ function SpotPage() {
         {spot && (state === "pin" || state === "catalog") && (
           <>
             {spot.photo_url && <img src={spot.photo_url} alt={spot.nom ?? ""} className="mt-6 aspect-[4/3] w-full rounded-3xl object-cover" />}
-            <h1 className="mt-5 font-display text-3xl font-medium">{spot.nom}</h1>
+            <h1 className="mt-5 font-serif text-3xl font-medium">{spot.nom}</h1>
             {(spot.adresse || spot.client_nom) && <p className="mt-1 text-sm text-muted-foreground">{[spot.client_nom, spot.adresse].filter(Boolean).join(" · ")}</p>}
             {spot.description && <p className="mt-3 text-sm leading-relaxed">{spot.description}</p>}
             {days !== null && <span className="mt-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs">Accès offert · encore {days} jour{days > 1 ? "s" : ""}</span>}
@@ -108,7 +108,7 @@ function SpotPage() {
         )}
         {state === "pin" && (
           <form onSubmit={submitPin} className="mt-8 rounded-3xl border bg-card p-6 text-center">
-            <h2 className="font-display text-xl">Entrez le code du spot</h2>
+            <h2 className="font-serif text-xl">Entrez le code du spot</h2>
             <p className="mt-1 text-sm text-muted-foreground">4 chiffres, indiqués sur le totem.</p>
             <input
               inputMode="numeric" maxLength={4} value={pin} autoFocus
@@ -146,7 +146,7 @@ function SpotPage() {
 function Message({ title, text }: { title: string; text: string }) {
   return (
     <div className="mt-20 text-center">
-      <h1 className="font-display text-2xl">{title}</h1>
+      <h1 className="font-serif text-2xl">{title}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{text}</p>
     </div>
   );
@@ -160,7 +160,7 @@ function AudioCard({ audio, big, onPlay }: { audio: Audio; big?: boolean; onPlay
     <div className={`mt-2 flex gap-4 rounded-3xl border bg-card p-4 ${big ? "flex-col" : "items-center"}`}>
       {audio.image_url && <img src={audio.image_url} alt="" className={big ? "aspect-video w-full rounded-2xl object-cover" : "h-16 w-16 rounded-2xl object-cover"} />}
       <div className="flex-1">
-        <p className="font-display text-lg leading-tight">{title}</p>
+        <p className="font-serif text-lg leading-tight">{title}</p>
         <p className="text-xs text-muted-foreground">{[audio.type, fmt(audio.duree_secondes)].filter(Boolean).join(" · ")}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {fr.length === 0 && <span className="text-xs text-muted-foreground">Bientôt disponible</span>}
@@ -195,7 +195,7 @@ function Player({ audio, trad, spotId, onClose }: { audio: Audio; trad: Trad; sp
     <div className="fixed inset-x-0 bottom-0 border-t bg-card p-4 shadow-lg">
       <div className="mx-auto flex max-w-md items-center gap-3">
         <div className="min-w-0 flex-1">
-          <p className="truncate font-display">{trad.titre}</p>
+          <p className="truncate font-serif">{trad.titre}</p>
           <audio ref={ref} src={trad.cloudinary_url ?? undefined} controls autoPlay className="mt-2 w-full" />
         </div>
         <button onClick={onClose} aria-label="Fermer" className="rounded-full px-3 py-2 text-muted-foreground">✕</button>
