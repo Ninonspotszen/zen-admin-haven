@@ -190,7 +190,7 @@ function OffresPage() {
               Commencer mon premier mois gratuit <ArrowRight className="h-4 w-4" aria-hidden />
             </a>
             <p className="mt-3 text-[12px] text-[var(--o-sub)]">Puis 5 €/mois · Sans engagement · Résiliation en 1 clic</p>
-            <div className="mt-5 flex items-center justify-center gap-2 border-t border-[var(--o-border)] pt-4 text-[12px] text-[var(--o-sub)]">
+            <div className="mt-5 flex items-center justify-center gap-1.5 whitespace-nowrap border-t border-[var(--o-border)] pt-4 text-[11px] text-[var(--o-sub)]">
               <span className="flex items-center gap-1"><Headphones className="h-3.5 w-3.5" aria-hidden />16 audios</span>
               <span className="text-[#E5E1D8]">·</span>
               <span className="flex items-center gap-1"><Languages className="h-3.5 w-3.5" aria-hidden />5 langues</span>
