@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccesRefuseRouteImport } from './routes/acces-refuse'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BibliothequeRouteImport } from './routes/bibliotheque'
+import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as SpotsIdRouteImport } from './routes/spots.$id'
@@ -43,6 +45,16 @@ const AdminRouteRoute = AdminRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliothequeRoute = BibliothequeRouteImport.update({
+  id: '/bibliotheque',
+  path: '/bibliotheque',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OffresRoute = OffresRouteImport.update({
@@ -106,6 +118,8 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
+  '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -122,6 +136,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
+  '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -140,6 +156,8 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
+  '/bibliotheque': typeof BibliothequeRoute
+  '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -159,6 +177,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
+    | '/connexion'
     | '/offres'
     | '/spots/$id'
     | '/admin/'
@@ -175,6 +195,8 @@ export interface FileRouteTypes {
     | '/'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
+    | '/connexion'
     | '/offres'
     | '/spots/$id'
     | '/admin'
@@ -192,6 +214,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/acces-refuse'
     | '/auth'
+    | '/bibliotheque'
+    | '/connexion'
     | '/offres'
     | '/spots/$id'
     | '/admin/'
@@ -210,6 +234,8 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   AccesRefuseRoute: typeof AccesRefuseRoute
   AuthRoute: typeof AuthRoute
+  BibliothequeRoute: typeof BibliothequeRoute
+  ConnexionRoute: typeof ConnexionRoute
   OffresRoute: typeof OffresRoute
   SpotsIdRoute: typeof SpotsIdRoute
 }
@@ -242,6 +268,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bibliotheque': {
+      id: '/bibliotheque'
+      path: '/bibliotheque'
+      fullPath: '/bibliotheque'
+      preLoaderRoute: typeof BibliothequeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/offres': {
@@ -357,6 +397,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   AccesRefuseRoute: AccesRefuseRoute,
   AuthRoute: AuthRoute,
+  BibliothequeRoute: BibliothequeRoute,
+  ConnexionRoute: ConnexionRoute,
   OffresRoute: OffresRoute,
   SpotsIdRoute: SpotsIdRoute,
 }
