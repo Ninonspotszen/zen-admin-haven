@@ -288,10 +288,11 @@ function SpotPage() {
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
             Abonnez-vous à Spots Zen →
           </a>
-          </section>{selected && <div className="h-44" />}</div>
+          </section></div>
       )}
 
-      {selected && <Player key={selected.id} audio={selected} lang={lang} spotId={id} onClose={() => setSelected(null)} />}
+      {selected && <Player key={selected.id} audio={selected} list={playable} sponsor={spot?.client_nom ?? spot?.nom ?? ""} lang={lang}
+        onLang={(l) => { setLang(l); localStorage.setItem("sz_lang", l); }} spotId={id} onClose={() => setSelected(null)} onSelect={setSelected} />}
     </div>
   );
 }
@@ -315,16 +316,46 @@ function Message({ title, text }: { title: string; text: string }) {
   );
 }
 
-function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; spotId: string; onClose: () => void }) {
+const PLAYER_CSS = `
+.szp{--background:#2C3328;--card:#2C3328;--popover:#2C3328;--muted:#2C3328;--secondary:#2C3328;--accent:#2C3328;background:#2C3328;color:#F0EDE8;font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif}
+.szp .serif{font-family:"Playfair Display",Georgia,serif}
+.szp .seek{-webkit-appearance:none;appearance:none;width:100%;height:14px;background:transparent;cursor:pointer}
+.szp .seek::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,#4A7A43 var(--p),rgba(255,255,255,0.20) var(--p))}
+.szp .seek::-moz-range-track{height:3px;border-radius:3px;background:linear-gradient(90deg,#4A7A43 var(--p),rgba(255,255,255,0.20) var(--p))}
+.szp .seek::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#F0EDE8;margin-top:-5.5px;border:0}
+.szp .seek::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#F0EDE8;border:0}
+`;
+
+function SkipIcon({ forward }: { forward?: boolean }) {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F0EDE8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={forward ? { transform: "scaleX(-1)" } : undefined}>
+      <path d="M3 12a9 9 0 1 0 3-6.7" /><path d="M3 4v5h5" />
+    </svg>
+  );
+}
+
+function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect }: {
+  audio: Audio; list: Audio[]; sponsor: string; lang: string; onLang: (l: string) => void; spotId: string; onClose: () => void; onSelect: (a: Audio) => void;
+}) {
   const trads = tradsFor(audio, lang);
   const voiced = trads.filter((t) => t.voix && t.voix !== "aucune");
-  const savedVoice = typeof localStorage !== "undefined" ? localStorage.getItem("sz_voice") : null;
-  const [trad, setTrad] = useState<Trad | null>(voiced.length > 1 ? null : trads[0] ?? null);
+  const hasVoices = voiced.length > 0;
+  const [voice, setVoice] = useState<string>(() => localStorage.getItem("sz_voice") || "feminine");
+  const trad = hasVoices ? (voiced.find((t) => t.voix === voice) ?? voiced[0]) : trads[0] ?? null;
   const ref = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(audio.duree_secondes ?? 0);
+  const [langOpen, setLangOpen] = useState(false);
   const logged = useRef(false);
+  const idx = list.findIndex((a) => a.id === audio.id);
+  const next = list.length > 1 ? list[(idx + 1) % list.length] : null;
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -333,63 +364,158 @@ function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; 
       if (logged.current || el.currentTime < 5) return;
       logged.current = true;
       void supabase.from("ecoutes").insert({ audio_id: audio.id, spot_id: spotId, langue: trad.langue, voix: trad.voix, duree_ecoute_sec: Math.round(el.currentTime) });
-      const visitor = localStorage.getItem("sz_visitor");
-      if (visitor) void supabase.rpc("register_spot_visit", { p_id: spotId, p_visitor: visitor });
     };
     const onTime = () => { setTime(el.currentTime); log(); };
+    const onEnd = () => { log(); if (next) onSelect(next); };
     el.addEventListener("timeupdate", onTime);
-    el.addEventListener("ended", log);
+    el.addEventListener("ended", onEnd);
     window.addEventListener("pagehide", log);
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({ title: trad.titre, artist: "Spots Zen", artwork: audio.image_url ? [{ src: audio.image_url }] : [] });
+      navigator.mediaSession.setActionHandler("seekbackward", () => { el.currentTime = Math.max(0, el.currentTime - 15); });
+      navigator.mediaSession.setActionHandler("seekforward", () => { el.currentTime = Math.min(el.duration || 0, el.currentTime + 15); });
     }
-    return () => { el.removeEventListener("timeupdate", onTime); el.removeEventListener("ended", log); window.removeEventListener("pagehide", log); };
-  }, [audio.id, audio.image_url, spotId, trad]);
+    return () => { el.removeEventListener("timeupdate", onTime); el.removeEventListener("ended", onEnd); window.removeEventListener("pagehide", log); };
+  }, [audio.id, audio.image_url, spotId, trad, next, onSelect]);
 
+  const close = () => { ref.current?.pause(); onClose(); };
   const toggle = () => { const el = ref.current; if (!el) return; if (el.paused) void el.play(); else el.pause(); };
   const skip = (d: number) => { const el = ref.current; if (el) el.currentTime = Math.max(0, Math.min(el.duration || dur, el.currentTime + d)); };
-  const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  const pickVoice = (v: string) => {
+    const t = ref.current?.currentTime ?? 0;
+    localStorage.setItem("sz_voice", v); setVoice(v);
+    requestAnimationFrame(() => { if (ref.current) ref.current.currentTime = t; });
+  };
+  const mmss = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   const title = trad?.titre ?? titleOf(audio, lang);
+  const desc = trad?.description;
+  const meta = [audio.type, audio.mis_en_avant_moment ?? audio.moment, fmt(audio.duree_secondes)].filter(Boolean).join(" · ");
+  const pct = dur ? Math.min(100, (time / dur) * 100) : 0;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 rounded-t-2xl bg-[var(--sz-player)] px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 shadow-[0_-8px_30px_rgba(15,20,16,0.15)]">
-      <div className="mx-auto max-w-md">
-        <div className="flex items-center gap-3">
-          <Thumb audio={audio} />
-          <div className="audio-copy min-w-0 flex-1">
-            <p className="serif truncate text-base font-medium">{title}</p>
-            <p className="text-xs text-[var(--sz-muted)]">{trad ? voiceLabel(trad.voix) : "Choisissez une voix"}</p>
+    <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title}>
+      <style>{PLAYER_CSS}</style>
+      {audio.image_url && (
+        <div className="fixed inset-0 z-0" aria-hidden>
+          <img src={audio.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,rgba(44,51,40,0.85) 0%,rgba(44,51,40,0.60) 40%,rgba(44,51,40,0.85) 100%)" }} />
+        </div>
+      )}
+      <div className="relative z-[1] mx-auto flex min-h-full max-w-md flex-col px-5 pb-[env(safe-area-inset-bottom)] pt-[calc(1rem+env(safe-area-inset-top))]">
+        {/* HEADER */}
+        <div className="flex items-center justify-end gap-2">
+          <div className="relative">
+            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full px-4 text-sm font-semibold" style={{ background: "rgba(255,255,255,0.15)", color: "#F0EDE8" }} aria-haspopup="listbox" aria-expanded={langOpen}>
+              {lang.toUpperCase()} <span aria-hidden>▾</span>
+            </button>
+            {langOpen && (
+              <ul role="listbox" className="absolute right-0 z-10 mt-2 w-24 overflow-hidden rounded-xl py-1" style={{ background: "#3A4236" }}>
+                {LANGS.map((l) => (
+                  <li key={l}><button onClick={() => { onLang(l); setLangOpen(false); }} className="block h-10 w-full px-4 text-left text-sm font-semibold" style={{ color: l === lang ? "#8FBF86" : "#F0EDE8" }}>{l.toUpperCase()}</button></li>
+                ))}
+              </ul>
+            )}
           </div>
-          <button onClick={onClose} aria-label="Fermer" className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--sz-muted)]">✕</button>
+          <button onClick={close} aria-label="Retour" className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0EDE8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
         </div>
 
-        {!trad ? (
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            {voiced.map((t, i) => (
-              <button key={i} onClick={() => { localStorage.setItem("sz_voice", t.voix ?? ""); setTrad(t); }}
-                className={`h-12 rounded-full bg-[#EAF3E6] text-sm font-semibold text-[#2D5A27] ${t.voix === savedVoice ? "ring-2 ring-[#2D5A27]" : ""}`}>
-                {voiceLabel(t.voix)}
-              </button>
-            ))}
-          </div>
-        ) : (
-          <>
-            <audio ref={ref} src={trad.cloudinary_url ?? undefined} autoPlay
-              onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
-              onLoadedMetadata={(e) => setDur(e.currentTarget.duration || dur)} />
-            <input type="range" min={0} max={dur || 1} step={1} value={time} aria-label="Progression"
-              onChange={(e) => { if (ref.current) ref.current.currentTime = Number(e.target.value); }}
-              className="mt-4 w-full" />
-            <div className="flex justify-between text-[11px] text-[var(--sz-muted)]"><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
-            <div className="mt-2 flex items-center justify-center gap-6">
-              <button onClick={() => skip(-15)} aria-label="Reculer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">◀◀</button>
-              <Button variant="ghost" size="icon" onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="play-control">
-                {playing ? <span className="text-lg font-semibold">❚❚</span> : <PlayIcon />}
-              </Button>
-              <button onClick={() => skip(15)} aria-label="Avancer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">▶▶</button>
-            </div>
-          </>
+        {/* SPONSOR */}
+        {sponsor && (
+          <p className="mt-4 flex items-center justify-center gap-2 text-[13px]" style={{ color: "#F0EDE8" }}>
+            <span className="flex h-4 w-4 items-center justify-center rounded-full text-[10px]" style={{ background: "#2D5A27", color: "#F0EDE8" }}>✓</span>
+            Offert par {sponsor} ★★★★
+          </p>
         )}
+
+        {/* META */}
+        {meta && (
+          <span className="mx-auto mt-6 rounded-full px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.06em]" style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.20)", color: "#F0EDE8" }}>{meta}</span>
+        )}
+
+        <h1 className="serif mx-auto my-4 max-w-[320px] text-center text-[36px] font-semibold leading-tight" style={{ color: "#FFFFFF" }}>{title}</h1>
+        {desc && <p className="serif mx-auto max-w-[300px] text-center text-[15px] italic leading-[1.6]" style={{ color: "#C8C8C0" }}>« {desc} »</p>}
+
+        {/* VOIX */}
+        {hasVoices && voiced.length > 1 && (
+          <div className="mt-8 flex justify-center gap-2">
+            {voiced.map((t) => {
+              const active = t.voix === trad?.voix;
+              return (
+                <button key={t.voix} onClick={() => pickVoice(t.voix!)} className="h-10 rounded-full px-5 text-sm font-medium"
+                  style={active ? { background: "#2D5A27", color: "#F0EDE8" } : { background: "transparent", color: "rgba(240,237,232,0.50)" }}>
+                  {active && <span style={{ color: "#8FBF86" }}>• </span>}{t.voix === "masculine" || t.voix === "M" ? "Masculine" : "Féminine"}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="flex-1 min-h-8" />
+
+        {/* PROGRESSION */}
+        {trad && <audio ref={ref} src={trad.cloudinary_url ?? undefined} autoPlay preload="auto"
+          onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
+          onLoadedMetadata={(e) => setDur(e.currentTarget.duration || dur)} />}
+        <div className="mt-8">
+          <input type="range" min={0} max={dur || 1} step={0.5} value={time} aria-label="Progression" className="seek"
+            style={{ ["--p" as string]: `${pct}%` }}
+            onChange={(e) => { const v = Number(e.target.value); setTime(v); if (ref.current) ref.current.currentTime = v; }} />
+          <div className="mt-2 flex justify-between text-xs" style={{ color: "#9AA09A" }}><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
+        </div>
+
+        {/* CONTROLES */}
+        <div className="mt-6 flex items-center justify-center gap-10">
+          <button onClick={() => skip(-15)} aria-label="Reculer de 15 secondes" className="flex flex-col items-center">
+            <SkipIcon /><span className="text-[10px]" style={{ color: "#9AA09A" }}>15s</span>
+          </button>
+          <button onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
+            style={{ background: "#2D5A27", boxShadow: "0 8px 24px rgba(45,90,39,0.40)" }}>
+            {playing
+              ? <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+              : <PlayIcon size={24} color="#FFFFFF" />}
+          </button>
+          <button onClick={() => skip(15)} aria-label="Avancer de 15 secondes" className="flex flex-col items-center">
+            <SkipIcon forward /><span className="text-[10px]" style={{ color: "#9AA09A" }}>15s</span>
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-xs leading-relaxed" style={{ color: "#9AA09A" }}>
+          <svg className="mr-1 inline-block align-[-2px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA09A" strokeWidth="2" aria-hidden><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+          Vous pouvez verrouiller votre écran ♡<br />L'audio continuera à jouer.
+        </p>
+
+        {/* EN SUITE */}
+        {next && (
+          <div className="mt-8 flex items-center gap-3 rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.10)" }}>
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px]" style={{ background: "rgba(255,255,255,0.10)" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA09A" strokeWidth="2" strokeLinecap="round" aria-hidden><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2" /></svg>
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#4A7A43" }}>En suite</p>
+              <p className="serif truncate text-base" style={{ color: "#F0EDE8" }}>{titleOf(next, lang)}</p>
+              <p className="text-xs" style={{ color: "#9AA09A" }}>{[next.type, fmt(next.duree_secondes)].filter(Boolean).join(" · ")}</p>
+            </div>
+            <button onClick={() => onSelect(next)} aria-label={`Écouter ${titleOf(next, lang)}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
+              <PlayIcon size={14} color="#F0EDE8" />
+            </button>
+          </div>
+        )}
+
+        {/* CTA */}
+        <section className="mt-6 rounded-3xl p-6 text-center" style={{ background: "#F0EDE8" }}>
+          <p className="serif text-xl" style={{ color: "#1C2E1E" }}>Retrouvez ces audios chez vous ♡</p>
+          <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>Prolongez cet état de calme où que vous soyez.</p>
+          <a href={`/offres?spot_origine_id=${spotId}`} className="mt-4 flex h-[52px] w-full items-center justify-center rounded-full text-sm font-semibold" style={{ background: "#2D5A27", color: "#F0EDE8" }}>
+            Abonnez-vous à Spots Zen →
+          </a>
+        </section>
+
+        <p className="mx-auto mb-8 mt-6 flex items-center gap-1.5 text-[11px]" style={{ color: "#9AA09A" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#9AA09A" aria-hidden><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.4.2 2C6 14 10 10 16 8c-5 3-8 7-9.5 12C14 20 20 14 20 4z" /></svg>
+          Spots Zen · Immersions bien-être
+        </p>
       </div>
     </div>
   );
