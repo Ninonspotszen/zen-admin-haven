@@ -11,3 +11,4 @@
 # AGENTS
 
 - Admin access in RLS uses public.is_admin() (reads profiles.role for auth.uid()); never check auth.jwt() role — the JWT carries no admin claim.
+- Public spot theme overrides must be scoped to `.sz` and ancestors selected with `:has(.sz)`; this isolates page backgrounds and shared UI tokens from the admin, with dark mode controlled only by `html.dark`.

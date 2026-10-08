@@ -213,8 +213,8 @@ function SpotPage() {
                 {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
                 <span className="play-control absolute right-3 top-3"><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="serif text-[22px] font-medium leading-tight text-[#F0EDE8]">{titleOf(hero, lang)}</p>
-                  <p className="text-xs text-[rgba(240,237,232,0.75)]">{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
+                  <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
+                  <p className={`text-xs ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-duration"}`}>{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
                 </div>
               </button>
             )}
