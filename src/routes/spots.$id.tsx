@@ -228,15 +228,15 @@ function SpotPage() {
                 <Eyebrow>Immersions guidées</Eyebrow>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
-                    <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] text-left">
+                    <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[#E8E4DC] text-left dark:bg-[#0F1410]">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center bg-[#1A2E1A] text-2xl text-[#F0EDE8]">♪</div>}
                         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(15,20,16,0.7)_100%)]" />
                         {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
                         <span className="glass absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon color="#fff" /></span>
                       </div>
-                      <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
-                      <p className="mt-0.5 px-1 pb-1 text-xs text-[var(--sz-muted)]">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
+                      <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight text-[#1C2E1E] dark:text-[#F0EDE8]">{titleOf(a, lang)}</p>
+                      <p className="mt-0.5 px-1 pb-1 text-xs text-[#5A6B5C] dark:text-[#8B9B8B]">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
                     </button>
                   ))}
                 </div>
