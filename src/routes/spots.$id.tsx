@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/spots/$id")({
@@ -13,6 +13,14 @@ export const Route = createFileRoute("/spots/$id")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Plus+Jakarta+Sans:wght@400;600&display=swap",
+      },
+    ],
   }),
   component: SpotPage,
 });
@@ -21,7 +29,21 @@ type Spot = { id: string; nom: string | null; description: string | null; photo_
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
 type Audio = { id: string; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
-const LOGO = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
+const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
+const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
+const LANGS = ["fr", "en", "de", "nl", "es"] as const;
+
+/* Palette scoped to this page (Spots Zen B2C brand), light + dark via .dark on <html>. */
+const PAGE_CSS = `
+.sz{--sz-bg:#F8F6F2;--sz-fg:#1C2E1E;--sz-muted:#5A6B5C;--sz-brand:#2D5A27;--sz-on-brand:#F8F6F2;--sz-chip:#E8E4DC;--sz-chip-fg:#1C2E1E;--sz-chip-border:transparent;--sz-hair:#D8D2C5;--sz-card:#F8F6F2;--sz-card-border:transparent;--sz-bar:rgba(248,246,242,0.85);--sz-player:#FFFFFF;--sz-thumb:#EAF3E6;
+font-family:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;background:var(--sz-bg);color:var(--sz-fg)}
+.dark .sz{--sz-bg:#0F1410;--sz-fg:#F0EDE8;--sz-muted:#8B9B8B;--sz-chip:transparent;--sz-chip-fg:#F0EDE8;--sz-chip-border:rgba(45,90,39,0.30);--sz-hair:rgba(45,90,39,0.25);--sz-card:#0F1410;--sz-card-border:rgba(45,90,39,0.20);--sz-bar:rgba(15,20,16,0.85);--sz-player:#1A1F1A;--sz-thumb:rgba(45,90,39,0.25)}
+.sz .serif{font-family:"Playfair Display",Georgia,serif}
+.sz .noscroll{scrollbar-width:none}.sz .noscroll::-webkit-scrollbar{display:none}
+.sz .glass{backdrop-filter:blur(4px);background:rgba(255,255,255,0.20)}
+.sz .tag{background:rgba(15,20,16,0.6);color:#F0EDE8}
+.sz input[type=range]{accent-color:var(--sz-brand)}
+`;
 
 function currentMoment() {
   const h = new Date().getHours();
@@ -30,9 +52,21 @@ function currentMoment() {
   if (h >= 17 && h < 22) return "Soir";
   return "Nuit";
 }
-function fmt(s: number | null) {
-  if (!s) return "";
-  return `${Math.round(s / 60)} min`;
+const fmt = (s: number | null) => (s ? `${Math.round(s / 60)} min` : "");
+const isMusic = (a: Audio) => a.type === "Musique" || (a.traductions ?? []).every((t) => !t.voix || t.voix === "aucune");
+const voiceLabel = (v: string | null) => (v === "feminine" || v === "F" ? "Voix féminine" : v === "masculine" || v === "M" ? "Voix masculine" : "Sans voix");
+
+function tradsFor(a: Audio, lang: string) {
+  const all = (a.traductions ?? []).filter((t) => t.cloudinary_url);
+  const inLang = all.filter((t) => t.langue === lang);
+  return inLang.length ? inLang : all.filter((t) => t.langue === "fr");
+}
+function titleOf(a: Audio, lang: string) {
+  return tradsFor(a, lang)[0]?.titre ?? a.titre_fr ?? "Audio";
+}
+
+function PlayIcon({ size = 18, color = "currentColor" }: { size?: number; color?: string }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill={color} aria-hidden><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg>;
 }
 
 function SpotPage() {
@@ -44,7 +78,22 @@ function SpotPage() {
   const [pin, setPin] = useState("");
   const [pinError, setPinError] = useState("");
   const [checking, setChecking] = useState(false);
-  const [playing, setPlaying] = useState<{ audio: Audio; trad: Trad } | null>(null);
+  const [lang, setLang] = useState("fr");
+  const [langOpen, setLangOpen] = useState(false);
+  const [filter, setFilter] = useState("Tous");
+  const [selected, setSelected] = useState<Audio | null>(null);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("sz_lang");
+    const nav = navigator.language.slice(0, 2);
+    setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "en"));
+    const sync = () => setDark(document.documentElement.classList.contains("dark"));
+    sync();
+    const obs = new MutationObserver(sync);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -57,10 +106,7 @@ function SpotPage() {
       const { data: v } = await supabase.rpc("register_spot_visit", { p_id: id, p_visitor: visitor });
       const visit = v as { ok: boolean; reason?: string; premiere_visite?: string; duree_acces_jours?: number } | null;
       if (visit && !visit.ok) return setState(visit.reason === "acces_expire" ? "expired" : "notfound");
-      if (visit?.premiere_visite && visit.duree_acces_jours) {
-        const end = new Date(visit.premiere_visite).getTime() + visit.duree_acces_jours * 86400000;
-        setDays(Math.max(0, Math.ceil((end - Date.now()) / 86400000)));
-      }
+      if (visit?.duree_acces_jours) setDays(visit.duree_acces_jours);
       const saved = sessionStorage.getItem(`sz_pin_${id}`);
       if (saved && (await loadCatalog(saved))) return;
       setState("pin");
@@ -83,122 +129,260 @@ function SpotPage() {
     setChecking(true); setPinError("");
     const ok = await loadCatalog(pin);
     setChecking(false);
-    if (!ok) setPinError("Code incorrect. Il est affiché sur le totem.");
+    if (!ok) setPinError("Code incorrect. Vérifiez l'affichette.");
   }
 
   const moment = currentMoment();
-  const featured = audios.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment);
-  const others = audios.filter((a) => a !== featured);
+  const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
+  const hero = playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ?? playable[0];
+  const categories = useMemo(() => ["Tous", ...Array.from(new Set(audios.map((a) => a.type).filter((t): t is string => !!t)))], [audios]);
+  const match = (a: Audio) => filter === "Tous" || a.type === filter;
+  const guided = audios.filter((a) => !isMusic(a) && match(a));
+  const music = audios.filter((a) => isMusic(a) && match(a));
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-md px-5 pb-32 pt-6">
-        <img src={LOGO} alt="Spots Zen" className="mx-auto h-10" />
-        {state === "loading" && <p className="mt-20 text-center text-muted-foreground">Chargement…</p>}
-        {state === "notfound" && <Message title="Spot introuvable" text="Ce spot n'existe pas ou n'est plus actif." />}
-        {state === "expired" && <Message title="Accès expiré" text="Votre période d'accès à ce spot est terminée. Abonnez-vous pour continuer à écouter." />}
-        {spot && (state === "pin" || state === "catalog") && (
-          <>
-            {spot.photo_url && <img src={spot.photo_url} alt={spot.nom ?? ""} className="mt-6 aspect-[4/3] w-full rounded-3xl object-cover" />}
-            <h1 className="mt-5 font-serif text-3xl font-medium">{spot.nom}</h1>
-            {(spot.adresse || spot.client_nom) && <p className="mt-1 text-sm text-muted-foreground">{[spot.client_nom, spot.adresse].filter(Boolean).join(" · ")}</p>}
-            {spot.description && <p className="mt-3 text-sm leading-relaxed">{spot.description}</p>}
-            {days !== null && <span className="mt-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs">Accès offert · encore {days} jour{days > 1 ? "s" : ""}</span>}
-          </>
+    <div className="sz min-h-screen pb-[env(safe-area-inset-bottom)]">
+      <style>{PAGE_CSS}</style>
+
+      {/* TOP BAR */}
+      <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
+        <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
+          <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Spots Zen" className="h-8" />
+          <div className="relative">
+            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full bg-[var(--sz-chip)] px-4 text-xs font-semibold text-[var(--sz-chip-fg)] ring-1 ring-[var(--sz-chip-border)]" aria-haspopup="listbox" aria-expanded={langOpen}>
+              {lang.toUpperCase()} <span aria-hidden>▾</span>
+            </button>
+            {langOpen && (
+              <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-2xl bg-[var(--sz-player)] py-1 shadow-lg ring-1 ring-[var(--sz-hair)]">
+                {LANGS.map((l) => (
+                  <li key={l}>
+                    <button onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-xs font-semibold ${l === lang ? "text-[var(--sz-brand)]" : ""}`}>
+                      {l.toUpperCase()}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-md px-5 pb-10">
+        {state === "loading" && (
+          <div className="mt-6 space-y-4">
+            <div className="aspect-video animate-pulse rounded-2xl bg-[var(--sz-chip)]" />
+            <div className="grid grid-cols-2 gap-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-chip)]" />)}</div>
+          </div>
         )}
+        {state === "notfound" && <Message title="Spot indisponible" text="Ce spot n'est pas disponible pour le moment." />}
+        {state === "expired" && <Message title="Accès expiré" text="Votre période d'accès à ce spot est terminée. Abonnez-vous pour continuer à écouter." />}
+
+        {spot && (state === "pin" || state === "catalog") && (
+          <p className="mt-4 text-xs leading-relaxed text-[var(--sz-muted)]">
+            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#2D5A27] align-middle" />
+            Offert par {spot.client_nom ?? spot.nom} ★★★★
+            {days ? ` · Votre accès bien-être valable ${days} jours à compter de votre première visite` : ""}
+          </p>
+        )}
+
         {state === "pin" && (
-          <form onSubmit={submitPin} className="mt-8 rounded-3xl border bg-card p-6 text-center">
-            <h2 className="font-serif text-xl">Entrez le code du spot</h2>
-            <p className="mt-1 text-sm text-muted-foreground">4 chiffres, indiqués sur le totem.</p>
+          <form onSubmit={submitPin} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-chip)] p-6 text-center">
+            <h2 className="serif text-xl font-medium">Entrez le code du spot</h2>
+            <p className="mt-1 text-xs text-[var(--sz-muted)]">4 chiffres, indiqués sur l'affichette.</p>
             <input
-              inputMode="numeric" maxLength={4} value={pin} autoFocus
+              inputMode="numeric" maxLength={4} value={pin} autoFocus aria-label="Code PIN"
               onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
-              className="mx-auto mt-5 block w-40 rounded-2xl border bg-background py-3 text-center text-2xl tracking-[0.5em] outline-none focus:ring-2 focus:ring-primary"
-              aria-label="Code PIN"
+              className="mx-auto mt-5 block w-40 rounded-2xl bg-[var(--sz-bg)] py-3 text-center text-2xl tracking-[0.5em] outline-none ring-1 ring-[var(--sz-hair)] focus:ring-2 focus:ring-[var(--sz-brand)]"
             />
-            {pinError && <p className="mt-3 text-sm text-destructive">{pinError}</p>}
-            <button disabled={checking} className="mt-5 w-full rounded-full bg-primary py-3 font-medium text-primary-foreground disabled:opacity-60">
+            {pinError && <p className="mt-3 text-xs text-[#B3402A]">{pinError}</p>}
+            <button disabled={checking} className="mt-5 h-12 w-full rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)] disabled:opacity-60">
               {checking ? "Vérification…" : "Accéder aux audios"}
             </button>
           </form>
         )}
+
         {state === "catalog" && (
-          <div className="mt-8 space-y-6">
-            {featured && (
-              <section>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Recommandé ce {moment.toLowerCase()}</p>
-                <AudioCard audio={featured} big onPlay={(t) => setPlaying({ audio: featured, trad: t })} />
+          <>
+            {/* HERO */}
+            {hero && (
+              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
+                {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#2D5A27]" />}
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(28,46,30,0.6)_100%)]" />
+                <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {moment}</span>
+                <span className="glass absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon size={22} color="#fff" /></span>
+                <div className="absolute inset-x-4 bottom-3">
+                  <p className="serif text-xl font-medium text-[#F0EDE8]">{titleOf(hero, lang)}</p>
+                  <p className="text-xs text-[rgba(240,237,232,0.75)]">{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
+                </div>
+              </button>
+            )}
+
+            {/* FILTRES */}
+            <div className="noscroll -mx-5 mt-10 flex gap-2 overflow-x-auto px-5">
+              {categories.map((c) => (
+                <button key={c} onClick={() => setFilter(c)}
+                  className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold ${c === filter ? "bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "bg-[var(--sz-chip)] text-[var(--sz-chip-fg)] ring-1 ring-inset ring-[var(--sz-chip-border)]"}`}>
+                  {c}
+                </button>
+              ))}
+            </div>
+
+            {/* IMMERSIONS */}
+            {guided.length > 0 && (
+              <section className="mt-10">
+                <Eyebrow>Immersions guidées</Eyebrow>
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  {guided.map((a) => (
+                    <button key={a.id} onClick={() => setSelected(a)} className="rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] text-left">
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+                        {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 bg-[#2D5A27]" />}
+                        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(28,46,30,0.6)_100%)]" />
+                        {(a.mis_en_avant_moment || a.moment) && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment || a.moment}</span>}
+                        <span className="glass absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"><PlayIcon color="#fff" /></span>
+                      </div>
+                      <p className="serif mt-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
+                      <p className="mt-0.5 px-1 pb-1 text-xs text-[var(--sz-muted)]">{[fmt(a.duree_secondes), a.type].filter(Boolean).join(" · ")}</p>
+                    </button>
+                  ))}
+                </div>
               </section>
             )}
-            <section className="space-y-3">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Tous les audios</p>
-              {others.length === 0 && !featured && <p className="text-sm text-muted-foreground">Aucun audio disponible pour le moment.</p>}
-              {others.map((a) => <AudioCard key={a.id} audio={a} onPlay={(t) => setPlaying({ audio: a, trad: t })} />)}
-            </section>
-          </div>
+
+            {/* MUSIQUES */}
+            {music.length > 0 && (
+              <section className="mt-10">
+                <Eyebrow>Musiques relaxantes</Eyebrow>
+                <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
+                <ul className="mt-3">
+                  {music.map((a) => (
+                    <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
+                      <Thumb audio={a} />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold">{titleOf(a, lang)}</p>
+                        <p className="text-xs text-[var(--sz-muted)]">{fmt(a.duree_secondes)}</p>
+                      </div>
+                      <button onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8E4DC]"><PlayIcon size={16} color="#2D5A27" /></button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">Aucun audio disponible pour le moment.</p>}
+          </>
         )}
-      </div>
-      {playing && <Player key={playing.audio.id + (playing.trad.voix ?? "")} spotId={id} {...playing} onClose={() => setPlaying(null)} />}
+      </main>
+
+      {/* LIGHT ISLAND */}
+      {state === "catalog" && (
+        <section className="mx-auto max-w-md rounded-t-[2rem] bg-[#F0EDE8] px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-8 text-center">
+          <p className="serif text-lg font-medium text-[#1C2E1E]">Retrouvez ces audios chez vous ♡</p>
+          <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
+            Abonnez-vous à Spots Zen →
+          </a>
+          {selected && <div className="h-36" />}
+        </section>
+      )}
+
+      {selected && <Player key={selected.id} audio={selected} lang={lang} spotId={id} onClose={() => setSelected(null)} />}
     </div>
   );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <h2 className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--sz-muted)]">{children}</h2>;
+}
+
+function Thumb({ audio }: { audio: Audio }) {
+  return audio.image_url
+    ? <img src={audio.image_url} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+    : <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--sz-thumb)] text-[#2D5A27]" aria-hidden>♪</span>;
 }
 
 function Message({ title, text }: { title: string; text: string }) {
   return (
     <div className="mt-20 text-center">
-      <h1 className="font-serif text-2xl">{title}</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{text}</p>
+      <h1 className="serif text-2xl font-medium">{title}</h1>
+      <p className="mt-2 text-sm text-[var(--sz-muted)]">{text}</p>
     </div>
   );
 }
 
-function AudioCard({ audio, big, onPlay }: { audio: Audio; big?: boolean; onPlay: (t: Trad) => void }) {
-  const fr = (audio.traductions ?? []).filter((t) => t.langue === "fr" && t.cloudinary_url);
-  const title = fr[0]?.titre ?? audio.titre_fr ?? "Audio";
-  const label = (v: string | null) => (v === "feminine" || v === "F" ? "Voix féminine" : v === "masculine" || v === "M" ? "Voix masculine" : "Écouter");
-  return (
-    <div className={`mt-2 flex gap-4 rounded-3xl border bg-card p-4 ${big ? "flex-col" : "items-center"}`}>
-      {audio.image_url && <img src={audio.image_url} alt="" className={big ? "aspect-video w-full rounded-2xl object-cover" : "h-16 w-16 rounded-2xl object-cover"} />}
-      <div className="flex-1">
-        <p className="font-serif text-lg leading-tight">{title}</p>
-        <p className="text-xs text-muted-foreground">{[audio.type, fmt(audio.duree_secondes)].filter(Boolean).join(" · ")}</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {fr.length === 0 && <span className="text-xs text-muted-foreground">Bientôt disponible</span>}
-          {fr.map((t, i) => (
-            <button key={i} onClick={() => onPlay(t)} className="rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
-              ▶ {label(t.voix)}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Player({ audio, trad, spotId, onClose }: { audio: Audio; trad: Trad; spotId: string; onClose: () => void }) {
+function Player({ audio, lang, spotId, onClose }: { audio: Audio; lang: string; spotId: string; onClose: () => void }) {
+  const trads = tradsFor(audio, lang);
+  const voiced = trads.filter((t) => t.voix && t.voix !== "aucune");
+  const savedVoice = typeof localStorage !== "undefined" ? localStorage.getItem("sz_voice") : null;
+  const [trad, setTrad] = useState<Trad | null>(voiced.length > 1 ? null : trads[0] ?? null);
   const ref = useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [time, setTime] = useState(0);
+  const [dur, setDur] = useState(audio.duree_secondes ?? 0);
   const logged = useRef(false);
+
   useEffect(() => {
     const el = ref.current;
+    if (!el || !trad) return;
     const log = () => {
-      if (logged.current || !el || el.currentTime < 5) return;
+      if (logged.current || el.currentTime < 5) return;
       logged.current = true;
-      void supabase.from("ecoutes").insert({
-        audio_id: audio.id, spot_id: spotId, langue: trad.langue, voix: trad.voix, duree_ecoute_sec: Math.round(el.currentTime),
-      });
+      void supabase.from("ecoutes").insert({ audio_id: audio.id, spot_id: spotId, langue: trad.langue, voix: trad.voix, duree_ecoute_sec: Math.round(el.currentTime) });
+      const visitor = localStorage.getItem("sz_visitor");
+      if (visitor) void supabase.rpc("register_spot_visit", { p_id: spotId, p_visitor: visitor });
     };
-    el?.addEventListener("ended", log);
+    const onTime = () => { setTime(el.currentTime); log(); };
+    el.addEventListener("timeupdate", onTime);
+    el.addEventListener("ended", log);
     window.addEventListener("pagehide", log);
-    return () => { log(); el?.removeEventListener("ended", log); window.removeEventListener("pagehide", log); };
-  }, [audio.id, spotId, trad]);
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({ title: trad.titre, artist: "Spots Zen", artwork: audio.image_url ? [{ src: audio.image_url }] : [] });
+    }
+    return () => { el.removeEventListener("timeupdate", onTime); el.removeEventListener("ended", log); window.removeEventListener("pagehide", log); };
+  }, [audio.id, audio.image_url, spotId, trad]);
+
+  const toggle = () => { const el = ref.current; if (!el) return; if (el.paused) void el.play(); else el.pause(); };
+  const skip = (d: number) => { const el = ref.current; if (el) el.currentTime = Math.max(0, Math.min(el.duration || dur, el.currentTime + d)); };
+  const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  const title = trad?.titre ?? titleOf(audio, lang);
+
   return (
-    <div className="fixed inset-x-0 bottom-0 border-t bg-card p-4 shadow-lg">
-      <div className="mx-auto flex max-w-md items-center gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-serif">{trad.titre}</p>
-          <audio ref={ref} src={trad.cloudinary_url ?? undefined} controls autoPlay className="mt-2 w-full" />
+    <div className="fixed inset-x-0 bottom-0 z-40 rounded-t-2xl bg-[var(--sz-player)] px-5 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 shadow-[0_-8px_30px_rgba(15,20,16,0.15)]">
+      <div className="mx-auto max-w-md">
+        <div className="flex items-center gap-3">
+          <Thumb audio={audio} />
+          <div className="min-w-0 flex-1">
+            <p className="serif truncate text-base font-medium">{title}</p>
+            <p className="text-xs text-[var(--sz-muted)]">{trad ? voiceLabel(trad.voix) : "Choisissez une voix"}</p>
+          </div>
+          <button onClick={onClose} aria-label="Fermer" className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--sz-muted)]">✕</button>
         </div>
-        <button onClick={onClose} aria-label="Fermer" className="rounded-full px-3 py-2 text-muted-foreground">✕</button>
+
+        {!trad ? (
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            {voiced.map((t, i) => (
+              <button key={i} onClick={() => { localStorage.setItem("sz_voice", t.voix ?? ""); setTrad(t); }}
+                className={`h-12 rounded-full text-sm font-semibold ${t.voix === savedVoice ? "bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "bg-[var(--sz-chip)] text-[var(--sz-chip-fg)] ring-1 ring-inset ring-[var(--sz-chip-border)]"}`}>
+                {voiceLabel(t.voix)}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <>
+            <audio ref={ref} src={trad.cloudinary_url ?? undefined} autoPlay
+              onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
+              onLoadedMetadata={(e) => setDur(e.currentTarget.duration || dur)} />
+            <input type="range" min={0} max={dur || 1} step={1} value={time} aria-label="Progression"
+              onChange={(e) => { if (ref.current) ref.current.currentTime = Number(e.target.value); }}
+              className="mt-4 w-full" />
+            <div className="flex justify-between text-[11px] text-[var(--sz-muted)]"><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
+            <div className="mt-2 flex items-center justify-center gap-6">
+              <button onClick={() => skip(-15)} aria-label="Reculer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">◀◀</button>
+              <button onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--sz-brand)] text-[var(--sz-on-brand)]">
+                {playing ? <span className="text-lg font-semibold">❚❚</span> : <PlayIcon size={22} />}
+              </button>
+              <button onClick={() => skip(15)} aria-label="Avancer de 15 secondes" className="flex h-11 w-11 items-center justify-center rounded-full text-lg">▶▶</button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
