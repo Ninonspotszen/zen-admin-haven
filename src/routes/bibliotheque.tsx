@@ -100,6 +100,8 @@ function BibliothequePage() {
   const [state, setState] = useState<"loading" | "catalog">("loading");
   const [prenom, setPrenom] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [aboOpen, setAboOpen] = useState(false);
+  const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null } | null>(null);
   const [audios, setAudios] = useState<Audio[]>([]);
   const [lang, setLang] = useState("fr");
   const [langOpen, setLangOpen] = useState(false);
@@ -117,6 +119,13 @@ function BibliothequePage() {
       setUserId(user.id);
       const full = (user.user_metadata?.["full_name"] as string | undefined)?.trim();
       setPrenom(full ? full.split(/\s+/)[0] ?? "" : user.email ?? "");
+      /* abonnes_b2c.id is the account id; renewal date lives in date_fin_acces. */
+      const { data: aboData } = await supabase
+        .from("abonnes_b2c")
+        .select("formule, date_fin_acces")
+        .eq("id", user.id)
+        .maybeSingle();
+      setAbo(aboData ? { formule: aboData.formule, date_renouvellement: aboData.date_fin_acces } : null);
       const { data } = await supabase
         .from("audios")
         .select("*, traductions:audios_traductions(*)")
@@ -251,10 +260,28 @@ function BibliothequePage() {
 
       {state === "catalog" && (
         <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
-          <section className="rounded-3xl bg-[var(--sz-bg)] px-5 py-8 text-center">
-            <a href="/abonnement" className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
-              Mon abonnement →
-            </a>
+          <section className="audio-card rounded-2xl border border-[var(--sz-card-border)] px-5">
+            <button onClick={() => setAboOpen((o) => !o)} aria-expanded={aboOpen}
+              className="flex h-14 w-full items-center justify-between bg-transparent text-sm font-semibold text-[var(--sz-fg)]">
+              <span className="serif text-base font-medium">Mon abonnement</span>
+              <span className="text-xs text-[var(--sz-muted)]" aria-hidden>{aboOpen ? "▴" : "▾"}</span>
+            </button>
+            {aboOpen && (
+              <div className="space-y-3 border-t border-[var(--sz-hair)] py-4">
+                <div className="flex justify-between gap-4 text-sm">
+                  <span className="text-[var(--sz-muted)]">Formule</span>
+                  <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? "Abonnement mensuel"}</span>
+                </div>
+                <div className="flex justify-between gap-4 pb-2 text-sm">
+                  <span className="text-[var(--sz-muted)]">Prochain renouvellement</span>
+                  <span className="text-right font-semibold text-[var(--sz-fg)]">
+                    {abo?.date_renouvellement
+                      ? new Date(abo.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+                      : "—"}
+                  </span>
+                </div>
+              </div>
+            )}
           </section>
         </div>
       )}
