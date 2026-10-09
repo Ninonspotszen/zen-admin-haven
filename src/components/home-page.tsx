@@ -57,6 +57,15 @@ function VideoPhoto({ image, label, time, main = false }: { image: string; label
     <span className="home-video-label">{label}</span>{main && <span className="home-video-duration">02:00</span>}
   </Button>;
 }
+function CraftThumb({ time, title, label }: { time: number; title: string; label: string }) {
+  return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir la vidéo : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
+    <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative" }}>
+      <img src="https://img.youtube.com/vi/41lpqo0Bun4/maxresdefault.jpg" alt="" loading="lazy" onError={(e) => { e.currentTarget.src = "https://img.youtube.com/vi/41lpqo0Bun4/hqdefault.jpg"; }} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <div className="home-craft-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></div>
+      <span className="home-video-label">{label}</span>
+    </div>
+  </a>;
+}
 
 function Phones() {
   return <div className="home-phones" aria-label="Aperçu de la bibliothèque et du lecteur Spots Zen">
@@ -98,7 +107,7 @@ export function HomePage() {
       <section className="home-section home-concept home-container" id="concept"><div><Picto /><Eyebrow>UNE NOUVELLE FAÇON DE FAIRE UNE PAUSE</Eyebrow><h2>Les bons audios,<br />au bon moment,<br /><em>au bon endroit.</em></h2><div className="home-prose"><p>En pause. En vacances. Loin du quotidien. Certains moments de la journée n'attendent qu'une chose : qu'on leur fasse de la place.</p><p>Spots Zen est né pour eux. Une bibliothèque resserrée d'immersions audio bien-être, accessible là où ses utilisateurs sont déjà.</p><p>L'audio s'adapte à l'heure de votre connexion pour vous guider dans l'énergie du moment. Pour vous, pour vos enfants, vos clients ou vos collaborateurs.</p></div><div className="home-signature-line" /><strong className="home-concept-note">Une expérience pensée pour vos visiteurs.</strong></div><Phones /></section>
 
       <section className="home-section home-container home-craft"><div className="home-section-heading"><Picto /><Eyebrow>LE SAVOIR-FAIRE SPOTS ZEN</Eyebrow><h2>Chaque immersion est le résultat<br />d'une <em>chaîne d'exigence.</em></h2><p className="home-craft-intro">Quand on se lance enfin dans un audio, la voix ne doit pas sonner faux. L'état de détente recherché est fragile : un son de mauvaise qualité ou un écran qui se verrouille, et tout s'effondre avant même d'avoir commencé. C'est précisément ce que Spots Zen a décidé de ne jamais laisser arriver. Des textes écrits à la main, des voix enregistrées en studio, une musique composée sur mesure, des techniques qui font leurs preuves depuis des décennies. Pour créer des expériences qui font vraiment du bien.</p></div>
-        <div className="home-craft-rows">{craft.map((item, i) => <div className={`home-craft-row ${i % 2 ? "home-craft-reverse" : ""}`} key={item.label}><div className="home-craft-copy"><span className="home-number">0{i + 1} / 03</span><Eyebrow>{item.eyebrow}</Eyebrow><h3>{item.title}<br /><em>{item.italic}</em></h3><p>{item.text}</p><div className="home-author"><span /> <strong>{item.name}</strong><span className="home-author-role">{item.role}</span></div></div><VideoPhoto image={item.image} label={item.label} time={item.time} /></div>)}</div>
+        <div className="home-craft-rows">{craft.map((item, i) => <div className={`home-craft-row ${i % 2 ? "home-craft-reverse" : ""}`} key={item.label}><div className="home-craft-copy"><span className="home-number">0{i + 1} / 03</span><Eyebrow>{item.eyebrow}</Eyebrow><h3>{item.title}<br /><em>{item.italic}</em></h3><p>{item.text}</p><div className="home-author"><span /> <strong>{item.name}</strong><span className="home-author-role">{item.role}</span></div></div><CraftThumb title={item.title + " " + item.italic.slice(0, -1)} label={item.label} time={item.time} /></div>)}</div>
         <blockquote className="home-quote"><span className="home-quote-mark">❝</span><p>« Les scénarios s'appuient sur des techniques puissantes reconnues de relaxation. Nos voix sont enregistrées en studio et chaque musique est composée sur mesure pour donner à ces moments toute leur profondeur. »</p><Eyebrow>L'EXIGENCE DERRIÈRE CHAQUE ÉCOUTE</Eyebrow></blockquote>
       </section>
 

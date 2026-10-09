@@ -128,6 +128,8 @@
 .home-video-label, .home-video-duration { position: absolute; bottom: 0; font-size: 9px; font-weight: 600; padding: 14px 18px; background: var(--home-photo-label); }
 .home-video-label { left: 0; text-align: left; }
 .home-video-duration { right: 0; }
+.home-craft-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); color: var(--foreground); display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s; }
+.home-craft-thumb:hover .home-craft-play, .home-craft-thumb:focus-visible .home-craft-play { background: rgba(255, 255, 255, 1); transform: translate(-50%, -50%) scale(1.05); }
 .home-quote { background: var(--home-linen); padding: 48px 80px; max-width: 960px; margin: 88px auto 0; text-align: center; }
 .home-quote-mark { color: var(--primary); font-family: "Playfair Display", serif; font-size: 28px; }
 .home-quote p { font-size: 25px; line-height: 1.6; margin: 20px 0 28px; font-style: italic; }
