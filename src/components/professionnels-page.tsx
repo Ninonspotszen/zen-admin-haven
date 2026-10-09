@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { Zap, Mic, Globe, RefreshCw, TrendingUp, AlertCircle, Check, ArrowRight } from "lucide-react";
+import { Zap, Mic, Globe, RefreshCw, TrendingUp, AlertCircle, Check } from "lucide-react";
 import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/pro-hero.jpg";
@@ -189,4 +189,3 @@ export function ProfessionnelsPage() {
   </main><HomeFooter /></div>;
 }
 
-export { ArrowRight };
