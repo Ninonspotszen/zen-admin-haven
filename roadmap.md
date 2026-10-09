@@ -10,3 +10,5 @@
 - [x] Fiche spot : section Note interne + Enregistrer
 - [x] Colonnes manquantes : spots.adresse, spots.note_interne, clients.date_debut_acces
 - [x] Fiche client : édition en ligne nom, type, pack (Découverte/Essentiel/Premium), statut, note + Sauvegarder
+
+- [x] Home : section « Notre savoir-faire » — vignettes cliquables à la place des fenêtres YouTube.
