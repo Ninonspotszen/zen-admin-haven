@@ -146,13 +146,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "audio_filtres_audio_id_fkey"
-            columns: ["audio_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
-          {
             foreignKeyName: "audio_filtres_filtre_id_fkey"
             columns: ["filtre_id"]
             isOneToOne: false
@@ -224,13 +217,6 @@ export type Database = {
             referencedRelation: "audios"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "audios_musique_suite_fk"
-            columns: ["musique_suite_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
         ]
       }
       audios_traductions: {
@@ -272,13 +258,6 @@ export type Database = {
             referencedRelation: "audios"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "audios_traductions_audio_id_fkey"
-            columns: ["audio_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
         ]
       }
       client_audios: {
@@ -310,13 +289,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "audios"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "client_audios_audio_id_fkey"
-            columns: ["audio_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
           },
           {
             foreignKeyName: "client_audios_client_id_fkey"
@@ -481,13 +453,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "ecoutes_audio_id_fkey"
-            columns: ["audio_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
-          {
             foreignKeyName: "ecoutes_spot_id_fkey"
             columns: ["spot_id"]
             isOneToOne: false
@@ -590,13 +555,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "spot_audios_audio_id_fkey"
-            columns: ["audio_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
-          {
             foreignKeyName: "spot_audios_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
@@ -673,50 +631,7 @@ export type Database = {
       }
     }
     Views: {
-      vue_bibliotheque_spot: {
-        Row: {
-          audio_id: string | null
-          client_id: string | null
-          cloudinary_url: string | null
-          description: string | null
-          duree_secondes: number | null
-          image_url: string | null
-          langue: string | null
-          moment: string | null
-          musique_suite_id: string | null
-          public_cible: string | null
-          slug: string | null
-          titre: string | null
-          titre_fr: string | null
-          type: string | null
-          visible: boolean | null
-          voix: string | null
-          voix_traduction: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audios_musique_suite_fk"
-            columns: ["musique_suite_id"]
-            isOneToOne: false
-            referencedRelation: "audios"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "audios_musique_suite_fk"
-            columns: ["musique_suite_id"]
-            isOneToOne: false
-            referencedRelation: "vue_bibliotheque_spot"
-            referencedColumns: ["audio_id"]
-          },
-          {
-            foreignKeyName: "client_audios_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       get_audio_public: { Args: { p_audio: string }; Returns: Json }
