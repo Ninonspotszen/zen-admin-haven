@@ -405,6 +405,42 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_requests: {
+        Row: {
+          created_at: string
+          email: string | null
+          etablissement: string | null
+          id: string
+          message: string | null
+          nom: string | null
+          secteur: string
+          taille: string | null
+          type_structure: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          etablissement?: string | null
+          id?: string
+          message?: string | null
+          nom?: string | null
+          secteur: string
+          taille?: string | null
+          type_structure?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          etablissement?: string | null
+          id?: string
+          message?: string | null
+          nom?: string | null
+          secteur?: string
+          taille?: string | null
+          type_structure?: string | null
+        }
+        Relationships: []
+      }
       ecoutes: {
         Row: {
           audio_id: string | null

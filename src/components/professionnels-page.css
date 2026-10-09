@@ -1,0 +1,103 @@
+.sz-pro {
+  --pr-white: #FFFFFF; --pr-sand: #F8F6F2; --pr-dark: #1C2E3A; --pr-brand: #2D5A27;
+  --pr-text: #1C2E1E; --pr-muted: #5A6B5C; --pr-border: rgba(195,185,156,0.35);
+  --pr-accent: #C3B99C; --pr-input: #D8D2C5;
+  background: var(--pr-white); color: var(--pr-text);
+}
+.sz-pro main { font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; line-height: 1.75; }
+.sz-pro h1, .sz-pro h2, .sz-pro .pr-h3, .sz-pro .pr-num, .sz-pro .pr-quote, .sz-pro .pr-testi { font-family: "Playfair Display", serif; }
+.sz-pro .pr-section { padding: 80px 24px; }
+.sz-pro .pr-inner { max-width: 1160px; margin-inline: auto; }
+.sz-pro .pr-center { text-align: center; }
+.sz-pro .pr-alt { background: var(--pr-sand); }
+.sz-pro .pr-dark { background: var(--pr-dark); color: var(--pr-white); }
+.sz-pro .pr-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--pr-muted); margin: 0 0 16px; }
+.sz-pro .pr-dark .pr-eyebrow, .sz-pro .pr-hero .pr-eyebrow { color: var(--pr-white); }
+.sz-pro h2 { font-weight: 600; font-size: 44px; line-height: 1.2; color: var(--pr-dark); margin: 0 0 24px; }
+.sz-pro .pr-dark h2 { color: var(--pr-white); }
+.sz-pro .pr-heading { text-align: center; margin-bottom: 48px; }
+.sz-pro .pr-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--pr-brand); color: var(--pr-white); border: 0; border-radius: 9999px; padding: 14px 28px; font-weight: 600; font-size: 15px; cursor: pointer; transition: filter .2s; }
+.sz-pro .pr-btn:hover { filter: brightness(1.1); }
+.sz-pro .pr-btn:disabled { opacity: .6; }
+.sz-pro .pr-btn-full { width: 100%; margin-top: 8px; }
+.sz-pro .pr-link { background: none; border: 0; color: var(--pr-white); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(255,255,255,.5); font-size: 15px; cursor: pointer; padding: 14px 8px; }
+
+.sz-pro .pr-hero { position: relative; isolation: isolate; min-height: calc(100svh - 80px); display: grid; place-items: center; padding: 80px 24px; text-align: center; color: var(--pr-white); }
+.sz-pro .pr-hero-img, .sz-pro .pr-hero-shade { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.sz-pro .pr-hero-shade { background: rgba(0,0,0,0.45); z-index: -1; }
+.sz-pro .pr-hero-inner { max-width: 900px; }
+.sz-pro .pr-hero h1 { font-size: 56px; font-weight: 600; line-height: 1.15; margin: 0 0 24px; }
+.sz-pro .pr-hero-copy { font-size: 18px; max-width: 620px; margin: 0 auto 32px; }
+.sz-pro .pr-hero-ctas { display: flex; gap: 16px; justify-content: center; align-items: center; }
+
+.sz-pro .pr-promise { font-style: italic; font-weight: 500; max-width: 800px; margin-inline: auto; }
+.sz-pro .pr-body { color: var(--pr-muted); max-width: 680px; margin: 0 auto 24px; }
+.sz-pro .pr-quote { font-style: italic; color: var(--pr-muted); font-size: 20px; max-width: 640px; margin: 0 auto 48px; }
+.sz-pro .pr-grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; text-align: left; }
+.sz-pro .pr-grid2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+.sz-pro .pr-card { background: var(--pr-white); border: 1px solid var(--pr-border); border-radius: 16px; padding: 32px; margin: 0; }
+.sz-pro .pr-card h3 { font-weight: 600; font-size: 17px; margin: 12px 0 8px; color: var(--pr-text); }
+.sz-pro .pr-card p { color: var(--pr-muted); margin: 0; }
+.sz-pro .pr-icon { color: var(--pr-brand); width: 28px; height: 28px; }
+
+.sz-pro .pr-timeline { list-style: none; padding: 0; margin: 0 0 48px; display: grid; grid-template-columns: repeat(6,1fr); gap: 24px; position: relative; }
+.sz-pro .pr-timeline::before { content: ""; position: absolute; top: 28px; left: 0; right: 0; height: 1px; background: var(--pr-accent); opacity: .3; }
+.sz-pro .pr-timeline li { position: relative; }
+.sz-pro .pr-num { display: inline-block; font-size: 44px; color: var(--pr-accent); background: var(--pr-sand); padding-right: 8px; line-height: 1.3; }
+.sz-pro .pr-timeline h3 { font-size: 16px; font-weight: 600; margin: 8px 0; }
+.sz-pro .pr-timeline p { color: var(--pr-muted); font-size: 14px; margin: 0; }
+.sz-pro .pr-note { color: var(--pr-muted); font-size: 14px; margin-top: 12px; }
+
+.sz-pro .pr-dark-body { color: rgba(255,255,255,0.8); max-width: 560px; margin: 0 auto 48px; }
+.sz-pro .pr-phones { display: flex; justify-content: center; gap: 48px; margin-bottom: 32px; }
+.sz-pro .pr-phone { width: 280px; border-radius: 40px; border: 8px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.4); overflow: hidden; }
+.sz-pro .pr-phone img { display: block; width: 100%; height: auto; }
+
+.sz-pro .pr-tabs { display: flex; gap: 32px; justify-content: center; border-bottom: 1px solid var(--pr-border); margin-bottom: 48px; overflow-x: auto; scrollbar-width: none; }
+.sz-pro .pr-tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 12px 4px; font-size: 15px; color: var(--pr-muted); cursor: pointer; white-space: nowrap; }
+.sz-pro .pr-tabs button.is-active { color: var(--pr-text); border-bottom-color: var(--pr-text); font-weight: 600; }
+.sz-pro .pr-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.sz-pro .pr-panel-img { width: 100%; height: 240px; object-fit: cover; border-radius: 16px; margin-bottom: 24px; }
+.sz-pro .pr-chip { display: inline-block; background: var(--pr-text); color: var(--pr-white); border-radius: 9999px; padding: 6px 14px; font-size: 11px; font-weight: 600; letter-spacing: .1em; }
+.sz-pro .pr-subchip { color: var(--pr-muted); font-size: 13px; margin: 10px 0 16px; }
+.sz-pro .pr-h3 { font-size: 28px; font-weight: 600; line-height: 1.25; color: var(--pr-dark); margin: 0 0 16px; }
+.sz-pro .pr-body-left { color: var(--pr-muted); }
+.sz-pro .pr-legal { display: flex; gap: 12px; border: 1px solid var(--pr-accent); border-radius: 16px; padding: 16px 20px; margin: 16px 0; background: var(--pr-sand); }
+.sz-pro .pr-legal svg { color: var(--pr-brand); flex: none; margin-top: 3px; }
+.sz-pro .pr-legal p { margin: 0; font-weight: 600; font-size: 14px; }
+.sz-pro .pr-checks { list-style: none; padding: 0; margin: 16px 0; }
+.sz-pro .pr-checks li { display: flex; gap: 10px; margin-bottom: 8px; }
+.sz-pro .pr-checks svg { color: var(--pr-brand); width: 18px; flex: none; margin-top: 3px; }
+.sz-pro .pr-inline-link { color: var(--pr-brand); font-weight: 600; text-decoration: none; }
+
+.sz-pro .pr-form-card { background: var(--pr-white); border: 1px solid var(--pr-border); border-radius: 16px; padding: 32px; text-align: left; color: var(--pr-text); }
+.sz-pro .pr-form-large { max-width: 560px; margin: 0 auto; padding: 40px; }
+.sz-pro .pr-form-title { font-size: 20px; font-weight: 600; margin: 0 0 4px; color: var(--pr-text); }
+.sz-pro .pr-form-note { color: var(--pr-muted); font-size: 14px; margin: 0 0 24px; }
+.sz-pro .pr-field { display: block; margin-bottom: 16px; }
+.sz-pro .pr-field span { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.sz-pro .pr-field input, .sz-pro .pr-field select { width: 100%; height: 48px; border: 1px solid var(--pr-input); border-radius: 9999px; padding: 0 20px; background: var(--pr-white); color: var(--pr-text); font: inherit; }
+.sz-pro .pr-field textarea { width: 100%; height: 120px; border: 1px solid var(--pr-input); border-radius: 16px; padding: 14px 20px; font: inherit; color: var(--pr-text); background: var(--pr-white); resize: vertical; }
+.sz-pro .pr-field :focus { outline: 2px solid var(--pr-brand); outline-offset: 1px; }
+.sz-pro .pr-success { color: var(--pr-brand); font-weight: 600; margin: 0; text-align: center; padding: 24px 0; }
+.sz-pro .pr-error { color: #B3261E; font-size: 14px; }
+.sz-pro .pr-alt-contact { color: rgba(255,255,255,0.75); font-size: 14px; margin-top: 24px; user-select: text; }
+
+.sz-pro .pr-testi { font-family: "Playfair Display", serif; font-style: italic; color: var(--pr-muted); font-size: 20px; margin: 0 0 16px; }
+.sz-pro .pr-sep { display: block; width: 32px; height: 2px; background: var(--pr-accent); margin-bottom: 16px; }
+.sz-pro figcaption strong { display: block; color: var(--pr-text); }
+.sz-pro figcaption span { color: var(--pr-brand); font-size: 14px; }
+
+@media (max-width: 900px) {
+  .sz-pro .pr-section { padding: 48px 16px; }
+  .sz-pro h2 { font-size: 30px; }
+  .sz-pro .pr-hero h1 { font-size: 36px; }
+  .sz-pro .pr-hero-ctas { flex-direction: column; }
+  .sz-pro .pr-grid3, .sz-pro .pr-grid2, .sz-pro .pr-panel { grid-template-columns: 1fr; gap: 16px; }
+  .sz-pro .pr-panel { gap: 32px; }
+  .sz-pro .pr-timeline { grid-template-columns: 1fr; gap: 16px; padding-left: 24px; }
+  .sz-pro .pr-timeline::before { top: 0; bottom: 0; left: 6px; right: auto; width: 1px; height: auto; }
+  .sz-pro .pr-phones { flex-direction: column; align-items: center; gap: 24px; }
+  .sz-pro .pr-tabs { justify-content: flex-start; gap: 20px; }
+  .sz-pro .pr-form-card, .sz-pro .pr-form-large { padding: 24px; }
+}
