@@ -25,9 +25,9 @@ const benefits = [
   { Icon: UsersRound, title: "Pour toute la famille", text: "Des instants de calme à partager, à chaque âge et à votre rythme." },
 ];
 const craft = [
-  { eyebrow: "DES TECHNIQUES DE RELAXATION RECONNUES", title: "Le fond avant", italic: "la forme.", text: "Chaque scénario utilise des techniques reconnues comme l'hypnose eriksonnienne, le Yoga Nidra ou la cohérence cardiaque. Ils sont écrits pour accompagner un besoin réel, avec des pratiques de relaxation accessibles et éprouvées. Chaque mot est juste pour créer la sensation recherchée.", name: "Ninon Godin", role: "Fondatrice", image: forestLake, label: "01 — L'INTENTION", time: 118 },
-  { eyebrow: "DES VOIX INCARNÉES", title: "Une présence", italic: "qui vous accompagne.", text: "Une voix masculine (Stefan), une voix féminine (Ninon). Des voix enveloppantes et professionnelles enregistrées en studio, qui trouvent le ton juste pour vous guider sans jamais s'imposer.", name: "Stefan Godin", role: "Comédien", image: sunsetLake, label: "02 — LES VOIX", time: 75 },
-  { eyebrow: "UNE MUSIQUE COMPOSÉE SUR MESURE", title: "Une émotion", italic: "à part entière.", text: "Des compositions originales avec fréquences binaurales qui offrent une immersion complète. Des sons naturels captés à Lacanau (la pluie, l'orage, l'eau...). La nature, telle qu'elle est. Chaque composition originale prolonge l'immersion et laisse une place au silence, à l'imaginaire, à votre propre rythme.", name: "Benoît Courti", role: "Compositeur", image: forestLake, label: "03 — LA MUSIQUE", time: 50 },
+  { eyebrow: "DES TECHNIQUES DE RELAXATION RECONNUES", title: "Le fond avant", italic: "la forme.", text: "Chaque scénario utilise des techniques reconnues comme l'hypnose eriksonnienne, le Yoga Nidra ou la cohérence cardiaque. Ils sont écrits pour accompagner un besoin réel, avec des pratiques de relaxation accessibles et éprouvées. Chaque mot est juste pour créer la sensation recherchée.", name: "Ninon Godin", role: "Fondatrice", image: forestLake, label: "01 — L'INTENTION", time: 118, thumb: STORAGE + "spots%20zen%20extrait%20video%20ninon.png" },
+  { eyebrow: "DES VOIX INCARNÉES", title: "Une présence", italic: "qui vous accompagne.", text: "Une voix masculine (Stefan), une voix féminine (Ninon). Des voix enveloppantes et professionnelles enregistrées en studio, qui trouvent le ton juste pour vous guider sans jamais s'imposer.", name: "Stefan Godin", role: "Comédien", image: sunsetLake, label: "02 — LES VOIX", time: 75, thumb: STORAGE + "spots%20zen%20extrait%20video%20stefan.png" },
+  { eyebrow: "UNE MUSIQUE COMPOSÉE SUR MESURE", title: "Une émotion", italic: "à part entière.", text: "Des compositions originales avec fréquences binaurales qui offrent une immersion complète. Des sons naturels captés à Lacanau (la pluie, l'orage, l'eau...). La nature, telle qu'elle est. Chaque composition originale prolonge l'immersion et laisse une place au silence, à l'imaginaire, à votre propre rythme.", name: "Benoît Courti", role: "Compositeur", image: forestLake, label: "03 — LA MUSIQUE", time: 50, thumb: STORAGE + "spots%20zen%20extrait%20video%20musique.png" },
 ];
 const businessReviews = [
   { text: "\"Une petite attention qui change tout dans l'expérience de nos vacanciers. Simple à mettre en place, et très appréciée.\"", name: "Directeur de camping 4★", place: "Gironde" },
@@ -50,19 +50,23 @@ function Picto({ light = false }: { light?: boolean }) {
 function Cta({ children, href, to }: { children: ReactNode; href?: string; to?: "/offres" }) {
   return <Button asChild className="home-cta">{to ? <Link to={to}>{children}<ArrowRight aria-hidden="true" /></Link> : <a href={href}>{children}<ArrowRight aria-hidden="true" /></a>}</Button>;
 }
-function VideoPhoto({ image, label, time, main = false }: { image: string; label: string; time?: number; main?: boolean }) {
-  return <Button variant="ghost" className={`home-video ${main ? "home-video-main" : ""}`} aria-label={`Lire la vidéo : ${label}`} onClick={() => window.open(`https://youtu.be/41lpqo0Bun4${time === undefined ? "" : `?t=${time}`}`, "_blank", "noopener,noreferrer")}>
-    <img src={image} alt="Paysage paisible au bord d’un lac" loading="lazy" width={800} height={600} />
-    <span className="home-video-play"><Play fill="currentColor" aria-hidden="true" /></span>
-    <span className="home-video-label">{label}</span>{main && <span className="home-video-duration">02:00</span>}
-  </Button>;
-}
-function CraftThumb({ time, title, label }: { time: number; title: string; label: string }) {
-  return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir la vidéo : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
+function CraftThumb({ time, title, image }: { time: number; title: string; image: string }) {
+  return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir l'extrait : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
     <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative" }}>
-      <img src="https://img.youtube.com/vi/41lpqo0Bun4/maxresdefault.jpg" alt="" loading="lazy" onError={(e) => { e.currentTarget.src = "https://img.youtube.com/vi/41lpqo0Bun4/hqdefault.jpg"; }} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-      <div className="home-craft-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></div>
-      <span className="home-video-label">{label}</span>
+      <img src={image} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.10)" }} />
+      <div className="home-craft-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="#1C2E1E"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg></div>
+    </div>
+  </a>;
+}
+function MainVideo() {
+  return <a className="home-craft-thumb home-main-video" href="https://youtu.be/41lpqo0Bun4" target="_blank" rel="noopener noreferrer" aria-label="Voir la vidéo de présentation Spots Zen (ouvre YouTube)" style={{ display: "block", textDecoration: "none", borderRadius: 12, overflow: "hidden", position: "relative", maxWidth: 820, marginInline: "auto" }}>
+    <div style={{ aspectRatio: "16 / 9", width: "100%", position: "relative" }}>
+      <img src={STORAGE + "spots%20zen%20video%20presentation%20globale.png"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.40))" }} />
+      <div className="home-craft-play" aria-hidden="true" style={{ width: 72, height: 72, background: "rgba(255,255,255,0.90)" }}><svg width="24" height="24" viewBox="0 0 24 24" fill="#1C2E1E"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg></div>
+      <span style={{ position: "absolute", bottom: 16, left: 16, color: "#FFFFFF", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }}>DÉCOUVRIR L'EXPÉRIENCE</span>
+      <span style={{ position: "absolute", bottom: 16, right: 16, color: "#FFFFFF", fontSize: 11, fontWeight: 600 }}>02:00</span>
     </div>
   </a>;
 }
@@ -107,13 +111,13 @@ export function HomePage() {
       <section className="home-section home-concept home-container" id="concept"><div><Picto /><Eyebrow>UNE NOUVELLE FAÇON DE FAIRE UNE PAUSE</Eyebrow><h2>Les bons audios,<br />au bon moment,<br /><em>au bon endroit.</em></h2><div className="home-prose"><p>En pause. En vacances. Loin du quotidien. Certains moments de la journée n'attendent qu'une chose : qu'on leur fasse de la place.</p><p>Spots Zen est né pour eux. Une bibliothèque resserrée d'immersions audio bien-être, accessible là où ses utilisateurs sont déjà.</p><p>L'audio s'adapte à l'heure de votre connexion pour vous guider dans l'énergie du moment. Pour vous, pour vos enfants, vos clients ou vos collaborateurs.</p></div><div className="home-signature-line" /><strong className="home-concept-note">Une expérience pensée pour vos visiteurs.</strong></div><Phones /></section>
 
       <section className="home-section home-container home-craft"><div className="home-section-heading"><Picto /><Eyebrow>LE SAVOIR-FAIRE SPOTS ZEN</Eyebrow><h2>Chaque immersion est le résultat<br />d'une <em>chaîne d'exigence.</em></h2><p className="home-craft-intro">Quand on se lance enfin dans un audio, la voix ne doit pas sonner faux. L'état de détente recherché est fragile : un son de mauvaise qualité ou un écran qui se verrouille, et tout s'effondre avant même d'avoir commencé. C'est précisément ce que Spots Zen a décidé de ne jamais laisser arriver. Des textes écrits à la main, des voix enregistrées en studio, une musique composée sur mesure, des techniques qui font leurs preuves depuis des décennies. Pour créer des expériences qui font vraiment du bien.</p></div>
-        <div className="home-craft-rows">{craft.map((item, i) => <div className={`home-craft-row ${i % 2 ? "home-craft-reverse" : ""}`} key={item.label}><div className="home-craft-copy"><span className="home-number">0{i + 1} / 03</span><Eyebrow>{item.eyebrow}</Eyebrow><h3>{item.title}<br /><em>{item.italic}</em></h3><p>{item.text}</p><div className="home-author"><span /> <strong>{item.name}</strong><span className="home-author-role">{item.role}</span></div></div><CraftThumb title={item.title + " " + item.italic.slice(0, -1)} label={item.label} time={item.time} /></div>)}</div>
+        <div className="home-craft-rows">{craft.map((item, i) => <div className={`home-craft-row ${i % 2 ? "home-craft-reverse" : ""}`} key={item.label}><div className="home-craft-copy"><span className="home-number">0{i + 1} / 03</span><Eyebrow>{item.eyebrow}</Eyebrow><h3>{item.title}<br /><em>{item.italic}</em></h3><p>{item.text}</p><div className="home-author"><span /> <strong>{item.name}</strong><span className="home-author-role">{item.role}</span></div></div><CraftThumb title={item.title + " " + item.italic.slice(0, -1)} image={item.thumb} time={item.time} /></div>)}</div>
         <blockquote className="home-quote"><span className="home-quote-mark">❝</span><p>« Les scénarios s'appuient sur des techniques puissantes reconnues de relaxation. Nos voix sont enregistrées en studio et chaque musique est composée sur mesure pour donner à ces moments toute leur profondeur. »</p><Eyebrow>L'EXIGENCE DERRIÈRE CHAQUE ÉCOUTE</Eyebrow></blockquote>
       </section>
 
       <section className="home-section home-container" id="bienfaits"><div className="home-section-heading"><Eyebrow>PRENDRE SOIN DE SOI, SIMPLEMENT</Eyebrow><h2>Les bénéfices dès<br /><em>la première écoute.</em></h2></div><div className="home-benefits">{benefits.map(({ Icon, title, text }, i) => <article key={title} className="home-benefit"><div><Icon aria-hidden="true" /><span>0{i + 1}</span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
 
-      <section className="home-section home-container"><div className="home-section-heading"><Eyebrow>EN IMAGES</Eyebrow><h2>Découvrez Spots Zen<br /><em>en deux minutes.</em></h2></div><VideoPhoto image={sunsetLake} label="DÉCOUVRIR L'EXPÉRIENCE" main /></section>
+      <section className="home-section home-container"><div className="home-section-heading"><Eyebrow>EN IMAGES</Eyebrow><h2>Découvrez Spots Zen<br /><em>en deux minutes.</em></h2></div><MainVideo /></section>
 
       <section className="home-section home-container" id="bibliotheque"><div className="home-section-heading"><Eyebrow>LA BIBLIOTHÈQUE</Eyebrow><h2>Le bon audio, <em>au bon moment.</em></h2><p>Une expérience qui s'accorde à vos envies et au rythme de votre journée.</p></div><div className="home-audios">{audios.map(({ title, moment, duration, image, Icon }, i) => <Link to="/offres" className="home-audio" key={title}><div className="home-audio-image"><img src={image} alt={title} width={400} height={300} loading="lazy" /><span><Icon aria-hidden="true" /></span></div><div className="home-audio-moment"><span>{moment}</span><span>0{i + 1}</span></div><h3>{title}</h3><p><Headphones aria-hidden="true" />{duration}</p></Link>)}</div><p className="home-catalog-stats">8 immersions guidées <span>·</span> voix féminine ou masculine <span>·</span> 8 musiques composées sur mesure <span>·</span> 24 écoutes différentes possibles</p></section>
 
