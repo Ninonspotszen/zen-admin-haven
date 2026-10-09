@@ -79,6 +79,8 @@ body:has(.sz-home) { background-color: #FFFFFF; }
 .home-phone { flex: 0 1 216px; height: 432px; min-width: 0; padding: 10px; background: var(--home-phone-shell); border-radius: 32px; box-shadow: var(--home-shadow); transform: rotate(-3deg); }
 .home-phone-player { transform: rotate(3deg) translateY(10px); }
 .home-phone-screen { height: 100%; background: var(--background); border-radius: 23px; padding: 10px 12px; overflow: hidden; position: relative; }
+.home-phone-screen:has(.home-phone-capture) { padding: 0; }
+.home-phone-capture { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .home-phone-screen::before { content: ""; position: absolute; width: 62px; height: 12px; border-radius: 12px; background: var(--home-phone-shell); top: 4px; left: 50%; transform: translateX(-50%); }
 .home-phone-top { display: flex; justify-content: space-between; font-size: 7px; line-height: 1; margin-bottom: 26px; }
 .home-phone-logo { width: 92px; height: 28px; object-fit: contain; object-position: left; margin-bottom: 24px; }

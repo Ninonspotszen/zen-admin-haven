@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/particuliers-hero.jpg";
+import pwaRecommended from "@/assets/pwa-recommande.png";
+import pwaVoice from "@/assets/pwa-choix-voix.png";
+import pwaPlayer from "@/assets/pwa-player.png";
 
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
 const monthlyLink = import.meta.env['VITE_STRIPE_MONTHLY_LINK'] as string | undefined;
@@ -89,5 +92,5 @@ export function ParticuliersPage() {
 }
 
 function PwaScreens() {
-  return <div className="p-phones" />;
+  return <div className="p-phones" aria-label="Aperçu réel de l'expérience Spots Zen"><figure className="p-phone"><img src={pwaRecommended} alt="Le haut de la page spot avec l'audio recommandé selon l'heure" loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaVoice} alt="L'écran de choix entre voix féminine et masculine" loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaPlayer} alt="Le lecteur Spots Zen pendant une écoute" loading="lazy" width={780} height={1688} /></figure></div>;
 }

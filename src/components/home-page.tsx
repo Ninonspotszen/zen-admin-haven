@@ -5,6 +5,8 @@ import { ArrowRight, UserRound, ChevronDown, Menu, X, Moon, Heart, Sun, Wind, Cl
 import { Button } from "@/components/ui/button";
 import forestLake from "@/assets/home-forest-lake.jpg";
 import sunsetLake from "@/assets/home-sunset-lake.jpg";
+import pwaLibrary from "@/assets/pwa-bibliotheque.png";
+import pwaPlayer from "@/assets/pwa-player.png";
 
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
 const LOGO = STORAGE + "SpotsZen-logo-transparent-fonce.png";
@@ -75,16 +77,9 @@ function MainVideo() {
 function Phones() {
   return <div className="home-phones" aria-label="Aperçu de la bibliothèque et du lecteur Spots Zen">
     <div className="home-phone home-phone-catalog">
-      <div className="home-phone-screen"><div className="home-phone-top"><span>9:41</span><span>•••</span></div><img className="home-phone-logo" src={LOGO} alt="SpotsZen" />
-        <Eyebrow>VOTRE ESPACE BIEN-ÊTRE</Eyebrow><h3>Un moment<br />pour vous.</h3><p className="home-phone-small">Comment vous sentez-vous aujourd'hui ?</p>
-        <div className="home-phone-filters"><span>Tout voir</span><span>Sommeil</span><span>Énergie</span></div>
-        <p className="home-phone-list-title">À écouter maintenant</p>
-        {audios.slice(0, 3).map(({ title, duration, Icon, moment }) => <div className="home-phone-track" key={title}><span className="home-phone-icon"><Icon /></span><div><strong>{title}</strong><small>{duration} · {moment}</small></div><Play size={9} fill="currentColor" /></div>)}
-      </div>
+      <div className="home-phone-screen"><img className="home-phone-capture" src={pwaLibrary} alt="La bibliothèque réelle Spots Zen avec les audios disponibles" loading="lazy" width={780} height={1688} /></div>
     </div>
-    <div className="home-phone home-phone-player"><div className="home-phone-screen"><div className="home-phone-top"><span>9:41</span><span>•••</span></div><img className="home-phone-logo" src={LOGO} alt="SpotsZen" /><img className="home-phone-landscape" src={forestLake} alt="Reflets de forêt dans un lac" loading="lazy" />
-      <Eyebrow>SOIR · 18 MIN</Eyebrow><h3>Glisser vers<br />le sommeil</h3><p className="home-phone-small">Une parenthèse pour ralentir.</p><div className="home-phone-progress"><span /></div><div className="home-phone-time"><span>04:32</span><span>18:00</span></div><span className="home-phone-play"><Play fill="currentColor" /></span>
-    </div></div>
+    <div className="home-phone home-phone-player"><div className="home-phone-screen"><img className="home-phone-capture" src={pwaPlayer} alt="Le lecteur réel Spots Zen en cours de lecture" loading="lazy" width={780} height={1688} /></div></div>
   </div>;
 }
 
