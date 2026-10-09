@@ -50,13 +50,6 @@ function Picto({ light = false }: { light?: boolean }) {
 function Cta({ children, href, to }: { children: ReactNode; href?: string; to?: "/offres" }) {
   return <Button asChild className="home-cta">{to ? <Link to={to}>{children}<ArrowRight aria-hidden="true" /></Link> : <a href={href}>{children}<ArrowRight aria-hidden="true" /></a>}</Button>;
 }
-function VideoPhoto({ image, label, time, main = false }: { image: string; label: string; time?: number; main?: boolean }) {
-  return <Button variant="ghost" className={`home-video ${main ? "home-video-main" : ""}`} aria-label={`Lire la vidéo : ${label}`} onClick={() => window.open(`https://youtu.be/41lpqo0Bun4${time === undefined ? "" : `?t=${time}`}`, "_blank", "noopener,noreferrer")}>
-    <img src={image} alt="Paysage paisible au bord d’un lac" loading="lazy" width={800} height={600} />
-    <span className="home-video-play"><Play fill="currentColor" aria-hidden="true" /></span>
-    <span className="home-video-label">{label}</span>{main && <span className="home-video-duration">02:00</span>}
-  </Button>;
-}
 function CraftThumb({ time, title, image }: { time: number; title: string; image: string }) {
   return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir l'extrait : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
     <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative" }}>
