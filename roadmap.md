@@ -1,5 +1,9 @@
 # Roadmap
 
+- [ ] Créer /particuliers avec les dix sections du brief et les éléments communs de la home, sans changer les autres pages.
+- [ ] Capturer les trois écrans PWA réels et vérifier les photos du catalogue.
+- [ ] Vérifier les liens Stripe configurés et l’affichage ordinateur / téléphone.
+
 - [x] Créer la home publique / selon le brief et les captures, sans modifier les autres routes.
 - [x] Vérifier les textes, images, liens et l’affichage de la home sur téléphone et ordinateur.
 
