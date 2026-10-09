@@ -1,5 +1,5 @@
 .sz-home {
-  --background: oklch(0.973 0.006 84);
+  --background: #FFFFFF;
   --foreground: oklch(0.283 0.033 148);
   --primary: oklch(0.425 0.091 140);
   --primary-foreground: oklch(0.984 0.006 84);
@@ -25,6 +25,7 @@
   line-height: 1.8;
   letter-spacing: 0;
 }
+body:has(.sz-home) { background-color: #FFFFFF; }
 .sz-home *, .sz-home *::before, .sz-home *::after { box-sizing: border-box; }
 .sz-home a { color: inherit; text-decoration: none; }
 .sz-home h1, .sz-home h2, .sz-home h3, .sz-home blockquote p { font-family: "Playfair Display", serif; font-weight: 500; letter-spacing: 0; }
@@ -168,10 +169,10 @@
 .home-personal-reviews footer { display: flex; gap: 8px; font-size: 10px; }
 .home-personal-reviews footer strong { color: var(--primary); }
 .home-personal-reviews footer span { color: var(--muted-foreground); }
-.home-offers { background: var(--home-surface); }
+.home-offers { background: transparent; }
 .home-offers .home-section-heading h2 { font-size: 42px; }
 .home-offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.home-offer { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 58px 35px; background: var(--home-linen); border-radius: 8px; }
+.home-offer { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 58px 35px; background: #F8F6F2; border-radius: 8px; }
 .home-offer .home-eyebrow { font-size: 8px; }
 .home-offer h3 { font-size: 40px; margin: 22px 0; }
 .home-offer > p:not(.home-eyebrow) { color: var(--muted-foreground); font-size: 12px; max-width: 400px; }
