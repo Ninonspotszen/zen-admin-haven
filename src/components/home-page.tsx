@@ -1,4 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, UserRound, ChevronDown, Menu, X, Moon, Heart, Sun, Wind, Clock3, UsersRound, Headphones, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,19 +89,9 @@ function Phones() {
 }
 
 export function HomePage() {
-  const [lang, setLang] = useState("fr");
-  const [langOpen, setLangOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  useEffect(() => { const saved = localStorage.getItem("sz_lang"); if (saved && LANGS.includes(saved)) setLang(saved); }, []);
 
   return <div className="sz-home">
-    <header className="home-header"><div className="home-header-inner">
-      <Link to="/" aria-label="SpotsZen — accueil"><img src={LOGO} alt="SpotsZen" className="home-logo" width={180} height={48} /></Link>
-      <nav className="home-nav" aria-label="Navigation principale"><a href="#bibliotheque">La Bibliothèque</a><a href="#etablissements">Pour les établissements</a><a href="#contact">Contact</a></nav>
-      <div className="home-header-actions"><div className="home-language"><Button variant="ghost" aria-label="Choisir la langue" aria-expanded={langOpen} onClick={() => setLangOpen(!langOpen)}>{lang.toUpperCase()}<ChevronDown /></Button>
-        {langOpen && <div className="home-language-menu">{LANGS.map(l => <Button variant="ghost" key={l} aria-pressed={l === lang} onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }}>{l.toUpperCase()}</Button>)}</div>}
-      </div><Button asChild variant="outline" size="icon" className="home-account" aria-label="Connexion"><Link to="/connexion"><UserRound /></Link></Button><div className="home-header-cta"><Cta to="/offres">Commencer — 5€/mois</Cta></div><Button variant="ghost" size="icon" className="home-menu-toggle" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button></div>
-    </div>{menuOpen && <nav className="home-mobile-nav" aria-label="Navigation mobile" onClick={() => setMenuOpen(false)}><a href="#bibliotheque">La Bibliothèque</a><a href="#etablissements">Pour les établissements</a><a href="#contact">Contact</a><Link to="/offres">Commencer — 5€/mois →</Link></nav>}</header>
+    <HomeHeader />
 
     <main>
       <section className="home-hero"><img className="home-hero-image" src={forestLake} alt="Un lac paisible entouré de forêts, reflétant le ciel" width={1920} height={1088} fetchPriority="high" /><div className="home-hero-shade" />
@@ -130,6 +121,6 @@ export function HomePage() {
       <section className="home-section home-container home-contact" id="contact"><div className="home-contact-photo"><img src={forestLake} alt="Un lac au calme, entouré de pins" loading="lazy" width={640} height={580} /><span>PRENONS LE TEMPS D'ÉCHANGER</span></div><div className="home-contact-copy"><Eyebrow>UN PROJET, UNE QUESTION, UNE IDÉE ?</Eyebrow><h2>On en parle<br /><em>de vive voix ?</em></h2><p>Chaque lieu est différent. Racontez-moi le vôtre, et imaginons ensemble comment y faire une place au bien-être.</p><div className="home-identity"><span>N</span><div><strong>Ninon Godin</strong><small>Fondatrice de Spots Zen</small></div></div><a className="home-email" href="mailto:bonjour@spotszen.fr">bonjour@spotszen.fr</a><Cta href="mailto:bonjour@spotszen.fr?subject=Prendre%20rendez-vous">Prendre rendez-vous</Cta></div></section>
     </main>
 
-    <footer className="home-footer"><div className="home-container"><div className="home-footer-grid"><div className="home-footer-brand"><img src={LOGO_LIGHT} alt="SpotsZen" width={190} height={52} loading="lazy" /><p>Des moments de calme, partout où la vie nous emmène.</p></div><div><h3>Explorer</h3><a href="#concept">Le concept</a><a href="#bienfaits">Les bienfaits</a><a href="#bibliotheque">La Bibliothèque</a></div><div><h3>Professionnels</h3><a href="#etablissements">Pour les établissements</a><a href="mailto:bonjour@spotszen.fr?subject=Demander%20une%20d%C3%A9mo">Demander une démo</a><a href="#contact">Nous contacter</a></div><div><h3>Restons en lien</h3><a href="mailto:bonjour@spotszen.fr">bonjour@spotszen.fr</a><a href="mailto:bonjour@spotszen.fr?subject=Prendre%20rendez-vous">Prendre rendez-vous</a></div></div><div className="home-footer-bottom"><p>© 2026 Spots Zen. Tous droits réservés.</p><div><a href="mailto:bonjour@spotszen.fr?subject=Mentions%20l%C3%A9gales">Mentions légales</a><a href="mailto:bonjour@spotszen.fr?subject=Conditions%20d'utilisation">Conditions d'utilisation</a><a href="mailto:bonjour@spotszen.fr?subject=Politique%20de%20confidentialit%C3%A9">Politique de confidentialité</a></div></div></div></footer>
+    <HomeFooter />
   </div>;
 }
