@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliothequeRouteImport } from './routes/bibliotheque'
 import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as OffresRouteImport } from './routes/offres'
+import { Route as ParticuliersRouteImport } from './routes/particuliers'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as SpotsIdRouteImport } from './routes/spots.$id'
 import { Route as AdminAbonnesIndexRouteImport } from './routes/admin/abonnes.index'
@@ -61,6 +62,11 @@ const ConnexionRoute = ConnexionRouteImport.update({
 const OffresRoute = OffresRouteImport.update({
   id: '/offres',
   path: '/offres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParticuliersRoute = ParticuliersRouteImport.update({
+  id: '/particuliers',
+  path: '/particuliers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
+  '/particuliers': typeof ParticuliersRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
+  '/particuliers': typeof ParticuliersRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/bibliotheque': typeof BibliothequeRoute
   '/connexion': typeof ConnexionRoute
   '/offres': typeof OffresRoute
+  '/particuliers': typeof ParticuliersRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/bibliotheque'
     | '/connexion'
     | '/offres'
+    | '/particuliers'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/bibliotheque'
     | '/connexion'
     | '/offres'
+    | '/particuliers'
     | '/spots/$id'
     | '/admin'
     | '/admin/abonnes/$id'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/bibliotheque'
     | '/connexion'
     | '/offres'
+    | '/particuliers'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   BibliothequeRoute: typeof BibliothequeRoute
   ConnexionRoute: typeof ConnexionRoute
   OffresRoute: typeof OffresRoute
+  ParticuliersRoute: typeof ParticuliersRoute
   SpotsIdRoute: typeof SpotsIdRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
@@ -302,6 +315,13 @@ declare module '@tanstack/react-router' {
       path: '/offres'
       fullPath: '/offres'
       preLoaderRoute: typeof OffresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/particuliers': {
+      id: '/particuliers'
+      path: '/particuliers'
+      fullPath: '/particuliers'
+      preLoaderRoute: typeof ParticuliersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -420,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   BibliothequeRoute: BibliothequeRoute,
   ConnexionRoute: ConnexionRoute,
   OffresRoute: OffresRoute,
+  ParticuliersRoute: ParticuliersRoute,
   SpotsIdRoute: SpotsIdRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
