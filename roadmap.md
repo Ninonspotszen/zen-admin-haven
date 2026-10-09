@@ -2,7 +2,7 @@
 
 - [x] Créer /particuliers avec les dix sections du brief et les éléments communs de la home, sans changer la présentation des autres pages.
 - [x] Vérifier les huit photos du catalogue, la FAQ et l’affichage ordinateur / téléphone.
-- [ ] Capturer les trois écrans PWA réels : bloqué par le lien et le PIN d’un spot de démonstration à fournir ; aucun écran factice ajouté.
+- [x] Capturer cinq écrans PWA réels avec le spot de démonstration fourni : deux pour la home et trois pour /particuliers ; remplacer tous les écrans dessinés.
 - [ ] Configurer les liens Stripe mensuel et annuel : liens non renseignés, repli temporaire vers /offres.
 - [ ] Lien /etablissements : page inexistante, repli temporaire vers la section établissements de l’accueil sans créer de page hors périmètre.
 
