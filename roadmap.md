@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Créer la home publique / selon le brief et les captures, sans modifier les autres routes.
-- [ ] Vérifier les textes, images, liens et l’affichage de la home sur téléphone et ordinateur.
+- [x] Créer la home publique / selon le brief et les captures, sans modifier les autres routes.
+- [x] Vérifier les textes, images, liens et l’affichage de la home sur téléphone et ordinateur.
 
 - [x] Supprimer l'onglet « Configuration » de la navigation
 - [x] Fiche spot : section Accès & QR Code (spotszen.fr/spot/[slug])
