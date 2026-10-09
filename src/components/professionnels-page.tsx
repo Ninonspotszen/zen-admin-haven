@@ -91,7 +91,7 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
 }
 
 export function ProfessionnelsPage() {
-  const [active, setActive] = useState(sectors[0].id);
+  const [active, setActive] = useState("hebergements");
   const s = sectors.find(x => x.id === active)!;
   return <div className="sz-home sz-pro"><HomeHeader anchorPrefix="/" /><main>
     <section className="pr-hero">
