@@ -57,6 +57,15 @@ function VideoPhoto({ image, label, time, main = false }: { image: string; label
     <span className="home-video-label">{label}</span>{main && <span className="home-video-duration">02:00</span>}
   </Button>;
 }
+function CraftThumb({ time, title, label }: { time: number; title: string; label: string }) {
+  return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir la vidéo : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
+    <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative" }}>
+      <img src="https://img.youtube.com/vi/41lpqo0Bun4/maxresdefault.jpg" alt="" loading="lazy" onError={(e) => { e.currentTarget.src = "https://img.youtube.com/vi/41lpqo0Bun4/hqdefault.jpg"; }} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <div className="home-craft-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></div>
+      <span className="home-video-label">{label}</span>
+    </div>
+  </a>;
+}
 
 function Phones() {
   return <div className="home-phones" aria-label="Aperçu de la bibliothèque et du lecteur Spots Zen">
