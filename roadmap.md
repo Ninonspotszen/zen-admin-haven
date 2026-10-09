@@ -12,3 +12,5 @@
 - [x] Fiche client : édition en ligne nom, type, pack (Découverte/Essentiel/Premium), statut, note + Sauvegarder
 
 - [x] Home : section « Notre savoir-faire » — vignettes cliquables à la place des fenêtres YouTube.
+
+- [x] Home : fond de page blanc pur (#FFFFFF), sable #F8F6F2 conservé uniquement sur les 2 cards établissements / particuliers.
