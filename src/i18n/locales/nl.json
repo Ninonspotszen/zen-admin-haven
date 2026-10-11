@@ -475,7 +475,7 @@
     },
     "steps": {
       "eyebrow": "HOE HET WERKT",
-      "h2": "Zo eenvoudig als een ademteug.",
+      "h2": "Zo eenvoudig als",
       "items": [
         {
           "title": "Tijd gedetecteerd",
@@ -490,14 +490,16 @@
           "text": "De audio gaat door, ook als uw scherm vergrendeld is. Leg uw telefoon neer. Sluit uw ogen. Laat u leiden."
         }
       ],
-      "childNote": "En voor kinderen zijn er ook zachte immersies! Vanaf 4 jaar, korte en rustgevende sessies om hen te helpen in slaap te vallen of zich te heroriënteren."
+      "childNote": "En voor kinderen zijn er ook zachte immersies! Vanaf 4 jaar, korte en rustgevende sessies om hen te helpen in slaap te vallen of zich te heroriënteren.",
+      "h2italic": "een ademhaling."
     },
     "catalog": {
       "eyebrow": "DE BIBLIOTHEEK",
       "h2": "Audio's die u in volledige onderdompeling brengen voor diepe ontspanning.",
       "badge": {
         "subscriber": "Abonnee"
-      }
+      },
+      "h2italic": "Audio die u volledig onderdompelt voor diepe ontspanning."
     },
     "prices": {
       "eyebrow": "TARIEVEN",
@@ -515,7 +517,7 @@
     },
     "faq": {
       "eyebrow": "VEELGESTELDE VRAGEN",
-      "h2": "Alles wat u zich afvraagt.",
+      "h2": "Alles wat",
       "items": [
         {
           "q": "Hoe krijg ik toegang tot de audio's na mijn aanmelding?",
@@ -533,14 +535,16 @@
           "q": "Hoe zeg ik mijn abonnement op?",
           "a": "U kunt op elk moment opzeggen vanuit uw persoonlijke ruimte op spotszen.fr. Geen opzegtermijn, geen boete. Uw toegang blijft actief tot het einde van de lopende periode."
         }
-      ]
+      ],
+      "h2italic": "u zich afvraagt."
     },
     "final": {
       "eyebrow": "BEGIN VANAVOND",
-      "h2": "Gun uzelf een echte pauze.",
+      "h2": "Geef uzelf",
       "cta": "Nu beginnen",
       "note": "Eerste maand gratis · Zonder verplichting · Annuleer wanneer u wilt",
-      "proLink": "Bent u een bedrijf? Voor mijn bedrijf →"
+      "proLink": "Bent u een bedrijf? Voor mijn bedrijf →",
+      "h2italic": "een echte pauze."
     }
   },
   "pro": {

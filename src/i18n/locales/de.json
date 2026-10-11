@@ -475,7 +475,7 @@
     },
     "steps": {
       "eyebrow": "SO FUNKTIONIERT ES",
-      "h2": "So einfach wie ein Atemzug.",
+      "h2": "Einfach wie",
       "items": [
         {
           "title": "Uhrzeit erkannt",
@@ -490,14 +490,16 @@
           "text": "Das Audio läuft weiter, auch wenn Ihr Bildschirm gesperrt ist. Legen Sie Ihr Telefon hin. Schließen Sie die Augen. Lassen Sie sich führen."
         }
       ],
-      "childNote": "Und für Kinder gibt es auch sanfte Immersionen! Ab 4 Jahren kurze und beruhigende Einheiten, die ihnen helfen einzuschlafen oder sich zu sammeln."
+      "childNote": "Und für Kinder gibt es auch sanfte Immersionen! Ab 4 Jahren kurze und beruhigende Einheiten, die ihnen helfen einzuschlafen oder sich zu sammeln.",
+      "h2italic": "ein Atemzug."
     },
     "catalog": {
       "eyebrow": "DIE BIBLIOTHEK",
       "h2": "Audios, die Sie in vollständige Eintauchung für tiefe Entspannung versetzen.",
       "badge": {
         "subscriber": "Abonnent·in"
-      }
+      },
+      "h2italic": "Audios, die Sie vollständig eintauchen lassen für eine tiefe Entspannung."
     },
     "prices": {
       "eyebrow": "PREISE",
@@ -515,7 +517,7 @@
     },
     "faq": {
       "eyebrow": "HÄUFIG GESTELLTE FRAGEN",
-      "h2": "Alles, was Sie sich fragen.",
+      "h2": "Alles, was",
       "items": [
         {
           "q": "Wie greife ich nach der Anmeldung auf die Audios zu?",
@@ -533,14 +535,16 @@
           "q": "Wie kündige ich mein Abonnement?",
           "a": "Sie können jederzeit in Ihrem persönlichen Bereich auf spotszen.fr kündigen. Keine Kündigungsfrist, keine Strafe. Ihr Zugang bleibt bis zum Ende der laufenden Periode aktiv."
         }
-      ]
+      ],
+      "h2italic": "Sie sich fragen."
     },
     "final": {
       "eyebrow": "BEGINNEN SIE HEUTE ABEND",
-      "h2": "Gönnen Sie sich eine echte Auszeit.",
+      "h2": "Gönnen Sie sich",
       "cta": "Jetzt starten",
       "note": "Erster Monat kostenlos · Keine Verpflichtung · Jederzeit kündbar",
-      "proLink": "Sie sind ein Unternehmen? Für mein Unternehmen →"
+      "proLink": "Sie sind ein Unternehmen? Für mein Unternehmen →",
+      "h2italic": "eine echte Pause."
     }
   },
   "pro": {

@@ -475,7 +475,7 @@
     },
     "steps": {
       "eyebrow": "HOW IT WORKS",
-      "h2": "As simple as a breath.",
+      "h2": "Simple as",
       "items": [
         {
           "title": "Time detected",
@@ -490,14 +490,16 @@
           "text": "Audio continues even when your screen locks. Put down your phone. Close your eyes. Let yourself be guided."
         }
       ],
-      "childNote": "And for children, gentle immersions have been designed for them too! From age 4, short and soothing sessions to help them fall asleep or refocus."
+      "childNote": "And for children, gentle immersions have been designed for them too! From age 4, short and soothing sessions to help them fall asleep or refocus.",
+      "h2italic": "a breath."
     },
     "catalog": {
       "eyebrow": "THE LIBRARY",
       "h2": "Audios that take you into complete immersion for deep relaxation.",
       "badge": {
         "subscriber": "Subscriber"
-      }
+      },
+      "h2italic": "Audio that immerses you completely for a deep relaxation."
     },
     "prices": {
       "eyebrow": "PRICING",
@@ -515,7 +517,7 @@
     },
     "faq": {
       "eyebrow": "FREQUENTLY ASKED QUESTIONS",
-      "h2": "Everything you might wonder.",
+      "h2": "Everything",
       "items": [
         {
           "q": "How do I access the audios after signing up?",
@@ -533,14 +535,16 @@
           "q": "How do I cancel my subscription?",
           "a": "You can cancel at any time from your personal space on spotszen.fr. No notice period, no penalty. Your access remains active until the end of the current period."
         }
-      ]
+      ],
+      "h2italic": "you've been wondering."
     },
     "final": {
       "eyebrow": "START TONIGHT",
-      "h2": "Give yourself a genuine break.",
+      "h2": "Give yourself",
       "cta": "Start now",
       "note": "First month free · No commitment · Cancel whenever you like",
-      "proLink": "Are you a business? For my business →"
+      "proLink": "Are you a business? For my business →",
+      "h2italic": "a real break."
     }
   },
   "pro": {

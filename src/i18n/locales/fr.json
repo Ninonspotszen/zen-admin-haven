@@ -475,7 +475,7 @@
     },
     "steps": {
       "eyebrow": "COMMENT ÇA MARCHE",
-      "h2": "Simple comme une respiration.",
+      "h2": "Simple comme",
       "items": [
         {
           "title": "L'heure détectée",
@@ -490,14 +490,16 @@
           "text": "L'audio continue même quand votre écran se verrouille. Posez votre téléphone. Fermez les yeux. Laissez-vous guider."
         }
       ],
-      "childNote": "Et pour les enfants, des immersions douces sont aussi pensées pour eux ! Dès 4 ans, des séances courtes et apaisantes pour les aider à s'endormir ou à se recentrer."
+      "childNote": "Et pour les enfants, des immersions douces sont aussi pensées pour eux ! Dès 4 ans, des séances courtes et apaisantes pour les aider à s'endormir ou à se recentrer.",
+      "h2italic": "une respiration."
     },
     "catalog": {
       "eyebrow": "LA BIBLIOTHÈQUE",
       "h2": "Des audios qui vous plongent en immersion complète pour une relaxation profonde.",
       "badge": {
         "subscriber": "Abonné·e"
-      }
+      },
+      "h2italic": "Des audios qui vous plongent en immersion complète pour une relaxation profonde."
     },
     "prices": {
       "eyebrow": "TARIFS",
@@ -515,7 +517,7 @@
     },
     "faq": {
       "eyebrow": "QUESTIONS FRÉQUENTES",
-      "h2": "Tout ce que vous vous demandez.",
+      "h2": "Tout ce que",
       "items": [
         {
           "q": "Comment accéder aux audios après mon inscription ?",
@@ -533,14 +535,16 @@
           "q": "Comment résilier mon abonnement ?",
           "a": "Vous pouvez résilier à tout moment depuis votre espace personnel sur spotszen.fr. Aucun préavis, aucune pénalité. Votre accès reste actif jusqu'à la fin de la période en cours."
         }
-      ]
+      ],
+      "h2italic": "vous vous demandez."
     },
     "final": {
       "eyebrow": "COMMENCEZ CE SOIR",
-      "h2": "Offrez-vous une vraie pause.",
+      "h2": "Offrez-vous",
       "cta": "Commencer maintenant",
       "note": "Premier mois offert · Sans engagement · Résiliez quand vous voulez",
-      "proLink": "Vous êtes un établissement ? Pour mon établissement →"
+      "proLink": "Vous êtes un établissement ? Pour mon établissement →",
+      "h2italic": "une vraie pause."
     }
   },
   "pro": {
