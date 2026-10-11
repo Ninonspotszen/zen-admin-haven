@@ -29,7 +29,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: SUPPORTED_LANGS,
     load: 'languageOnly',
-    interpolation: { escapeValue: false },
+    interpolation: { escapeValue: false, prefix: '{', suffix: '}' },
     ns: ['translation'],
     defaultNS: 'translation',
   });
