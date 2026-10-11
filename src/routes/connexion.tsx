@@ -1,4 +1,5 @@
 import i18n from "@/i18n/index";
+import { useTranslation } from "react-i18next";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,10 +15,10 @@ const PICTO =
 export const Route = createFileRoute("/connexion")({
   head: () => ({
     meta: [
-      { title: "Connexion — Spots Zen" },
-      { name: "description", content: "Créez votre compte ou connectez-vous à Spots Zen." },
-      { property: "og:title", content: "Connexion — Spots Zen" },
-      { property: "og:description", content: "Créez votre compte ou connectez-vous à Spots Zen." },
+      { title: i18n.t("auth.meta.title") },
+      { name: "description", content: i18n.t("auth.meta.description") },
+      { property: "og:title", content: i18n.t("auth.meta.title") },
+      { property: "og:description", content: i18n.t("auth.meta.description") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -37,6 +38,7 @@ function GoogleIcon() {
 }
 
 function ConnexionPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [lang, setLang] = useState("fr");
   const [langOpen, setLangOpen] = useState(false);
@@ -83,7 +85,7 @@ function ConnexionPage() {
       provider: "google",
       options: { redirectTo: window.location.origin + "/bibliotheque" },
     });
-    if (oauthError) setError("La connexion Google a échoué. Réessayez.");
+    if (oauthError) setError(t("auth.error.google"));
   }
 
   async function handleEmail(e: React.FormEvent) {
@@ -96,7 +98,7 @@ function ConnexionPage() {
     });
     setSending(false);
     if (otpError) {
-      setError("Impossible d'envoyer le lien. Vérifiez l'adresse email.");
+      setError(t("auth.error.email"));
       return;
     }
     setSentTo(email);
@@ -129,7 +131,7 @@ function ConnexionPage() {
       <header className="sticky top-0 z-20 flex items-center justify-between bg-[var(--szc-bg)] px-4 py-3">
         <button
           onClick={() => window.history.back()}
-          aria-label="Retour"
+          aria-label={t("auth.header.back")}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--szc-chip-border)] text-[var(--szc-fg)]"
         >
           ←
@@ -168,8 +170,8 @@ function ConnexionPage() {
         </div>
 
         {/* TEXTE */}
-        <h1 className="serif mt-6 text-center text-[26px] font-semibold leading-tight">Bienvenue sur Spots Zen</h1>
-        <p className="mt-2 text-center text-sm text-[var(--szc-muted)]">Créez votre compte ou connectez-vous</p>
+        <h1 className="serif mt-6 text-center text-[26px] font-semibold leading-tight">{t("auth.h1")}</h1>
+        <p className="mt-2 text-center text-sm text-[var(--szc-muted)]">{t("auth.subtitle")}</p>
 
         {/* BOUTON GOOGLE */}
         <button
@@ -177,25 +179,25 @@ function ConnexionPage() {
           className="mt-8 flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[var(--szc-border)] bg-white text-sm font-semibold text-[#1C2E1E] transition-colors hover:bg-[#F4F1EB]"
         >
           <GoogleIcon />
-          Continuer avec Google
+          {t("auth.google.cta")}
         </button>
 
         {/* SÉPARATEUR */}
         <div className="mt-6 flex w-full items-center gap-4">
           <span className="h-px flex-1 bg-[var(--szc-border)]" />
-          <span className="text-xs text-[var(--szc-muted)]">ou</span>
+          <span className="text-xs text-[var(--szc-muted)]">{t("auth.separator")}</span>
           <span className="h-px flex-1 bg-[var(--szc-border)]" />
         </div>
 
         {/* FORMULAIRE EMAIL */}
         {sentTo ? (
           <p className="mt-6 rounded-2xl bg-[var(--szc-surface)] px-5 py-4 text-center text-sm leading-relaxed text-[var(--szc-fg)]">
-            Un lien de connexion a été envoyé à <strong>{sentTo}</strong>. Vérifiez votre boîte mail.
+            {t("auth.email.sent", { email: sentTo })}
           </p>
         ) : (
           <form onSubmit={handleEmail} className="mt-6 w-full">
             <label htmlFor="email" className="text-sm font-medium text-[var(--szc-fg)]">
-              Votre adresse email
+              {t("auth.email.label")}
             </label>
             <input
               id="email"
@@ -204,7 +206,7 @@ function ConnexionPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="vous@exemple.com"
+              placeholder={t("auth.email.placeholder")}
               className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-sm text-[var(--szc-fg)] outline-none placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)]"
             />
             {error && <p className="mt-3 text-center text-sm text-[#B4452F]">{error}</p>}
@@ -213,16 +215,16 @@ function ConnexionPage() {
               disabled={sending}
               className="mt-4 h-12 w-full rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8] transition-opacity disabled:opacity-60"
             >
-              {sending ? "Envoi…" : "Continuer avec mon email →"}
+              {sending ? t("auth.email.cta.sending") : t("auth.email.cta.idle")}
             </button>
           </form>
         )}
 
         {/* MENTIONS LÉGALES */}
         <p className="mt-8 text-center text-xs leading-relaxed text-[var(--szc-muted)]">
-          En continuant, vous acceptez nos{" "}
-          <a href="#" className="underline">Conditions d'utilisation</a> et notre{" "}
-          <a href="#" className="underline">Politique de confidentialité</a>.
+          {t("auth.legal.prefix")}{" "}
+          <a href="#" className="underline">{t("auth.legal.cgu")}</a>,{" "}
+          <a href="#" className="underline">{t("auth.legal.privacy")}</a>.
         </p>
 
         {/* BADGE */}
@@ -231,7 +233,7 @@ function ConnexionPage() {
             <rect x="4" y="11" width="16" height="10" rx="2" />
             <path d="M8 11V7a4 4 0 0 1 8 0v4" />
           </svg>
-          Connexion instantanée et sécurisée
+          {t("auth.badge.security")}
         </div>
       </main>
     </div>
