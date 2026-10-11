@@ -54,7 +54,7 @@ function ConnexionPage() {
     if (saved && (LANGS as readonly string[]).includes(saved)) setLang(saved);
   }, []);
 
-  // Après connexion : abonné actif → /bibliotheque, sinon → /offres.
+  // Après connexion : abonné actif, offert ou ambassadeur → /bibliotheque, sinon → /offres.
   // Dans abonnes_b2c, la colonne qui porte le compte est `id` (clé étrangère vers auth.users.id).
   async function routeAfterAuth(userId: string) {
     if (redirected.current) return;
@@ -63,7 +63,7 @@ function ConnexionPage() {
       .from("abonnes_b2c")
       .select("id")
       .eq("id", userId)
-      .eq("statut", "actif")
+      .in("statut", ["actif", "offert", "ambassadeur"])
       .maybeSingle();
     navigate({ to: abo ? "/bibliotheque" : "/offres" });
   }
