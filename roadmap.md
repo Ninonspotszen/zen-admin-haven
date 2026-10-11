@@ -21,6 +21,6 @@
 
 - [x] Home : fond de page blanc pur (#FFFFFF), sable #F8F6F2 conservé uniquement sur les 2 cards établissements / particuliers.
 
-- [ ] Corriger routeAfterAuth : accès bibliothèque aussi pour les statuts « offert » et « ambassadeur ».
-- [ ] Ajouter .limit(200) aux requêtes de listes (audios, traductions, filtres) dans spots.$id.tsx et bibliotheque.tsx.
-- [ ] Brancher le titre de l'onglet par défaut (racine) sur i18n.
+- [x] Corriger routeAfterAuth : accès bibliothèque aussi pour les statuts « offert » et « ambassadeur ».
+- [x] Ajouter .limit(200) aux requêtes de listes : fait dans bibliotheque.tsx ; spots.$id.tsx passe par des fonctions de la base, sans requête de liste à limiter.
+- [x] Brancher le titre de l'onglet par défaut (racine) sur i18n.
