@@ -52,7 +52,6 @@ type Preview = { id: string; slug: string | null; image_url: string | null; mome
 function OffresPage() {
   const { t } = useTranslation();
   const [lang, setLang] = useState("fr");
-  const [langOpen, setLangOpen] = useState(false);
   const [items, setItems] = useState<Preview[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
   const startCheckout = async (plan: "mensuel" | "annuel") => {
@@ -69,8 +68,10 @@ function OffresPage() {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem("sz-lang");
-    if (saved && (LANGS as readonly string[]).includes(saved)) setLang(saved);
+    const apply = (l: string) => { if ((LANGS as readonly string[]).includes(l)) setLang(l); };
+    apply(localStorage.getItem("sz-lang") ?? i18n.language);
+    i18n.on("languageChanged", apply);
+    return () => { i18n.off("languageChanged", apply); };
   }, []);
 
   useEffect(() => {
@@ -89,7 +90,6 @@ function OffresPage() {
     })();
   }, [lang]);
 
-  const chooseLang = (l: string) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); };
 
   const benefits = [
     { Icon: Headphones, text: t("offers.benefit.audios"), strong: true },
@@ -108,18 +108,6 @@ function OffresPage() {
         <div className="relative mx-auto flex h-14 max-w-md items-center justify-center px-5">
           <img src={LOGO_FOR_LIGHT} alt="Spots Zen" className="logo-light h-8 w-auto object-contain" />
           <img src={LOGO_FOR_DARK} alt="Spots Zen" className="logo-dark h-8 w-auto object-contain" />
-          <div className="absolute right-5">
-            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--o-border)] px-4 text-sm font-semibold" aria-haspopup="listbox" aria-expanded={langOpen}>
-              {lang.toUpperCase()} <span aria-hidden>▾</span>
-            </button>
-            {langOpen && (
-              <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-[var(--o-border)] bg-[var(--o-bg)] py-1">
-                {LANGS.map((l) => (
-                  <li key={l}><button onClick={() => chooseLang(l)} className={`block h-10 w-full px-4 text-left text-sm font-semibold ${l === lang ? "text-[var(--o-brand)]" : ""}`}>{l.toUpperCase()}</button></li>
-                ))}
-              </ul>
-            )}
-          </div>
         </div>
       </header>
 
