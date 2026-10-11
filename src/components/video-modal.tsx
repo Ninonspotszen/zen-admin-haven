@@ -5,7 +5,7 @@ import "./video-modal.css";
 
 const VIDEO_ID = "41lpqo0Bun4";
 
-export function VideoButton({ time, label, className, style, children }: { time?: number; label: string; className?: string; style?: CSSProperties; children: ReactNode }) {
+export function VideoButton({ time, label, className, style, children }: { time?: number | undefined; label: string; className?: string; style?: CSSProperties; children: ReactNode }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!open) return;
