@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Moon, Wind, Sun, Users, Sparkles, Mic, Music, Play, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeHeader, HomeFooter } from "@/components/home-chrome";
+import { VideoButton } from "@/components/video-modal";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/particuliers-hero.jpg";
 import pwaRecommended from "@/assets/pwa-recommande.png";
@@ -58,7 +59,7 @@ function Cta({ children, annual = false, variant = "", arrow = false }: { childr
   return href ? <Button asChild className={`p-cta ${variant}`}><a href={href}>{children}{arrow && <ArrowRight aria-hidden />}</a></Button> : <Button asChild className={`p-cta ${variant}`}><Link to="/offres">{children}{arrow && <ArrowRight aria-hidden />}</Link></Button>;
 }
 function VideoThumb({ image, time, label, main = false }: { image: string; time?: number; label?: string; main?: boolean }) {
-  return <a className={`p-thumb ${main ? "p-main-thumb" : ""}`} href={`https://youtu.be/41lpqo0Bun4${time ? `?t=${time}` : ""}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir la vidéo : ${label ?? "Présentation Spots Zen"} (ouvre YouTube)`}><img src={image} alt="" loading="lazy" width={720} height={405} /><span className="p-play"><Play size={20} fill="currentColor" aria-hidden /></span>{label && <span className="p-thumb-label">{label}</span>}</a>;
+  return <VideoButton className={`p-thumb ${main ? "p-main-thumb" : ""}`} time={time} label={`Voir la vidéo : ${label ?? "Présentation Spots Zen"}`}><img src={image} alt="" loading="lazy" width={720} height={405} /><span className="p-play"><Play size={20} fill="currentColor" aria-hidden /></span>{label && <span className="p-thumb-label">{label}</span>}</VideoButton>;
 }
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
