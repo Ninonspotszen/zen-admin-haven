@@ -29,7 +29,10 @@
         "idle": "Doorgaan met mijn e-mail →",
         "sending": "Wordt verzonden…"
       },
-      "sent": "Er is een inloglink verzonden naar {email}. Controleer uw inbox."
+      "sent": {
+        "prefix": "Een inloglink is verzonden naar",
+        "suffix": "Controleer uw inbox."
+      }
     },
     "error": {
       "google": "Inloggen met Google is mislukt. Probeer het opnieuw.",
@@ -38,6 +41,7 @@
     "legal": {
       "prefix": "Door verder te gaan, gaat u akkoord met onze",
       "cgu": "Gebruiksvoorwaarden",
+      "and": "en onze",
       "privacy": "Privacybeleid"
     },
     "badge": { "security": "Onmiddellijk en beveiligd inloggen" }

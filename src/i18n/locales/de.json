@@ -29,7 +29,10 @@
         "idle": "Mit meiner E-Mail fortfahren →",
         "sending": "Wird gesendet…"
       },
-      "sent": "Ein Anmelde-Link wurde an {email} gesendet. Überprüfen Sie Ihr Postfach."
+      "sent": {
+        "prefix": "Ein Anmeldelink wurde gesendet an",
+        "suffix": "Überprüfen Sie Ihren Posteingang."
+      }
     },
     "error": {
       "google": "Die Google-Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -38,6 +41,7 @@
     "legal": {
       "prefix": "Durch das Fortfahren stimmen Sie unseren",
       "cgu": "Nutzungsbedingungen",
+      "and": "und unsere",
       "privacy": "Datenschutzrichtlinie"
     },
     "badge": { "security": "Sofortige und sichere Anmeldung" }

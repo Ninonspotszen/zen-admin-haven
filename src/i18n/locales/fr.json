@@ -29,7 +29,10 @@
         "idle": "Continuer avec mon email →",
         "sending": "Envoi…"
       },
-      "sent": "Un lien de connexion a été envoyé à {email}. Vérifiez votre boîte mail."
+      "sent": {
+        "prefix": "Un lien de connexion a été envoyé à",
+        "suffix": "Vérifiez votre boîte mail."
+      }
     },
     "error": {
       "google": "La connexion Google a échoué. Réessayez.",
@@ -38,6 +41,7 @@
     "legal": {
       "prefix": "En continuant, vous acceptez nos",
       "cgu": "Conditions d'utilisation",
+      "and": "et notre",
       "privacy": "Politique de confidentialité"
     },
     "badge": { "security": "Connexion instantanée et sécurisée" }
