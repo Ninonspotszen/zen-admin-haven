@@ -56,9 +56,10 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
 
         try {
           if (event.type === "checkout.session.completed") {
-            const userId: string | null = obj.client_reference_id ?? null;
+            let userId: string | null = obj.client_reference_id ?? null;
             const subscriptionId = idOf(obj.subscription);
-            if (userId && subscriptionId) {
+            const email: string | null = obj.customer_details?.email ?? obj.customer_email ?? null;
+            if ((userId || email) && subscriptionId) {
               let priceId = "";
               let periodEnd: number | null = null;
               const stripeKey = process.env["STRIPE_SECRET_KEY"];
@@ -73,6 +74,25 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                   periodEnd = item?.current_period_end ?? sub.current_period_end ?? null;
                 }
               }
+
+              // Paiement via les liens /particuliers : pas de client_reference_id.
+              // On rattache l'abonnement à l'email Stripe : mise à jour si le compte
+              // existe, sinon création du compte auth + ligne abonnes_b2c.
+              if (!userId && email) {
+                const { data: byEmail } = await abonnes().select("id").eq("email", email).maybeSingle();
+                if (byEmail?.id) {
+                  userId = byEmail.id;
+                } else {
+                  const { data: created, error: createErr } = await supabaseAdmin.auth.admin.createUser({
+                    email,
+                    email_confirm: true,
+                  });
+                  if (createErr) throw createErr;
+                  userId = created.user?.id ?? null;
+                }
+              }
+              if (!userId) throw new Error("Aucun utilisateur résolu pour cette session Checkout");
+
               const row: Record<string, unknown> = {
                 id: userId,
                 user_id: userId,
@@ -82,7 +102,6 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                 statut: "actif",
                 date_renouvellement: toDate(periodEnd),
               };
-              const email = obj.customer_details?.email ?? obj.customer_email ?? null;
               if (email) row["email"] = email;
 
               const { data: existing } = await abonnes().select("id").eq("id", userId).maybeSingle();
