@@ -35,7 +35,7 @@ const steps = [
   { title: "L'écran verrouillé", text: "L'audio continue même quand votre écran se verrouille. Posez votre téléphone. Fermez les yeux. Laissez-vous guider." },
 ];
 const craft = [
-  { Icon: Sparkles, title: "Les Techniques", text: "Les scénarios s'appuient sur l'hypnose éricksonienne, le yoga nidra et la cohérence cardiaque. Chaque mot est choisi pour l'écho qu'il produit dans le corps et ainsi créer la sensation recherchée.", signature: "Ninon Godin · Professeure de yoga · Fondatrice", image: "ninon", time: 118, label: "01 — LES TECHNIQUES" },
+  { Icon: Sparkles, title: "Les Techniques", text: "Les scénarios s'appuient sur l'hypnose éricksonienne, le yoga nidra et la cohérence cardiaque. Chaque mot est choisi pour l'écho qu'il produit dans le corps et ainsi créer la sensation recherchée.", signature: "Ninon Godin · Professeure de yoga · Fondatrice", image: "ninon", time: 119, label: "01 — LES TECHNIQUES" },
   { Icon: Mic, title: "Les Voix", text: "Comédien depuis 40 ans. Voix française connue (Bruce Willis, Bryan Cranston…). Des textes incarnés, pas récités.", signature: "Stefan Godin · Comédien professionnel", image: "stefan", time: 75, label: "02 — LES VOIX" },
   { Icon: Music, title: "La Musique", text: "Des compositions originales avec fréquences binaurales. Des sons captés à Lacanau (la pluie, l'orage, l'eau…). Des immersions complètes.", signature: "Benoît Courti · Musicien Compositeur", image: "musique", time: 50, label: "03 — LA MUSIQUE" },
 ];
