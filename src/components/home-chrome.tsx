@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, UserRound, ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
 const LOGO = STORAGE + "SpotsZen-logo-transparent-fonce.png";
 const LOGO_LIGHT = STORAGE + "SpotsZen-logo-transparent-clair.png";
@@ -19,7 +20,7 @@ export function HomeHeader({ anchorPrefix = "" }: { anchorPrefix?: string }) {
       <nav className="home-nav" aria-label="Navigation principale"><a href="/particuliers">Particuliers</a><a href="/professionnels">Professionnels</a><a href={anchorPrefix + "#contact"}>Contact</a></nav>
       <div className="home-header-actions"><div className="home-language"><Button variant="ghost" aria-label="Choisir la langue" aria-expanded={langOpen} onClick={() => setLangOpen(!langOpen)}>{lang.toUpperCase()}<ChevronDown /></Button>
         {langOpen && <div className="home-language-menu">{LANGS.map(l => <Button variant="ghost" key={l} aria-pressed={l === lang} onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }}>{l.toUpperCase()}</Button>)}</div>}
-      </div><Button asChild variant="outline" size="icon" className="home-account" aria-label="Connexion"><Link to="/connexion"><UserRound /></Link></Button><div className="home-header-cta"><Cta to="/offres">Commencer — 5€/mois</Cta></div><Button variant="ghost" size="icon" className="home-menu-toggle" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button></div>
+      </div><LanguageSwitcher /><Button asChild variant="outline" size="icon" className="home-account" aria-label="Connexion"><Link to="/connexion"><UserRound /></Link></Button><div className="home-header-cta"><Cta to="/offres">Commencer — 5€/mois</Cta></div><Button variant="ghost" size="icon" className="home-menu-toggle" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button></div>
     </div>{menuOpen && <nav className="home-mobile-nav" aria-label="Navigation mobile" onClick={() => setMenuOpen(false)}><a href="/particuliers">Particuliers</a><a href="/professionnels">Professionnels</a><a href={anchorPrefix + "#contact"}>Contact</a><Link to="/offres">Commencer — 5€/mois →</Link></nav>}</header>;
 }
 export function HomeFooter({ anchorPrefix = "" }: { anchorPrefix?: string }) {
