@@ -17,10 +17,14 @@
       "title": "Connexion — Spots Zen",
       "description": "Créez votre compte ou connectez-vous à Spots Zen."
     },
-    "header": { "back": "Retour" },
+    "header": {
+      "back": "Retour"
+    },
     "h1": "Bienvenue sur Spots Zen",
     "subtitle": "Créez votre compte ou connectez-vous",
-    "google": { "cta": "Continuer avec Google" },
+    "google": {
+      "cta": "Continuer avec Google"
+    },
     "separator": "ou",
     "email": {
       "label": "Votre adresse email",
@@ -44,13 +48,17 @@
       "and": "et notre",
       "privacy": "Politique de confidentialité"
     },
-    "badge": { "security": "Connexion instantanée et sécurisée" }
+    "badge": {
+      "security": "Connexion instantanée et sécurisée"
+    }
   },
   "spot": {
     "meta": {
       "title": "Spot Zen — Méditations audio",
       "description": "Écoutez les méditations, respirations et bains sonores de ce spot Spots Zen.",
-      "og": { "description": "Scannez, respirez, écoutez : votre pause bien-être Spots Zen." }
+      "og": {
+        "description": "Scannez, respirez, écoutez : votre pause bien-être Spots Zen."
+      }
     },
     "state": {
       "notfound": {
@@ -76,8 +84,12 @@
       },
       "error": {
         "format": "Le code contient 4 chiffres.",
-        "wrong": "Code incorrect. Vérifiez l'affichette."
+        "wrong": "Code incorrect. Vérifiez l'affichette.",
+        "expired": "Code expiré"
       }
+    },
+    "audio": {
+      "duration": "Durée"
     }
   },
   "common": {
@@ -95,7 +107,9 @@
       "musicSubtitle": "Avec fréquences binaurales · sans voix."
     },
     "empty": "Aucun audio disponible pour le moment.",
-    "listen": { "ariaLabel": "Écouter {titre}" },
+    "listen": {
+      "ariaLabel": "Écouter {titre}"
+    },
     "moment": {
       "morning": "Matin",
       "day": "Journée",
@@ -144,7 +158,9 @@
     "meta": {
       "title": "Ma bibliothèque — Spots Zen",
       "description": "Toutes vos immersions bien-être Spots Zen : méditations, respirations et musiques.",
-      "og": { "description": "Votre bibliothèque audio bien-être, où que vous soyez." }
+      "og": {
+        "description": "Votre bibliothèque audio bien-être, où que vous soyez."
+      }
     },
     "greeting": "Bonjour {prenom} ♡",
     "abo": {
@@ -164,7 +180,9 @@
       "h1": "Retrouvez votre pause bien-être, où que vous soyez",
       "subtitle": "La bibliothèque audio qui vous accompagne au quotidien"
     },
-    "promo": { "badge": "Premier mois offert — sans engagement" },
+    "promo": {
+      "badge": "Premier mois offert — sans engagement"
+    },
     "plan": {
       "monthly": {
         "label": "Mensuel",
@@ -180,7 +198,9 @@
         "cta": "Commencer"
       }
     },
-    "benefits": { "h2": "Ce que vous obtenez" },
+    "benefits": {
+      "h2": "Ce que vous obtenez"
+    },
     "benefit": {
       "audios": "Des audios immersifs",
       "types": "Méditation · Respiration · Visualisation · Immersion sonore",
@@ -197,27 +217,39 @@
       "final": "Commencer mon premier mois gratuit",
       "legal": "Puis 5 €/mois · Sans engagement · Résiliation en 1 clic"
     },
-    "error": { "payment": "Le paiement n'a pas pu démarrer. Réessayez dans un instant." }
+    "error": {
+      "payment": "Le paiement n'a pas pu démarrer. Réessayez dans un instant."
+    }
   },
   "access": {
-    "meta": { "title": "Accès refusé — Spots Zen Admin" },
+    "meta": {
+      "title": "Accès refusé — Spots Zen Admin"
+    },
     "h1": "Accès refusé",
     "body": "Votre compte ne dispose pas des droits administrateur nécessaires pour accéder au back-office Spots Zen.",
     "cta": "Retour à la connexion"
   },
   "nav": {
-    "home": { "ariaLabel": "SpotsZen — accueil" },
+    "home": {
+      "ariaLabel": "SpotsZen — accueil"
+    },
     "particuliers": "Particuliers",
     "professionnels": "Professionnels",
     "contact": "Contact",
-    "lang": { "ariaLabel": "Choisir la langue" },
-    "account": { "ariaLabel": "Connexion" },
+    "lang": {
+      "ariaLabel": "Choisir la langue"
+    },
+    "account": {
+      "ariaLabel": "Connexion"
+    },
     "cta": "Commencer — 5€/mois",
     "menu": {
       "open": "Ouvrir le menu",
       "close": "Fermer le menu"
     },
-    "mobile": { "cta": "Commencer — 5€/mois →" }
+    "mobile": {
+      "cta": "Commencer — 5€/mois →"
+    }
   },
   "footer": {
     "tagline": "Des moments de calme, partout où la vie nous emmène.",
@@ -256,7 +288,9 @@
         "perso": "Vous êtes un particulier ? Commencer à 5€/mois"
       },
       "scroll": "FAITES DÉFILER",
-      "img": { "alt": "Un lac paisible entouré de forêts, reflétant le ciel" }
+      "img": {
+        "alt": "Un lac paisible entouré de forêts, reflétant le ciel"
+      }
     },
     "concept": {
       "eyebrow": "UNE NOUVELLE FAÇON DE FAIRE UNE PAUSE",
@@ -267,8 +301,12 @@
       "note": "Une expérience pensée pour vos visiteurs.",
       "phones": {
         "ariaLabel": "Aperçu de la bibliothèque et du lecteur Spots Zen",
-        "library": { "alt": "La bibliothèque réelle Spots Zen avec les audios disponibles" },
-        "player": { "alt": "Le lecteur réel Spots Zen en cours de lecture" }
+        "library": {
+          "alt": "La bibliothèque réelle Spots Zen avec les audios disponibles"
+        },
+        "player": {
+          "alt": "Le lecteur réel Spots Zen en cours de lecture"
+        }
       }
     },
     "craft": {
@@ -314,12 +352,30 @@
       "eyebrow": "PRENDRE SOIN DE SOI, SIMPLEMENT",
       "h2": "Les bénéfices dès la première écoute.",
       "items": [
-        { "title": "Un meilleur sommeil", "text": "Laissez la journée derrière vous et retrouvez des nuits plus sereines." },
-        { "title": "Moins de stress", "text": "Quelques minutes pour souffler, relâcher et revenir à l'essentiel." },
-        { "title": "Plus de concentration", "text": "Faites de la place à vos idées et retrouvez votre clarté d'esprit." },
-        { "title": "Une cohérence cardiaque", "text": "Un rythme simple pour apaiser le corps et l'esprit, où que vous soyez." },
-        { "title": "Un guide selon l'heure", "text": "La bonne immersion, au bon moment de votre journée." },
-        { "title": "Pour toute la famille", "text": "Des instants de calme à partager, à chaque âge et à votre rythme." }
+        {
+          "title": "Un meilleur sommeil",
+          "text": "Laissez la journée derrière vous et retrouvez des nuits plus sereines."
+        },
+        {
+          "title": "Moins de stress",
+          "text": "Quelques minutes pour souffler, relâcher et revenir à l'essentiel."
+        },
+        {
+          "title": "Plus de concentration",
+          "text": "Faites de la place à vos idées et retrouvez votre clarté d'esprit."
+        },
+        {
+          "title": "Une cohérence cardiaque",
+          "text": "Un rythme simple pour apaiser le corps et l'esprit, où que vous soyez."
+        },
+        {
+          "title": "Un guide selon l'heure",
+          "text": "La bonne immersion, au bon moment de votre journée."
+        },
+        {
+          "title": "Pour toute la famille",
+          "text": "Des instants de calme à partager, à chaque âge et à votre rythme."
+        }
       ]
     },
     "video": {
@@ -366,7 +422,9 @@
       "body": "Chaque lieu est différent. Racontez-moi le vôtre…",
       "role": "Fondatrice de Spots Zen",
       "cta": "Prendre rendez-vous",
-      "img": { "alt": "Un lac au calme, entouré de pins" }
+      "img": {
+        "alt": "Un lac au calme, entouré de pins"
+      }
     }
   },
   "part": {
@@ -375,38 +433,65 @@
       "description": "Le bon audio, au bon moment. Des immersions guidées par des voix humaines et des musiques originales. Spots Zen dès 5€/mois, premier mois offert."
     },
     "hero": {
-      "img": { "alt": "Une femme face à l'océan au crépuscule" },
+      "img": {
+        "alt": "Une femme face à l'océan au crépuscule"
+      },
       "eyebrow": "LA BIBLIOTHÈQUE SPOTS ZEN",
       "h1": "Le bon audio, au bon moment.",
       "copy": "Sommeil, concentration, gestion du stress : des immersions guidées par des voix enveloppantes humaines et des musiques originales. Partout avec vous.",
       "cta": "Je commence gratuitement",
       "note": "Premier mois offert · Sans engagement"
     },
-    "video": { "title": "Deux minutes pour tout comprendre." },
+    "video": {
+      "title": "Deux minutes pour tout comprendre."
+    },
     "benefits": {
       "eyebrow": "CE QUE VOUS ALLEZ RESSENTIR",
       "h2": "Une pause qui change tout.",
       "items": [
-        { "badge": "SOMMEIL", "title": "Un sommeil plus profond" },
-        { "badge": "STRESS", "title": "Moins d'anxiété, plus de calme" },
-        { "badge": "CONCENTRATION", "title": "L'esprit clair au bon moment" },
-        { "badge": "FAMILLE", "title": "Des moments à partager" }
+        {
+          "badge": "SOMMEIL",
+          "title": "Un sommeil plus profond"
+        },
+        {
+          "badge": "STRESS",
+          "title": "Moins d'anxiété, plus de calme"
+        },
+        {
+          "badge": "CONCENTRATION",
+          "title": "L'esprit clair au bon moment"
+        },
+        {
+          "badge": "FAMILLE",
+          "title": "Des moments à partager"
+        }
       ]
     },
     "steps": {
       "eyebrow": "COMMENT ÇA MARCHE",
       "h2": "Simple comme une respiration.",
       "items": [
-        { "title": "L'heure détectée", "text": "Spots Zen détecte l'heure de votre connexion et met en avant l'immersion qui correspond à ce moment…" },
-        { "title": "La voix choisie", "text": "Féminine ou masculine : vous choisissez celle qui vous touche." },
-        { "title": "L'écran verrouillé", "text": "L'audio continue même quand votre écran se verrouille. Posez votre téléphone. Fermez les yeux. Laissez-vous guider." }
+        {
+          "title": "L'heure détectée",
+          "text": "Spots Zen détecte l'heure de votre connexion et met en avant l'immersion qui correspond à ce moment…"
+        },
+        {
+          "title": "La voix choisie",
+          "text": "Féminine ou masculine : vous choisissez celle qui vous touche."
+        },
+        {
+          "title": "L'écran verrouillé",
+          "text": "L'audio continue même quand votre écran se verrouille. Posez votre téléphone. Fermez les yeux. Laissez-vous guider."
+        }
       ],
       "childNote": "Et pour les enfants, des immersions douces sont aussi pensées pour eux !…"
     },
     "catalog": {
       "eyebrow": "LA BIBLIOTHÈQUE",
       "h2": "Des audios qui vous plongent en immersion complète pour une relaxation profonde.",
-      "badge": { "subscriber": "Abonné·e" }
+      "badge": {
+        "subscriber": "Abonné·e"
+      }
     },
     "prices": {
       "eyebrow": "TARIFS",
@@ -426,10 +511,22 @@
       "eyebrow": "QUESTIONS FRÉQUENTES",
       "h2": "Tout ce que vous vous demandez.",
       "items": [
-        { "q": "Comment accéder aux audios après mon inscription ?", "a": "Dès votre abonnement, vous recevez un accès immédiat à la bibliothèque…" },
-        { "q": "La qualité audio est-elle vraiment professionnelle ?", "a": "Absolument. Chaque immersion est enregistrée en français en studio…" },
-        { "q": "Y a-t-il des audios adaptés aux enfants ?", "a": "Oui. Plusieurs immersions sont conçues pour les 4-12 ans…" },
-        { "q": "Comment résilier mon abonnement ?", "a": "Vous pouvez résilier à tout moment depuis votre espace…" }
+        {
+          "q": "Comment accéder aux audios après mon inscription ?",
+          "a": "Dès votre abonnement, vous recevez un accès immédiat à la bibliothèque…"
+        },
+        {
+          "q": "La qualité audio est-elle vraiment professionnelle ?",
+          "a": "Absolument. Chaque immersion est enregistrée en français en studio…"
+        },
+        {
+          "q": "Y a-t-il des audios adaptés aux enfants ?",
+          "a": "Oui. Plusieurs immersions sont conçues pour les 4-12 ans…"
+        },
+        {
+          "q": "Comment résilier mon abonnement ?",
+          "a": "Vous pouvez résilier à tout moment depuis votre espace…"
+        }
       ]
     },
     "final": {
@@ -446,7 +543,9 @@
       "description": "Offrez à vos visiteurs, collaborateurs ou étudiants une immersion bien-être unique…"
     },
     "hero": {
-      "img": { "alt": "Chambre d'hôtel apaisante avec un grand lit" },
+      "img": {
+        "alt": "Chambre d'hôtel apaisante avec un grand lit"
+      },
       "eyebrow": "POUR LES PROFESSIONNELS",
       "h1": "Offrez à vos visiteurs, collaborateurs ou étudiants une immersion bien-être unique.",
       "copy": "Spots Zen accompagne les entreprises, les établissements touristiques, les communes…",
@@ -464,23 +563,47 @@
       "eyebrow": "EN 6 ÉTAPES",
       "h2": "Du QR code à l'immersion",
       "items": [
-        { "title": "Le scan" },
-        { "title": "L'accès immédiat" },
-        { "title": "La langue détectée" },
-        { "title": "L'audio recommandé" },
-        { "title": "L'immersion" },
-        { "title": "L'impact" }
+        {
+          "title": "Le scan"
+        },
+        {
+          "title": "L'accès immédiat"
+        },
+        {
+          "title": "La langue détectée"
+        },
+        {
+          "title": "L'audio recommandé"
+        },
+        {
+          "title": "L'immersion"
+        },
+        {
+          "title": "L'impact"
+        }
       ]
     },
     "sector": {
-      "hebergements": { "tab": "Hébergements" },
-      "entreprises": { "tab": "Entreprises" },
-      "ecoles": { "tab": "Écoles" },
-      "sante": { "tab": "Santé" },
-      "collectivites": { "tab": "Collectivités" }
+      "hebergements": {
+        "tab": "Hébergements"
+      },
+      "entreprises": {
+        "tab": "Entreprises"
+      },
+      "ecoles": {
+        "tab": "Écoles"
+      },
+      "sante": {
+        "tab": "Santé"
+      },
+      "collectivites": {
+        "tab": "Collectivités"
+      }
     },
     "form": {
-      "select": { "placeholder": "Choisir…" },
+      "select": {
+        "placeholder": "Choisir…"
+      },
       "error": "Une erreur est survenue. Merci de réessayer.",
       "success": "✓ Message envoyé ! Nous vous répondons sous 24 heures. À très vite.",
       "note": "Réponse sous 24 heures · Sans engagement",

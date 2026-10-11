@@ -17,10 +17,14 @@
       "title": "Inloggen — Spots Zen",
       "description": "Maak uw account aan of log in bij Spots Zen."
     },
-    "header": { "back": "Terug" },
+    "header": {
+      "back": "Terug"
+    },
     "h1": "Welkom bij Spots Zen",
     "subtitle": "Maak uw account aan of log in",
-    "google": { "cta": "Doorgaan met Google" },
+    "google": {
+      "cta": "Doorgaan met Google"
+    },
     "separator": "of",
     "email": {
       "label": "Uw e-mailadres",
@@ -44,13 +48,17 @@
       "and": "en onze",
       "privacy": "Privacybeleid"
     },
-    "badge": { "security": "Onmiddellijk en beveiligd inloggen" }
+    "badge": {
+      "security": "Onmiddellijk en beveiligd inloggen"
+    }
   },
   "spot": {
     "meta": {
       "title": "Zen Spot — Audio meditaties",
       "description": "Beluister de meditaties, ademhalingsoefeningen en klankbaden van deze Spots Zen locatie.",
-      "og": { "description": "Scannen, ademen, luisteren: uw Spots Zen welzijnspauze." }
+      "og": {
+        "description": "Scannen, ademen, luisteren: uw Spots Zen welzijnspauze."
+      }
     },
     "state": {
       "notfound": {
@@ -76,8 +84,12 @@
       },
       "error": {
         "format": "De code bestaat uit 4 cijfers.",
-        "wrong": "Onjuiste code. Controleer het display."
+        "wrong": "Onjuiste code. Controleer het display.",
+        "expired": "Code verlopen"
       }
+    },
+    "audio": {
+      "duration": "Duur"
     }
   },
   "common": {
@@ -95,7 +107,9 @@
       "musicSubtitle": "Met binaurale frequenties · zonder stem."
     },
     "empty": "Momenteel zijn er geen audio's beschikbaar.",
-    "listen": { "ariaLabel": "{titre} beluisteren" },
+    "listen": {
+      "ariaLabel": "{titre} beluisteren"
+    },
     "moment": {
       "morning": "Ochtend",
       "day": "Overdag",
@@ -144,7 +158,9 @@
     "meta": {
       "title": "Mijn bibliotheek — Spots Zen",
       "description": "Al uw Spots Zen welzijnsonderdompeling: meditaties, ademhalingsoefeningen en muziek.",
-      "og": { "description": "Uw welzijns-audiobibliotheek, waar u ook bent." }
+      "og": {
+        "description": "Uw welzijns-audiobibliotheek, waar u ook bent."
+      }
     },
     "greeting": "Goedendag {prenom} ♡",
     "abo": {
@@ -164,7 +180,9 @@
       "h1": "Hervind uw welzijnspauze, waar u ook bent",
       "subtitle": "De audiobibliotheek die u dagelijks begeleidt"
     },
-    "promo": { "badge": "Eerste maand gratis — zonder verplichting" },
+    "promo": {
+      "badge": "Eerste maand gratis — zonder verplichting"
+    },
     "plan": {
       "monthly": {
         "label": "Maandelijks",
@@ -180,7 +198,9 @@
         "cta": "Beginnen"
       }
     },
-    "benefits": { "h2": "Wat u ontvangt" },
+    "benefits": {
+      "h2": "Wat u ontvangt"
+    },
     "benefit": {
       "audios": "Meeslepende audio-ervaringen",
       "types": "Meditatie · Ademhaling · Visualisatie · Klanksessie",
@@ -197,27 +217,39 @@
       "final": "Mijn eerste maand gratis beginnen",
       "legal": "Daarna 5 €/maand · Zonder verplichting · Opzeggen met 1 klik"
     },
-    "error": { "payment": "De betaling kon niet worden gestart. Probeer het over een ogenblik opnieuw." }
+    "error": {
+      "payment": "De betaling kon niet worden gestart. Probeer het over een ogenblik opnieuw."
+    }
   },
   "access": {
-    "meta": { "title": "Toegang geweigerd — Spots Zen Admin" },
+    "meta": {
+      "title": "Toegang geweigerd — Spots Zen Admin"
+    },
     "h1": "Toegang geweigerd",
     "body": "Uw account beschikt niet over de vereiste beheerdersrechten om toegang te krijgen tot het Spots Zen back-office.",
     "cta": "Terug naar inloggen"
   },
   "nav": {
-    "home": { "ariaLabel": "SpotsZen — startpagina" },
+    "home": {
+      "ariaLabel": "SpotsZen — startpagina"
+    },
     "particuliers": "Particulieren",
     "professionnels": "Professionals",
     "contact": "Contact",
-    "lang": { "ariaLabel": "Taal kiezen" },
-    "account": { "ariaLabel": "Inloggen" },
+    "lang": {
+      "ariaLabel": "Taal kiezen"
+    },
+    "account": {
+      "ariaLabel": "Inloggen"
+    },
     "cta": "Beginnen — 5 €/maand",
     "menu": {
       "open": "Menu openen",
       "close": "Menu sluiten"
     },
-    "mobile": { "cta": "Beginnen — 5 €/maand →" }
+    "mobile": {
+      "cta": "Beginnen — 5 €/maand →"
+    }
   },
   "footer": {
     "tagline": "Momenten van rust, overal waar het leven ons naartoe brengt.",
@@ -256,7 +288,9 @@
         "perso": "Bent u particulier? Beginnen vanaf 5 €/maand"
       },
       "scroll": "SCROLL OMLAAG",
-      "img": { "alt": "Een vredig meer omringd door bossen, dat de lucht weerspiegelt" }
+      "img": {
+        "alt": "Een vredig meer omringd door bossen, dat de lucht weerspiegelt"
+      }
     },
     "concept": {
       "eyebrow": "EEN NIEUWE MANIER OM PAUZE TE NEMEN",
@@ -267,8 +301,12 @@
       "note": "Een ervaring ontworpen voor uw bezoekers.",
       "phones": {
         "ariaLabel": "Voorvertoning van de Spots Zen bibliotheek en speler",
-        "library": { "alt": "De echte Spots Zen bibliotheek met beschikbare audio's" },
-        "player": { "alt": "De echte Spots Zen speler tijdens afspelen" }
+        "library": {
+          "alt": "De echte Spots Zen bibliotheek met beschikbare audio's"
+        },
+        "player": {
+          "alt": "De echte Spots Zen speler tijdens afspelen"
+        }
       }
     },
     "craft": {
@@ -314,12 +352,30 @@
       "eyebrow": "EENVOUDIG VOOR UZELF ZORGEN",
       "h2": "Voordelen vanaf de eerste beluistering.",
       "items": [
-        { "title": "Betere slaap", "text": "Laat de dag achter u en vind rustiger nachten." },
-        { "title": "Minder stress", "text": "Een paar minuten om adem te halen, los te laten en terug te keren tot het wezenlijke." },
-        { "title": "Meer concentratie", "text": "Maak ruimte voor uw ideeën en hervind uw geestelijke helderheid." },
-        { "title": "Hartscoherentie", "text": "Een eenvoudig ritme om lichaam en geest te kalmeren, waar u ook bent." },
-        { "title": "Een gids per uur", "text": "De juiste onderdompeling, op het juiste moment van uw dag." },
-        { "title": "Voor het hele gezin", "text": "Rustmomenten om te delen, op elke leeftijd en in uw eigen tempo." }
+        {
+          "title": "Betere slaap",
+          "text": "Laat de dag achter u en vind rustiger nachten."
+        },
+        {
+          "title": "Minder stress",
+          "text": "Een paar minuten om adem te halen, los te laten en terug te keren tot het wezenlijke."
+        },
+        {
+          "title": "Meer concentratie",
+          "text": "Maak ruimte voor uw ideeën en hervind uw geestelijke helderheid."
+        },
+        {
+          "title": "Hartscoherentie",
+          "text": "Een eenvoudig ritme om lichaam en geest te kalmeren, waar u ook bent."
+        },
+        {
+          "title": "Een gids per uur",
+          "text": "De juiste onderdompeling, op het juiste moment van uw dag."
+        },
+        {
+          "title": "Voor het hele gezin",
+          "text": "Rustmomenten om te delen, op elke leeftijd en in uw eigen tempo."
+        }
       ]
     },
     "video": {
@@ -366,7 +422,9 @@
       "body": "Elke locatie is anders. Vertel me over de uwe…",
       "role": "Oprichtster van Spots Zen",
       "cta": "Een afspraak maken",
-      "img": { "alt": "Een rustig meer omringd door dennen" }
+      "img": {
+        "alt": "Een rustig meer omringd door dennen"
+      }
     }
   },
   "part": {
@@ -375,38 +433,65 @@
       "description": "De juiste audio, op het juiste moment. Begeleide onderdompeling door menselijke stemmen en originele muziek. Spots Zen vanaf 5 €/maand, eerste maand gratis."
     },
     "hero": {
-      "img": { "alt": "Een vrouw met uitzicht op de oceaan bij schemering" },
+      "img": {
+        "alt": "Een vrouw met uitzicht op de oceaan bij schemering"
+      },
       "eyebrow": "DE SPOTS ZEN BIBLIOTHEEK",
       "h1": "De juiste audio, op het juiste moment.",
       "copy": "Slaap, concentratie, stressbeheer: begeleide onderdompeling door warme menselijke stemmen en originele muziek. Altijd bij u.",
       "cta": "Gratis beginnen",
       "note": "Eerste maand gratis · Zonder verplichting"
     },
-    "video": { "title": "Twee minuten om alles te begrijpen." },
+    "video": {
+      "title": "Twee minuten om alles te begrijpen."
+    },
     "benefits": {
       "eyebrow": "WAT U ZULT VOELEN",
       "h2": "Een pauze die alles verandert.",
       "items": [
-        { "badge": "SLAAP", "title": "Diepere slaap" },
-        { "badge": "STRESS", "title": "Minder angst, meer rust" },
-        { "badge": "CONCENTRATIE", "title": "Heldere geest op het juiste moment" },
-        { "badge": "GEZIN", "title": "Momenten om te delen" }
+        {
+          "badge": "SLAAP",
+          "title": "Diepere slaap"
+        },
+        {
+          "badge": "STRESS",
+          "title": "Minder angst, meer rust"
+        },
+        {
+          "badge": "CONCENTRATIE",
+          "title": "Heldere geest op het juiste moment"
+        },
+        {
+          "badge": "GEZIN",
+          "title": "Momenten om te delen"
+        }
       ]
     },
     "steps": {
       "eyebrow": "HOE HET WERKT",
       "h2": "Zo eenvoudig als een ademteug.",
       "items": [
-        { "title": "Tijd gedetecteerd", "text": "Spots Zen detecteert het tijdstip van uw verbinding en benadrukt de onderdompeling die bij dit moment past…" },
-        { "title": "Stem gekozen", "text": "Vrouwelijk of mannelijk: u kiest degene die u aanspreekt." },
-        { "title": "Scherm vergrendeld", "text": "De audio gaat door, ook als uw scherm vergrendeld is. Leg uw telefoon neer. Sluit uw ogen. Laat u leiden." }
+        {
+          "title": "Tijd gedetecteerd",
+          "text": "Spots Zen detecteert het tijdstip van uw verbinding en benadrukt de onderdompeling die bij dit moment past…"
+        },
+        {
+          "title": "Stem gekozen",
+          "text": "Vrouwelijk of mannelijk: u kiest degene die u aanspreekt."
+        },
+        {
+          "title": "Scherm vergrendeld",
+          "text": "De audio gaat door, ook als uw scherm vergrendeld is. Leg uw telefoon neer. Sluit uw ogen. Laat u leiden."
+        }
       ],
       "childNote": "En voor kinderen zijn er zachte onderdompeling speciaal voor hen ontworpen!…"
     },
     "catalog": {
       "eyebrow": "DE BIBLIOTHEEK",
       "h2": "Audio's die u in volledige onderdompeling brengen voor diepe ontspanning.",
-      "badge": { "subscriber": "Abonnee" }
+      "badge": {
+        "subscriber": "Abonnee"
+      }
     },
     "prices": {
       "eyebrow": "TARIEVEN",
@@ -426,10 +511,22 @@
       "eyebrow": "VEELGESTELDE VRAGEN",
       "h2": "Alles wat u zich afvraagt.",
       "items": [
-        { "q": "Hoe krijg ik toegang tot de audio's na mijn aanmelding?", "a": "Vanaf het moment van uw abonnement krijgt u onmiddellijk toegang tot de bibliotheek…" },
-        { "q": "Is de audiokwaliteit echt professioneel?", "a": "Absoluut. Elke onderdompeling wordt in het Frans opgenomen in een professionele studio…" },
-        { "q": "Zijn er audio's geschikt voor kinderen?", "a": "Ja. Meerdere onderdompeling zijn ontworpen voor kinderen van 4–12 jaar…" },
-        { "q": "Hoe zeg ik mijn abonnement op?", "a": "U kunt op elk moment opzeggen vanuit uw account…" }
+        {
+          "q": "Hoe krijg ik toegang tot de audio's na mijn aanmelding?",
+          "a": "Vanaf het moment van uw abonnement krijgt u onmiddellijk toegang tot de bibliotheek…"
+        },
+        {
+          "q": "Is de audiokwaliteit echt professioneel?",
+          "a": "Absoluut. Elke onderdompeling wordt in het Frans opgenomen in een professionele studio…"
+        },
+        {
+          "q": "Zijn er audio's geschikt voor kinderen?",
+          "a": "Ja. Meerdere onderdompeling zijn ontworpen voor kinderen van 4–12 jaar…"
+        },
+        {
+          "q": "Hoe zeg ik mijn abonnement op?",
+          "a": "U kunt op elk moment opzeggen vanuit uw account…"
+        }
       ]
     },
     "final": {
@@ -446,7 +543,9 @@
       "description": "Bied uw bezoekers, medewerkers of studenten een unieke welzijnsonderdompeling…"
     },
     "hero": {
-      "img": { "alt": "Een rustgevende hotelkamer met een groot bed" },
+      "img": {
+        "alt": "Een rustgevende hotelkamer met een groot bed"
+      },
       "eyebrow": "VOOR PROFESSIONALS",
       "h1": "Bied uw bezoekers, medewerkers of studenten een unieke welzijnsonderdompeling.",
       "copy": "Spots Zen begeleidt bedrijven, toeristische instellingen, gemeenten…",
@@ -464,23 +563,47 @@
       "eyebrow": "IN 6 STAPPEN",
       "h2": "Van QR-code tot onderdompeling",
       "items": [
-        { "title": "De scan" },
-        { "title": "Onmiddellijke toegang" },
-        { "title": "Taal gedetecteerd" },
-        { "title": "Aanbevolen audio" },
-        { "title": "De onderdompeling" },
-        { "title": "De impact" }
+        {
+          "title": "De scan"
+        },
+        {
+          "title": "Onmiddellijke toegang"
+        },
+        {
+          "title": "Taal gedetecteerd"
+        },
+        {
+          "title": "Aanbevolen audio"
+        },
+        {
+          "title": "De onderdompeling"
+        },
+        {
+          "title": "De impact"
+        }
       ]
     },
     "sector": {
-      "hebergements": { "tab": "Accommodatie" },
-      "entreprises": { "tab": "Bedrijven" },
-      "ecoles": { "tab": "Scholen" },
-      "sante": { "tab": "Gezondheidszorg" },
-      "collectivites": { "tab": "Gemeenten" }
+      "hebergements": {
+        "tab": "Accommodatie"
+      },
+      "entreprises": {
+        "tab": "Bedrijven"
+      },
+      "ecoles": {
+        "tab": "Scholen"
+      },
+      "sante": {
+        "tab": "Gezondheidszorg"
+      },
+      "collectivites": {
+        "tab": "Gemeenten"
+      }
     },
     "form": {
-      "select": { "placeholder": "Kiezen…" },
+      "select": {
+        "placeholder": "Kiezen…"
+      },
       "error": "Er is een fout opgetreden. Probeer het opnieuw.",
       "success": "✓ Bericht verzonden! We antwoorden u binnen 24 uur. Tot snel.",
       "note": "Antwoord binnen 24 uur · Zonder verplichting",
