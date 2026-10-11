@@ -10,10 +10,7 @@ function Cta({ children }: { children: React.ReactNode; to: "/offres" }) {
  return <Button asChild className="home-cta"><Link to="/offres">{children}<ArrowRight aria-hidden="true" /></Link></Button>;
 }
 export function HomeHeader({ anchorPrefix = "" }: { anchorPrefix?: string }) {
-  const [lang, setLang] = useState("fr");
-  const [langOpen, setLangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  useEffect(() => { const saved = localStorage.getItem("sz_lang"); if (saved && LANGS.includes(saved)) setLang(saved); }, []);
   return <header className="home-header"><div className="home-header-inner">
       <Link to="/" aria-label="SpotsZen — accueil"><img src={LOGO} alt="SpotsZen" className="home-logo" width={180} height={48} /></Link>
       <nav className="home-nav" aria-label="Navigation principale"><a href="/particuliers">Particuliers</a><a href="/professionnels">Professionnels</a><a href={anchorPrefix + "#contact"}>Contact</a></nav>
