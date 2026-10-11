@@ -89,7 +89,8 @@
       }
     },
     "audio": {
-      "duration": "Dauer"
+      "duration": "Dauer",
+      "listen": "Anhören"
     }
   },
   "common": {
@@ -99,7 +100,8 @@
       "respiration": "Atemübung",
       "musique": "Musik",
       "visualisation": "Visualisierung",
-      "enfant": "Kinder"
+      "enfant": "Kinder",
+      "music": "Musik"
     },
     "section": {
       "guided": "Geführte Eintauchungen",
@@ -168,7 +170,9 @@
       "plan": "Tarif",
       "planDefault": "Monatsabonnement",
       "renewal": "Nächste Verlängerung"
-    }
+    },
+    "empty": "Momentan sind keine Audios verfügbar.",
+    "subtitle": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind."
   },
   "offers": {
     "meta": {

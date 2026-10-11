@@ -1,4 +1,5 @@
 import i18n from "@/i18n/index";
+import { useTranslation } from "react-i18next";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,10 +9,10 @@ export const Route = createFileRoute("/bibliotheque")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Ma bibliothèque — Spots Zen" },
-      { name: "description", content: "Toutes vos immersions bien-être Spots Zen : méditations, respirations et musiques." },
-      { property: "og:title", content: "Ma bibliothèque — Spots Zen" },
-      { property: "og:description", content: "Votre bibliothèque audio bien-être, où que vous soyez." },
+      { title: i18n.t("lib.meta.title") },
+      { name: "description", content: i18n.t("lib.meta.description") },
+      { property: "og:title", content: i18n.t("lib.meta.title") },
+      { property: "og:description", content: i18n.t("lib.meta.og.description") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -71,6 +72,22 @@ const fmt = (s: number | null) => (s ? `${Math.round(s / 60)} min` : "");
 const isMusic = (a: Audio) => a.type === "Musique";
 const voiceLabel = (v: string | null) => (v === "feminine" || v === "F" ? "Voix féminine" : v === "masculine" || v === "M" ? "Voix masculine" : "Sans voix");
 
+/* Filter chips keep their technical value (matched against audios.type / moment); only the label is translated. */
+const CATEGORY_KEY: Record<string, string> = {
+  "Tous": "common.filter.all",
+  "Méditation": "common.filter.meditation",
+  "Respiration": "common.filter.respiration",
+  "Musique": "common.filter.music",
+  "Visualisation": "common.filter.visualisation",
+  "Enfant": "common.filter.enfant",
+};
+const MOMENT_KEY: Record<string, string> = {
+  "Matin": "common.moment.morning",
+  "Journée": "common.moment.day",
+  "Soir": "common.moment.evening",
+  "Nuit": "common.moment.night",
+};
+
 /* Rows that carry a playable file, in the selected language (FR fallback). */
 function tradsFor(a: Audio, lang: string) {
   const all = (a.traductions ?? []).filter((t) => t.cloudinary_url);
@@ -97,6 +114,7 @@ function PlayIcon({ size = 18, color = "currentColor" }: { size?: number; color?
 }
 
 function BibliothequePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [state, setState] = useState<"loading" | "catalog">("loading");
   const [prenom, setPrenom] = useState("");
@@ -183,7 +201,7 @@ function BibliothequePage() {
 
         {state === "catalog" && (
           <p className="mt-4 text-xs text-[var(--sz-muted)]">
-            Bonjour {prenom} ♡
+            {t("lib.greeting", { prenom })}
           </p>
         )}
 
@@ -191,10 +209,10 @@ function BibliothequePage() {
           <>
             {/* HERO */}
             {hero && (
-              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
+              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`${t("spot.audio.listen")} ${titleOf(hero, lang)}`}>
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                 {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
-                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
+                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {t(MOMENT_KEY[hero.mis_en_avant_moment] ?? "common.moment.day")}</span>}
                 <span className={`play-control absolute right-3 top-3 ${hero.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
@@ -208,7 +226,7 @@ function BibliothequePage() {
               {categories.map((c) => (
                 <button key={c} onClick={() => setFilter(c)}
                   className={`shrink-0 rounded-full border px-5 py-2 text-xs font-semibold ${c === filter ? "border-[var(--sz-brand)] bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "border-[var(--sz-chip-border)] bg-transparent text-[var(--sz-chip-fg)]"}`}>
-                  {c}
+                  {t(CATEGORY_KEY[c] ?? "common.filter.all")}
                 </button>
               ))}
             </div>
@@ -223,7 +241,7 @@ function BibliothequePage() {
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                         
-                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
+                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY[a.mis_en_avant_moment] ?? "common.moment.day")}</span>}
                         <span className={`play-control absolute bottom-3 right-3 ${a.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                       </div>
                       <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
@@ -247,14 +265,14 @@ function BibliothequePage() {
                         <p className="audio-title truncate text-sm font-semibold">{titleOf(a, lang)}</p>
                         <p className="audio-duration text-xs">{fmt(a.duree_secondes)}</p>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="play-control"><PlayIcon /></Button>
+                      <Button variant="ghost" size="icon" onClick={() => setSelected(a)} aria-label={`${t("spot.audio.listen")} ${titleOf(a, lang)}`} className="play-control"><PlayIcon /></Button>
                     </li>
                   ))}
                 </ul>
               </section>
             )}
 
-            {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">Aucun audio disponible pour le moment.</p>}
+            {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">{t("lib.empty")}</p>}
           </>
         )}
       </main>
@@ -335,6 +353,7 @@ function SkipIcon({ forward }: { forward?: boolean }) {
 function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, onSelect }: {
   audio: Audio; list: Audio[]; sponsor: string; lang: string; onLang: (l: string) => void; spotId: string | null; userId?: string | null; onClose: () => void; onSelect: (a: Audio) => void;
 }) {
+  const { t: tr } = useTranslation();
   const trads = tradsFor(audio, lang);
   const voiced = trads.filter((t) => t.voix && t.voix !== "aucune");
   const hasVoices = voiced.length > 0;
@@ -445,7 +464,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
               return (
                 <button key={t.voix} onClick={() => pickVoice(t.voix!)} className="h-10 rounded-full px-5 text-sm font-medium"
                   style={active ? { background: "#2D5A27", color: "#F0EDE8" } : { background: "transparent", color: "rgba(240,237,232,0.50)" }}>
-                  {active && <span style={{ color: "#8FBF86" }}>• </span>}{t.voix === "masculine" || t.voix === "M" ? "Masculine" : "Féminine"}
+                  {active && <span style={{ color: "#8FBF86" }}>• </span>}{t.voix === "masculine" || t.voix === "M" ? tr("common.voice.masculine") : tr("common.voice.feminine")}
                 </button>
               );
             })}
@@ -497,7 +516,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
               <p className="serif truncate text-base" style={{ color: "#F0EDE8" }}>{titleOf(next, lang)}</p>
               <p className="text-xs" style={{ color: "#9AA09A" }}>{[next.type, fmt(next.duree_secondes)].filter(Boolean).join(" · ")}</p>
             </div>
-            <button onClick={() => onSelect(next)} aria-label={`Écouter ${titleOf(next, lang)}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
+            <button onClick={() => onSelect(next)} aria-label={`${tr("spot.audio.listen")} ${titleOf(next, lang)}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
               <PlayIcon size={14} color="#F0EDE8" />
             </button>
           </div>
