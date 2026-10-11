@@ -89,7 +89,8 @@
       }
     },
     "audio": {
-      "duration": "Duración"
+      "duration": "Duración",
+      "listen": "Escuchar"
     }
   },
   "common": {
@@ -99,7 +100,8 @@
       "respiration": "Respiración",
       "musique": "Música",
       "visualisation": "Visualización",
-      "enfant": "Niños"
+      "enfant": "Niños",
+      "music": "Música"
     },
     "section": {
       "guided": "Inmersiones guiadas",
@@ -168,7 +170,9 @@
       "plan": "Plan",
       "planDefault": "Suscripción mensual",
       "renewal": "Próxima renovación"
-    }
+    },
+    "empty": "No hay audios disponibles en este momento.",
+    "subtitle": "Su biblioteca de audio de bienestar, donde quiera que esté."
   },
   "offers": {
     "meta": {

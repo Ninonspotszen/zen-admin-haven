@@ -89,7 +89,8 @@
       }
     },
     "audio": {
-      "duration": "Duur"
+      "duration": "Duur",
+      "listen": "Beluisteren"
     }
   },
   "common": {
@@ -99,7 +100,8 @@
       "respiration": "Ademhaling",
       "musique": "Muziek",
       "visualisation": "Visualisatie",
-      "enfant": "Kinderen"
+      "enfant": "Kinderen",
+      "music": "Muziek"
     },
     "section": {
       "guided": "Begeleide onderdompeling",
@@ -168,7 +170,9 @@
       "plan": "Formule",
       "planDefault": "Maandabonnement",
       "renewal": "Volgende verlenging"
-    }
+    },
+    "empty": "Momenteel zijn er geen audio's beschikbaar.",
+    "subtitle": "Uw welzijns-audiobibliotheek, waar u ook bent."
   },
   "offers": {
     "meta": {

@@ -89,7 +89,8 @@
       }
     },
     "audio": {
-      "duration": "Duration"
+      "duration": "Duration",
+      "listen": "Listen"
     }
   },
   "common": {
@@ -99,7 +100,8 @@
       "respiration": "Breathing",
       "musique": "Music",
       "visualisation": "Visualisation",
-      "enfant": "Children"
+      "enfant": "Children",
+      "music": "Music"
     },
     "section": {
       "guided": "Guided immersions",
@@ -168,7 +170,9 @@
       "plan": "Plan",
       "planDefault": "Monthly subscription",
       "renewal": "Next renewal"
-    }
+    },
+    "empty": "No audio available at the moment.",
+    "subtitle": "Your wellness audio library, wherever you are."
   },
   "offers": {
     "meta": {
