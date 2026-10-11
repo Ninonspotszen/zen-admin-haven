@@ -1,0 +1,491 @@
+{
+  "error": {
+    "404": {
+      "title": "Page not found",
+      "body": "This page does not exist or has been moved.",
+      "cta": "Back to home"
+    },
+    "crash": {
+      "title": "Something went wrong",
+      "body": "An error occurred on our end. Try refreshing the page.",
+      "retry": "Try again",
+      "goHome": "Back to home"
+    }
+  },
+  "auth": {
+    "meta": {
+      "title": "Sign in — Spots Zen",
+      "description": "Create your account or sign in to Spots Zen."
+    },
+    "header": { "back": "Back" },
+    "h1": "Welcome to Spots Zen",
+    "subtitle": "Create your account or sign in",
+    "google": { "cta": "Continue with Google" },
+    "separator": "or",
+    "email": {
+      "label": "Your email address",
+      "placeholder": "you@example.com",
+      "cta": {
+        "idle": "Continue with my email →",
+        "sending": "Sending…"
+      },
+      "sent": "A sign-in link has been sent to {email}. Check your inbox."
+    },
+    "error": {
+      "google": "Google sign-in failed. Please try again.",
+      "email": "Unable to send the link. Please check the email address."
+    },
+    "legal": {
+      "prefix": "By continuing, you agree to our",
+      "cgu": "Terms of Use",
+      "privacy": "Privacy Policy"
+    },
+    "badge": { "security": "Instant and secure sign-in" }
+  },
+  "spot": {
+    "meta": {
+      "title": "Zen Spot — Audio meditations",
+      "description": "Listen to the meditations, breathing exercises and sound baths of this Spots Zen location.",
+      "og": { "description": "Scan, breathe, listen: your Spots Zen wellness break." }
+    },
+    "state": {
+      "notfound": {
+        "title": "Spot unavailable",
+        "text": "This spot is not available at the moment."
+      },
+      "expired": {
+        "title": "Access expired",
+        "text": "Your access period to this spot has ended. Subscribe to continue listening."
+      }
+    },
+    "sponsor": {
+      "badge": "Offered by {nom} ★★★★",
+      "days": "· Your wellness access is valid for {n} days from your first visit"
+    },
+    "pin": {
+      "title": "Enter the spot code",
+      "hint": "4 digits, shown on the display card.",
+      "inputAriaLabel": "PIN code",
+      "cta": {
+        "idle": "Access the audios",
+        "checking": "Checking…"
+      },
+      "error": {
+        "format": "The code contains 4 digits.",
+        "wrong": "Incorrect code. Check the display card."
+      }
+    }
+  },
+  "common": {
+    "filter": {
+      "all": "All",
+      "meditation": "Meditation",
+      "respiration": "Breathing",
+      "musique": "Music",
+      "visualisation": "Visualisation",
+      "enfant": "Children"
+    },
+    "section": {
+      "guided": "Guided immersions",
+      "music": "Relaxing music",
+      "musicSubtitle": "With binaural frequencies · voice-free."
+    },
+    "empty": "No audio available at the moment.",
+    "listen": { "ariaLabel": "Listen to {titre}" },
+    "moment": {
+      "morning": "Morning",
+      "day": "Daytime",
+      "evening": "Evening",
+      "night": "Night"
+    },
+    "voice": {
+      "feminine": "Female voice",
+      "masculine": "Male voice",
+      "none": "No voice"
+    },
+    "cta": {
+      "home": "Enjoy these audios at home ♡",
+      "subscribe": "Subscribe to Spots Zen →"
+    }
+  },
+  "player": {
+    "ariaLabel": "Audio player",
+    "back": "Back",
+    "sponsor": "Offered by {nom} ★★★★",
+    "voice": {
+      "masculine": "Male",
+      "feminine": "Female"
+    },
+    "progress": "Progress",
+    "skip": {
+      "back": "Rewind 15 seconds",
+      "fwd": "Skip 15 seconds"
+    },
+    "play": "Play",
+    "pause": "Pause",
+    "screenlock": "You can lock your screen ♡",
+    "screenlockSub": "Audio will continue to play.",
+    "next": {
+      "label": "Up next",
+      "listen": "Listen to {titre}"
+    },
+    "cta": {
+      "home": "Enjoy these audios at home ♡",
+      "calm": "Extend this sense of calm wherever you are.",
+      "subscribe": "Subscribe to Spots Zen →"
+    },
+    "tagline": "Spots Zen · Wellness immersions"
+  },
+  "lib": {
+    "meta": {
+      "title": "My library — Spots Zen",
+      "description": "All your Spots Zen wellness immersions: meditations, breathing exercises and music.",
+      "og": { "description": "Your wellness audio library, wherever you are." }
+    },
+    "greeting": "Hello {prenom} ♡",
+    "abo": {
+      "section": "My subscription",
+      "plan": "Plan",
+      "planDefault": "Monthly subscription",
+      "renewal": "Next renewal"
+    }
+  },
+  "offers": {
+    "meta": {
+      "title": "Plans & pricing — Spots Zen",
+      "description": "Subscribe to Spots Zen: first month free, no commitment. €5/month or €49/year."
+    },
+    "hero": {
+      "eyebrow": "Wellness immersions",
+      "h1": "Rediscover your wellness break, wherever you are",
+      "subtitle": "The audio library that accompanies you every day"
+    },
+    "promo": { "badge": "First month free — no commitment" },
+    "plan": {
+      "monthly": {
+        "label": "Monthly",
+        "promo": "1st month free",
+        "desc": "Unlimited access, no commitment",
+        "cta": "Get started"
+      },
+      "annual": {
+        "badge": "Best value",
+        "label": "Annual",
+        "promo": "2 months free",
+        "desc": "Just €4/month · Serenity all year long",
+        "cta": "Get started"
+      }
+    },
+    "benefits": { "h2": "What you get" },
+    "benefit": {
+      "audios": "Immersive audio experiences",
+      "types": "Meditation · Breathing · Visualisation · Sound immersion",
+      "parcours": "Tailored programmes for adults and children",
+      "langs": "Available in 5 languages: FR · EN · DE · NL · ES",
+      "noApp": "No app to download, instant listening",
+      "cancel": "Cancel in one click · No commitment whatsoever"
+    },
+    "catalog": {
+      "h2": "Catalogue preview",
+      "locked": "For subscribers only"
+    },
+    "cta": {
+      "final": "Start my first month free",
+      "legal": "Then €5/month · No commitment · Cancel in 1 click"
+    },
+    "error": { "payment": "Payment could not be started. Please try again in a moment." }
+  },
+  "access": {
+    "meta": { "title": "Access denied — Spots Zen Admin" },
+    "h1": "Access denied",
+    "body": "Your account does not have the administrator rights required to access the Spots Zen back-office.",
+    "cta": "Back to sign-in"
+  },
+  "nav": {
+    "home": { "ariaLabel": "SpotsZen — home" },
+    "particuliers": "Individuals",
+    "professionnels": "Professionals",
+    "contact": "Contact",
+    "lang": { "ariaLabel": "Choose language" },
+    "account": { "ariaLabel": "Sign in" },
+    "cta": "Get started — €5/month",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "mobile": { "cta": "Get started — €5/month →" }
+  },
+  "footer": {
+    "tagline": "Moments of calm, wherever life takes us.",
+    "col1": {
+      "title": "Explore",
+      "concept": "The concept",
+      "bienfaits": "The benefits",
+      "bibliotheque": "The Library"
+    },
+    "col2": {
+      "title": "Professionals",
+      "etablissements": "For businesses",
+      "demo": "Request a demo",
+      "contact": "Contact us"
+    },
+    "col3": {
+      "title": "Stay connected",
+      "rdv": "Book a call"
+    },
+    "copyright": "© 2026 Spots Zen. All rights reserved.",
+    "legal": "Legal notice",
+    "cgu": "Terms of Use",
+    "privacy": "Privacy Policy"
+  },
+  "home": {
+    "meta": {
+      "title": "Spots Zen — A genuine wellness break",
+      "description": "A QR code in your space. Your visitors access a library of wellness audio immersions in two seconds."
+    },
+    "hero": {
+      "eyebrow": "WELLNESS AT YOUR FINGERTIPS",
+      "h1": "What if your space offered a genuine wellness break?",
+      "copy": "A QR code in your space. Your visitors access a library of wellness audio immersions in two seconds.",
+      "cta": {
+        "pro": "For my business",
+        "perso": "Are you an individual? Start at €5/month"
+      },
+      "scroll": "SCROLL DOWN",
+      "img": { "alt": "A peaceful lake surrounded by forests, reflecting the sky" }
+    },
+    "concept": {
+      "eyebrow": "A NEW WAY TO TAKE A BREAK",
+      "h2": "The right audio, at the right time, in the right place.",
+      "p1": "On a break. On holiday. Far from the daily routine…",
+      "p2": "Spots Zen was created for them…",
+      "p3": "The audio adapts to the time of your connection…",
+      "note": "An experience designed for your visitors.",
+      "phones": {
+        "ariaLabel": "Preview of the Spots Zen library and player",
+        "library": { "alt": "The real Spots Zen library with available audios" },
+        "player": { "alt": "The real Spots Zen player during playback" }
+      }
+    },
+    "craft": {
+      "eyebrow": "THE SPOTS ZEN CRAFT",
+      "h2": "Every immersion is the result of an uncompromising process.",
+      "intro": "When you finally begin an audio, the voice must not ring false…",
+      "mainVideo": {
+        "ariaLabel": "Watch the Spots Zen presentation video (opens YouTube)",
+        "cta": "DISCOVER THE EXPERIENCE"
+      },
+      "quote": {
+        "text": "« The scripts draw on powerful, recognised relaxation techniques… »",
+        "eyebrow": "THE STANDARD BEHIND EVERY LISTEN"
+      },
+      "items": [
+        {
+          "eyebrow": "RECOGNISED RELAXATION TECHNIQUES",
+          "title": "Substance before",
+          "italic": "style.",
+          "text": "Every script uses recognised techniques…",
+          "role": "Founder",
+          "label": "01 — THE INTENTION"
+        },
+        {
+          "eyebrow": "EMBODIED VOICES",
+          "title": "A presence",
+          "italic": "that guides you.",
+          "text": "A male voice (Stefan), a female voice (Ninon)…",
+          "role": "Actor",
+          "label": "02 — THE VOICES"
+        },
+        {
+          "eyebrow": "CUSTOM-COMPOSED MUSIC",
+          "title": "An emotion",
+          "italic": "in its own right.",
+          "text": "Original compositions with binaural frequencies…",
+          "role": "Composer",
+          "label": "03 — THE MUSIC"
+        }
+      ]
+    },
+    "benefits": {
+      "eyebrow": "TAKING CARE OF YOURSELF, SIMPLY",
+      "h2": "Benefits from the very first listen.",
+      "items": [
+        { "title": "Better sleep", "text": "Leave the day behind and find more restful nights." },
+        { "title": "Less stress", "text": "A few minutes to breathe, release and return to what matters." },
+        { "title": "Greater focus", "text": "Clear space for your ideas and rediscover your mental clarity." },
+        { "title": "Heart coherence", "text": "A simple rhythm to calm body and mind, wherever you are." },
+        { "title": "A guide by the hour", "text": "The right immersion, at the right moment in your day." },
+        { "title": "For the whole family", "text": "Quiet moments to share, at every age and at your own pace." }
+      ]
+    },
+    "video": {
+      "eyebrow": "IN PICTURES",
+      "h2": "Discover Spots Zen in two minutes."
+    },
+    "lib": {
+      "eyebrow": "THE LIBRARY",
+      "h2": "The right audio, at the right time.",
+      "subtitle": "An experience that adapts to your mood and the rhythm of your day.",
+      "stats": "8 guided immersions · female or male voice · 8 custom-composed pieces of music · 24 different listening experiences possible"
+    },
+    "reviews": {
+      "biz": {
+        "eyebrow": "THEY TRUST US",
+        "h2": "They deployed it."
+      },
+      "perso": {
+        "eyebrow": "THEY TOOK THE TIME",
+        "h2": "Their words."
+      }
+    },
+    "offers": {
+      "h2": "For you or for your business: Spots Zen adapts to you!",
+      "pro": {
+        "eyebrow": "FOR BUSINESSES",
+        "h3": "Your space deserves a wellness break.",
+        "badge": "✦ 2 months free — no commitment, no installation",
+        "cta": "Try for free",
+        "note": "Up and running in 48h. Multiple languages available."
+      },
+      "perso": {
+        "eyebrow": "YOUR APPOINTMENT WITH YOURSELF",
+        "h3": "The break you kept promising yourself.",
+        "badge": "✦ 1 month free — cancel whenever you like",
+        "cta": "Start for free",
+        "note": "€5/month after · Lifetime price guaranteed for early subscribers."
+      }
+    },
+    "contact": {
+      "eyebrow": "A PROJECT, A QUESTION, AN IDEA?",
+      "overImg": "LET'S TAKE THE TIME TO TALK",
+      "h2": "Shall we have a conversation?",
+      "body": "Every space is different. Tell me about yours…",
+      "role": "Founder of Spots Zen",
+      "cta": "Book a call",
+      "img": { "alt": "A calm lake surrounded by pine trees" }
+    }
+  },
+  "part": {
+    "meta": {
+      "title": "The library for you — Spots Zen",
+      "description": "The right audio, at the right moment. Guided immersions by human voices and original music. Spots Zen from €5/month, first month free."
+    },
+    "hero": {
+      "img": { "alt": "A woman facing the ocean at dusk" },
+      "eyebrow": "THE SPOTS ZEN LIBRARY",
+      "h1": "The right audio, at the right moment.",
+      "copy": "Sleep, focus, stress management: guided immersions by warm human voices and original music. Always with you.",
+      "cta": "Start for free",
+      "note": "First month free · No commitment"
+    },
+    "video": { "title": "Two minutes to understand everything." },
+    "benefits": {
+      "eyebrow": "WHAT YOU WILL FEEL",
+      "h2": "A break that changes everything.",
+      "items": [
+        { "badge": "SLEEP", "title": "Deeper sleep" },
+        { "badge": "STRESS", "title": "Less anxiety, more calm" },
+        { "badge": "FOCUS", "title": "A clear mind at the right moment" },
+        { "badge": "FAMILY", "title": "Moments to share" }
+      ]
+    },
+    "steps": {
+      "eyebrow": "HOW IT WORKS",
+      "h2": "As simple as a breath.",
+      "items": [
+        { "title": "Time detected", "text": "Spots Zen detects the time of your connection and highlights the immersion that matches this moment…" },
+        { "title": "Voice chosen", "text": "Female or male: you choose the one that resonates with you." },
+        { "title": "Screen locked", "text": "Audio continues even when your screen locks. Put down your phone. Close your eyes. Let yourself be guided." }
+      ],
+      "childNote": "And for children, gentle immersions are designed especially for them!…"
+    },
+    "catalog": {
+      "eyebrow": "THE LIBRARY",
+      "h2": "Audios that take you into complete immersion for deep relaxation.",
+      "badge": { "subscriber": "Subscriber" }
+    },
+    "prices": {
+      "eyebrow": "PRICING",
+      "h2": "Tonight, rediscover your serenity.",
+      "monthly": {
+        "desc": "First month free. Cancel in one click.",
+        "cta": "Start for free"
+      },
+      "annual": {
+        "badge": "BEST VALUE",
+        "desc": "2 months free. Serenity throughout the year. Billed in one payment.",
+        "cta": "Start · best value"
+      },
+      "legend": "Less than a coffee a week. Launch offer · Lifetime price guaranteed for early subscribers."
+    },
+    "faq": {
+      "eyebrow": "FREQUENTLY ASKED QUESTIONS",
+      "h2": "Everything you might wonder.",
+      "items": [
+        { "q": "How do I access the audios after signing up?", "a": "From the moment you subscribe, you receive immediate access to the library…" },
+        { "q": "Is the audio quality truly professional?", "a": "Absolutely. Every immersion is recorded in French in a professional studio…" },
+        { "q": "Are there audios suitable for children?", "a": "Yes. Several immersions are designed for ages 4–12…" },
+        { "q": "How do I cancel my subscription?", "a": "You can cancel at any time from your account…" }
+      ]
+    },
+    "final": {
+      "eyebrow": "START TONIGHT",
+      "h2": "Give yourself a genuine break.",
+      "cta": "Start now",
+      "note": "First month free · No commitment · Cancel whenever you like",
+      "proLink": "Are you a business? For my business →"
+    }
+  },
+  "pro": {
+    "meta": {
+      "title": "Spots Zen for professionals — Hotels, businesses, schools",
+      "description": "Offer your visitors, employees or students a unique wellness immersion…"
+    },
+    "hero": {
+      "img": { "alt": "A soothing hotel room with a large bed" },
+      "eyebrow": "FOR PROFESSIONALS",
+      "h1": "Offer your visitors, employees or students a unique wellness immersion.",
+      "copy": "Spots Zen supports businesses, tourist establishments, local authorities…",
+      "cta": {
+        "offer": "Discover our offer →",
+        "quote": "Request a quote"
+      }
+    },
+    "why": {
+      "eyebrow": "WHY SPOTS ZEN",
+      "h2": "In a world where everything accelerates, offering a moment of pause is no longer a luxury. It is a strategic decision.",
+      "quote": "« They scan. They listen. They recharge. Simple for you. Unforgettable for them. »"
+    },
+    "steps": {
+      "eyebrow": "IN 6 STEPS",
+      "h2": "From QR code to immersion",
+      "items": [
+        { "title": "The scan" },
+        { "title": "Instant access" },
+        { "title": "Language detected" },
+        { "title": "Recommended audio" },
+        { "title": "The immersion" },
+        { "title": "The impact" }
+      ]
+    },
+    "sector": {
+      "hebergements": { "tab": "Accommodation" },
+      "entreprises": { "tab": "Businesses" },
+      "ecoles": { "tab": "Schools" },
+      "sante": { "tab": "Healthcare" },
+      "collectivites": { "tab": "Local authorities" }
+    },
+    "form": {
+      "select": { "placeholder": "Choose…" },
+      "error": "An error occurred. Please try again.",
+      "success": "✓ Message sent! We will reply within 24 hours. See you soon.",
+      "note": "Reply within 24 hours · No commitment",
+      "cta": "Request a quote →",
+      "altContact": "Or write to us directly: bonjour@spotszen.fr"
+    },
+    "quote": {
+      "eyebrow": "LET'S GET STARTED",
+      "h2": "Your establishment deserves more than a wellness brochure."
+    }
+  }
+}
