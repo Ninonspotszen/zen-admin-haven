@@ -1,5 +1,7 @@
 import i18n from "@/i18n/index";
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
 import {
   Leaf, Flower2, Headphones, PersonStanding, Users, Languages, Smartphone, CircleCheck, Lock, ArrowRight,
@@ -11,8 +13,8 @@ export const Route = createFileRoute("/offres")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Offres & tarifs — Spots Zen" },
-      { name: "description", content: "Abonnez-vous à Spots Zen : premier mois offert, sans engagement. 5 €/mois ou 49 €/an." },
+      { title: i18n.t("offers.meta.title") },
+      { name: "description", content: i18n.t("offers.meta.description") },
       { property: "og:title", content: "Offres & tarifs — Spots Zen" },
       { property: "og:description", content: "Retrouvez votre pause bien-être, où que vous soyez. Premier mois offert." },
       { property: "og:type", content: "website" },
@@ -48,6 +50,7 @@ body:has(.sz){background:var(--o-bg)}
 type Preview = { id: string; slug: string | null; image_url: string | null; moment: string | null; type: string | null; duree_secondes: number | null; titre_fr: string | null; titre: string | null };
 
 function OffresPage() {
+  const { t } = useTranslation();
   const [lang, setLang] = useState("fr");
   const [langOpen, setLangOpen] = useState(false);
   const [items, setItems] = useState<Preview[]>([]);
@@ -61,7 +64,7 @@ function OffresPage() {
       window.location.href = url;
     } catch {
       setBusy(null);
-      alert("Le paiement n'a pas pu démarrer. Réessayez dans un instant.");
+      alert(t("offers.error.payment"));
     }
   };
 
@@ -89,12 +92,12 @@ function OffresPage() {
   const chooseLang = (l: string) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); };
 
   const benefits = [
-    { Icon: Headphones, text: "Des audios immersifs", strong: true },
-    { Icon: PersonStanding, text: "Méditation · Respiration · Visualisation · Immersion sonore" },
-    { Icon: Users, text: "Des parcours adaptés pour adultes et pour enfants" },
-    { Icon: Languages, text: "Disponible en 5 langues : FR · EN · DE · NL · ES" },
-    { Icon: Smartphone, text: "Sans application à télécharger, écoute instantanée" },
-    { Icon: CircleCheck, text: "Résiliation en un clic · Sans aucun engagement" },
+    { Icon: Headphones, text: t("offers.benefit.audios"), strong: true },
+    { Icon: PersonStanding, text: t("offers.benefit.types") },
+    { Icon: Users, text: t("offers.benefit.parcours") },
+    { Icon: Languages, text: t("offers.benefit.langs") },
+    { Icon: Smartphone, text: t("offers.benefit.noApp") },
+    { Icon: CircleCheck, text: t("offers.benefit.cancel") },
   ];
 
   return (
@@ -124,40 +127,40 @@ function OffresPage() {
         {/* HERO */}
         <section className="px-6 pb-12 pt-6 text-center">
           <p className="flex items-center justify-center gap-3 text-[12px] uppercase tracking-[0.25em] text-[var(--o-eyebrow)]">
-            <span aria-hidden>—</span>Immersions bien-être<span aria-hidden>—</span>
+            <span aria-hidden>—</span>{t("offers.hero.eyebrow")}<span aria-hidden>—</span>
           </p>
-          <h1 className="serif mt-4 text-[30px] font-normal leading-tight">Retrouvez votre pause bien-être, où que vous soyez</h1>
-          <p className="mt-3 text-[14px] text-[var(--o-sub)]">La bibliothèque audio qui vous accompagne au quotidien</p>
+          <h1 className="serif mt-4 text-[30px] font-normal leading-tight">{t("offers.hero.h1")}</h1>
+          <p className="mt-3 text-[14px] text-[var(--o-sub)]">{t("offers.hero.subtitle")}</p>
         </section>
 
         {/* PROMO */}
         <p className="flex items-center justify-center gap-2 px-6 text-center text-sm font-semibold text-[var(--o-promo)]">
-          <Leaf className="h-4 w-4 shrink-0" aria-hidden />Premier mois offert — sans engagement
+          <Leaf className="h-4 w-4 shrink-0" aria-hidden />{t("offers.promo.badge")}
         </p>
 
         {/* PRICING */}
         <section className="mt-5 grid grid-cols-2 gap-3.5 px-6">
           <div className="ocard flex flex-col rounded-2xl p-5">
-            <p className="text-[11px] uppercase tracking-wider text-[var(--o-eyebrow)]">Mensuel</p>
+            <p className="text-[11px] uppercase tracking-wider text-[var(--o-eyebrow)]">{t("offers.plan.monthly.label")}</p>
             <p className="serif mt-2 text-[24px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/mois</span></p>
-            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">1er mois offert</span>
-            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">Accès illimité sans engagement</p>
-            <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">Commencer</button>
+            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.monthly.promo")}</span>
+            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.monthly.desc")}</p>
+            <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">{t("offers.plan.monthly.cta")}</button>
           </div>
           <div className="ocard relative flex flex-col rounded-2xl p-5">
-            <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">Meilleure offre</span>
-            <p className="text-[11px] uppercase tracking-wider text-[var(--o-promo)]">Annuel</p>
+            <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">{t("offers.plan.annual.badge")}</span>
+            <p className="text-[11px] uppercase tracking-wider text-[var(--o-promo)]">{t("offers.plan.annual.label")}</p>
             <p className="serif mt-2 text-[24px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/an</span></p>
-            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">2 mois offerts</span>
-            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">Soit 4 €/mois · Sérénité à l'année</p>
-            <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">Commencer</button>
+            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.annual.promo")}</span>
+            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.annual.desc")}</p>
+            <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
           </div>
         </section>
 
         {/* BENEFITS */}
         <section className="mt-12 px-6">
           <div className="ocard rounded-2xl p-6">
-            <h2 className="serif flex items-center gap-3 text-[18px]"><Flower2 className="h-5 w-5 text-[var(--o-promo)]" aria-hidden />Ce que vous obtenez</h2>
+            <h2 className="serif flex items-center gap-3 text-[18px]"><Flower2 className="h-5 w-5 text-[var(--o-promo)]" aria-hidden />{t("offers.benefits.h2")}</h2>
             <ul className="mt-5 space-y-4">
               {benefits.map(({ Icon, text, strong }) => (
                 <li key={text} className={`flex gap-3 text-[13px] ${strong ? "font-medium text-[var(--o-promo)]" : "text-[var(--o-sub)]"}`}>
@@ -171,8 +174,8 @@ function OffresPage() {
         {/* CATALOG PREVIEW */}
         <section className="mt-12">
           <div className="px-6">
-            <h2 className="serif text-[18px]">Aperçu du catalogue</h2>
-            <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />Réservé aux abonnés</p>
+            <h2 className="serif text-[18px]">{t("offers.catalog.h2")}</h2>
+            <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />{t("offers.catalog.locked")}</p>
           </div>
           <div className="noscroll mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2">
             {items.map((a) => {
@@ -199,12 +202,13 @@ function OffresPage() {
         <section className="mt-12 px-6">
           <div className="ocard rounded-2xl p-6 text-center">
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#2D5A27] px-5 text-[15px] font-semibold text-[#F8F6F2]">
-              Commencer mon premier mois gratuit <ArrowRight className="h-4 w-4" aria-hidden />
+              {t("offers.cta.final")} <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
-            <p className="mt-3 text-[12px] text-[var(--o-sub)]">Puis 5 €/mois · Sans engagement · Résiliation en 1 clic</p>
+            <p className="mt-3 text-[12px] text-[var(--o-sub)]">{t("offers.cta.legal")}</p>
           </div>
         </section>
       </main>
+      <div className="flex justify-center pb-10"><LanguageSwitcher /></div>
     </div>
   );
 }
