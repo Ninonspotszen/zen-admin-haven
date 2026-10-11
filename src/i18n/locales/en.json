@@ -441,17 +441,18 @@
         "alt": "A woman facing the ocean at dusk"
       },
       "eyebrow": "THE SPOTS ZEN LIBRARY",
-      "h1": "The right audio, at the right moment.",
+      "h1": "The right audio,",
       "copy": "Sleep, focus, stress management: guided immersions by warm human voices and original music. Always with you.",
       "cta": "Start for free",
-      "note": "First month free · No commitment"
+      "note": "First month free · No commitment",
+      "h1italic": "at the right moment."
     },
     "video": {
       "title": "Two minutes to understand everything."
     },
     "benefits": {
       "eyebrow": "WHAT YOU WILL FEEL",
-      "h2": "A break that changes everything.",
+      "h2": "A break that",
       "items": [
         {
           "badge": "SLEEP",
@@ -469,7 +470,8 @@
           "badge": "FAMILY",
           "title": "Moments to share"
         }
-      ]
+      ],
+      "h2italic": "changes everything."
     },
     "steps": {
       "eyebrow": "HOW IT WORKS",
@@ -477,7 +479,7 @@
       "items": [
         {
           "title": "Time detected",
-          "text": "Spots Zen detects the time of your connection and highlights the immersion that matches this moment…"
+          "text": "Spots Zen detects the time of your connection and highlights the immersion that matches that moment of your day: morning, daytime, evening or night."
         },
         {
           "title": "Voice chosen",
@@ -488,7 +490,7 @@
           "text": "Audio continues even when your screen locks. Put down your phone. Close your eyes. Let yourself be guided."
         }
       ],
-      "childNote": "And for children, gentle immersions are designed especially for them!…"
+      "childNote": "And for children, gentle immersions have been designed for them too! From age 4, short and soothing sessions to help them fall asleep or refocus."
     },
     "catalog": {
       "eyebrow": "THE LIBRARY",
@@ -517,19 +519,19 @@
       "items": [
         {
           "q": "How do I access the audios after signing up?",
-          "a": "From the moment you subscribe, you receive immediate access to the library…"
+          "a": "As soon as your subscription is confirmed, you get immediate access to the full library. Simply log in at spotszen.fr from your browser — no app to download."
         },
         {
           "q": "Is the audio quality truly professional?",
-          "a": "Absolutely. Every immersion is recorded in French in a professional studio…"
+          "a": "Absolutely. Each immersion is recorded in a professional studio, with warm human voices and original music composed specifically with binaural frequencies."
         },
         {
           "q": "Are there audios suitable for children?",
-          "a": "Yes. Several immersions are designed for ages 4–12…"
+          "a": "Yes. Several immersions are designed for children aged 4-12: short, soothing sessions with a gentle voice suited to their world."
         },
         {
           "q": "How do I cancel my subscription?",
-          "a": "You can cancel at any time from your account…"
+          "a": "You can cancel at any time from your personal space on spotszen.fr. No notice period, no penalty. Your access remains active until the end of the current period."
         }
       ]
     },
@@ -544,7 +546,7 @@
   "pro": {
     "meta": {
       "title": "Spots Zen for professionals — Hotels, businesses, schools",
-      "description": "Offer your visitors, employees or students a unique wellness immersion…"
+      "description": "Offer your visitors, employees or students a unique wellness immersion. QR code, multilingual, no installation. Spots Zen for professionals."
     },
     "hero": {
       "img": {
@@ -552,7 +554,7 @@
       },
       "eyebrow": "FOR PROFESSIONALS",
       "h1": "Offer your visitors, employees or students a unique wellness immersion.",
-      "copy": "Spots Zen supports businesses, tourist establishments, local authorities…",
+      "copy": "Spots Zen supports businesses, hospitality venues, municipalities and educational institutions that want to offer a genuine wellness break to their visitors, employees or students.",
       "cta": {
         "offer": "Discover our offer →",
         "quote": "Request a quote"

@@ -103,7 +103,7 @@ export function ProfessionnelsPage() {
       <div className="pr-hero-inner">
         <p className="pr-eyebrow">{t("pro.hero.eyebrow")}</p>
         <h1>{t("pro.hero.h1")}</h1>
-        <p className="pr-hero-copy">Spots Zen accompagne les entreprises, les établissements touristiques, les communes, les écoles et les structures de santé avec une bibliothèque d'audios de bien-être accessible en quelques secondes, sans application.</p>
+        <p className="pr-hero-copy">{t("pro.hero.copy")}</p>
         <div className="pr-hero-ctas"><button className="pr-btn" onClick={() => scrollTo("offre")}>{t("pro.hero.cta.offer")}</button><button className="pr-link" onClick={() => scrollTo("devis")}>{t("pro.hero.cta.quote")}</button></div>
       </div>
     </section>
