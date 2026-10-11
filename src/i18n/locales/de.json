@@ -17,10 +17,14 @@
       "title": "Anmelden — Spots Zen",
       "description": "Erstellen Sie Ihr Konto oder melden Sie sich bei Spots Zen an."
     },
-    "header": { "back": "Zurück" },
+    "header": {
+      "back": "Zurück"
+    },
     "h1": "Willkommen bei Spots Zen",
     "subtitle": "Erstellen Sie Ihr Konto oder melden Sie sich an",
-    "google": { "cta": "Mit Google fortfahren" },
+    "google": {
+      "cta": "Mit Google fortfahren"
+    },
     "separator": "oder",
     "email": {
       "label": "Ihre E-Mail-Adresse",
@@ -44,13 +48,17 @@
       "and": "und unsere",
       "privacy": "Datenschutzrichtlinie"
     },
-    "badge": { "security": "Sofortige und sichere Anmeldung" }
+    "badge": {
+      "security": "Sofortige und sichere Anmeldung"
+    }
   },
   "spot": {
     "meta": {
       "title": "Zen-Spot — Audio-Meditationen",
       "description": "Hören Sie die Meditationen, Atemübungen und Klangbäder dieses Spots Zen.",
-      "og": { "description": "Scannen, atmen, hören: Ihre Spots Zen Auszeit." }
+      "og": {
+        "description": "Scannen, atmen, hören: Ihre Spots Zen Auszeit."
+      }
     },
     "state": {
       "notfound": {
@@ -76,8 +84,12 @@
       },
       "error": {
         "format": "Der Code enthält 4 Ziffern.",
-        "wrong": "Falscher Code. Überprüfen Sie den Aushang."
+        "wrong": "Falscher Code. Überprüfen Sie den Aushang.",
+        "expired": "Code abgelaufen"
       }
+    },
+    "audio": {
+      "duration": "Dauer"
     }
   },
   "common": {
@@ -95,7 +107,9 @@
       "musicSubtitle": "Mit binauralen Frequenzen · ohne Stimme."
     },
     "empty": "Momentan sind keine Audios verfügbar.",
-    "listen": { "ariaLabel": "{titre} anhören" },
+    "listen": {
+      "ariaLabel": "{titre} anhören"
+    },
     "moment": {
       "morning": "Morgen",
       "day": "Tagsüber",
@@ -144,7 +158,9 @@
     "meta": {
       "title": "Meine Bibliothek — Spots Zen",
       "description": "Alle Ihre Spots Zen Wellness-Eintauchungen: Meditationen, Atemübungen und Musik.",
-      "og": { "description": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind." }
+      "og": {
+        "description": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind."
+      }
     },
     "greeting": "Guten Tag {prenom} ♡",
     "abo": {
@@ -164,7 +180,9 @@
       "h1": "Entdecken Sie Ihre Auszeit, wo immer Sie sind",
       "subtitle": "Die Audio-Bibliothek, die Sie täglich begleitet"
     },
-    "promo": { "badge": "Erster Monat kostenlos — ohne Verpflichtung" },
+    "promo": {
+      "badge": "Erster Monat kostenlos — ohne Verpflichtung"
+    },
     "plan": {
       "monthly": {
         "label": "Monatlich",
@@ -180,7 +198,9 @@
         "cta": "Jetzt starten"
       }
     },
-    "benefits": { "h2": "Was Sie erhalten" },
+    "benefits": {
+      "h2": "Was Sie erhalten"
+    },
     "benefit": {
       "audios": "Immersive Audio-Erlebnisse",
       "types": "Meditation · Atemübung · Visualisierung · Klangeintauchung",
@@ -197,27 +217,39 @@
       "final": "Meinen ersten Monat kostenlos beginnen",
       "legal": "Danach 5 €/Monat · Ohne Verpflichtung · Kündigung per Klick"
     },
-    "error": { "payment": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es gleich erneut." }
+    "error": {
+      "payment": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es gleich erneut."
+    }
   },
   "access": {
-    "meta": { "title": "Zugang verweigert — Spots Zen Admin" },
+    "meta": {
+      "title": "Zugang verweigert — Spots Zen Admin"
+    },
     "h1": "Zugang verweigert",
     "body": "Ihr Konto verfügt nicht über die erforderlichen Administratorrechte, um auf das Spots Zen Back-Office zuzugreifen.",
     "cta": "Zurück zur Anmeldung"
   },
   "nav": {
-    "home": { "ariaLabel": "SpotsZen — Startseite" },
+    "home": {
+      "ariaLabel": "SpotsZen — Startseite"
+    },
     "particuliers": "Privatpersonen",
     "professionnels": "Fachleute",
     "contact": "Kontakt",
-    "lang": { "ariaLabel": "Sprache wählen" },
-    "account": { "ariaLabel": "Anmelden" },
+    "lang": {
+      "ariaLabel": "Sprache wählen"
+    },
+    "account": {
+      "ariaLabel": "Anmelden"
+    },
     "cta": "Starten — 5 €/Monat",
     "menu": {
       "open": "Menü öffnen",
       "close": "Menü schließen"
     },
-    "mobile": { "cta": "Starten — 5 €/Monat →" }
+    "mobile": {
+      "cta": "Starten — 5 €/Monat →"
+    }
   },
   "footer": {
     "tagline": "Momente der Stille, überall dort, wo das Leben uns hinführt.",
@@ -256,7 +288,9 @@
         "perso": "Sie sind Privatperson? Starten ab 5 €/Monat"
       },
       "scroll": "SCROLLEN SIE",
-      "img": { "alt": "Ein friedlicher See, umgeben von Wäldern, der den Himmel widerspiegelt" }
+      "img": {
+        "alt": "Ein friedlicher See, umgeben von Wäldern, der den Himmel widerspiegelt"
+      }
     },
     "concept": {
       "eyebrow": "EINE NEUE ART, PAUSE ZU MACHEN",
@@ -267,8 +301,12 @@
       "note": "Ein Erlebnis, das für Ihre Besucher gedacht ist.",
       "phones": {
         "ariaLabel": "Vorschau der Spots Zen Bibliothek und des Players",
-        "library": { "alt": "Die echte Spots Zen Bibliothek mit verfügbaren Audios" },
-        "player": { "alt": "Der echte Spots Zen Player während der Wiedergabe" }
+        "library": {
+          "alt": "Die echte Spots Zen Bibliothek mit verfügbaren Audios"
+        },
+        "player": {
+          "alt": "Der echte Spots Zen Player während der Wiedergabe"
+        }
       }
     },
     "craft": {
@@ -314,12 +352,30 @@
       "eyebrow": "EINFACH FÜR SICH SORGEN",
       "h2": "Wirkungen ab dem ersten Hören.",
       "items": [
-        { "title": "Besserer Schlaf", "text": "Lassen Sie den Tag hinter sich und finden Sie zu ruhigeren Nächten." },
-        { "title": "Weniger Stress", "text": "Ein paar Minuten zum Durchatmen, Loslassen und Zurückkehren zum Wesentlichen." },
-        { "title": "Mehr Konzentration", "text": "Schaffen Sie Raum für Ihre Ideen und finden Sie zu geistiger Klarheit." },
-        { "title": "Herzkoheränz", "text": "Ein einfacher Rhythmus, um Körper und Geist zu beruhigen, wo immer Sie sind." },
-        { "title": "Ein Begleiter nach Uhrzeit", "text": "Die richtige Eintauchung zum richtigen Moment Ihres Tages." },
-        { "title": "Für die ganze Familie", "text": "Stille Momente zum Teilen, in jedem Alter und in Ihrem eigenen Tempo." }
+        {
+          "title": "Besserer Schlaf",
+          "text": "Lassen Sie den Tag hinter sich und finden Sie zu ruhigeren Nächten."
+        },
+        {
+          "title": "Weniger Stress",
+          "text": "Ein paar Minuten zum Durchatmen, Loslassen und Zurückkehren zum Wesentlichen."
+        },
+        {
+          "title": "Mehr Konzentration",
+          "text": "Schaffen Sie Raum für Ihre Ideen und finden Sie zu geistiger Klarheit."
+        },
+        {
+          "title": "Herzkoheränz",
+          "text": "Ein einfacher Rhythmus, um Körper und Geist zu beruhigen, wo immer Sie sind."
+        },
+        {
+          "title": "Ein Begleiter nach Uhrzeit",
+          "text": "Die richtige Eintauchung zum richtigen Moment Ihres Tages."
+        },
+        {
+          "title": "Für die ganze Familie",
+          "text": "Stille Momente zum Teilen, in jedem Alter und in Ihrem eigenen Tempo."
+        }
       ]
     },
     "video": {
@@ -366,7 +422,9 @@
       "body": "Jeder Ort ist anders. Erzählen Sie mir von Ihrem…",
       "role": "Gründerin von Spots Zen",
       "cta": "Termin vereinbaren",
-      "img": { "alt": "Ein ruhiger See, umgeben von Kiefern" }
+      "img": {
+        "alt": "Ein ruhiger See, umgeben von Kiefern"
+      }
     }
   },
   "part": {
@@ -375,38 +433,65 @@
       "description": "Das richtige Audio, zum richtigen Moment. Geführte Eintauchungen durch menschliche Stimmen und Originalmusik. Spots Zen ab 5 €/Monat, erster Monat kostenlos."
     },
     "hero": {
-      "img": { "alt": "Eine Frau mit Blick auf den Ozean in der Abenddämmerung" },
+      "img": {
+        "alt": "Eine Frau mit Blick auf den Ozean in der Abenddämmerung"
+      },
       "eyebrow": "DIE SPOTS ZEN BIBLIOTHEK",
       "h1": "Das richtige Audio, zum richtigen Moment.",
       "copy": "Schlaf, Konzentration, Stressbewältigung: geführte Eintauchungen durch sanfte menschliche Stimmen und Originalmusik. Immer an Ihrer Seite.",
       "cta": "Kostenlos starten",
       "note": "Erster Monat kostenlos · Keine Verpflichtung"
     },
-    "video": { "title": "Zwei Minuten, um alles zu verstehen." },
+    "video": {
+      "title": "Zwei Minuten, um alles zu verstehen."
+    },
     "benefits": {
       "eyebrow": "WAS SIE SPÜREN WERDEN",
       "h2": "Eine Auszeit, die alles verändert.",
       "items": [
-        { "badge": "SCHLAF", "title": "Tieferer Schlaf" },
-        { "badge": "STRESS", "title": "Weniger Angst, mehr Ruhe" },
-        { "badge": "KONZENTRATION", "title": "Klarer Geist zum richtigen Moment" },
-        { "badge": "FAMILIE", "title": "Momente zum Teilen" }
+        {
+          "badge": "SCHLAF",
+          "title": "Tieferer Schlaf"
+        },
+        {
+          "badge": "STRESS",
+          "title": "Weniger Angst, mehr Ruhe"
+        },
+        {
+          "badge": "KONZENTRATION",
+          "title": "Klarer Geist zum richtigen Moment"
+        },
+        {
+          "badge": "FAMILIE",
+          "title": "Momente zum Teilen"
+        }
       ]
     },
     "steps": {
       "eyebrow": "SO FUNKTIONIERT ES",
       "h2": "So einfach wie ein Atemzug.",
       "items": [
-        { "title": "Uhrzeit erkannt", "text": "Spots Zen erkennt die Uhrzeit Ihrer Verbindung und hebt die Eintauchung hervor, die diesem Moment entspricht…" },
-        { "title": "Stimme gewählt", "text": "Weiblich oder männlich: Sie wählen diejenige, die Sie berührt." },
-        { "title": "Bildschirm gesperrt", "text": "Das Audio läuft weiter, auch wenn Ihr Bildschirm gesperrt ist. Legen Sie Ihr Telefon hin. Schließen Sie die Augen. Lassen Sie sich führen." }
+        {
+          "title": "Uhrzeit erkannt",
+          "text": "Spots Zen erkennt die Uhrzeit Ihrer Verbindung und hebt die Eintauchung hervor, die diesem Moment entspricht…"
+        },
+        {
+          "title": "Stimme gewählt",
+          "text": "Weiblich oder männlich: Sie wählen diejenige, die Sie berührt."
+        },
+        {
+          "title": "Bildschirm gesperrt",
+          "text": "Das Audio läuft weiter, auch wenn Ihr Bildschirm gesperrt ist. Legen Sie Ihr Telefon hin. Schließen Sie die Augen. Lassen Sie sich führen."
+        }
       ],
       "childNote": "Und für Kinder gibt es sanfte Eintauchungen, die speziell für sie gestaltet wurden!…"
     },
     "catalog": {
       "eyebrow": "DIE BIBLIOTHEK",
       "h2": "Audios, die Sie in vollständige Eintauchung für tiefe Entspannung versetzen.",
-      "badge": { "subscriber": "Abonnent·in" }
+      "badge": {
+        "subscriber": "Abonnent·in"
+      }
     },
     "prices": {
       "eyebrow": "PREISE",
@@ -426,10 +511,22 @@
       "eyebrow": "HÄUFIG GESTELLTE FRAGEN",
       "h2": "Alles, was Sie sich fragen.",
       "items": [
-        { "q": "Wie greife ich nach der Anmeldung auf die Audios zu?", "a": "Ab dem Moment Ihres Abonnements erhalten Sie sofortigen Zugang zur Bibliothek…" },
-        { "q": "Ist die Audioqualität wirklich professionell?", "a": "Absolut. Jede Eintauchung wird auf Französisch in einem professionellen Studio aufgenommen…" },
-        { "q": "Gibt es Audios für Kinder?", "a": "Ja. Mehrere Eintauchungen sind für Kinder von 4–12 Jahren konzipiert…" },
-        { "q": "Wie kündige ich mein Abonnement?", "a": "Sie können jederzeit über Ihr Konto kündigen…" }
+        {
+          "q": "Wie greife ich nach der Anmeldung auf die Audios zu?",
+          "a": "Ab dem Moment Ihres Abonnements erhalten Sie sofortigen Zugang zur Bibliothek…"
+        },
+        {
+          "q": "Ist die Audioqualität wirklich professionell?",
+          "a": "Absolut. Jede Eintauchung wird auf Französisch in einem professionellen Studio aufgenommen…"
+        },
+        {
+          "q": "Gibt es Audios für Kinder?",
+          "a": "Ja. Mehrere Eintauchungen sind für Kinder von 4–12 Jahren konzipiert…"
+        },
+        {
+          "q": "Wie kündige ich mein Abonnement?",
+          "a": "Sie können jederzeit über Ihr Konto kündigen…"
+        }
       ]
     },
     "final": {
@@ -446,7 +543,9 @@
       "description": "Bieten Sie Ihren Besuchern, Mitarbeitern oder Studierenden ein einzigartiges Wellness-Erlebnis…"
     },
     "hero": {
-      "img": { "alt": "Beruhigendes Hotelzimmer mit einem großen Bett" },
+      "img": {
+        "alt": "Beruhigendes Hotelzimmer mit einem großen Bett"
+      },
       "eyebrow": "FÜR FACHLEUTE",
       "h1": "Bieten Sie Ihren Besuchern, Mitarbeitern oder Studierenden eine einzigartige Wellness-Eintauchung.",
       "copy": "Spots Zen begleitet Unternehmen, touristische Einrichtungen, Gemeinden…",
@@ -464,23 +563,47 @@
       "eyebrow": "IN 6 SCHRITTEN",
       "h2": "Vom QR-Code zur Eintauchung",
       "items": [
-        { "title": "Der Scan" },
-        { "title": "Sofortiger Zugang" },
-        { "title": "Sprache erkannt" },
-        { "title": "Empfohlenes Audio" },
-        { "title": "Die Eintauchung" },
-        { "title": "Die Wirkung" }
+        {
+          "title": "Der Scan"
+        },
+        {
+          "title": "Sofortiger Zugang"
+        },
+        {
+          "title": "Sprache erkannt"
+        },
+        {
+          "title": "Empfohlenes Audio"
+        },
+        {
+          "title": "Die Eintauchung"
+        },
+        {
+          "title": "Die Wirkung"
+        }
       ]
     },
     "sector": {
-      "hebergements": { "tab": "Unterkünfte" },
-      "entreprises": { "tab": "Unternehmen" },
-      "ecoles": { "tab": "Schulen" },
-      "sante": { "tab": "Gesundheit" },
-      "collectivites": { "tab": "Kommunen" }
+      "hebergements": {
+        "tab": "Unterkünfte"
+      },
+      "entreprises": {
+        "tab": "Unternehmen"
+      },
+      "ecoles": {
+        "tab": "Schulen"
+      },
+      "sante": {
+        "tab": "Gesundheit"
+      },
+      "collectivites": {
+        "tab": "Kommunen"
+      }
     },
     "form": {
-      "select": { "placeholder": "Wählen…" },
+      "select": {
+        "placeholder": "Wählen…"
+      },
       "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
       "success": "✓ Nachricht gesendet! Wir antworten Ihnen innerhalb von 24 Stunden. Bis bald.",
       "note": "Antwort innerhalb von 24 Stunden · Keine Verpflichtung",

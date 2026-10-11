@@ -117,7 +117,6 @@ function SpotPage() {
   const [pinError, setPinError] = useState("");
   const [checking, setChecking] = useState(false);
   const [lang, setLang] = useState("fr");
-  const [langOpen, setLangOpen] = useState(false);
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
   useEffect(() => {
@@ -179,7 +178,14 @@ function SpotPage() {
   const moment = currentMoment();
   const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
   const hero = playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ?? playable[0];
-  const categories = ["Tous", "Méditation", "Respiration", "Musique", "Visualisation", "Enfant"];
+  const categories = [
+    { slug: "Tous", key: "common.filter.all" },
+    { slug: "Méditation", key: "common.filter.meditation" },
+    { slug: "Respiration", key: "common.filter.respiration" },
+    { slug: "Musique", key: "common.filter.musique" },
+    { slug: "Visualisation", key: "common.filter.visualisation" },
+    { slug: "Enfant", key: "common.filter.enfant" },
+  ];
   const match = (a: Audio) =>
     filter === "Tous" ? true : filter === "Enfant" ? a.moment === "enfant" : a.type === filter;
   const guided = audios.filter((a) => !isMusic(a) && match(a));
@@ -194,22 +200,7 @@ function SpotPage() {
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
           <img src={LOGO_DARK} alt="Spots Zen" className="logo-for-light h-8 w-auto object-contain" />
           <img src={LOGO_LIGHT} alt="Spots Zen" className="logo-for-dark h-8 w-auto object-contain" />
-          <div className="relative">
-            <button onClick={() => setLangOpen((o) => !o)} className="flex h-9 items-center gap-1 rounded-full border border-[var(--sz-chip-border)] bg-transparent px-4 text-sm font-semibold text-[var(--sz-chip-fg)]" aria-haspopup="listbox" aria-expanded={langOpen}>
-              {lang.toUpperCase()} <span aria-hidden>▾</span>
-            </button>
-            {langOpen && (
-              <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-[var(--sz-hair)] bg-[var(--sz-menu)] py-1 shadow-[0_4px_16px_rgba(28,46,30,0.08)]">
-                {LANGS.map((l) => (
-                  <li key={l}>
-                    <button onClick={() => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
-                      {l.toUpperCase()}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <span className="w-9" aria-hidden />
         </div>
       </header>
 
@@ -266,9 +257,9 @@ function SpotPage() {
             {/* FILTRES */}
             <div className="noscroll -mx-5 mt-10 flex gap-2 overflow-x-auto px-5">
               {categories.map((c) => (
-                <button key={c} onClick={() => setFilter(c)}
-                  className={`shrink-0 rounded-full border px-5 py-2 text-xs font-semibold ${c === filter ? "border-[var(--sz-brand)] bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "border-[var(--sz-chip-border)] bg-transparent text-[var(--sz-chip-fg)]"}`}>
-                  {c}
+                <button key={c.slug} onClick={() => setFilter(c.slug)}
+                  className={`shrink-0 rounded-full border px-5 py-2 text-xs font-semibold ${c.slug === filter ? "border-[var(--sz-brand)] bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "border-[var(--sz-chip-border)] bg-transparent text-[var(--sz-chip-fg)]"}`}>
+                  {t(c.key)}
                 </button>
               ))}
             </div>
@@ -323,9 +314,9 @@ function SpotPage() {
       {/* LIGHT ISLAND */}
       {state === "catalog" && (
         <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"><section className="rounded-3xl bg-[var(--sz-bg)] px-5 py-8 text-center">
-          <p className="serif whitespace-nowrap text-lg font-medium text-[var(--sz-fg)]">Retrouvez ces audios chez vous ♡</p>
+          <p className="serif whitespace-nowrap text-lg font-medium text-[var(--sz-fg)]">{t("common.cta.home")}</p>
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
-            Abonnez-vous à Spots Zen →
+            {t("common.cta.subscribe")}
           </a>
           </section></div>
       )}
@@ -548,10 +539,10 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
 
         {/* CTA */}
         <section className="mt-6 rounded-3xl p-6 text-center" style={{ background: "#F0EDE8" }}>
-          <p className="serif text-xl" style={{ color: "#1C2E1E" }}>Retrouvez ces audios chez vous ♡</p>
-          <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>Prolongez cet état de calme où que vous soyez.</p>
+          <p className="serif text-xl" style={{ color: "#1C2E1E" }}>{tr("player.cta.home")}</p>
+          <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>{tr("player.cta.calm")}</p>
           <a href={`/offres?spot_origine_id=${spotId}`} className="mt-4 flex h-[52px] w-full items-center justify-center rounded-full text-sm font-semibold" style={{ background: "#2D5A27", color: "#F0EDE8" }}>
-            Abonnez-vous à Spots Zen →
+            {tr("player.cta.subscribe")}
           </a>
         </section>
 
