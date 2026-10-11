@@ -1,3 +1,4 @@
+import i18n from "@/i18n/index";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -47,7 +48,7 @@ function ConnexionPage() {
 
   useEffect(() => {
     // Choix mémorisé (même clé que S1) ; sinon français par défaut, jamais deviné depuis le navigateur.
-    const saved = localStorage.getItem("sz_lang");
+    const saved = localStorage.getItem("sz-lang");
     if (saved && (LANGS as readonly string[]).includes(saved)) setLang(saved);
   }, []);
 
@@ -149,7 +150,7 @@ function ConnexionPage() {
               {LANGS.map((l) => (
                 <button
                   key={l}
-                  onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }}
+                  onClick={() => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); }}
                   className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--szc-menu-hover)] ${l === lang ? "text-[var(--szc-brand)]" : "text-[var(--szc-fg)]"}`}
                 >
                   {l.toUpperCase()}
