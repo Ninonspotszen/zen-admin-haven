@@ -122,14 +122,14 @@ function BibliothequePage() {
   const [aboOpen, setAboOpen] = useState(false);
   const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null } | null>(null);
   const [audios, setAudios] = useState<Audio[]>([]);
-  const [lang, setLang] = useState("fr");
+  const [lang, setLang] = useState(() => ((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr"));
   const [langOpen, setLangOpen] = useState(false);
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
+  /* Audio language follows the active i18n language (FR fallback) and reloads on change. */
   useEffect(() => {
-    const saved = localStorage.getItem("sz-lang");
-    setLang(saved && (LANGS as readonly string[]).includes(saved) ? saved : "fr");
-  }, []);
+    setLang((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr");
+  }, [i18n.language]);
 
   useEffect(() => {
     (async () => {
