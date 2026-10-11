@@ -1,4 +1,6 @@
 import i18n from "@/i18n/index";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,10 +10,10 @@ export const Route = createFileRoute("/spots/$id")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Spot Zen — Méditations audio" },
-      { name: "description", content: "Écoutez les méditations, respirations et bains sonores de ce spot Spots Zen." },
-      { property: "og:title", content: "Spot Zen — Méditations audio" },
-      { property: "og:description", content: "Scannez, respirez, écoutez : votre pause bien-être Spots Zen." },
+      { title: i18n.t("spot.meta.title") },
+      { name: "description", content: i18n.t("spot.meta.description") },
+      { property: "og:title", content: i18n.t("spot.meta.title") },
+      { property: "og:description", content: i18n.t("spot.meta.og.description") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -60,6 +62,14 @@ html.dark .sz .logo-for-dark{display:block}
 .sz input[type=range]{accent-color:var(--sz-brand)}
 `;
 
+const MOMENT_KEY_MAP: Record<string, string> = {
+  "Matin": "common.moment.morning",
+  "Journée": "common.moment.day",
+  "Soir": "common.moment.evening",
+  "Nuit": "common.moment.night",
+};
+const IP = { interpolation: { prefix: "{", suffix: "}" } };
+
 function currentMoment() {
   const h = new Date().getHours();
   if (h >= 6 && h < 12) return "Matin";
@@ -97,6 +107,7 @@ function PlayIcon({ size = 18, color = "currentColor" }: { size?: number; color?
 }
 
 function SpotPage() {
+  const { t } = useTranslation();
   const { id } = Route.useParams();
   const [state, setState] = useState<"loading" | "notfound" | "expired" | "pin" | "catalog">("loading");
   const [spot, setSpot] = useState<Spot | null>(null);
@@ -158,11 +169,11 @@ function SpotPage() {
 
   async function submitPin(e: React.FormEvent) {
     e.preventDefault();
-    if (!/^\d{4}$/.test(pin)) return setPinError("Le code contient 4 chiffres.");
+    if (!/^\d{4}$/.test(pin)) return setPinError(t("spot.pin.error.format"));
     setChecking(true); setPinError("");
     const ok = await loadCatalog(pin);
     setChecking(false);
-    if (!ok) setPinError("Code incorrect. Vérifiez l'affichette.");
+    if (!ok) setPinError(t("spot.pin.error.wrong"));
   }
 
   const moment = currentMoment();
@@ -209,29 +220,29 @@ function SpotPage() {
             <div className="grid grid-cols-2 gap-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-hair)]" />)}</div>
           </div>
         )}
-        {state === "notfound" && <Message title="Spot indisponible" text="Ce spot n'est pas disponible pour le moment." />}
-        {state === "expired" && <Message title="Accès expiré" text="Votre période d'accès à ce spot est terminée. Abonnez-vous pour continuer à écouter." />}
+        {state === "notfound" && <Message title={t("spot.state.notfound.title")} text={t("spot.state.notfound.text")} />}
+        {state === "expired" && <Message title={t("spot.state.expired.title")} text={t("spot.state.expired.text")} />}
 
         {spot && (state === "pin" || state === "catalog") && (
           <p className="mt-4 text-xs leading-relaxed text-[var(--sz-muted)]">
             <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#2D5A27] align-middle" />
-            Offert par {spot.client_nom ?? spot.nom} ★★★★
-            {days ? ` · Votre accès bien-être valable ${days} jours à compter de votre première visite` : ""}
+            {t("spot.sponsor.badge", { nom: spot.client_nom ?? spot.nom, ...IP })}
+            {days ? ` ${t("spot.sponsor.days", { n: days, ...IP })}` : ""}
           </p>
         )}
 
         {state === "pin" && (
           <form onSubmit={submitPin} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
-            <h2 className="serif text-xl font-medium">Entrez le code du spot</h2>
-            <p className="mt-1 text-xs text-[var(--sz-muted)]">4 chiffres, indiqués sur l'affichette.</p>
+            <h2 className="serif text-xl font-medium">{t("spot.pin.title")}</h2>
+            <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("spot.pin.hint")}</p>
             <input
-              inputMode="numeric" maxLength={4} value={pin} autoFocus aria-label="Code PIN"
+              inputMode="numeric" maxLength={4} value={pin} autoFocus aria-label={t("spot.pin.inputAriaLabel")}
               onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
               className="mx-auto mt-5 block w-40 rounded-2xl bg-[var(--sz-bg)] py-3 text-center text-2xl tracking-[0.5em] outline-none ring-1 ring-[var(--sz-hair)] focus:ring-2 focus:ring-[var(--sz-brand)]"
             />
             {pinError && <p className="mt-3 text-xs text-[#B3402A]">{pinError}</p>}
             <button disabled={checking} className="mt-5 h-12 w-full rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)] disabled:opacity-60">
-              {checking ? "Vérification…" : "Accéder aux audios"}
+              {checking ? t("spot.pin.cta.checking") : t("spot.pin.cta.idle")}
             </button>
           </form>
         )}
@@ -240,10 +251,10 @@ function SpotPage() {
           <>
             {/* HERO */}
             {hero && (
-              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`Écouter ${titleOf(hero, lang)}`}>
+              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={t("common.listen.ariaLabel", { titre: titleOf(hero, lang), ...IP })}>
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                 {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
-                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {hero.mis_en_avant_moment}</span>}
+                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {t(MOMENT_KEY_MAP[hero.mis_en_avant_moment] ?? "common.moment.day")}</span>}
                 <span className={`play-control absolute right-3 top-3 ${hero.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
@@ -265,14 +276,14 @@ function SpotPage() {
             {/* IMMERSIONS */}
             {guided.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Immersions guidées</Eyebrow>
+                <Eyebrow>{t("common.section.guided")}</Eyebrow>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="audio-card rounded-2xl text-left">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                         
-                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{a.mis_en_avant_moment}</span>}
+                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY_MAP[a.mis_en_avant_moment] ?? "common.moment.day")}</span>}
                         <span className={`play-control absolute bottom-3 right-3 ${a.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                       </div>
                       <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
@@ -286,8 +297,8 @@ function SpotPage() {
             {/* MUSIQUES */}
             {music.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Musiques relaxantes</Eyebrow>
-                <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
+                <Eyebrow>{t("common.section.music")}</Eyebrow>
+                <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("common.section.musicSubtitle")}</p>
                 <ul className="mt-3">
                   {music.map((a) => (
                     <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
@@ -296,7 +307,7 @@ function SpotPage() {
                         <p className="audio-title truncate text-sm font-semibold">{titleOf(a, lang)}</p>
                         <p className="audio-duration text-xs">{fmt(a.duree_secondes)}</p>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => setSelected(a)} aria-label={`Écouter ${titleOf(a, lang)}`} className="play-control"><PlayIcon /></Button>
+                      <Button variant="ghost" size="icon" onClick={() => setSelected(a)} aria-label={t("common.listen.ariaLabel", { titre: titleOf(a, lang), ...IP })} className="play-control"><PlayIcon /></Button>
                     </li>
                   ))}
                 </ul>
@@ -365,6 +376,7 @@ function SkipIcon({ forward }: { forward?: boolean }) {
 function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect }: {
   audio: Audio; list: Audio[]; sponsor: string; lang: string; onLang: (l: string) => void; spotId: string; onClose: () => void; onSelect: (a: Audio) => void;
 }) {
+  const { t: tr } = useTranslation();
   const trads = tradsFor(audio, lang);
   const voiced = trads.filter((t) => t.voix && t.voix !== "aucune");
   const hasVoices = voiced.length > 0;
@@ -455,7 +467,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
         {sponsor && (
           <p className="mt-4 flex items-center justify-center gap-2 text-[13px]" style={{ color: "#F0EDE8" }}>
             <span className="flex h-4 w-4 items-center justify-center rounded-full text-[10px]" style={{ background: "#2D5A27", color: "#F0EDE8" }}>✓</span>
-            Offert par {sponsor} ★★★★
+            {tr("spot.sponsor.badge", { nom: sponsor, ...IP })}
           </p>
         )}
 
@@ -475,7 +487,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
               return (
                 <button key={t.voix} onClick={() => pickVoice(t.voix!)} className="h-10 rounded-full px-5 text-sm font-medium"
                   style={active ? { background: "#2D5A27", color: "#F0EDE8" } : { background: "transparent", color: "rgba(240,237,232,0.50)" }}>
-                  {active && <span style={{ color: "#8FBF86" }}>• </span>}{t.voix === "masculine" || t.voix === "M" ? "Masculine" : "Féminine"}
+                  {active && <span style={{ color: "#8FBF86" }}>• </span>}{t.voix === "masculine" || t.voix === "M" ? tr("common.voice.masculine") : tr("common.voice.feminine")}
                 </button>
               );
             })}
@@ -527,7 +539,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
               <p className="serif truncate text-base" style={{ color: "#F0EDE8" }}>{titleOf(next, lang)}</p>
               <p className="text-xs" style={{ color: "#9AA09A" }}>{[next.type, fmt(next.duree_secondes)].filter(Boolean).join(" · ")}</p>
             </div>
-            <button onClick={() => onSelect(next)} aria-label={`Écouter ${titleOf(next, lang)}`} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
+            <button onClick={() => onSelect(next)} aria-label={tr("common.listen.ariaLabel", { titre: titleOf(next, lang), ...IP })} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
               <PlayIcon size={14} color="#F0EDE8" />
             </button>
           </div>
