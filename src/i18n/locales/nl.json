@@ -316,7 +316,7 @@
     "craft": {
       "eyebrow": "HET VAKMANSCHAP VAN SPOTS ZEN",
       "h2": "Elke onderdompeling is het resultaat van een compromisloze keten.",
-      "intro": "Wanneer u eindelijk een audio begint, mag de stem niet vals klinken…",
+      "intro": "Wanneer je eindelijk begint met een wellness-audio, mag de stem niet hol klinken, de tekst mag niet leeg zijn, en de muziek mag geen lifmuziek zijn. Bij Spots Zen is elk detail een beslissing.",
       "mainVideo": {
         "ariaLabel": "Presentatievideo van Spots Zen bekijken (opent YouTube)",
         "cta": "DE ERVARING ONTDEKKEN"
@@ -328,17 +328,17 @@
       "items": [
         {
           "eyebrow": "ERKENDE ONTSPANNINGSTECHNIEKEN",
-          "title": "Inhoud voor",
+          "title": "Inhoud boven",
           "italic": "vorm.",
-          "text": "Elk scenario maakt gebruik van erkende technieken…",
+          "text": "Elk scenario maakt gebruik van bewezen technieken: hartcoherentie, 4-7-8-ademhaling, bodyscan, geleide visualisatie. Inhoud gaat altijd boven vorm.",
           "role": "Oprichtster",
           "label": "01 — DE INTENTIE"
         },
         {
           "eyebrow": "BELICHAAMDE STEMMEN",
           "title": "Een aanwezigheid",
-          "italic": "die u begeleidt.",
-          "text": "Een mannenstem (Stefan), een vrouwenstem (Ninon)…",
+          "italic": "die je begeleidt.",
+          "text": "Een mannenstem (Stefan), een vrouwenstem (Ninon). Twee warme aanwezigheden opgenomen in de studio, zodat de onderdompeling begint bij de eerste woorden.",
           "role": "Acteur",
           "label": "02 — DE STEMMEN"
         },
@@ -346,7 +346,7 @@
           "eyebrow": "OP MAAT GECOMPONEERDE MUZIEK",
           "title": "Een emotie",
           "italic": "op zich.",
-          "text": "Originele composities met binaurale frequenties…",
+          "text": "Originele composities met binaurale frequenties, op maat gemaakt voor elke immersie. De muziek decoreert niet — ze transporteert.",
           "role": "Componist",
           "label": "03 — DE MUZIEK"
         }
