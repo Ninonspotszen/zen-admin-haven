@@ -441,17 +441,18 @@
         "alt": "Een vrouw met uitzicht op de oceaan bij schemering"
       },
       "eyebrow": "DE SPOTS ZEN BIBLIOTHEEK",
-      "h1": "De juiste audio, op het juiste moment.",
+      "h1": "De juiste audio,",
       "copy": "Slaap, concentratie, stressbeheer: begeleide onderdompeling door warme menselijke stemmen en originele muziek. Altijd bij u.",
       "cta": "Gratis beginnen",
-      "note": "Eerste maand gratis · Zonder verplichting"
+      "note": "Eerste maand gratis · Zonder verplichting",
+      "h1italic": "op het juiste moment."
     },
     "video": {
       "title": "Twee minuten om alles te begrijpen."
     },
     "benefits": {
       "eyebrow": "WAT U ZULT VOELEN",
-      "h2": "Een pauze die alles verandert.",
+      "h2": "Een pauze die",
       "items": [
         {
           "badge": "SLAAP",
@@ -469,7 +470,8 @@
           "badge": "GEZIN",
           "title": "Momenten om te delen"
         }
-      ]
+      ],
+      "h2italic": "alles verandert."
     },
     "steps": {
       "eyebrow": "HOE HET WERKT",
@@ -477,7 +479,7 @@
       "items": [
         {
           "title": "Tijd gedetecteerd",
-          "text": "Spots Zen detecteert het tijdstip van uw verbinding en benadrukt de onderdompeling die bij dit moment past…"
+          "text": "Spots Zen detecteert het tijdstip van uw verbinding en beveelt de immersie aan die past bij dat moment van uw dag: ochtend, dag, avond of nacht."
         },
         {
           "title": "Stem gekozen",
@@ -488,7 +490,7 @@
           "text": "De audio gaat door, ook als uw scherm vergrendeld is. Leg uw telefoon neer. Sluit uw ogen. Laat u leiden."
         }
       ],
-      "childNote": "En voor kinderen zijn er zachte onderdompeling speciaal voor hen ontworpen!…"
+      "childNote": "En voor kinderen zijn er ook zachte immersies! Vanaf 4 jaar, korte en rustgevende sessies om hen te helpen in slaap te vallen of zich te heroriënteren."
     },
     "catalog": {
       "eyebrow": "DE BIBLIOTHEEK",
@@ -517,19 +519,19 @@
       "items": [
         {
           "q": "Hoe krijg ik toegang tot de audio's na mijn aanmelding?",
-          "a": "Vanaf het moment van uw abonnement krijgt u onmiddellijk toegang tot de bibliotheek…"
+          "a": "Zodra uw abonnement is bevestigd, krijgt u onmiddellijk toegang tot de volledige bibliotheek. Log gewoon in op spotszen.fr via uw browser — geen app nodig."
         },
         {
           "q": "Is de audiokwaliteit echt professioneel?",
-          "a": "Absoluut. Elke onderdompeling wordt in het Frans opgenomen in een professionele studio…"
+          "a": "Absoluut. Elke immersie wordt opgenomen in een professionele studio, met warme menselijke stemmen en originele muziek, speciaal gecomponeerd met binaurale frequenties."
         },
         {
           "q": "Zijn er audio's geschikt voor kinderen?",
-          "a": "Ja. Meerdere onderdompeling zijn ontworpen voor kinderen van 4–12 jaar…"
+          "a": "Ja. Verschillende immersies zijn ontworpen voor kinderen van 4-12 jaar: korte, rustgevende sessies met een zachte stem die is afgestemd op hun wereld."
         },
         {
           "q": "Hoe zeg ik mijn abonnement op?",
-          "a": "U kunt op elk moment opzeggen vanuit uw account…"
+          "a": "U kunt op elk moment opzeggen vanuit uw persoonlijke ruimte op spotszen.fr. Geen opzegtermijn, geen boete. Uw toegang blijft actief tot het einde van de lopende periode."
         }
       ]
     },
@@ -544,7 +546,7 @@
   "pro": {
     "meta": {
       "title": "Spots Zen voor professionals — Hotels, bedrijven, scholen",
-      "description": "Bied uw bezoekers, medewerkers of studenten een unieke welzijnsonderdompeling…"
+      "description": "Bied uw bezoekers, medewerkers of studenten een unieke wellness-onderdompeling. QR-code, meertalig, geen installatie. Spots Zen voor professionals."
     },
     "hero": {
       "img": {
@@ -552,7 +554,7 @@
       },
       "eyebrow": "VOOR PROFESSIONALS",
       "h1": "Bied uw bezoekers, medewerkers of studenten een unieke welzijnsonderdompeling.",
-      "copy": "Spots Zen begeleidt bedrijven, toeristische instellingen, gemeenten…",
+      "copy": "Spots Zen ondersteunt bedrijven, toeristische instellingen, gemeenten en onderwijsinstellingen die hun bezoekers, medewerkers of studenten een echte welzijnspauze willen bieden.",
       "cta": {
         "offer": "Ons aanbod ontdekken →",
         "quote": "Een offerte aanvragen"

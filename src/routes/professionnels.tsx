@@ -8,7 +8,7 @@ export const Route = createFileRoute("/professionnels")({
   head: () => ({
     meta: [
       { title: i18n.t("pro.meta.title") },
-      { name: "description", content: "Offrez à vos visiteurs, collaborateurs ou étudiants une immersion bien-être unique, accessible par QR code, sans application." },
+      { name: "description", content: i18n.t("pro.meta.description") },
       { property: "og:title", content: "Spots Zen pour les professionnels" },
       { property: "og:description", content: "Une bibliothèque d'audios bien-être accessible en deux secondes pour hébergements, entreprises, écoles, santé et collectivités." },
       { property: "og:type", content: "website" },

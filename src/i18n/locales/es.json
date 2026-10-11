@@ -441,17 +441,18 @@
         "alt": "Una mujer frente al océano al atardecer"
       },
       "eyebrow": "LA BIBLIOTECA DE SPOTS ZEN",
-      "h1": "El audio correcto, en el momento adecuado.",
+      "h1": "El audio adecuado,",
       "copy": "Sueño, concentración, gestión del estrés: inmersiones guiadas por voces humanas envolventes y músicas originales. Siempre con usted.",
       "cta": "Empezar gratis",
-      "note": "Primer mes gratuito · Sin compromiso"
+      "note": "Primer mes gratuito · Sin compromiso",
+      "h1italic": "en el momento justo."
     },
     "video": {
       "title": "Dos minutos para entenderlo todo."
     },
     "benefits": {
       "eyebrow": "LO QUE SENTIRÁ",
-      "h2": "Una pausa que lo cambia todo.",
+      "h2": "Una pausa que",
       "items": [
         {
           "badge": "SUEÑO",
@@ -469,7 +470,8 @@
           "badge": "FAMILIA",
           "title": "Momentos para compartir"
         }
-      ]
+      ],
+      "h2italic": "lo cambia todo."
     },
     "steps": {
       "eyebrow": "CÓMO FUNCIONA",
@@ -477,7 +479,7 @@
       "items": [
         {
           "title": "Hora detectada",
-          "text": "Spots Zen detecta la hora de su conexión y destaca la inmersión que corresponde a ese momento…"
+          "text": "Spots Zen detecta la hora de tu conexión y destaca la inmersión que corresponde a ese momento de tu día: mañana, mediodía, tarde o noche."
         },
         {
           "title": "Voz elegida",
@@ -488,7 +490,7 @@
           "text": "El audio continúa incluso cuando su pantalla se bloquea. Deje su teléfono. Cierre los ojos. Déjese guiar."
         }
       ],
-      "childNote": "¡Y para los niños, hay inmersiones suaves especialmente pensadas para ellos!…"
+      "childNote": "¡Y para los niños también hay inmersiones suaves! Desde los 4 años, sesiones cortas y relajantes para ayudarles a dormirse o a reconcentrarse."
     },
     "catalog": {
       "eyebrow": "LA BIBLIOTECA",
@@ -517,19 +519,19 @@
       "items": [
         {
           "q": "¿Cómo accedo a los audios tras mi registro?",
-          "a": "Desde el momento de su suscripción, recibe acceso inmediato a la biblioteca…"
+          "a": "En cuanto se confirme tu suscripción, recibirás acceso inmediato a la biblioteca completa. Simplemente inicia sesión en spotszen.fr desde tu navegador — sin aplicación que descargar."
         },
         {
           "q": "¿La calidad de audio es realmente profesional?",
-          "a": "Absolutamente. Cada inmersión se graba en francés en un estudio profesional…"
+          "a": "Absolutamente. Cada inmersión se graba en un estudio profesional, con voces humanas cálidas y música original compuesta especialmente con frecuencias binaurales."
         },
         {
           "q": "¿Hay audios adaptados para niños?",
-          "a": "Sí. Varias inmersiones están diseñadas para niños de 4 a 12 años…"
+          "a": "Sí. Varias inmersiones están diseñadas para niños de 4 a 12 años: sesiones cortas y relajantes con una voz suave adaptada a su mundo."
         },
         {
           "q": "¿Cómo cancelo mi suscripción?",
-          "a": "Puede cancelar en cualquier momento desde su cuenta…"
+          "a": "Puedes cancelar en cualquier momento desde tu espacio personal en spotszen.fr. Sin período de preaviso, sin penalización. Tu acceso permanece activo hasta el final del período en curso."
         }
       ]
     },
@@ -544,7 +546,7 @@
   "pro": {
     "meta": {
       "title": "Spots Zen para profesionales — Hoteles, empresas, escuelas",
-      "description": "Ofrezca a sus visitantes, colaboradores o estudiantes una inmersión de bienestar única…"
+      "description": "Ofrezca a sus visitantes, colaboradores o estudiantes una inmersión de bienestar única. Código QR, multilingüe, sin instalación. Spots Zen para profesionales."
     },
     "hero": {
       "img": {
@@ -552,7 +554,7 @@
       },
       "eyebrow": "PARA PROFESIONALES",
       "h1": "Ofrezca a sus visitantes, colaboradores o estudiantes una inmersión de bienestar única.",
-      "copy": "Spots Zen acompaña a empresas, establecimientos turísticos, municipios…",
+      "copy": "Spots Zen acompaña a empresas, establecimientos turísticos, municipios e instituciones educativas que desean ofrecer una verdadera pausa de bienestar a sus visitantes, colaboradores o estudiantes.",
       "cta": {
         "offer": "Descubrir nuestra oferta →",
         "quote": "Solicitar un presupuesto"
