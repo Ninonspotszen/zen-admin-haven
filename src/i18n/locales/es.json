@@ -475,7 +475,7 @@
     },
     "steps": {
       "eyebrow": "CÓMO FUNCIONA",
-      "h2": "Tan sencillo como una respiración.",
+      "h2": "Tan simple como",
       "items": [
         {
           "title": "Hora detectada",
@@ -490,14 +490,16 @@
           "text": "El audio continúa incluso cuando su pantalla se bloquea. Deje su teléfono. Cierre los ojos. Déjese guiar."
         }
       ],
-      "childNote": "¡Y para los niños también hay inmersiones suaves! Desde los 4 años, sesiones cortas y relajantes para ayudarles a dormirse o a reconcentrarse."
+      "childNote": "¡Y para los niños también hay inmersiones suaves! Desde los 4 años, sesiones cortas y relajantes para ayudarles a dormirse o a reconcentrarse.",
+      "h2italic": "una respiración."
     },
     "catalog": {
       "eyebrow": "LA BIBLIOTECA",
       "h2": "Audios que le sumergen en una inmersión completa para una relajación profunda.",
       "badge": {
         "subscriber": "Suscriptor/a"
-      }
+      },
+      "h2italic": "Audios que te sumergen por completo para una relajación profunda."
     },
     "prices": {
       "eyebrow": "PRECIOS",
@@ -515,7 +517,7 @@
     },
     "faq": {
       "eyebrow": "PREGUNTAS FRECUENTES",
-      "h2": "Todo lo que se pregunta.",
+      "h2": "Todo lo que",
       "items": [
         {
           "q": "¿Cómo accedo a los audios tras mi registro?",
@@ -533,14 +535,16 @@
           "q": "¿Cómo cancelo mi suscripción?",
           "a": "Puedes cancelar en cualquier momento desde tu espacio personal en spotszen.fr. Sin período de preaviso, sin penalización. Tu acceso permanece activo hasta el final del período en curso."
         }
-      ]
+      ],
+      "h2italic": "se pregunta."
     },
     "final": {
       "eyebrow": "EMPIECE ESTA NOCHE",
-      "h2": "Regálese una verdadera pausa.",
+      "h2": "Regálate",
       "cta": "Comenzar ahora",
       "note": "Primer mes gratuito · Sin compromiso · Cancele cuando quiera",
-      "proLink": "¿Es usted una empresa? Para mi empresa →"
+      "proLink": "¿Es usted una empresa? Para mi empresa →",
+      "h2italic": "una verdadera pausa."
     }
   },
   "pro": {
