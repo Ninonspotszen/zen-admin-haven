@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, UserRound, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, UserRound, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
 const LOGO = STORAGE + "SpotsZen-logo-transparent-fonce.png";
 const LOGO_LIGHT = STORAGE + "SpotsZen-logo-transparent-clair.png";
-const LANGS = ["fr", "en", "de", "nl", "es"];
 function Cta({ children }: { children: React.ReactNode; to: "/offres" }) {
  return <Button asChild className="home-cta"><Link to="/offres">{children}<ArrowRight aria-hidden="true" /></Link></Button>;
 }
