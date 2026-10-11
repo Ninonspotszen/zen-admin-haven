@@ -314,9 +314,10 @@ function SpotPage() {
               </section>
             )}
 
-            {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">Aucun audio disponible pour le moment.</p>}
+            {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">{t("common.empty")}</p>}
           </>
         )}
+        <div className="mt-12 flex justify-center pb-4"><LanguageSwitcher /></div>
       </main>
 
       {/* LIGHT ISLAND */}
