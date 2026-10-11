@@ -148,6 +148,7 @@ function BibliothequePage() {
       const { data } = await supabase
         .from("audios")
         .select("*, traductions:audios_traductions(*)")
+        .limit(200)
         .order("ordre", { ascending: true, nullsFirst: false });
       setAudios((data as unknown as Audio[] | null) ?? []);
       setState("catalog");

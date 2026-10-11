@@ -1,4 +1,4 @@
-import '../i18n/index';
+import i18n from '@/i18n/index';
 import { useTranslation } from 'react-i18next';
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -83,10 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Spots Zen Admin" },
-      { name: "description", content: "Back-office Spots Zen" },
-      { property: "og:title", content: "Spots Zen Admin" },
-      { property: "og:description", content: "Back-office Spots Zen" },
+      { title: i18n.t("home.meta.title") },
+      { name: "description", content: i18n.t("home.meta.description") },
+      { property: "og:title", content: i18n.t("home.meta.title") },
+      { property: "og:description", content: i18n.t("home.meta.description") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

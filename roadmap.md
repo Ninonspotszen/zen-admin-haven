@@ -20,3 +20,7 @@
 - [x] Home : section « Notre savoir-faire » — vignettes cliquables à la place des fenêtres YouTube.
 
 - [x] Home : fond de page blanc pur (#FFFFFF), sable #F8F6F2 conservé uniquement sur les 2 cards établissements / particuliers.
+
+- [ ] Corriger routeAfterAuth : accès bibliothèque aussi pour les statuts « offert » et « ambassadeur ».
+- [ ] Ajouter .limit(200) aux requêtes de listes (audios, traductions, filtres) dans spots.$id.tsx et bibliotheque.tsx.
+- [ ] Brancher le titre de l'onglet par défaut (racine) sur i18n.
