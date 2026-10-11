@@ -234,7 +234,7 @@ function BibliothequePage() {
             {/* IMMERSIONS */}
             {guided.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Immersions guidées</Eyebrow>
+                <Eyebrow>{t("common.section.guided")}</Eyebrow>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="audio-card rounded-2xl text-left">
@@ -255,8 +255,8 @@ function BibliothequePage() {
             {/* MUSIQUES */}
             {music.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Musiques relaxantes</Eyebrow>
-                <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
+<Eyebrow>{t("common.section.music")}</Eyebrow>
+                <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("common.section.musicSubtitle")}</p>
                 <ul className="mt-3">
                   {music.map((a) => (
                     <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
@@ -282,17 +282,17 @@ function BibliothequePage() {
           <section className="audio-card rounded-2xl border border-[var(--sz-card-border)] px-5">
             <button onClick={() => setAboOpen((o) => !o)} aria-expanded={aboOpen}
               className="flex h-14 w-full items-center justify-between bg-transparent text-sm font-semibold text-[var(--sz-fg)]">
-              <span className="serif text-base font-medium">Mon abonnement</span>
+              <span className="serif text-base font-medium">{t("lib.abo.section")}</span>
               <span className="text-xs text-[var(--sz-muted)]" aria-hidden>{aboOpen ? "▴" : "▾"}</span>
             </button>
             {aboOpen && (
               <div className="space-y-3 border-t border-[var(--sz-hair)] py-4">
                 <div className="flex justify-between gap-4 text-sm">
-                  <span className="text-[var(--sz-muted)]">Formule</span>
-                  <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? "Abonnement mensuel"}</span>
+<span className="text-[var(--sz-muted)]">{t("lib.abo.plan")}</span>
+                  <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? t("lib.abo.planDefault")}</span>
                 </div>
                 <div className="flex justify-between gap-4 pb-2 text-sm">
-                  <span className="text-[var(--sz-muted)]">Prochain renouvellement</span>
+                  <span className="text-[var(--sz-muted)]">{t("lib.abo.renewal")}</span>
                   <span className="text-right font-semibold text-[var(--sz-fg)]">
                     {abo?.date_renouvellement
                       ? new Date(abo.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
