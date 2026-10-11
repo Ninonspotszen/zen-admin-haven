@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { Zap, Mic, Globe, RefreshCw, TrendingUp, AlertCircle, Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/pro-hero.jpg";
@@ -56,6 +57,7 @@ function Heading({ eyebrow, children }: { eyebrow: string; children: ReactNode }
 
 function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: string; title: string; fields: Field[]; cta: string; large?: boolean }) {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const { t } = useTranslation();
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -70,19 +72,19 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
   }
   return (
     <div className={`pr-form-card ${large ? "pr-form-large" : ""}`}>
-      {state === "done" ? <p className="pr-success" role="status">{SUCCESS}</p> : (
+      {state === "done" ? <p className="pr-success" role="status">{t("pro.form.success")}</p> : (
         <form onSubmit={submit}>
           <h3 className="pr-form-title">{title}</h3>
-          <p className="pr-form-note">{large ? "Réponse sous 24 heures · Sans engagement" : "Réponse personnalisée sous 24 heures · Sans engagement"}</p>
+          <p className="pr-form-note">{large ? t("pro.form.note") : "Réponse personnalisée sous 24 heures · Sans engagement"}</p>
           {fields.map(f => {
             const id = `${secteur}-${f.name}-${f.label.length}`;
             return <label key={id} htmlFor={id} className="pr-field"><span>{f.label}</span>
               {f.type === "textarea" ? <textarea id={id} name={f.name} maxLength={5000} />
-                : f.type === "select" ? <select id={id} name={f.name} defaultValue=""><option value="" disabled>Choisir…</option>{f.options?.map(o => <option key={o}>{o}</option>)}</select>
+                : f.type === "select" ? <select id={id} name={f.name} defaultValue=""><option value="" disabled>{t("pro.form.select.placeholder")}</option>{f.options?.map(o => <option key={o}>{o}</option>)}</select>
                 : <input id={id} name={f.name} type={f.type ?? "text"} maxLength={200} required={f.type === "email"} />}
             </label>;
           })}
-          {state === "error" && <p className="pr-error">Une erreur est survenue. Merci de réessayer.</p>}
+          {state === "error" && <p className="pr-error">{t("pro.form.error")}</p>}
           <button className="pr-btn pr-btn-full" type="submit" disabled={state === "sending"}>{cta}</button>
         </form>
       )}
@@ -93,34 +95,35 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
 export function ProfessionnelsPage() {
   const [active, setActive] = useState("hebergements");
   const s = sectors.find(x => x.id === active)!;
+  const { t } = useTranslation();
   return <div className="sz-home sz-pro"><HomeHeader anchorPrefix="/" /><main>
     <section className="pr-hero">
-      <img className="pr-hero-img" src={hero} alt="Chambre d’hôtel apaisante avec un grand lit" width={1920} height={1088} />
+      <img className="pr-hero-img" src={hero} alt={t("pro.hero.img.alt")} width={1920} height={1088} />
       <div className="pr-hero-shade" />
       <div className="pr-hero-inner">
-        <p className="pr-eyebrow">POUR LES PROFESSIONNELS</p>
-        <h1>Offrez à vos visiteurs, collaborateurs ou étudiants une immersion bien-être unique.</h1>
+        <p className="pr-eyebrow">{t("pro.hero.eyebrow")}</p>
+        <h1>{t("pro.hero.h1")}</h1>
         <p className="pr-hero-copy">Spots Zen accompagne les entreprises, les établissements touristiques, les communes, les écoles et les structures de santé avec une bibliothèque d'audios de bien-être accessible en quelques secondes, sans application.</p>
-        <div className="pr-hero-ctas"><button className="pr-btn" onClick={() => scrollTo("offre")}>Découvrir notre offre →</button><button className="pr-link" onClick={() => scrollTo("devis")}>Demander un devis</button></div>
+        <div className="pr-hero-ctas"><button className="pr-btn" onClick={() => scrollTo("offre")}>{t("pro.hero.cta.offer")}</button><button className="pr-link" onClick={() => scrollTo("devis")}>{t("pro.hero.cta.quote")}</button></div>
       </div>
     </section>
 
     <section className="pr-section">
       <div className="pr-inner pr-center">
-        <p className="pr-eyebrow">POURQUOI SPOTS ZEN</p>
-        <h2 className="pr-promise">Dans un monde où tout s'accélère, offrir un moment de pause n'est plus un luxe. C'est une décision stratégique.</h2>
+        <p className="pr-eyebrow">{t("pro.why.eyebrow")}</p>
+        <h2 className="pr-promise">{t("pro.why.h2")}</h2>
         <p className="pr-body">Spots Zen vous permet de transformer vos espaces — qu'il s'agisse d'une chambre d'hôtel, d'une salle de repos, d'un couloir d'attente ou d'un campus — en havres de sérénité. Méditations guidées, exercices de respiration, balades sonores, musique relaxante... vos utilisateurs n'ont pas de compte à créer, rien à télécharger.</p>
-        <p className="pr-quote">« Ils scannent. Ils écoutent. Ils se ressourcent. Simple pour vous. Inoubliable pour eux. »</p>
+        <p className="pr-quote">{t("pro.why.quote")}</p>
         <div className="pr-grid3">
-          {[[Zap, "Accès immédiat", "Deux secondes. Aucun téléchargement. Aucun compte."], [Mic, "Audios de haute qualité", "Techniques reconnues. Voix studio. Musique composée sur mesure."], [Globe, "Multilingue", "Langue détectée automatiquement. FR / EN / DE / NL / ES."]].map(([Icon, t, d]) => { const I = Icon as typeof Zap; return <div className="pr-card" key={t as string}><I aria-hidden className="pr-icon" /><h3>{t as string}</h3><p>{d as string}</p></div>; })}
+          {[[Zap, "Accès immédiat", "Deux secondes. Aucun téléchargement. Aucun compte."], [Mic, "Audios de haute qualité", "Techniques reconnues. Voix studio. Musique composée sur mesure."], [Globe, "Multilingue", "Langue détectée automatiquement. FR / EN / DE / NL / ES."]].map(([Icon, ti, d]) => { const I = Icon as typeof Zap; return <div className="pr-card" key={ti as string}><I aria-hidden className="pr-icon" /><h3>{ti as string}</h3><p>{d as string}</p></div>; })}
         </div>
       </div>
     </section>
 
     <section className="pr-section pr-alt">
       <div className="pr-inner">
-        <Heading eyebrow="EN 6 ÉTAPES">Du QR code à l'immersion</Heading>
-        <ol className="pr-timeline">{steps.map(([t, d], i) => <li key={t}><span className="pr-num">{String(i + 1).padStart(2, "0")}</span><h3>{t}</h3><p>{d}</p></li>)}</ol>
+        <Heading eyebrow={t("pro.steps.eyebrow")}>{t("pro.steps.h2")}</Heading>
+        <ol className="pr-timeline">{steps.map(([st, d], i) => <li key={st}><span className="pr-num">{String(i + 1).padStart(2, "0")}</span><h3>{t(`pro.steps.items.${i}.title`)}</h3><p>{d}</p></li>)}</ol>
         <div className="pr-center"><button className="pr-btn" onClick={() => scrollTo("devis")}>Votre établissement est prêt ? Demander un devis →</button><p className="pr-note">Réponse sous 24 heures · Sans engagement</p></div>
       </div>
     </section>
@@ -141,7 +144,7 @@ export function ProfessionnelsPage() {
     <section className="pr-section" id="offre">
       <div className="pr-inner">
         <Heading eyebrow="CHAQUE ESPACE A SES BESOINS">Voici comment Spots Zen s'y adapte.</Heading>
-        <div className="pr-tabs" role="tablist">{sectors.map(x => <button key={x.id} role="tab" aria-selected={x.id === active} className={x.id === active ? "is-active" : ""} onClick={() => setActive(x.id)}>{x.tab}</button>)}</div>
+        <div className="pr-tabs" role="tablist">{sectors.map(x => <button key={x.id} role="tab" aria-selected={x.id === active} className={x.id === active ? "is-active" : ""} onClick={() => setActive(x.id)}>{t(`pro.sector.${x.id}.tab`)}</button>)}</div>
         <div className="pr-panel" role="tabpanel">
           <div className="pr-panel-text">
             <img className="pr-panel-img" src={s.image} alt="" loading="lazy" width={1024} height={768} />
@@ -179,11 +182,11 @@ export function ProfessionnelsPage() {
 
     <section className="pr-section pr-dark" id="devis">
       <div className="pr-inner pr-center">
-        <p className="pr-eyebrow">DÉMARRONS ENSEMBLE</p>
-        <h2>Votre établissement mérite mieux qu'une brochure bien-être.</h2>
+        <p className="pr-eyebrow">{t("pro.quote.eyebrow")}</p>
+        <h2>{t("pro.quote.h2")}</h2>
         <p className="pr-dark-body">Un investissement adapté à votre taille. Nos offres s'adaptent à tous les profils — du gîte familial au grand groupe hôtelier. Parlez-nous de votre projet. Nous concevons une offre sur-mesure pour votre structure.</p>
-        <ContactForm secteur="general" title="Demander un devis" fields={generalFields} cta="Demander un devis →" large />
-        <p className="pr-alt-contact">Ou écrivez-nous directement : bonjour@spotszen.fr</p>
+        <ContactForm secteur="general" title="Demander un devis" fields={generalFields} cta={t("pro.form.cta")} large />
+        <p className="pr-alt-contact">{t("pro.form.altContact")}</p>
       </div>
     </section>
   </main><HomeFooter /></div>;

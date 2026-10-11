@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import i18n from "@/i18n/index";
 import { ParticuliersPage } from "@/components/particuliers-page";
 import homeCss from "@/components/home-page.css?url";
 import pageCss from "@/components/particuliers-page.css?url";
@@ -6,8 +7,8 @@ import pageCss from "@/components/particuliers-page.css?url";
 export const Route = createFileRoute("/particuliers")({
   head: () => ({
     meta: [
-      { title: "La bibliothèque pour vous — Spots Zen" },
-      { name: "description", content: "Le bon audio, au bon moment. Des immersions guidées par des voix humaines et des musiques originales. Spots Zen dès 5€/mois, premier mois offert." },
+      { title: i18n.t("part.meta.title") },
+      { name: "description", content: i18n.t("part.meta.description") },
       { property: "og:title", content: "La bibliothèque pour vous — Spots Zen" },
       { property: "og:description", content: "Sommeil, concentration, gestion du stress : retrouvez votre sérénité avec la bibliothèque Spots Zen. Premier mois offert." },
       { property: "og:type", content: "website" },
