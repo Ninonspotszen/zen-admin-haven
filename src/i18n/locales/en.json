@@ -29,7 +29,10 @@
         "idle": "Continue with my email →",
         "sending": "Sending…"
       },
-      "sent": "A sign-in link has been sent to {email}. Check your inbox."
+      "sent": {
+        "prefix": "A sign-in link has been sent to",
+        "suffix": "Check your inbox."
+      }
     },
     "error": {
       "google": "Google sign-in failed. Please try again.",
@@ -38,6 +41,7 @@
     "legal": {
       "prefix": "By continuing, you agree to our",
       "cgu": "Terms of Use",
+      "and": "and our",
       "privacy": "Privacy Policy"
     },
     "badge": { "security": "Instant and secure sign-in" }

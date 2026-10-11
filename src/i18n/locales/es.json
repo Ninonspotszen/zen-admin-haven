@@ -29,7 +29,10 @@
         "idle": "Continuar con mi correo →",
         "sending": "Enviando…"
       },
-      "sent": "Se ha enviado un enlace de acceso a {email}. Revise su bandeja de entrada."
+      "sent": {
+        "prefix": "Se ha enviado un enlace de acceso a",
+        "suffix": "Compruebe su bandeja de entrada."
+      }
     },
     "error": {
       "google": "El inicio de sesión con Google ha fallado. Inténtelo de nuevo.",
@@ -38,6 +41,7 @@
     "legal": {
       "prefix": "Al continuar, acepta nuestros",
       "cgu": "Términos de uso",
+      "and": "y nuestra",
       "privacy": "Política de privacidad"
     },
     "badge": { "security": "Acceso instantáneo y seguro" }

@@ -192,7 +192,8 @@ function ConnexionPage() {
         {/* FORMULAIRE EMAIL */}
         {sentTo ? (
           <p className="mt-6 rounded-2xl bg-[var(--szc-surface)] px-5 py-4 text-center text-sm leading-relaxed text-[var(--szc-fg)]">
-            {t("auth.email.sent", { email: sentTo })}
+            {t("auth.email.sent.prefix", { email: sentTo })} <strong>{sentTo}</strong>{" "}
+            {t("auth.email.sent.suffix")}
           </p>
         ) : (
           <form onSubmit={handleEmail} className="mt-6 w-full">
@@ -223,7 +224,8 @@ function ConnexionPage() {
         {/* MENTIONS LÉGALES */}
         <p className="mt-8 text-center text-xs leading-relaxed text-[var(--szc-muted)]">
           {t("auth.legal.prefix")}{" "}
-          <a href="#" className="underline">{t("auth.legal.cgu")}</a>,{" "}
+          <a href="#" className="underline">{t("auth.legal.cgu")}</a>{" "}
+          {t("auth.legal.and")}{" "}
           <a href="#" className="underline">{t("auth.legal.privacy")}</a>.
         </p>
 
