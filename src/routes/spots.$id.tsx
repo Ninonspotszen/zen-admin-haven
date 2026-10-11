@@ -116,14 +116,13 @@ function SpotPage() {
   const [pin, setPin] = useState("");
   const [pinError, setPinError] = useState("");
   const [checking, setChecking] = useState(false);
-  const [lang, setLang] = useState("fr");
+  const [lang, setLang] = useState(() => ((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr"));
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
+  /* Audio language follows the active i18n language (FR fallback) and reloads on change. */
   useEffect(() => {
-    const saved = localStorage.getItem("sz-lang");
-    const nav = navigator.language.slice(0, 2);
-    setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "fr"));
-  }, []);
+    setLang((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr");
+  }, [i18n.language]);
 
   useEffect(() => {
     (async () => {
