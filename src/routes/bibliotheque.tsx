@@ -234,7 +234,7 @@ function BibliothequePage() {
             {/* IMMERSIONS */}
             {guided.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Immersions guidées</Eyebrow>
+                <Eyebrow>{t("common.section.guided")}</Eyebrow>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="audio-card rounded-2xl text-left">
@@ -255,8 +255,8 @@ function BibliothequePage() {
             {/* MUSIQUES */}
             {music.length > 0 && (
               <section className="mt-10">
-                <Eyebrow>Musiques relaxantes</Eyebrow>
-                <p className="mt-1 text-xs text-[var(--sz-muted)]">Avec fréquences binaurales · sans voix.</p>
+<Eyebrow>{t("common.section.music")}</Eyebrow>
+                <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("common.section.musicSubtitle")}</p>
                 <ul className="mt-3">
                   {music.map((a) => (
                     <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
@@ -282,17 +282,17 @@ function BibliothequePage() {
           <section className="audio-card rounded-2xl border border-[var(--sz-card-border)] px-5">
             <button onClick={() => setAboOpen((o) => !o)} aria-expanded={aboOpen}
               className="flex h-14 w-full items-center justify-between bg-transparent text-sm font-semibold text-[var(--sz-fg)]">
-              <span className="serif text-base font-medium">Mon abonnement</span>
+              <span className="serif text-base font-medium">{t("lib.abo.section")}</span>
               <span className="text-xs text-[var(--sz-muted)]" aria-hidden>{aboOpen ? "▴" : "▾"}</span>
             </button>
             {aboOpen && (
               <div className="space-y-3 border-t border-[var(--sz-hair)] py-4">
                 <div className="flex justify-between gap-4 text-sm">
-                  <span className="text-[var(--sz-muted)]">Formule</span>
-                  <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? "Abonnement mensuel"}</span>
+<span className="text-[var(--sz-muted)]">{t("lib.abo.plan")}</span>
+                  <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? t("lib.abo.planDefault")}</span>
                 </div>
                 <div className="flex justify-between gap-4 pb-2 text-sm">
-                  <span className="text-[var(--sz-muted)]">Prochain renouvellement</span>
+                  <span className="text-[var(--sz-muted)]">{t("lib.abo.renewal")}</span>
                   <span className="text-right font-semibold text-[var(--sz-fg)]">
                     {abo?.date_renouvellement
                       ? new Date(abo.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
@@ -435,7 +435,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
               </ul>
             )}
           </div>
-          <button onClick={close} aria-label="Retour" className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
+          <button onClick={close} aria-label={tr("player.back")} className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(255,255,255,0.15)" }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0EDE8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M15 18l-6-6 6-6" /></svg>
           </button>
         </div>
@@ -444,7 +444,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
         {sponsor && (
           <p className="mt-4 flex items-center justify-center gap-2 text-[13px]" style={{ color: "#F0EDE8" }}>
             <span className="flex h-4 w-4 items-center justify-center rounded-full text-[10px]" style={{ background: "#2D5A27", color: "#F0EDE8" }}>✓</span>
-            Offert par {sponsor} ★★★★
+            {tr("player.sponsor", { nom: sponsor })}
           </p>
         )}
 
@@ -478,7 +478,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
           onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
           onLoadedMetadata={(e) => setDur(e.currentTarget.duration || dur)} />}
         <div className="mt-8">
-          <input type="range" min={0} max={dur || 1} step={0.5} value={time} aria-label="Progression" className="seek"
+          <input type="range" min={0} max={dur || 1} step={0.5} value={time} aria-label={tr("player.progress")} className="seek"
             style={{ ["--p" as string]: `${pct}%` }}
             onChange={(e) => { const v = Number(e.target.value); setTime(v); if (ref.current) ref.current.currentTime = v; }} />
           <div className="mt-2 flex justify-between text-xs" style={{ color: "#9AA09A" }}><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
@@ -486,23 +486,23 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
 
         {/* CONTROLES */}
         <div className="mt-6 flex items-center justify-center gap-10">
-          <button onClick={() => skip(-15)} aria-label="Reculer de 15 secondes" className="flex flex-col items-center">
+          <button onClick={() => skip(-15)} aria-label={tr("player.skip.back")} className="flex flex-col items-center">
             <SkipIcon /><span className="text-[10px]" style={{ color: "#9AA09A" }}>15s</span>
           </button>
-          <button onClick={toggle} aria-label={playing ? "Pause" : "Lecture"} className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
+          <button onClick={toggle} aria-label={playing ? tr("player.pause") : tr("player.play")} className="flex h-[72px] w-[72px] items-center justify-center rounded-full"
             style={{ background: "#2D5A27", boxShadow: "0 8px 24px rgba(45,90,39,0.40)" }}>
             {playing
               ? <svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
               : <PlayIcon size={24} color="#FFFFFF" />}
           </button>
-          <button onClick={() => skip(15)} aria-label="Avancer de 15 secondes" className="flex flex-col items-center">
+          <button onClick={() => skip(15)} aria-label={tr("player.skip.fwd")} className="flex flex-col items-center">
             <SkipIcon forward /><span className="text-[10px]" style={{ color: "#9AA09A" }}>15s</span>
           </button>
         </div>
 
         <p className="mt-6 text-center text-xs leading-relaxed" style={{ color: "#9AA09A" }}>
           <svg className="mr-1 inline-block align-[-2px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA09A" strokeWidth="2" aria-hidden><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
-          Vous pouvez verrouiller votre écran ♡<br />L'audio continuera à jouer.
+          {tr("player.screenlock")}<br />{tr("player.screenlockSub")}
         </p>
 
         {/* EN SUITE */}
@@ -512,7 +512,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA09A" strokeWidth="2" strokeLinecap="round" aria-hidden><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2" /></svg>
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#4A7A43" }}>En suite</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#4A7A43" }}>{tr("player.next.label")}</p>
               <p className="serif truncate text-base" style={{ color: "#F0EDE8" }}>{titleOf(next, lang)}</p>
               <p className="text-xs" style={{ color: "#9AA09A" }}>{[next.type, fmt(next.duree_secondes)].filter(Boolean).join(" · ")}</p>
             </div>
@@ -524,10 +524,10 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
 
         {/* CTA */}
         <section className="mt-6 rounded-3xl p-6 text-center" style={{ background: "#F0EDE8" }}>
-          <p className="serif text-xl" style={{ color: "#1C2E1E" }}>Retrouvez ces audios chez vous ♡</p>
-          <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>Prolongez cet état de calme où que vous soyez.</p>
+<p className="serif text-xl" style={{ color: "#1C2E1E" }}>{tr("player.cta.home")}</p>
+          <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>{tr("player.cta.calm")}</p>
           <a href={`/offres?spot_origine_id=${spotId}`} className="mt-4 flex h-[52px] w-full items-center justify-center rounded-full text-sm font-semibold" style={{ background: "#2D5A27", color: "#F0EDE8" }}>
-            Abonnez-vous à Spots Zen →
+            {tr("player.cta.subscribe")}
           </a>
         </section>
 
