@@ -3,6 +3,7 @@ import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, UserRound, ChevronDown, Menu, X, Moon, Heart, Sun, Wind, Clock3, UsersRound, Headphones, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { VideoButton } from "@/components/video-modal";
 import forestLake from "@/assets/home-forest-lake.jpg";
 import sunsetLake from "@/assets/home-sunset-lake.jpg";
 import pwaLibrary from "@/assets/pwa-bibliotheque.png";
@@ -54,16 +55,16 @@ function Cta({ children, href, to }: { children: ReactNode; href?: string; to?: 
   return <Button asChild className="home-cta">{to ? <Link to={to}>{children}<ArrowRight aria-hidden="true" /></Link> : <a href={href}>{children}<ArrowRight aria-hidden="true" /></a>}</Button>;
 }
 function CraftThumb({ time, title, image }: { time: number; title: string; image: string }) {
-  return <a className="home-craft-thumb" href={`https://youtu.be/41lpqo0Bun4?t=${time}`} target="_blank" rel="noopener noreferrer" aria-label={`Voir l'extrait : ${title} (ouvre YouTube)`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
+  return <VideoButton className="home-craft-thumb" time={time} label={`Voir l'extrait : ${title}`} style={{ display: "block", textDecoration: "none", color: "inherit", borderRadius: 12, overflow: "hidden", position: "relative" }}>
     <div style={{ aspectRatio: "16 / 9", width: "100%", overflow: "hidden", position: "relative" }}>
       <img src={image} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.10)" }} />
       <div className="home-craft-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="#1C2E1E"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" /></svg></div>
     </div>
-  </a>;
+  </VideoButton>;
 }
 function MainVideo() {
-  return <a className="home-craft-thumb home-main-video" href="https://youtu.be/41lpqo0Bun4" target="_blank" rel="noopener noreferrer" aria-label="Voir la vidéo de présentation Spots Zen (ouvre YouTube)" style={{ display: "block", textDecoration: "none", borderRadius: 12, overflow: "hidden", position: "relative", maxWidth: 820, marginInline: "auto" }}>
+  return <VideoButton className="home-craft-thumb home-main-video" label="Voir la vidéo de présentation Spots Zen" style={{ display: "block", textDecoration: "none", borderRadius: 12, overflow: "hidden", position: "relative", maxWidth: 820, marginInline: "auto" }}>
     <div style={{ aspectRatio: "16 / 9", width: "100%", position: "relative" }}>
       <img src={STORAGE + "spots%20zen%20video%20presentation%20globale.png"} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.40))" }} />
@@ -71,7 +72,7 @@ function MainVideo() {
       <span style={{ position: "absolute", bottom: 16, left: 16, color: "#FFFFFF", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }}>DÉCOUVRIR L'EXPÉRIENCE</span>
       <span style={{ position: "absolute", bottom: 16, right: 16, color: "#FFFFFF", fontSize: 11, fontWeight: 600 }}>02:00</span>
     </div>
-  </a>;
+  </VideoButton>;
 }
 
 function Phones() {
