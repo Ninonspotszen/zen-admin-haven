@@ -108,7 +108,7 @@ function BibliothequePage() {
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
   useEffect(() => {
-    const saved = localStorage.getItem("sz_lang");
+    const saved = localStorage.getItem("sz-lang");
     setLang(saved && (LANGS as readonly string[]).includes(saved) ? saved : "fr");
   }, []);
 
@@ -161,7 +161,7 @@ function BibliothequePage() {
               <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-[var(--sz-hair)] bg-[var(--sz-menu)] py-1 shadow-[0_4px_16px_rgba(28,46,30,0.08)]">
                 {LANGS.map((l) => (
                   <li key={l}>
-                    <button onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
+                    <button onClick={() => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
                       {l.toUpperCase()}
                     </button>
                   </li>
@@ -287,7 +287,7 @@ function BibliothequePage() {
       )}
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor="" lang={lang}
-        onLang={(l) => { setLang(l); localStorage.setItem("sz_lang", l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}
+        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}
     </div>
   );
 }

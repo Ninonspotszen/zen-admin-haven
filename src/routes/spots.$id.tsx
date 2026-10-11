@@ -109,7 +109,7 @@ function SpotPage() {
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
   useEffect(() => {
-    const saved = localStorage.getItem("sz_lang");
+    const saved = localStorage.getItem("sz-lang");
     const nav = navigator.language.slice(0, 2);
     setLang(saved ?? ((LANGS as readonly string[]).includes(nav) ? nav : "fr"));
   }, []);
@@ -190,7 +190,7 @@ function SpotPage() {
               <ul role="listbox" className="absolute right-0 mt-2 w-24 overflow-hidden rounded-xl border border-[var(--sz-hair)] bg-[var(--sz-menu)] py-1 shadow-[0_4px_16px_rgba(28,46,30,0.08)]">
                 {LANGS.map((l) => (
                   <li key={l}>
-                    <button onClick={() => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
+                    <button onClick={() => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); }} className={`block h-10 w-full px-4 text-left text-sm font-semibold hover:bg-[var(--sz-menu-hover)] ${l === lang ? "text-[var(--sz-brand)]" : "text-[var(--sz-fg)]"}`}>
                       {l.toUpperCase()}
                     </button>
                   </li>
@@ -318,7 +318,7 @@ function SpotPage() {
       )}
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor={spot?.client_nom ?? spot?.nom ?? ""} lang={lang}
-        onLang={(l) => { setLang(l); localStorage.setItem("sz_lang", l); }} spotId={id} onClose={() => setSelected(null)} onSelect={setSelected} />}
+        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); }} spotId={id} onClose={() => setSelected(null)} onSelect={setSelected} />}
     </div>
   );
 }

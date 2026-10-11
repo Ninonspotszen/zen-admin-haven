@@ -65,7 +65,7 @@ function OffresPage() {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem("sz_lang");
+    const saved = localStorage.getItem("sz-lang");
     if (saved && (LANGS as readonly string[]).includes(saved)) setLang(saved);
   }, []);
 
@@ -85,7 +85,7 @@ function OffresPage() {
     })();
   }, [lang]);
 
-  const chooseLang = (l: string) => { setLang(l); localStorage.setItem("sz_lang", l); setLangOpen(false); };
+  const chooseLang = (l: string) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); setLangOpen(false); };
 
   const benefits = [
     { Icon: Headphones, text: "Des audios immersifs", strong: true },
