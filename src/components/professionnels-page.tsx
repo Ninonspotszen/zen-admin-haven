@@ -119,6 +119,7 @@ export function ProfessionnelsPage() {
         <Heading eyebrow={t("pro.steps.eyebrow")}>{t("pro.steps.h2")}</Heading>
         <ol className="pr-timeline">{[0, 1, 2, 3, 4, 5].map(i => <li key={i}><span className="pr-num">{String(i + 1).padStart(2, "0")}</span><h3>{t(`pro.steps.items.${i}.title`)}</h3><p>{t(`pro.steps.items.${i}.body`)}</p></li>)}</ol>
         <div className="pr-center"><button className="pr-btn" onClick={() => scrollTo("devis")}>{t("pro.steps.cta")}</button><p className="pr-note">{t("pro.steps.note")}</p></div>
+      </div>
     </section>
 
     <section className="pr-section pr-dark">
