@@ -771,7 +771,8 @@
         "etablissement": "Nom de l’établissement",
         "fonction": "Votre fonction",
         "message": "Message",
-        "messageLibre": "Message libre"
+        "messageLibre": "Message libre",
+        "taille": "Nombre de personnes / chambres"
       },
       "generalOptions": [
         "Hébergement touristique",
