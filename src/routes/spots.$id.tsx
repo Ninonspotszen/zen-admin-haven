@@ -307,7 +307,6 @@ function SpotPage() {
             {guided.length === 0 && music.length === 0 && <p className="mt-10 text-center text-sm text-[var(--sz-muted)]">{t("common.empty")}</p>}
           </>
         )}
-        <div className="mt-12 flex justify-center pb-4"><LanguageSwitcher /></div>
       </main>
 
       {/* LIGHT ISLAND */}
@@ -317,6 +316,7 @@ function SpotPage() {
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
             {t("common.cta.subscribe")}
           </a>
+          <div className="mt-6 flex justify-center"><LanguageSwitcher /></div>
           </section></div>
       )}
 
