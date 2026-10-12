@@ -549,16 +549,16 @@
   },
   "pro": {
     "meta": {
-      "title": "Spots Zen for professionals — Hotels, businesses, schools",
-      "description": "Offer your visitors, employees or students a unique wellness immersion. QR code, multilingual, no installation. Spots Zen for professionals."
+      "title": "Spots Zen for Professionals — Hotels, companies, schools",
+      "description": "Offer your visitors, employees or students a unique wellness experience. QR code, multilingual, no installation. Spots Zen for professionals."
     },
     "hero": {
       "img": {
-        "alt": "A soothing hotel room with a large bed"
+        "alt": "Soothing hotel room with a large bed"
       },
       "eyebrow": "FOR PROFESSIONALS",
-      "h1": "Offer your visitors, employees or students a unique wellness immersion.",
-      "copy": "Spots Zen supports businesses, hospitality venues, municipalities and educational institutions that want to offer a genuine wellness break to their visitors, employees or students.",
+      "h1": "Offer your visitors, employees or students a unique wellness experience.",
+      "copy": "Spots Zen supports businesses, tourist establishments, municipalities and educational institutions that want to offer a genuine wellness break to their visitors, employees or students.",
       "cta": {
         "offer": "Discover our offer →",
         "quote": "Request a quote"
@@ -567,19 +567,19 @@
     "why": {
       "eyebrow": "WHY SPOTS ZEN",
       "h2": "In a world where everything accelerates, offering a moment of pause is no longer a luxury. It is a strategic decision.",
-      "quote": "« They scan. They listen. They recharge. Simple for you. Unforgettable for them. »",
-      "body": "Spots Zen vous permet de transformer vos espaces — qu'il s'agisse d'une chambre d'hôtel, d'une salle de repos, d'un couloir d'attente ou d'un campus — en havres de sérénité. Méditations guidées, exercices de respiration, balades sonores, musique relaxante... vos utilisateurs n'ont pas de compte à créer, rien à télécharger.",
+      "quote": "They scan. They listen. They recharge. Simple for you. Unforgettable for them.",
+      "body": "Spots Zen lets you transform your spaces — whether a hotel room, a rest area, a waiting corridor or a campus — into havens of serenity. Guided meditations, breathing exercises, sound walks, relaxing music... your users need no account to create, nothing to download.",
       "card0": {
-        "title": "Accès immédiat",
-        "body": "Deux secondes. Aucun téléchargement. Aucun compte."
+        "title": "Instant access",
+        "body": "Two seconds. No download. No account."
       },
       "card1": {
-        "title": "Audios de haute qualité",
-        "body": "Techniques reconnues. Voix studio. Musique composée sur mesure."
+        "title": "High-quality audio",
+        "body": "Recognised techniques. Studio voices. Custom-composed music."
       },
       "card2": {
-        "title": "Multilingue",
-        "body": "Langue détectée automatiquement. FR / EN / DE / NL / ES."
+        "title": "Multilingual",
+        "body": "Language detected automatically. FR / EN / DE / NL / ES."
       }
     },
     "steps": {
@@ -587,172 +587,172 @@
       "h2": "From QR code to immersion",
       "items": [
         {
-          "title": "Le scan",
-          "body": "Votre visiteur aperçoit l’affichette et scanne le QR code avec son téléphone."
+          "title": "The scan",
+          "body": "Your visitor notices the sign and scans the QR code with their phone."
         },
         {
-          "title": "L’accès immédiat",
-          "body": "La bibliothèque s’ouvre en deux secondes. Sans compte. Sans téléchargement. Sans aucune manipulation."
+          "title": "Instant access",
+          "body": "The library opens in two seconds. No account. No download. No steps at all."
         },
         {
-          "title": "La langue détectée",
-          "body": "La langue de son téléphone est détectée automatiquement. Il peut la changer à tout moment."
+          "title": "Language detected",
+          "body": "Their phone language is detected automatically. They can change it at any time."
         },
         {
-          "title": "L’audio recommandé",
-          "body": "Selon l’heure de connexion, l’audio le plus adapté s’affiche en premier. Il choisit sa voix : féminine ou masculine."
+          "title": "Recommended audio",
+          "body": "Based on the connection time, the most suitable audio appears first. They choose their voice: female or male."
         },
         {
-          "title": "L’immersion",
-          "body": "Il écoute. Il se détend. L’audio continue même écran verrouillé."
+          "title": "The immersion",
+          "body": "They listen. They relax. The audio continues even with the screen locked."
         },
         {
-          "title": "L’impact",
-          "body": "Satisfaction en hausse. Bouche-à-oreille renforcé. Un argument différenciant que vos visiteurs mentionnent."
+          "title": "The impact",
+          "body": "Higher satisfaction. Stronger word-of-mouth. A differentiating argument your visitors mention."
         }
       ],
-      "cta": "Votre établissement est prêt ? Demander un devis →",
-      "note": "Réponse sous 24 heures · Sans engagement"
+      "cta": "Is your establishment ready? Request a quote →",
+      "note": "Response within 24 hours · No commitment"
     },
     "sector": {
       "hebergements": {
         "tab": "Accommodation",
-        "chip": "HÉBERGEMENTS TOURISTIQUES",
-        "sub": "Hôtel · Camping · Maison d’hôtes · Gîte · Bateau de croisière",
-        "title": "Faites de votre établissement un lieu dont on se souvient.",
-        "body": "Vos clients ont choisi de venir chez vous pour déconnecter, ralentir, respirer différemment. Spots Zen transforme cette intention en expérience immersive et émotionnelle dont ils se souviendront. Un QR code discret dans leur chambre ou dans vos espaces communs.",
-        "formTitle": "Parlons de votre projet d’hébergement touristique",
+        "chip": "TOURIST ACCOMMODATION",
+        "sub": "Hotel · Campsite · Bed & Breakfast · Cottage · Cruise ship",
+        "title": "Make your establishment a place people remember.",
+        "body": "Your guests have chosen to come to you to disconnect, slow down, breathe differently. Spots Zen turns this intention into an immersive and emotional experience they will remember. A discreet QR code in their room or in your common areas.",
+        "formTitle": "Let's talk about your tourist accommodation project",
         "list": [
-          "Bibliothèque d’audios pour tous les moments",
-          "Accès immédiat via QR code sans compte",
-          "Interface multilingue",
-          "Audios personnalisés à votre lieu",
-          "Événements bien-être ponctuels sur site"
+          "Audio library for every moment",
+          "Instant access via QR code, no account needed",
+          "Multilingual interface",
+          "Audios personalised to your venue",
+          "On-site wellness events"
         ],
         "fields": {
-          "etablissement": "Nom de votre établissement",
-          "type_structure": "Type d’hébergement",
-          "taille": "Nombre de chambres / logements"
+          "etablissement": "Name of your establishment",
+          "type_structure": "Type of accommodation",
+          "taille": "Number of rooms / units"
         },
         "options": [
-          "Hôtel",
-          "Camping",
-          "Maison d’hôtes",
-          "Gîte",
-          "Bateau de croisière",
-          "Autre"
+          "Hotel",
+          "Campsite",
+          "Bed & Breakfast",
+          "Cottage",
+          "Cruise ship",
+          "Other"
         ]
       },
       "entreprises": {
-        "tab": "Businesses",
-        "chip": "ENTREPRISES",
-        "sub": "Grands groupes · PME · Startups · Organisations publiques",
-        "title": "Donnez à vos collaborateurs les outils pour leur bien-être.",
-        "body": "La qualité du sommeil, la gestion des émotions et la capacité à décompresser sont des compétences qui se cultivent au quotidien. Spots Zen donne à vos équipes un accès simple, discret et immédiat à des audios de bien-être, utilisables depuis le bureau, la salle de repos, le domicile ou en déplacement. En entreprise comme en télétravail, ça fonctionne.",
-        "formTitle": "Parlons de votre projet entreprise",
+        "tab": "Companies",
+        "chip": "COMPANIES",
+        "sub": "Large groups · SMEs · Startups · Public organisations",
+        "title": "Give your employees the tools for their wellbeing.",
+        "body": "Sleep quality, emotional management and the ability to decompress are skills cultivated daily. Spots Zen gives your teams simple, discreet and immediate access to wellness audios, usable from the office, the rest area, home or on the go. In the office or working remotely, it works.",
+        "formTitle": "Let's talk about your company project",
         "list": [
-          "Bibliothèque stress, sommeil et pleine conscience",
-          "Accès par email professionnel",
-          "Multilingue",
-          "Audios personnalisés aux couleurs de votre entreprise",
-          "Conférences et ateliers sur mesure"
+          "Stress, sleep and mindfulness library",
+          "Access via professional email",
+          "Multilingual",
+          "Audios personalised to your company brand",
+          "Tailored conferences and workshops"
         ],
         "fields": {
-          "etablissement": "Nom de votre entreprise",
-          "email": "Email professionnel",
-          "taille": "Nombre de collaborateurs"
+          "etablissement": "Name of your company",
+          "email": "Professional email",
+          "taille": "Number of employees"
         },
         "options": [
           "< 50",
           "50–250",
-          "250–1 000",
-          "> 1 000"
+          "250–1,000",
+          "> 1,000"
         ]
       },
       "ecoles": {
         "tab": "Schools",
-        "chip": "ÉCOLES & UNIVERSITÉS",
-        "sub": "Universités · Grandes écoles · BTS · IUT · Écoles de commerce et d’ingénieurs",
-        "title": "Accompagnez vos étudiants dans la gestion de leur stress.",
-        "body": "Anxiété des examens, troubles du sommeil, surcharge cognitive, isolement — la santé mentale étudiante est devenue un enjeu central. Spots Zen y répond concrètement, sans barrière d’accès. Vos étudiants se connectent avec leur email institutionnel, depuis leur téléphone, à n’importe quel moment — la veille d’un examen, après une journée chargée, ou avant de dormir.",
-        "formTitle": "Parlons de votre projet pédagogique",
+        "chip": "SCHOOLS & UNIVERSITIES",
+        "sub": "Universities · Grandes écoles · BTS · IUT · Business and engineering schools",
+        "title": "Support your students in managing their stress.",
+        "body": "Exam anxiety, sleep disorders, cognitive overload, isolation — student mental health has become a central issue. Spots Zen addresses it concretely, without any access barrier. Your students connect with their institutional email, from their phone, at any time — the night before an exam, after a busy day, or before sleep.",
+        "formTitle": "Let's talk about your educational project",
         "list": [
-          "Audios stress, sommeil et concentration examens",
-          "Accès par email étudiant, campus et domicile",
-          "Multilingue",
-          "Audios personnalisés campus",
-          "Conférences et ateliers vie étudiante"
+          "Stress, sleep and exam focus audios",
+          "Access via student email, on campus and at home",
+          "Multilingual",
+          "Personalised campus audios",
+          "Student life conferences and workshops"
         ],
         "fields": {
-          "etablissement": "Nom de l’établissement",
-          "email": "Email institutionnel",
-          "taille": "Nombre d’étudiants"
+          "etablissement": "Name of the institution",
+          "email": "Institutional email",
+          "taille": "Number of students"
         },
         "options": [
           "< 500",
-          "500–2 000",
-          "2 000–10 000",
-          "> 10 000"
+          "500–2,000",
+          "2,000–10,000",
+          "> 10,000"
         ]
       },
       "sante": {
-        "tab": "Healthcare",
-        "chip": "ÉTABLISSEMENTS DE SANTÉ",
-        "sub": "Cliniques · Hôpitaux · Centres de rééducation · Maternités · Centres de bien-être médical",
-        "title": "Un accompagnement non médicamenteux, accessible dès la chambre.",
-        "body": "L’anxiété préopératoire touche entre 60 et 80 % des patients. La qualité du sommeil en établissement de santé est systématiquement dégradée par l’environnement, la luminosité et le stress. Spots Zen propose un outil audio complémentaire — méditations guidées, exercices de respiration, techniques de relaxation profonde — accessibles depuis la chambre via QR code.",
-        "formTitle": "Parlons de votre projet de soin",
-        "legal": "Spots Zen est un outil de bien-être complémentaire. Il ne constitue pas un dispositif médical et ne se substitue à aucun protocole de soin.",
+        "tab": "Health",
+        "chip": "HEALTHCARE FACILITIES",
+        "sub": "Clinics · Hospitals · Rehabilitation centres · Maternity units · Medical wellness centres",
+        "title": "Non-pharmaceutical support, accessible from the room.",
+        "body": "Pre-operative anxiety affects between 60 and 80% of patients. Sleep quality in healthcare settings is systematically impaired by the environment, lighting and stress. Spots Zen offers a complementary audio tool — guided meditations, breathing exercises, deep relaxation techniques — accessible from the room via QR code.",
+        "formTitle": "Let's talk about your care project",
+        "legal": "Spots Zen is a complementary wellness tool. It is not a medical device and does not replace any care protocol.",
         "list": [
-          "Audios relaxation et respiration via QR code sans compte",
-          "Contenus adaptés aux contextes médicaux",
-          "Audios personnalisés au parcours de soin",
-          "Multilingue"
+          "Relaxation and breathing audios via QR code, no account needed",
+          "Content adapted to medical contexts",
+          "Audios personalised to the care pathway",
+          "Multilingual"
         ],
         "fields": {
-          "etablissement": "Nom de l’établissement",
-          "email": "Email professionnel",
-          "type_structure": "Type d’établissement",
-          "taille": "Nombre de lits / chambres"
+          "etablissement": "Name of the facility",
+          "email": "Professional email",
+          "type_structure": "Type of facility",
+          "taille": "Number of beds / rooms"
         },
         "options": [
-          "Clinique privée",
-          "Hôpital",
-          "Centre de rééducation",
-          "Maternité",
-          "Centre de bien-être médical",
-          "Autre"
+          "Private clinic",
+          "Hospital",
+          "Rehabilitation centre",
+          "Maternity unit",
+          "Medical wellness centre",
+          "Other"
         ]
       },
       "collectivites": {
         "tab": "Local authorities",
-        "chip": "COLLECTIVITÉS",
-        "sub": "Communes · Communautés de communes · Offices de tourisme · Parcs naturels",
-        "title": "Faites de vos espaces publics des lieux de ressourcement.",
-        "body": "Le bien-être des habitants et des visiteurs est un enjeu de qualité de vie et d’attractivité territoriale. Spots Zen permet aux collectivités de créer des espaces de pause dans leurs lieux publics — un banc face à la mer, un coin de parc, un belvédère, une salle de médiathèque — et d’y proposer un accompagnement audio gratuit et immédiat. Un panneau discret. Un QR code. Une voix qui guide.",
-        "formTitle": "Parlons de votre projet de territoire",
+        "chip": "LOCAL AUTHORITIES",
+        "sub": "Municipalities · Communities of municipalities · Tourist offices · Natural parks",
+        "title": "Turn your public spaces into places of renewal.",
+        "body": "The wellbeing of residents and visitors is a quality-of-life and territorial attractiveness issue. Spots Zen allows local authorities to create rest spaces in their public areas — a bench facing the sea, a corner of a park, a viewpoint, a library room — and offer free, immediate audio support. A discreet sign. A QR code. A guiding voice.",
+        "formTitle": "Let's talk about your territorial project",
         "list": [
-          "Bibliothèque via QR code dans les espaces publics",
-          "Accès ouvert sans inscription",
-          "Audios personnalisés au territoire",
-          "Multilingue",
-          "Événements bien-être publics"
+          "Library via QR code in public spaces",
+          "Open access, no registration",
+          "Audios personalised to the territory",
+          "Multilingual",
+          "Public wellness events"
         ],
         "fields": {
-          "etablissement": "Nom de la collectivité",
-          "email": "Email professionnel",
+          "etablissement": "Name of the authority",
+          "email": "Professional email",
           "type_structure": "Type",
-          "taille": "Population concernée"
+          "taille": "Population concerned"
         },
         "options": [
-          "Commune",
-          "Communauté de communes",
-          "Office de tourisme",
-          "Parc naturel",
-          "Autre"
+          "Municipality",
+          "Community of municipalities",
+          "Tourist office",
+          "Natural park",
+          "Other"
         ]
       },
-      "inlineCta": "→ Parlons de votre projet…"
+      "inlineCta": "→ Let's talk about your project…"
     },
     "form": {
       "select": {
@@ -763,76 +763,76 @@
       "note": "Reply within 24 hours · No commitment",
       "cta": "Request a quote →",
       "altContact": "Or write to us directly: bonjour@spotszen.fr",
-      "notePersonal": "Réponse personnalisée sous 24 heures · Sans engagement",
-      "ctaStart": "Commencer maintenant →",
+      "notePersonal": "Personalised reply within 24 hours · No commitment",
+      "ctaStart": "Start now →",
       "field": {
-        "nom": "Prénom · Nom",
-        "email": "Email professionnel",
-        "etablissement": "Nom de l’établissement",
-        "fonction": "Votre fonction",
+        "nom": "First name · Last name",
+        "email": "Professional email",
+        "etablissement": "Name of the establishment",
+        "fonction": "Your role",
         "message": "Message",
-        "messageLibre": "Message libre",
-        "taille": "Nombre de personnes / chambres"
+        "messageLibre": "Free message",
+        "taille": "Number of people / rooms"
       },
       "generalOptions": [
-        "Hébergement touristique",
-        "Entreprise",
-        "École",
-        "Université",
-        "Établissement de santé",
-        "Commune",
-        "Collectivité",
-        "Autre"
+        "Tourist accommodation",
+        "Company",
+        "School",
+        "University",
+        "Healthcare facility",
+        "Municipality",
+        "Local authority",
+        "Other"
       ]
     },
     "quote": {
       "eyebrow": "LET'S GET STARTED",
       "h2": "Your establishment deserves more than a wellness brochure.",
-      "body": "Un investissement adapté à votre taille. Nos offres s'adaptent à tous les profils — du gîte familial au grand groupe hôtelier. Parlez-nous de votre projet. Nous concevons une offre sur-mesure pour votre structure.",
-      "formTitle": "Demander un devis"
+      "body": "An investment adapted to your size. Our offers suit all profiles — from the family cottage to the large hotel group. Tell us about your project. We design a tailor-made offer for your organisation.",
+      "formTitle": "Request a quote"
     },
     "screens": {
-      "eyebrow": "CE QUE VOS VISITEURS VOIENT",
-      "h2": "En deux secondes, la bibliothèque s'ouvre.",
-      "body": "L'audio recommandé s'affiche selon l'heure. Il ne reste qu'à écouter.",
+      "eyebrow": "WHAT YOUR VISITORS SEE",
+      "h2": "In two seconds, the library opens.",
+      "body": "The recommended audio appears based on the time. All that's left is to listen.",
       "img0": {
-        "alt": "Bibliothèque Spots Zen avec l'audio recommandé selon l'heure"
+        "alt": "Spots Zen library with the recommended audio based on the time"
       },
       "img1": {
-        "alt": "Lecteur Spots Zen en cours de lecture"
+        "alt": "Spots Zen player currently playing"
       },
-      "cta": "→ Demander un devis"
+      "cta": "→ Request a quote"
     },
     "offers": {
-      "eyebrow": "CHAQUE ESPACE A SES BESOINS",
-      "h2": "Voici comment Spots Zen s'y adapte."
+      "eyebrow": "EVERY SPACE HAS ITS NEEDS",
+      "h2": "Here is how Spots Zen adapts."
     },
     "testi": {
-      "eyebrow": "ILS ONT CHOISI SPOTS ZEN",
-      "h2": "Ce qu'ils en disent",
-      "placeholder": "“[Témoignage à venir]”",
-      "name": "À venir",
-      "role0": "Directeur · Établissement partenaire",
-      "role1": "Responsable bien-être · Structure partenaire"
+      "eyebrow": "THEY CHOSE SPOTS ZEN",
+      "h2": "What they say",
+      "placeholder": "[Testimonial coming soon]",
+      "name": "Coming soon",
+      "role0": "Director · Partner establishment",
+      "role1": "Wellness manager · Partner organisation"
     },
     "why2": {
-      "eyebrow": "POURQUOI SPOTS ZEN ?",
-      "h2": "Un investissement simple. Un impact durable.",
+      "eyebrow": "WHY SPOTS ZEN?",
+      "h2": "A simple investment. A lasting impact.",
       "card0": {
-        "title": "Accès immédiat",
-        "body": "Vos utilisateurs accèdent directement depuis leur navigateur. Une adoption immédiate, sans téléchargement."
+        "title": "Instant access",
+        "body": "Your users access directly from their browser. Immediate adoption, no download."
       },
       "card1": {
-        "title": "Des audios de haute qualité",
-        "body": "Chaque scénario s’appuie sur des techniques reconnues — hypnose éricksonienne, yoga nidra, cohérence cardiaque. Enregistrés en studio. Musique composée sur mesure par Benoît Courti avec des fréquences binaurales."
+        "title": "High-quality audio",
+        "body": "Each scenario draws on recognised techniques — Ericksonian hypnosis, yoga nidra, cardiac coherence. Recorded in studio. Music custom-composed by Benoît Courti with binaural frequencies."
       },
       "card2": {
-        "title": "Un contenu pensé pour vos contextes",
-        "body": "Les audios sont conçus pour les moments clés — le réveil, la sieste, la nuit, le stress, la récupération."
+        "title": "Content designed for your contexts",
+        "body": "The audios are designed for key moments — waking up, napping, night-time, stress, recovery."
       },
       "card3": {
-        "title": "Une plateforme qui grandit avec vous",
-        "body": "La bibliothèque s’enrichit régulièrement. Vos utilisateurs bénéficient de chaque nouveau contenu automatiquement, sans frais supplémentaires."
+        "title": "A platform that grows with you",
+        "body": "The library is regularly enriched. Your users benefit from every new piece of content automatically, at no extra cost."
       }
     }
   }
