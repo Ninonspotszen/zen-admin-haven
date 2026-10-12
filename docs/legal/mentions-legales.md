@@ -34,7 +34,9 @@ Singapour 318992
 
 L'ensemble du contenu du site spotszen.fr (textes, audios, visuels, marque) est la propriété exclusive de Ninon Godin, sauf mention contraire. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
 
-Les enregistrements audio sont produits par Ninon Godin. Les compositions musicales sont réalisées par Benoît Courti dans le cadre d'une prestation de service et appartiennent à Spots Zen.
+La marque **Spots Zen** est une marque française déposée à l'INPI sous le n° 5297206 (dépôt du 12/09/2026).
+
+Les enregistrements audio en français sont produits par Ninon Godin et Stefan Godin, enregistrés en studio à Lacanau (France). Les compositions musicales sont réalisées par Benoît Courti dans le cadre d'une prestation de service et appartiennent à Spots Zen. Les versions traduites dans d'autres langues utilisent des voix de synthèse générées par intelligence artificielle (ElevenLabs).
 
 ## Médiation
 

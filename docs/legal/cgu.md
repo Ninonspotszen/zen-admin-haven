@@ -14,6 +14,8 @@ Spots Zen est une plateforme audio de bien-être proposant des méditations guid
 - Via un QR code ou lien NFC apposé dans un établissement partenaire (accès B2B offert par l'établissement)
 - Via abonnement personnel (accès B2C)
 
+Les contenus audio en français sont enregistrés en studio par Ninon Godin et Stefan Godin. Les versions en langues étrangères (anglais, allemand, néerlandais, espagnol) sont générées par synthèse vocale via intelligence artificielle.
+
 ## 3. Accès au service
 
 ### Accès via établissement partenaire
