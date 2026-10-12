@@ -3,8 +3,8 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const PRICES = {
-  mensuel: "price_1UOH090tGinx8r1X86ru9g6N",
-  annuel: "price_1UOH1g0tGinx8r1XblCvDInd",
+  mensuel: "price_1UOHEe12YS5PWilJvjiRsLhe",
+  annuel: "price_1UOHEi12YS5PWilJT8KiDnlI",
 } as const;
 
 export const createCheckoutSession = createServerFn({ method: "POST" })

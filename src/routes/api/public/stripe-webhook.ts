@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 const PRICE_TO_FORMULE: Record<string, string> = {
-  price_1UOH090tGinx8r1X86ru9g6N: "mensuel",
-  price_1UOH1g0tGinx8r1XblCvDInd: "annuel",
+  price_1UOHEe12YS5PWilJvjiRsLhe: "mensuel",
+  price_1UOHEi12YS5PWilJT8KiDnlI: "annuel",
 };
 
 const TOLERANCE_SEC = 300;
