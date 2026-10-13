@@ -15,14 +15,14 @@ const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/publ
 const monthlyLink = import.meta.env['VITE_STRIPE_MONTHLY_LINK'] as string | undefined;
 const annualLink = import.meta.env['VITE_STRIPE_ANNUAL_LINK'] as string | undefined;
 const catalogue = [
-  { title: "Le Réveil du corps", moment: "MATIN", duration: "12min", match: "reveil-du-corps" },
-  { title: "La Sieste réparatrice", moment: "JOURNÉE", duration: "15min", match: "sieste-reparatrice" },
+  { title: "Le Réveil du corps", moment: "MATIN", duration: "8min", match: "reveil-du-corps" },
+  { title: "La Sieste réparatrice", moment: "JOURNÉE", duration: "20min", match: "sieste-reparatrice" },
   { title: "Glisser vers le sommeil", moment: "SOIR", duration: "18min", match: "glisser-vers-le-sommeil" },
-  { title: "Respiration Niveau 1", moment: "TOUS MOMENTS", duration: "8min", match: "respiration-niveau-1" },
-  { title: "Songe du soir — Orage", moment: "SOIR", duration: "22min", match: "songe-du-soir-orage" },
-  { title: "Au bord du lac", moment: "TOUS MOMENTS", duration: "10min", match: "au-bord-du-lac" },
-  { title: "Le Voyage dans les étoiles", moment: "NUIT · ENFANTS", duration: "25min", match: "voyage-dans-les-etoiles" },
-  { title: "La Respiration du ballon", moment: "ENFANTS", duration: "7min", match: "ballon" },
+  { title: "Respiration Niveau 1", moment: "TOUS MOMENTS", duration: "5min", match: "respiration-niveau-1" },
+  { title: "Songe du soir — Orage", moment: "SOIR", duration: "16min", match: "songe-du-soir-orage" },
+  { title: "Au bord du lac", moment: "TOUS MOMENTS", duration: "9min", match: "au-bord-du-lac" },
+  { title: "Le Voyage dans les étoiles", moment: "NUIT · ENFANTS", duration: "10min", match: "voyage-dans-les-etoiles" },
+  { title: "La Respiration du ballon", moment: "ENFANTS", duration: "5min", match: "ballon" },
 ];
 const benefits = [
   { badge: "SOMMEIL", Icon: Moon, title: "Un sommeil plus profond", text: "Laissez les pensées de la journée se dissoudre et retrouvez un repos réparateur." },

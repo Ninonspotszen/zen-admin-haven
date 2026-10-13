@@ -31,7 +31,7 @@ export const Route = createFileRoute("/spots/$id")({
 
 type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null };
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
-type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
+type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; public_cible?: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
 const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
@@ -186,7 +186,7 @@ function SpotPage() {
     { slug: "Enfant", key: "common.filter.enfant" },
   ];
   const match = (a: Audio) =>
-    filter === "Tous" ? true : filter === "Enfant" ? a.moment === "enfant" : a.type === filter;
+    filter === "Tous" ? true : filter === "Enfant" ? a.public_cible === "enfant" : a.type === filter;
   const guided = audios.filter((a) => !isMusic(a) && match(a));
   const music = audios.filter((a) => isMusic(a) && match(a));
 
