@@ -1,0 +1,18 @@
+.sz-home .sz-legal-content { padding-block: 3rem 5rem; max-width: 800px; }
+.sz-home .sz-legal-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 600; color: #2D5A27; margin-bottom: 0.5rem; }
+.sz-home .sz-legal-content h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.75rem; color: #2D5A27; }
+.sz-home .sz-legal-content h3, .sz-home .sz-legal-content h4 { font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.sz-home .sz-legal-content p, .sz-home .sz-legal-content li { font-size: 0.9375rem; line-height: 1.75; color: #4a5568; }
+.sz-home .sz-legal-content p { margin-bottom: 0.75rem; }
+.sz-home .sz-legal-content ul, .sz-home .sz-legal-content ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+.sz-home .sz-legal-content ul { list-style: disc; }
+.sz-home .sz-legal-content ol { list-style: decimal; }
+.sz-home .sz-legal-content em { font-style: italic; color: #718096; font-size: 0.875rem; }
+.sz-home .sz-legal-content table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; overflow-x: auto; display: block; }
+.sz-home .sz-legal-content th { background: #2D5A27; color: #F8F6F2; padding: 0.5rem 0.75rem; text-align: left; }
+.sz-home .sz-legal-content td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #E8E4DC; }
+.sz-home .sz-legal-content tr:nth-child(even) td { background: #F8F6F2; }
+.sz-home .sz-legal-content a { color: #2D5A27; text-decoration: underline; }
+.sz-home .sz-legal-content code { background: #F0EDE8; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.875em; font-family: monospace; }
+.sz-home .sz-legal-content hr { border: 0; border-top: 1px solid #E8E4DC; margin: 2rem 0; }
+.sz-home .sz-legal-content blockquote { border-left: 3px solid #C3B99C; padding-left: 1rem; margin: 1rem 0; color: #4a5568; }

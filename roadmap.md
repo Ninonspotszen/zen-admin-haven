@@ -26,4 +26,4 @@
 - [x] Brancher le titre de l'onglet par défaut (racine) sur i18n.
 
 - [x] Verrouiller la lecture des spots (PIN) et clients : admin uniquement.
-- [ ] Pages légales multilingues (5 routes, liens footer, documents Markdown).
+- [x] Pages légales multilingues (5 routes, liens footer, documents Markdown).
