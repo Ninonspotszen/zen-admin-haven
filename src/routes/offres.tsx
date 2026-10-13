@@ -80,7 +80,7 @@ function OffresPage() {
       const list = (audios ?? []) as Omit<Preview, "titre">[];
       const ids = list.map((a) => a.id);
       const { data: trads } = ids.length
-        ? await supabase.from("audios_traductions").select("audio_id, langue, titre").in("audio_id", ids)
+        ? await supabase.rpc("get_public_titles", { p_audio_ids: ids })
         : { data: [] };
       const titleFor = (id: string) => {
         const rows = (trads ?? []).filter((t) => t.audio_id === id && t.titre);

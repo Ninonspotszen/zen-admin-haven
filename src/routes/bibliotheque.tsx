@@ -145,12 +145,11 @@ function BibliothequePage() {
         .eq("id", user.id)
         .maybeSingle();
       setAbo(aboData ? { formule: aboData.formule, date_renouvellement: aboData.date_fin_acces } : null);
-      const { data } = await supabase
-        .from("audios")
-        .select("*, traductions:audios_traductions(*)")
-        .limit(200)
-        .order("ordre", { ascending: true, nullsFirst: false });
-      setAudios((data as unknown as Audio[] | null) ?? []);
+      const { data } = await supabase.rpc("get_library_catalog");
+      if (data === null || data === undefined) { navigate({ to: "/offres", replace: true }); return; }
+      const list = ((data as unknown as Audio[]) ?? []).slice()
+        .sort((a, b) => (a.ordre ?? Number.MAX_SAFE_INTEGER) - (b.ordre ?? Number.MAX_SAFE_INTEGER));
+      setAudios(list);
       setState("catalog");
     })();
   }, [navigate]);
