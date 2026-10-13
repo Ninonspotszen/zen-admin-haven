@@ -103,7 +103,7 @@ function AudioDetail() {
         for (const l of LANGS) {
           for (const v of ["feminine", "masculine"] as const) {
             const r = voiceSchema.safeParse(tr[l][v]);
-            if (!r.success) throw new Error(`${LANG_NAMES[l]} · voix ${VOIX_LABEL[v]} : ${r.error.issues[0].message}`);
+            if (!r.success) throw new Error(`${LANG_NAMES[l]} · voix ${VOIX_LABEL[v]} : ${r.error.issues[0]?.message ?? "invalide"}`);
           }
         }
       }
