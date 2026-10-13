@@ -138,7 +138,7 @@ function MarkdownRenderer({ content }: { content: string }) {
       continue;
     }
     const para: string[] = [];
-    while (i < lines.length && lines[i].trim() && !/^(#|\||[-*+]\s|\d+[.)]\s|>|-{3,})/.test(lines[i].trim())) para.push(lines[i++].trim());
+    while (i < lines.length && (lines[i] ?? "").trim() && !/^(#|\||[-*+]\s|\d+[.)]\s|>|-{3,})/.test((lines[i] ?? "").trim())) para.push(lines[i++].trim());
     if (!para.length) { para.push(t); i++; }
     const k = key++;
     blocks.push(<p key={k}>{inline(para.join(" "), `p${k}`)}</p>);
