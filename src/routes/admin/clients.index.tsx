@@ -32,12 +32,12 @@ export const Route = createFileRoute("/admin/clients/")({
   component: ClientsPage,
 });
 
-const STATUTS = ["En attente de paiement", "Pilote", "Actif annuel", "Suspendu"] as const;
+const STATUTS = ["En attente de paiement", "Pilote", "Actif", "Suspendu"] as const;
 type Filter = "Tous" | (typeof STATUTS)[number];
 const FILTERS: { key: Filter; label: string }[] = [
   { key: "Tous", label: "Tous" },
   { key: "Pilote", label: "Pilote" },
-  { key: "Actif annuel", label: "Actif annuel" },
+  { key: "Actif", label: "Actif" },
   { key: "En attente de paiement", label: "En attente" },
   { key: "Suspendu", label: "Suspendu" },
 ];
@@ -103,7 +103,7 @@ function ClientsPage() {
     mutationFn: async (c: ClientRow) => {
       const { error } = await supabase
         .from("clients")
-        .update({ statut: "Actif annuel", statut_paiement: "Virement reçu" })
+        .update({ statut: "Actif", statut_paiement: "Virement reçu" })
         .eq("id", c.id);
       if (error) throw error;
     },
@@ -164,7 +164,7 @@ function ClientsPage() {
         <div>
           <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">Clients B2B</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {actifs} comptes actifs · {counts["Pilote"] ?? 0} en pilote · {counts["Actif annuel"] ?? 0} actifs annuel
+            {actifs} comptes actifs · {counts["Pilote"] ?? 0} en pilote · {counts["Actif"] ?? 0} actifs
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -273,11 +273,11 @@ function ClientsPage() {
                     <ActionBtn icon={Eye} label="Voir" onClick={() => navigate({ to: "/admin/clients/$id", params: { id: c.id } })} />
                     <ActionBtn icon={Mail} label="Email" onClick={() => sendEmail(c)} />
                     <ActionBtn icon={FileText} label="Facture" onClick={() => toast.info("Les factures arrivent bientôt")} />
-                    {c.statut !== "Actif annuel" && c.statut !== "Suspendu" && (
+                    {c.statut !== "Actif" && c.statut !== "Suspendu" && (
                       <button
                         disabled={activate.isPending}
                         onClick={() => {
-                          if (confirm(`Confirmer le virement reçu et activer ${c.nom} en Actif annuel ?`)) activate.mutate(c);
+                          if (confirm(`Confirmer le virement reçu et activer ${c.nom} en Actif ?`)) activate.mutate(c);
                         }}
                         className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
                       >
@@ -321,9 +321,10 @@ function computeRenewal(debut: string, moisOfferts: string, frequence: string): 
   const d = new Date(`${debut}T00:00:00`);
   if (Number.isNaN(d.getTime())) return "";
   const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
-  const duree = frequence === "Mensuel" ? 0 : 12;
+  const duree = frequence === "Mensuel" ? 1 : 12;
   d.setMonth(d.getMonth() + offerts + duree);
-  return d.toISOString().slice(0, 10);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -474,7 +475,7 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
 function StatutBadge({ statut }: { statut: string | null }) {
   const styles: Record<string, string> = {
     Pilote: "bg-warning text-warning-foreground",
-    "Actif annuel": "bg-accent text-accent-foreground",
+    "Actif": "bg-accent text-accent-foreground",
     "En attente de paiement": "bg-secondary text-secondary-foreground",
     Suspendu: "bg-destructive/10 text-destructive",
   };
@@ -511,7 +512,7 @@ function Alerte({ c }: { c: ClientRow }) {
       );
   }
   // Badge jaune : renouvellement à 30 jours ou moins
-  if (c.statut === "Actif annuel" && c.date_renouvellement) {
+  if (c.statut === "Actif" && c.date_renouvellement) {
     const d = daysUntil(c.date_renouvellement);
     if (d <= 30)
       return (

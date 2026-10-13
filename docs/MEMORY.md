@@ -32,3 +32,9 @@
 ## Statut client : contrainte corrigée (13/10/2026)
 - `clients_statut_check` accepte désormais `En attente de paiement` (valeur envoyée par le back-office), `Pilote`, `Actif annuel`, `Suspendu`. L'ancienne valeur `En attente` n'existait sur aucune ligne.
 - `clients_statut_paiement_check` non modifiée : son `En attente` concerne la colonne `statut_paiement`, c'est correct.
+
+## Statuts clients alignés (2026-10-13)
+- clients.statut : 'En attente de paiement' | 'Pilote' | 'Actif' | 'Suspendu' ("Actif annuel" renommé "Actif" ; la fréquence est un champ séparé).
+- clients.statut_paiement : 'En attente' | 'Virement reçu' | 'En retard'.
+- spot_email_ok / check_spot_email_domain acceptent les clients 'Pilote' et 'Actif' (droits inchangés).
+- computeRenewal : début + mois offerts + (1 si Mensuel, 12 si Annuel), formatée en date locale (pas de toISOString).
