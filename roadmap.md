@@ -24,3 +24,6 @@
 - [x] Corriger routeAfterAuth : accès bibliothèque aussi pour les statuts « offert » et « ambassadeur ».
 - [x] Ajouter .limit(200) aux requêtes de listes : fait dans bibliotheque.tsx ; spots.$id.tsx passe par des fonctions de la base, sans requête de liste à limiter.
 - [x] Brancher le titre de l'onglet par défaut (racine) sur i18n.
+
+- [x] Verrouiller la lecture des spots (PIN) et clients : admin uniquement.
+- [ ] Pages légales multilingues (5 routes, liens footer, documents Markdown).
