@@ -28,3 +28,7 @@
 - `get_spot_catalog` : mode `email_domaine` → `spot_email_ok` (PIN ignoré) ; sinon (y compris sans client) accès si pas de PIN ou PIN correct ; renvoie `[]` si vide.
 - `register_spot_visit` : pas d'expiration en mode `email_domaine` ; `qr_libre` inchangé. `verify_spot_pin` non modifiée.
 - La page /spots/$id n'est pas encore adaptée.
+
+## Statut client : contrainte corrigée (13/10/2026)
+- `clients_statut_check` accepte désormais `En attente de paiement` (valeur envoyée par le back-office), `Pilote`, `Actif annuel`, `Suspendu`. L'ancienne valeur `En attente` n'existait sur aucune ligne.
+- `clients_statut_paiement_check` non modifiée : son `En attente` concerne la colonne `statut_paiement`, c'est correct.
