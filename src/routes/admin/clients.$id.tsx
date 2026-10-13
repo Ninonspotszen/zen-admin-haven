@@ -54,12 +54,13 @@ function computeRenewal(debut: string, moisOfferts: string, frequence: string): 
   const d = new Date(`${debut}T00:00:00`);
   if (Number.isNaN(d.getTime())) return "";
   const offerts = Math.max(0, Math.round(Number(moisOfferts) || 0));
-  const duree = frequence === "Mensuel" ? 0 : 12;
+  const duree = frequence === "Mensuel" ? 1 : 12;
   d.setMonth(d.getMonth() + offerts + duree);
-  return d.toISOString().slice(0, 10);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif annuel", "Suspendu"];
+const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif", "Suspendu"];
 const fieldInput = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
 
 type Spot = {
@@ -552,7 +553,7 @@ function Field({ label, icon: Icon, children }: { label: string; icon: typeof Cl
 function StatutBadge({ statut }: { statut: string | null }) {
   const styles: Record<string, string> = {
     Pilote: "bg-warning text-warning-foreground",
-    "Actif annuel": "bg-accent text-accent-foreground",
+    "Actif": "bg-accent text-accent-foreground",
     "En attente de paiement": "bg-secondary text-secondary-foreground",
     Suspendu: "bg-destructive/10 text-destructive",
   };

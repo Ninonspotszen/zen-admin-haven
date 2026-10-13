@@ -56,7 +56,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     virementsRecus,
     ecoutes,
   ] = await Promise.all([
-    supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Actif annuel"),
+    supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Actif"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Pilote"),
     supabase.from("clients").select("id, nom, date_renouvellement").lte("date_renouvellement", in30).not("date_renouvellement", "is", null).order("date_renouvellement"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).eq("statut", "actif"),
@@ -121,7 +121,7 @@ function AdminDashboard() {
         <>
           {/* Blocs 1 & 2 — Clients B2B & Abonnés B2C */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard icon={Building2} label="Clients actifs" value={data.clientsActifs} hint="Actif annuel" href="/admin/clients" />
+            <StatCard icon={Building2} label="Clients actifs" value={data.clientsActifs} hint="Actif" href="/admin/clients" />
             <StatCard icon={Building2} label="Clients en pilote" value={data.clientsPilote} href="/admin/clients" />
             <StatCard
               icon={Users}
