@@ -314,7 +314,7 @@ export type Database = {
           id: string
           langue_preferee: string | null
           logo_url: string | null
-          mode_acces: string | null
+          mode_acces: string
           mois_offerts: number | null
           montant: number | null
           nom: string
@@ -339,7 +339,7 @@ export type Database = {
           id?: string
           langue_preferee?: string | null
           logo_url?: string | null
-          mode_acces?: string | null
+          mode_acces?: string
           mois_offerts?: number | null
           montant?: number | null
           nom: string
@@ -364,7 +364,7 @@ export type Database = {
           id?: string
           langue_preferee?: string | null
           logo_url?: string | null
-          mode_acces?: string | null
+          mode_acces?: string
           mois_offerts?: number | null
           montant?: number | null
           nom?: string
@@ -619,6 +619,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_spot_email_domain: {
+        Args: { p_email: string; p_id: string }
+        Returns: boolean
+      }
       get_audio_public: { Args: { p_audio: string }; Returns: Json }
       get_library_catalog: { Args: never; Returns: Json }
       get_public_titles: {
@@ -636,11 +640,13 @@ export type Database = {
           adresse: string
           client_nom: string
           description: string
+          domaine_email: string
           duree_acces_jours: number
           id: string
           mode_acces: string
           nom: string
           photo_url: string
+          pin_requis: boolean
           statut: string
         }[]
       }
@@ -649,6 +655,7 @@ export type Database = {
         Args: { p_id: string; p_visitor: string }
         Returns: Json
       }
+      spot_email_ok: { Args: { p_id: string }; Returns: boolean }
       verify_spot_pin: {
         Args: { p_id: string; p_pin: string }
         Returns: boolean
