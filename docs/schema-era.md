@@ -12,6 +12,7 @@ erDiagram
         string type
         string statut
         string email
+        string mode_acces
         string domaine_email
         string langue_preferee
         string statut_paiement
@@ -29,7 +30,6 @@ erDiagram
         string statut
         string pin
         string shortio_url
-        string mode_acces
         timestamp created_at
     }
 
@@ -195,10 +195,14 @@ erDiagram
 | Fonction | Rôle |
 |---|---|
 | `is_admin()` | Vérifie `profiles.role = 'admin'` pour `auth.uid()` |
-| `get_spot_public()` | Données spot sans RLS (QR public) |
+| `get_spot_public()` | Données spot sans RLS (QR public), dont mode_acces, domaine_email (mode email) et pin_requis |
+| `spot_email_ok()` | Accès email valide pour l'utilisateur connecté (mode `email_domaine`) |
+| `check_spot_email_domain()` | Vérifie qu'une adresse correspond au domaine du client avant envoi du lien |
 | `verify_spot_pin()` | Vérification PIN côté serveur |
-| `get_spot_catalog()` | Catalogue audio d'un spot |
+| `get_spot_catalog()` | Catalogue audio d'un spot (PIN en `qr_libre`, domaine email en `email_domaine`) |
 | `get_audio_public()` | Métadonnées audio publiques |
 | `register_spot_visit()` | Enregistre une visite `acces_spots` |
 | `handle_new_user()` | Crée le profil à l'inscription |
 | `link_abonne_on_signup()` | Lie l'abonné B2C à son compte auth |
+
+> `mode_acces` (`qr_libre` par défaut | `email_domaine`) est porté par **clients**, pas par spots.

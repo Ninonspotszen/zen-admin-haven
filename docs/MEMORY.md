@@ -20,3 +20,11 @@
 - Voix stockées en `feminine` / `masculine` / `aucune` ; update si ligne existante, insert si un champ rempli, jamais de suppression.
 - Musiques (ligne `aucune` ou type Musique) : seulement un titre traduit hors FR, même fichier pour toutes les langues.
 - Validation zod : URL renseignée ⇒ titre obligatoire et URL en https://. Bandeau orange si une langue n'a qu'une voix sur deux.
+
+## Accès spot par domaine email (13/10/2026)
+- `clients.mode_acces` : NOT NULL, défaut `qr_libre`, valeurs `qr_libre` | `email_domaine`. Domaine email en minuscules sans @, correspondance exacte, obligatoire en mode email.
+- `spot_email_ok(p_id)` (authenticated) et `check_spot_email_domain(p_id, p_email)` (anon+authenticated) ; client en statut `Pilote` ou `Actif annuel` requis.
+- `get_spot_public` renvoie aussi `domaine_email` (mode email seulement) et `pin_requis`.
+- `get_spot_catalog` : mode `email_domaine` → `spot_email_ok` (PIN ignoré) ; sinon (y compris sans client) accès si pas de PIN ou PIN correct ; renvoie `[]` si vide.
+- `register_spot_visit` : pas d'expiration en mode `email_domaine` ; `qr_libre` inchangé. `verify_spot_pin` non modifiée.
+- La page /spots/$id n'est pas encore adaptée.
