@@ -14,9 +14,14 @@ import { Route as AccesRefuseRouteImport } from './routes/acces-refuse'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliothequeRouteImport } from './routes/bibliotheque'
+import { Route as CguRouteImport } from './routes/cgu'
+import { Route as CgvRouteImport } from './routes/cgv'
 import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as ParticuliersRouteImport } from './routes/particuliers'
+import { Route as PolitiqueConfidentialiteRouteImport } from './routes/politique-confidentialite'
+import { Route as PolitiqueCookiesRouteImport } from './routes/politique-cookies'
 import { Route as ProfessionnelsRouteImport } from './routes/professionnels'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as SpotsIdRouteImport } from './routes/spots.$id'
@@ -55,9 +60,24 @@ const BibliothequeRoute = BibliothequeRouteImport.update({
   path: '/bibliotheque',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CguRoute = CguRouteImport.update({
+  id: '/cgu',
+  path: '/cgu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CgvRoute = CgvRouteImport.update({
+  id: '/cgv',
+  path: '/cgv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConnexionRoute = ConnexionRouteImport.update({
   id: '/connexion',
   path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OffresRoute = OffresRouteImport.update({
@@ -68,6 +88,17 @@ const OffresRoute = OffresRouteImport.update({
 const ParticuliersRoute = ParticuliersRouteImport.update({
   id: '/particuliers',
   path: '/particuliers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolitiqueConfidentialiteRoute =
+  PolitiqueConfidentialiteRouteImport.update({
+    id: '/politique-confidentialite',
+    path: '/politique-confidentialite',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PolitiqueCookiesRoute = PolitiqueCookiesRouteImport.update({
+  id: '/politique-cookies',
+  path: '/politique-cookies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessionnelsRoute = ProfessionnelsRouteImport.update({
@@ -137,9 +168,14 @@ export interface FileRoutesByFullPath {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/bibliotheque': typeof BibliothequeRoute
+  '/cgu': typeof CguRoute
+  '/cgv': typeof CgvRoute
   '/connexion': typeof ConnexionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/particuliers': typeof ParticuliersRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
+  '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -158,9 +194,14 @@ export interface FileRoutesByTo {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/bibliotheque': typeof BibliothequeRoute
+  '/cgu': typeof CguRoute
+  '/cgv': typeof CgvRoute
   '/connexion': typeof ConnexionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/particuliers': typeof ParticuliersRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
+  '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin': typeof AdminIndexRoute
@@ -181,9 +222,14 @@ export interface FileRoutesById {
   '/acces-refuse': typeof AccesRefuseRoute
   '/auth': typeof AuthRoute
   '/bibliotheque': typeof BibliothequeRoute
+  '/cgu': typeof CguRoute
+  '/cgv': typeof CgvRoute
   '/connexion': typeof ConnexionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/particuliers': typeof ParticuliersRoute
+  '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
+  '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -205,9 +251,14 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/bibliotheque'
+    | '/cgu'
+    | '/cgv'
     | '/connexion'
+    | '/mentions-legales'
     | '/offres'
     | '/particuliers'
+    | '/politique-confidentialite'
+    | '/politique-cookies'
     | '/professionnels'
     | '/spots/$id'
     | '/admin/'
@@ -226,9 +277,14 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/bibliotheque'
+    | '/cgu'
+    | '/cgv'
     | '/connexion'
+    | '/mentions-legales'
     | '/offres'
     | '/particuliers'
+    | '/politique-confidentialite'
+    | '/politique-cookies'
     | '/professionnels'
     | '/spots/$id'
     | '/admin'
@@ -248,9 +304,14 @@ export interface FileRouteTypes {
     | '/acces-refuse'
     | '/auth'
     | '/bibliotheque'
+    | '/cgu'
+    | '/cgv'
     | '/connexion'
+    | '/mentions-legales'
     | '/offres'
     | '/particuliers'
+    | '/politique-confidentialite'
+    | '/politique-cookies'
     | '/professionnels'
     | '/spots/$id'
     | '/admin/'
@@ -271,9 +332,14 @@ export interface RootRouteChildren {
   AccesRefuseRoute: typeof AccesRefuseRoute
   AuthRoute: typeof AuthRoute
   BibliothequeRoute: typeof BibliothequeRoute
+  CguRoute: typeof CguRoute
+  CgvRoute: typeof CgvRoute
   ConnexionRoute: typeof ConnexionRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   OffresRoute: typeof OffresRoute
   ParticuliersRoute: typeof ParticuliersRoute
+  PolitiqueConfidentialiteRoute: typeof PolitiqueConfidentialiteRoute
+  PolitiqueCookiesRoute: typeof PolitiqueCookiesRoute
   ProfessionnelsRoute: typeof ProfessionnelsRoute
   SpotsIdRoute: typeof SpotsIdRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
@@ -316,11 +382,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BibliothequeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cgu': {
+      id: '/cgu'
+      path: '/cgu'
+      fullPath: '/cgu'
+      preLoaderRoute: typeof CguRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgv': {
+      id: '/cgv'
+      path: '/cgv'
+      fullPath: '/cgv'
+      preLoaderRoute: typeof CgvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/connexion': {
       id: '/connexion'
       path: '/connexion'
       fullPath: '/connexion'
       preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/offres': {
@@ -335,6 +422,20 @@ declare module '@tanstack/react-router' {
       path: '/particuliers'
       fullPath: '/particuliers'
       preLoaderRoute: typeof ParticuliersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politique-confidentialite': {
+      id: '/politique-confidentialite'
+      path: '/politique-confidentialite'
+      fullPath: '/politique-confidentialite'
+      preLoaderRoute: typeof PolitiqueConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politique-cookies': {
+      id: '/politique-cookies'
+      path: '/politique-cookies'
+      fullPath: '/politique-cookies'
+      preLoaderRoute: typeof PolitiqueCookiesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/professionnels': {
@@ -458,9 +559,14 @@ const rootRouteChildren: RootRouteChildren = {
   AccesRefuseRoute: AccesRefuseRoute,
   AuthRoute: AuthRoute,
   BibliothequeRoute: BibliothequeRoute,
+  CguRoute: CguRoute,
+  CgvRoute: CgvRoute,
   ConnexionRoute: ConnexionRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   OffresRoute: OffresRoute,
   ParticuliersRoute: ParticuliersRoute,
+  PolitiqueConfidentialiteRoute: PolitiqueConfidentialiteRoute,
+  PolitiqueCookiesRoute: PolitiqueCookiesRoute,
   ProfessionnelsRoute: ProfessionnelsRoute,
   SpotsIdRoute: SpotsIdRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
