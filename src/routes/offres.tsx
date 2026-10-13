@@ -45,6 +45,9 @@ body:has(.sz){background:var(--o-bg)}
 .sz .ocard{background:var(--o-card);border:1px solid var(--o-border)}
 .sz .logo-dark{display:none}html.dark .sz .logo-light{display:none}html.dark .sz .logo-dark{display:block}
 .sz .noscroll{scrollbar-width:none}.sz .noscroll::-webkit-scrollbar{display:none}
+.sz .otag{background:rgba(15,20,16,0.65);color:#F0EDE8}
+.sz .olock{display:inline-flex;width:44px;height:44px;align-items:center;justify-content:center;border:1px solid var(--o-fg);border-radius:50%;color:var(--o-fg)}
+.sz .olock.on-photo{border-color:#FFFFFF;color:#FFFFFF}
 `;
 
 type Preview = { id: string; slug: string | null; image_url: string | null; moment: string | null; type: string | null; duree_secondes: number | null; titre_fr: string | null; titre: string | null };
@@ -165,21 +168,19 @@ function OffresPage() {
             <h2 className="serif text-[18px]">{t("offers.catalog.h2")}</h2>
             <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />{t("offers.catalog.locked")}</p>
           </div>
-          <div className="noscroll mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2">
+          <div className="mt-4 grid grid-cols-2 gap-3 px-6">
             {items.map((a) => {
               const min = a.duree_secondes ? `${Math.round(a.duree_secondes / 60)} min` : "";
-              const badge = [a.moment && a.moment.toLowerCase() !== "tous" ? a.moment : null, min].filter(Boolean).join(" · ");
+              const moment = a.moment && a.moment.toLowerCase() !== "tous" ? a.moment : null;
               return (
-                <article key={a.id} className="ocard w-60 flex-shrink-0 snap-start overflow-hidden rounded-2xl">
-                  <div className="relative aspect-[4/3] bg-[var(--o-thumb)]">
-                    {a.image_url && <img src={a.image_url} alt="" className="h-full w-full object-cover" loading="lazy" />}
-                    <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-[#F8F6F2]"><Lock className="h-4 w-4" aria-hidden /></span>
-                    {badge && <span className="absolute bottom-2 left-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold uppercase text-[#1C2E1E]">{badge}</span>}
+                <article key={a.id} className="rounded-2xl text-left">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[var(--o-thumb)]">
+                    {a.image_url && <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />}
+                    {moment && <span className="otag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{moment}</span>}
+                    <span className={`olock absolute bottom-3 right-3 ${a.image_url ? "on-photo" : ""}`}><Lock className="h-5 w-5" aria-hidden /></span>
                   </div>
-                  <div className="p-4">
-                    <p className="text-[15px] font-medium leading-snug">{a.titre ?? a.titre_fr}</p>
-                    {a.type && <p className="mt-1 text-[12px] text-[var(--o-sub)]">{a.type}</p>}
-                  </div>
+                  <p className="serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{a.titre ?? a.titre_fr}</p>
+                  <p className="mt-0.5 px-1 pb-1 text-xs text-[var(--o-sub)]">{[min, a.type].filter(Boolean).join(" · ")}</p>
                 </article>
               );
             })}

@@ -38,3 +38,9 @@
 - clients.statut_paiement : 'En attente' | 'Virement reçu' | 'En retard'.
 - spot_email_ok / check_spot_email_domain acceptent les clients 'Pilote' et 'Actif' (droits inchangés).
 - computeRenewal : début + mois offerts + (1 si Mensuel, 12 si Annuel), formatée en date locale (pas de toISOString).
+
+## Filtre Enfant, durées et aperçu /offres (13/10/2026)
+- `get_spot_catalog` et `get_library_catalog` renvoient aussi `a.public_cible` (rien d'autre changé, droits conservés).
+- Filtre « Enfant » (spot + bibliothèque) : `a.public_cible === "enfant"` (et non plus `moment`).
+- Durées en dur alignées sur les durées validées dans particuliers-page.tsx et home-page.tsx.
+- /offres : aperçu en grille 2×2 au format des immersions de la page spot, cadenas 44 px en bas à droite, cartes non interactives.
