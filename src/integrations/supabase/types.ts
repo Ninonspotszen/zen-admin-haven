@@ -479,21 +479,6 @@ export type Database = {
         }
         Relationships: []
       }
-      kv_store_b6181f40: {
-        Row: {
-          key: string
-          value: Json
-        }
-        Insert: {
-          key: string
-          value: Json
-        }
-        Update: {
-          key?: string
-          value?: Json
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string | null
@@ -635,6 +620,15 @@ export type Database = {
     }
     Functions: {
       get_audio_public: { Args: { p_audio: string }; Returns: Json }
+      get_library_catalog: { Args: never; Returns: Json }
+      get_public_titles: {
+        Args: { p_audio_ids: string[] }
+        Returns: {
+          audio_id: string
+          langue: string
+          titre: string
+        }[]
+      }
       get_spot_catalog: { Args: { p_id: string; p_pin: string }; Returns: Json }
       get_spot_public: {
         Args: { p_id: string }
