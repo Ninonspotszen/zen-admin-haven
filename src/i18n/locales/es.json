@@ -118,6 +118,11 @@
         "rateLimit": "Muchas solicitudes en este momento. Inténtelo de nuevo en unos minutos.",
         "send": "El envío ha fallado. Compruebe su dirección e inténtelo de nuevo."
       }
+    },
+    "expired": {
+      "title": "Su acceso al bienestar ha terminado",
+      "text": "Su acceso ofrecido por {nom} ha finalizado. Disfrute de todas sus inmersiones en casa, esté donde esté.",
+      "cta": "Descubrir la suscripción"
     }
   },
   "common": {

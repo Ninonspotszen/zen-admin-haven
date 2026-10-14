@@ -118,6 +118,11 @@
         "rateLimit": "Lots of requests right now. Please try again in a few minutes.",
         "send": "Sending failed. Check your address and try again."
       }
+    },
+    "expired": {
+      "title": "Your wellbeing access has ended",
+      "text": "Your access offered by {nom} has come to an end. Enjoy all your immersions at home, wherever you are.",
+      "cta": "Discover the subscription"
     }
   },
   "common": {

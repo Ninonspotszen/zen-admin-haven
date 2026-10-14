@@ -198,6 +198,7 @@ function ClientDetail() {
   const [renouvellement, setRenouvellement] = useState("");
   const [modeAcces, setModeAcces] = useState("qr_libre");
   const [domaine, setDomaine] = useState("");
+  const [dureeAcces, setDureeAcces] = useState("7");
   const [dirty, setDirty] = useState(false);
   const domainInvalid = modeAcces === "email_domaine" && domainError(domaine) !== null;
   useEffect(() => {
@@ -214,6 +215,7 @@ function ClientDetail() {
       setRenouvellement(client.date_renouvellement ?? "");
       setModeAcces(client.mode_acces ?? "qr_libre");
       setDomaine(client.domaine_email ?? "");
+      setDureeAcces(String(client.duree_acces_jours ?? 7));
       setDirty(false);
     }
   }, [client]);
@@ -249,6 +251,12 @@ function ClientDetail() {
         if (!Number.isFinite(m) || m < 0) throw new Error("Montant invalide");
         montantValue = m;
       }
+      let dureeValue: number | undefined;
+      if (modeAcces === "qr_libre") {
+        const d = Number(dureeAcces);
+        if (!Number.isInteger(d) || d < 1 || d > 365) throw new Error("Durée d'accès invalide (entier de 1 à 365)");
+        dureeValue = d;
+      }
       let moisOffertsValue: number | null = null;
       if (moisOfferts.trim() !== "") {
         const mo = Number(moisOfferts);
@@ -261,6 +269,7 @@ function ClientDetail() {
           note_interne: note || null,
           mode_acces: modeAcces,
           domaine_email: modeAcces === "email_domaine" ? domaine : null,
+          ...(dureeValue !== undefined ? { duree_acces_jours: dureeValue } : {}),
           nom: nom.trim(),
           type: type.trim() || null,
           statut: statut || null,
@@ -407,6 +416,13 @@ function ClientDetail() {
           </Field>
           <div className="md:col-span-2">
             <AccessModeFields mode={modeAcces} domaine={domaine} onMode={edit(setModeAcces)} onDomaine={edit(setDomaine)} inputClass={fieldInput} name="client-access" />
+            {modeAcces === "qr_libre" && (
+              <div className="mt-3">
+                <label htmlFor="client-duree" className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Durée d'accès offerte (jours)</label>
+                <input id="client-duree" type="number" min={1} max={365} step={1} value={dureeAcces} onChange={(e) => edit(setDureeAcces)(e.target.value)} className={fieldInput + " max-w-[10rem]"} />
+                <p className="mt-1 text-xs text-muted-foreground">S'applique aux nouveaux visiteurs. Les visiteurs déjà venus gardent leur durée.</p>
+              </div>
+            )}
           </div>
         </div>
       </Section>

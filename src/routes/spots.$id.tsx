@@ -1,7 +1,7 @@
 import i18n from "@/i18n/index";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -281,7 +281,15 @@ function SpotPage() {
           </div>
         )}
         {state === "notfound" && <Message title={t("spot.state.notfound.title")} text={t("spot.state.notfound.text")} />}
-        {state === "expired" && <Message title={t("spot.state.expired.title")} text={t("spot.state.expired.text")} />}
+        {state === "expired" && (
+          <div className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
+            <h2 className="serif text-xl font-medium">{t("spot.expired.title")}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--sz-muted)]">{t("spot.expired.text", { nom: spot?.client_nom ?? spot?.nom ?? "", ...IP })}</p>
+            <Link to="/offres" className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)]">
+              {t("spot.expired.cta")}
+            </Link>
+          </div>
+        )}
 
         {spot && ["pin", "email", "email_code", "email_wrong_account", "catalog"].includes(state) && (
           <p className="mt-4 text-xs leading-relaxed text-[var(--sz-muted)]">
