@@ -123,10 +123,12 @@ function AbonneDetail() {
         </div>
         {(data.statut === "actif" || data.statut === "paiement_echoue") && (
           <>
-            <div>
-              <span className={label}>Prochain renouvellement</span>
-              <p className="text-sm text-foreground">{fmtFr(data.date_renouvellement)}</p>
-            </div>
+            {!data.date_fin_prevue && (
+              <div>
+                <span className={label}>Prochain renouvellement</span>
+                <p className="text-sm text-foreground">{fmtFr(data.date_renouvellement)}</p>
+              </div>
+            )}
             {data.date_fin_prevue && (
               <div>
                 <span className={label}>Résiliation prévue le</span>

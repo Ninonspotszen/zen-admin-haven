@@ -162,6 +162,7 @@ function BibliothequePage() {
         email: ab.email ?? null,
         date_fin_prevue: ab.date_fin_prevue ?? null,
       } : null);
+      if (ab?.statut === "paiement_echoue") setAboOpen(true);
       if (ab?.statut && ["actif", "offert", "ambassadeur", "paiement_echoue"].includes(ab.statut)) {
         try { localStorage.removeItem("sz_spot_origine"); } catch { /* stockage indisponible */ }
       }
