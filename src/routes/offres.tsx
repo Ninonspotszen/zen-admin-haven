@@ -50,6 +50,14 @@ body:has(.sz){background:var(--o-bg)}
 .sz .olock.on-photo{border-color:#FFFFFF;color:#FFFFFF}
 `;
 
+const MOMENT_KEY: Record<string, string> = {
+  "Matin": "common.moment.morning",
+  "Journée": "common.moment.day",
+  "Soir": "common.moment.evening",
+  "Nuit": "common.moment.night",
+  "Tous moments": "common.moment.anytime",
+};
+
 type Preview = { id: string; slug: string | null; image_url: string | null; moment: string | null; type: string | null; duree_secondes: number | null; titre_fr: string | null; titre: string | null };
 
 function OffresPage() {
@@ -171,7 +179,7 @@ function OffresPage() {
           <div className="mt-4 grid grid-cols-2 gap-3 px-6">
             {items.map((a) => {
               const min = a.duree_secondes ? `${Math.round(a.duree_secondes / 60)} min` : "";
-              const moment = a.moment && a.moment.toLowerCase() !== "tous" ? a.moment : null;
+              const moment = a.moment && MOMENT_KEY[a.moment] ? t(MOMENT_KEY[a.moment]) : null;
               return (
                 <article key={a.id} className="rounded-2xl text-left">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[var(--o-thumb)]">

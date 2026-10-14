@@ -20,9 +20,9 @@ const catalogue = [
   { title: "Glisser vers le sommeil", moment: "SOIR", duration: "18min", match: "glisser-vers-le-sommeil" },
   { title: "Respiration Niveau 1", moment: "TOUS MOMENTS", duration: "5min", match: "respiration-niveau-1" },
   { title: "Songe du soir — Orage", moment: "SOIR", duration: "16min", match: "songe-du-soir-orage" },
-  { title: "Au bord du lac", moment: "TOUS MOMENTS", duration: "9min", match: "au-bord-du-lac" },
-  { title: "Le Voyage dans les étoiles", moment: "NUIT · ENFANTS", duration: "10min", match: "voyage-dans-les-etoiles" },
-  { title: "La Respiration du ballon", moment: "ENFANTS", duration: "5min", match: "ballon" },
+  { title: "Au bord du lac", moment: "MATIN", duration: "9min", match: "au-bord-du-lac" },
+  { title: "Le Voyage dans les étoiles", moment: "SOIR · ENFANTS", duration: "10min", match: "voyage-dans-les-etoiles" },
+  { title: "La Respiration du ballon", moment: "TOUS MOMENTS · ENFANTS", duration: "5min", match: "ballon" },
 ];
 const benefits = [
   { badge: "SOMMEIL", Icon: Moon, title: "Un sommeil plus profond", text: "Laissez les pensées de la journée se dissoudre et retrouvez un repos réparateur." },

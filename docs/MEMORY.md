@@ -52,3 +52,10 @@
 - Fin du pilote modifiable à la création (J+28 en date locale) et sur la fiche ; sauvegardée uniquement en statut Pilote.
 - Alerte orange J-0 à J-7 ; pilote terminé en rouge ; renouvellement inchangé.
 - Envoi d’email d’accès renommé avec confirmation, action existante conservée.
+
+
+## Filtres et moments audio (14/10/2026)
+- Spot : public_cible conservé lors de la construction du catalogue pour le filtre Enfant.
+- Spot et bibliothèque : les six filtres se répartissent sur plusieurs lignes ; les cartes guidées affichent audios.moment traduit si connu, sans changer la grande carte ni sa sélection.
+- Valeurs Moment : Matin, Journée, Soir, Nuit, Tous moments ; liste fermée sur la fiche audio, clé common.moment.anytime dans les cinq langues.
+- Offres : mêmes badges traduits, y compris Tous moments. Vitrines : lac Matin, étoiles Soir · Enfants, ballon Tous moments · Enfants, orage Soir.
