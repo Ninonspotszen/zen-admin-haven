@@ -279,7 +279,7 @@ function SpotConfig() {
   };
   const downloadPng = () => {
     if (!qrData) return;
-    const a = document.createElement("a"); a.href = qrData; a.download = `qr-${slug}.png`; a.click();
+    const a = document.createElement("a"); a.href = qrData; a.download = `${fileBase}.png`; a.click();
   };
 
   if (spot.isLoading) return <p className="text-muted-foreground">Chargement…</p>;
