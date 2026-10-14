@@ -205,10 +205,10 @@
       "planDefault": "Monthly subscription",
       "renewal": "Next renewal",
       "endDate": "Subscription ends",
-      "endNotice": "Your subscription will end on {{date}}. You keep full access to the library until then.",
+      "endNotice": "Your subscription will end on {date}. You keep full access to the library until then.",
       "paymentFailed": "Your last payment didn't go through. Update your card to keep your access.",
       "manage": "Manage or cancel my subscription",
-      "manageHint": "You'll receive a code by email to access your secure Stripe area."
+      "manageHint": "You'll receive a link by email to access your secure Stripe area."
     },
     "empty": "No audio available at the moment.",
     "subtitle": "Your wellness audio library, wherever you are."
