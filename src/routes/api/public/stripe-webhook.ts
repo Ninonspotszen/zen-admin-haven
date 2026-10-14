@@ -140,7 +140,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
             if (error) throw error;
           } else if (event.type === "customer.subscription.updated") {
             const subId: string = obj.id;
-            const { data: row } = await abonnes().select("id, statut").eq("stripe_subscription_id", subId).maybeSingle();
+            const { data: row } = await abonnes().select("id, statut, date_fin_prevue, email, prenom").eq("stripe_subscription_id", subId).maybeSingle();
             if (row) {
               const periodEnd: number | null = obj.items?.data?.[0]?.current_period_end ?? obj.current_period_end ?? null;
               const priceId: string | undefined = obj.items?.data?.[0]?.price?.id;
@@ -158,6 +158,19 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               if (priceId && PRICE_TO_FORMULE[priceId]) upd["formule"] = PRICE_TO_FORMULE[priceId];
               const { error } = await abonnes().update(upd).eq("stripe_subscription_id", subId);
               if (error) throw error;
+              const newFin = upd["date_fin_prevue"] as string | null;
+              if (!row.date_fin_prevue && newFin && row.email) {
+                const MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+                const [y, m, d] = newFin.split("-");
+                const dateFin = `${Number(d)} ${MOIS[Number(m) - 1]} ${y}`;
+                const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+                await sendBrevoTemplate({
+                  templateId: BREVO_TEMPLATES.resiliationFr,
+                  toEmail: row.email,
+                  toName: row.prenom,
+                  params: { PRENOM: row.prenom?.trim() || null, DATE_FIN: dateFin },
+                });
+              }
             }
           }
         } catch (e) {
