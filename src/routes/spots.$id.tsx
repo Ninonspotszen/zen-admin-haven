@@ -283,7 +283,7 @@ function SpotPage() {
         {state === "notfound" && <Message title={t("spot.state.notfound.title")} text={t("spot.state.notfound.text")} />}
         {state === "expired" && <Message title={t("spot.state.expired.title")} text={t("spot.state.expired.text")} />}
 
-        {spot && (state === "pin" || state === "catalog") && (
+        {spot && ["pin", "email", "email_code", "email_wrong_account", "catalog"].includes(state) && (
           <p className="mt-4 text-xs leading-relaxed text-[var(--sz-muted)]">
             <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#2D5A27] align-middle" />
             {t("spot.sponsor.badge", { nom: spot.client_nom ?? spot.nom, ...IP })}
@@ -305,6 +305,55 @@ function SpotPage() {
               {checking ? t("spot.pin.cta.checking") : t("spot.pin.cta.idle")}
             </button>
           </form>
+        )}
+
+        {state === "email" && (
+          <form onSubmit={submitEmail} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
+            <h2 className="serif text-xl font-medium">{t("spot.email.title")}</h2>
+            <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("spot.email.hint", { domaine, ...IP })}</p>
+            <input
+              type="email" autoComplete="email" value={emailInput} autoFocus
+              placeholder={t("spot.email.placeholder", { domaine, ...IP })} aria-label={t("spot.email.title")}
+              onChange={(e) => setEmailInput(e.target.value)}
+              className="mx-auto mt-5 block w-full rounded-2xl bg-[var(--sz-bg)] px-4 py-3 text-center text-base outline-none ring-1 ring-[var(--sz-hair)] focus:ring-2 focus:ring-[var(--sz-brand)]"
+            />
+            {emailError && <p className="mt-3 text-xs text-[#B3402A]">{emailError}</p>}
+            <button disabled={checking} className="mt-5 h-12 w-full rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)] disabled:opacity-60">
+              {checking ? t("spot.email.cta.sending") : t("spot.email.cta.idle")}
+            </button>
+          </form>
+        )}
+
+        {state === "email_code" && (
+          <form onSubmit={submitCode} className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
+            <h2 className="serif text-xl font-medium">{t("spot.email.title")}</h2>
+            <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("spot.email.codeSent", { email, ...IP })}</p>
+            <input
+              inputMode="numeric" autoComplete="one-time-code" maxLength={8} value={code} autoFocus aria-label={t("spot.email.codeLabel")}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 8))}
+              className="mx-auto mt-5 block w-56 rounded-2xl bg-[var(--sz-bg)] py-3 text-center text-2xl tracking-[0.3em] outline-none ring-1 ring-[var(--sz-hair)] focus:ring-2 focus:ring-[var(--sz-brand)]"
+            />
+            {emailError && <p className="mt-3 text-xs text-[#B3402A]">{emailError}</p>}
+            <button disabled={checking} className="mt-5 h-12 w-full rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)] disabled:opacity-60">
+              {checking ? t("spot.email.codeCta.checking") : t("spot.email.codeCta.idle")}
+            </button>
+            <button type="button" onClick={resend} disabled={resendIn > 0} className="mt-3 h-11 w-full rounded-full border border-[var(--sz-hair)] text-sm text-[var(--sz-fg)] disabled:opacity-60">
+              {resendIn > 0 ? t("spot.email.resendIn", { n: resendIn, ...IP }) : t("spot.email.resend")}
+            </button>
+            <button type="button" onClick={() => { setEmailError(""); setState("email"); }} className="mt-3 text-xs text-[var(--sz-muted)] underline">
+              {t("spot.email.changeEmail")}
+            </button>
+          </form>
+        )}
+
+        {state === "email_wrong_account" && (
+          <div className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
+            <h2 className="serif text-xl font-medium">{t("spot.email.title")}</h2>
+            <p className="mt-2 text-sm text-[var(--sz-muted)]">{t("spot.email.wrongAccount", { email: sessionEmail, domaine, ...IP })}</p>
+            <button onClick={useOther} className="mt-5 h-12 w-full rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)]">
+              {t("spot.email.useOther")}
+            </button>
+          </div>
         )}
 
         {state === "catalog" && (

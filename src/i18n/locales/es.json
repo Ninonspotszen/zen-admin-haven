@@ -91,6 +91,32 @@
     "audio": {
       "duration": "Duración",
       "listen": "Escuchar"
+    },
+    "email": {
+      "title": "Su acceso bienestar",
+      "hint": "Utilice su email @{domaine}",
+      "placeholder": "nombre@{domaine}",
+      "cta": {
+        "idle": "Recibir mi código",
+        "sending": "Enviando…"
+      },
+      "codeSent": "Se ha enviado un código a {email}. Introdúzcalo abajo o haga clic en el enlace del mensaje.",
+      "codeLabel": "Código recibido por email",
+      "codeCta": {
+        "idle": "Acceder a los audios",
+        "checking": "Verificando…"
+      },
+      "resend": "Reenviar el código",
+      "resendIn": "Reenviar el código en {n} s",
+      "changeEmail": "Cambiar la dirección",
+      "wrongAccount": "Ha iniciado sesión con {email}. Este espacio está reservado a direcciones @{domaine}.",
+      "useOther": "Usar otra dirección",
+      "error": {
+        "domain": "Esta dirección no permite acceder a este espacio. Utilice su email @{domaine}.",
+        "code": "Este código no es válido o ha caducado. Puede solicitar uno nuevo.",
+        "rateLimit": "Muchas solicitudes en este momento. Inténtelo de nuevo en unos minutos.",
+        "send": "El envío ha fallado. Compruebe su dirección e inténtelo de nuevo."
+      }
     }
   },
   "common": {

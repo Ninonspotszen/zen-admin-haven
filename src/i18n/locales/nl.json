@@ -91,6 +91,32 @@
     "audio": {
       "duration": "Duur",
       "listen": "Beluisteren"
+    },
+    "email": {
+      "title": "Uw welzijnstoegang",
+      "hint": "Gebruik uw e-mail @{domaine}",
+      "placeholder": "voornaam@{domaine}",
+      "cta": {
+        "idle": "Mijn code ontvangen",
+        "sending": "Verzenden…"
+      },
+      "codeSent": "Er is een code verzonden naar {email}. Vul deze hieronder in, of klik op de link in het bericht.",
+      "codeLabel": "Code ontvangen per e-mail",
+      "codeCta": {
+        "idle": "Naar de audio's",
+        "checking": "Controleren…"
+      },
+      "resend": "Code opnieuw verzenden",
+      "resendIn": "Code opnieuw verzenden over {n} s",
+      "changeEmail": "Adres wijzigen",
+      "wrongAccount": "U bent ingelogd met {email}. Deze ruimte is voorbehouden aan adressen @{domaine}.",
+      "useOther": "Ander adres gebruiken",
+      "error": {
+        "domain": "Met dit adres heeft u geen toegang tot deze ruimte. Gebruik uw e-mail @{domaine}.",
+        "code": "Deze code is ongeldig of verlopen. U kunt een nieuwe aanvragen.",
+        "rateLimit": "Veel aanvragen op dit moment. Probeer het over enkele minuten opnieuw.",
+        "send": "Verzenden mislukt. Controleer uw adres en probeer het opnieuw."
+      }
     }
   },
   "common": {
