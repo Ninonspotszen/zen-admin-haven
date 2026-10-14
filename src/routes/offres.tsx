@@ -168,7 +168,7 @@ function OffresPage() {
         <section className="mt-5 grid grid-cols-2 gap-3.5 px-6">
           <div className="ocard flex flex-col rounded-2xl p-5">
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-eyebrow)]">{t("offers.plan.monthly.label")}</p>
-            <p className="serif mt-2 text-[24px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/mois</span></p>
+            <p className="serif mt-2 text-[24px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perMonth")}</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.monthly.promo")}</span>
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.monthly.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">{t("offers.plan.monthly.cta")}</button>
@@ -176,7 +176,7 @@ function OffresPage() {
           <div className="ocard relative flex flex-col rounded-2xl p-5">
             <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">{t("offers.plan.annual.badge")}</span>
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-promo)]">{t("offers.plan.annual.label")}</p>
-            <p className="serif mt-2 text-[24px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">/an</span></p>
+            <p className="serif mt-2 text-[24px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perYear")}</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.annual.promo")}</span>
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.annual.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
