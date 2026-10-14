@@ -16,15 +16,30 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     const key = process.env['STRIPE_SECRET_KEY'];
     if (!key) throw new Error("Paiement indisponible");
     const origin = new URL(data.origin).origin;
+    // Abonné existant : pas de double abonnement, essai réservé à la première souscription
+    let withTrial = true;
+    try {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: abo, error: aboError } = await (supabaseAdmin as any)
+        .from("abonnes_b2c").select("statut, stripe_subscription_id").eq("id", context.userId).maybeSingle();
+      if (!aboError) {
+        if (abo?.stripe_subscription_id && (abo.statut === "actif" || abo.statut === "paiement_echoue")) {
+          return { url: `${origin}/bibliotheque` };
+        }
+        withTrial = !abo?.stripe_subscription_id;
+      }
+    } catch {
+      withTrial = true;
+    }
     const body = new URLSearchParams({
       mode: "subscription",
       "line_items[0][price]": PRICES[data.plan],
       "line_items[0][quantity]": "1",
       client_reference_id: context.userId,
-      "subscription_data[trial_period_days]": "30",
       success_url: `${origin}/bibliotheque`,
       cancel_url: `${origin}/offres`,
     });
+    if (withTrial) body.set("subscription_data[trial_period_days]", "30");
     const email = (context.claims as { email?: string })?.email;
     if (email) body.set("customer_email", email);
     if (data.spotOrigineId) {

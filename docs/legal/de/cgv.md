@@ -20,7 +20,7 @@ Spots Zen bietet folgende Abonnements an:
 
 Die Preise sind in Euro einschließlich aller Steuern angegeben. MwSt. nicht anwendbar gemäß Artikel 293B des französischen Steuergesetzbuchs.
 
-Beide Tarife beinhalten eine **30-tägige kostenlose Testphase**. Während dieses Zeitraums werden keine Abbuchungen vorgenommen.
+Beide Tarife beinhalten eine **30-tägige kostenlose Testphase**, die nur für das erste Abonnement gilt. Während dieses Zeitraums werden keine Abbuchungen vorgenommen.
 
 ## 3. Bestellung und Zahlung
 
@@ -28,19 +28,19 @@ Die Zahlung erfolgt online über Stripe (stripe.com), einen sicheren Zahlungsdie
 
 ## 4. Zugang zum Dienst
 
-Der Zugang zum Audiokatalog wird unmittelbar nach Zahlungsbestätigung freigeschaltet. Mit dem Abschluss eines Abonnements erkennen Sie an, dass die Bereitstellung des digitalen Dienstes sofort beginnt, und verzichten ausdrücklich auf Ihr 14-tägiges Widerrufsrecht gemäß Artikel L221-28 des französischen Verbrauchergesetzbuches.
+Der Zugang zum Audiokatalog wird freigeschaltet, sobald Ihr Abonnement bestätigt ist, auch während der kostenlosen Testphase. Mit dem Abschluss eines Abonnements erkennen Sie an, dass die Bereitstellung des digitalen Dienstes sofort beginnt, und verzichten ausdrücklich auf Ihr 14-tägiges Widerrufsrecht gemäß Artikel L221-28 des französischen Verbrauchergesetzbuches.
 
 ## 5. Kündigung
 
-Sie können Ihr Abonnement jederzeit über Ihren persönlichen Bereich kündigen, ohne Gebühren oder Strafen. Die Kündigung tritt am Ende des bereits bezahlten laufenden Zeitraums in Kraft. Es wird keine anteilige Rückerstattung vorgenommen.
+Sie können Ihr Abonnement jederzeit ohne Gebühren oder Strafen kündigen, über den Bereich „Mein Abonnement“ in Ihrer Bibliothek oder über den Link „Abonnement kündigen“ unten auf jeder Seite der Website. Die Kündigung wird zum Ende des laufenden, bereits bezahlten Zeitraums wirksam; bis zu diesem Datum behalten Sie Ihren Zugang. Wenn Sie während der kostenlosen Testphase kündigen, erfolgt keine Abbuchung. Eine Bestätigung der Kündigung mit Angabe des Wirksamkeitsdatums wird Ihnen per E-Mail zugesandt. Eine anteilige Rückerstattung erfolgt nicht.
 
 ## 6. Verlängerung
 
-Das Abonnement wird bei Ablauf automatisch verlängert. Sie erhalten vor jeder Verlängerung eine Erinnerungs-E-Mail. Sie können die automatische Verlängerung über Ihren persönlichen Bereich deaktivieren.
+Das Abonnement verlängert sich bei Ablauf automatisch um die gleiche Laufzeit. Beim Jahresabonnement erhalten Sie frühestens drei Monate und spätestens einen Monat vor dem Verlängerungsdatum eine Erinnerungs-E-Mail, die Sie auf die Möglichkeit hinweist, die Verlängerung abzulehnen. Sie können die automatische Verlängerung jederzeit unter „Mein Abonnement“ deaktivieren.
 
 ## 7. Zahlungsausfall
 
-Bei einem Zahlungsausfall wird der Zugang zum Dienst gesperrt. Eine Benachrichtigungs-E-Mail wird an Sie gesendet. Der Zugang wird nach Begleichung der ausstehenden Zahlung wiederhergestellt.
+Bei einem Zahlungsausfall werden Sie per E-Mail informiert und gebeten, Ihre Zahlungsmethode zu aktualisieren. Es erfolgen automatisch neue Abbuchungsversuche, und Sie behalten während dieses Zeitraums Ihren Zugang zum Dienst. Kann die Zahlung nicht innerhalb von 30 Tagen beglichen werden, wird das Abonnement automatisch gekündigt.
 
 ## 8. Haftung
 
