@@ -67,3 +67,8 @@
 - Renouvellements 30 j : clients `Actif` uniquement ; dates passées en rouge « en retard ».
 - Abonnés expirant sous 7 j : statuts `offert`/`ambassadeur`, date entre aujourd'hui et J+7.
 - Dates de référence calculées en date locale (pas de toISOString).
+
+## Mode d'accès Email professionnel — back-office (14/10/2026)
+- Création et fiche client : choix « Accès libre » (`qr_libre`) / « Email professionnel » (`email_domaine`) + domaine normalisé (trim, minuscules, sans @), validé par zod (regex de la contrainte) et refus des messageries grand public.
+- `domaine_email` = null en accès libre. Confirmation si le mode change et que le client a des spots.
+- Liste : pastille `@domaine` sous le nom. Fiche client : PIN barré « Ignoré : accès par email professionnel ». Fiche spot : ligne « Accès : … » en lecture seule.
