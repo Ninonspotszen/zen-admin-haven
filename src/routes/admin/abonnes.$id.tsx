@@ -32,9 +32,19 @@ function AbonneDetail() {
         .eq("id", id)
         .single();
       if (error) throw error;
-      return data;
+      const row = data as typeof data & { date_fin_prevue?: string | null; stripe_subscription_id?: string | null; spot_origine_id?: string | null; date_renouvellement?: string | null };
+      let spotLabel: string | null = null;
+      if (row.spot_origine_id) {
+        const { data: sp } = await supabase.from("spots").select("id, nom, client:client_id(nom)").eq("id", row.spot_origine_id).maybeSingle();
+        if (sp) {
+          const cn = (sp.client as { nom: string } | null)?.nom;
+          spotLabel = [sp.nom, cn].filter(Boolean).join(" — ") || null;
+        }
+      }
+      return { ...row, spot_label: spotLabel };
     },
   });
+  const fmtFr = (v?: string | null) => { if (!v) return "—"; const [y, m, d] = v.slice(0, 10).split("-"); return `${d}/${m}/${y}`; };
 
   const [f, setF] = useState({ statut: "actif", formule: "", dateFin: "", note: "" });
 
@@ -103,6 +113,28 @@ function AbonneDetail() {
           <span className={label}>Code parrainage</span>
           <p className="text-sm text-foreground">{data.code_parrainage ?? "—"}</p>
         </div>
+        <div>
+          <span className={label}>Spot d'origine</span>
+          <p className="text-sm text-foreground">{data.spot_label ?? "—"}</p>
+        </div>
+        <div>
+          <span className={label}>Stripe subscription ID</span>
+          <p className="break-all text-sm text-foreground">{data.stripe_subscription_id ?? "—"}</p>
+        </div>
+        {(data.statut === "actif" || data.statut === "paiement_echoue") && (
+          <>
+            <div>
+              <span className={label}>Prochain renouvellement</span>
+              <p className="text-sm text-foreground">{fmtFr(data.date_renouvellement)}</p>
+            </div>
+            {data.date_fin_prevue && (
+              <div>
+                <span className={label}>Résiliation prévue le</span>
+                <p className="text-sm font-semibold text-orange-700">{fmtFr(data.date_fin_prevue)}</p>
+              </div>
+            )}
+          </>
+        )}
         <div className="sm:col-span-2">
           <span className={label}>Parrain</span>
           <p className="text-sm text-foreground">
@@ -124,10 +156,12 @@ function AbonneDetail() {
           <label className={label}>Formule</label>
           <input className={input} value={f.formule} onChange={(e) => setF({ ...f, formule: e.target.value })} />
         </div>
-        <div>
-          <label className={label}>Date de fin d'accès</label>
-          <input type="date" className={input} value={f.dateFin} onChange={(e) => setF({ ...f, dateFin: e.target.value })} />
-        </div>
+        {(f.statut === "offert" || f.statut === "ambassadeur") && (
+          <div>
+            <label className={label}>Date de fin d'accès</label>
+            <input type="date" className={input} value={f.dateFin} onChange={(e) => setF({ ...f, dateFin: e.target.value })} />
+          </div>
+        )}
         <div className="sm:col-span-2">
           <label className={label}>Note interne</label>
           <textarea
