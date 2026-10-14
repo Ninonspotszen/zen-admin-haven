@@ -376,7 +376,7 @@
           "eyebrow": "ERKENDE ONTSPANNINGSTECHNIEKEN",
           "title": "Inhoud boven",
           "italic": "vorm.",
-          "text": "Elk scenario maakt gebruik van bewezen technieken: hartcoherentie, 4-7-8-ademhaling, bodyscan, geleide visualisatie. Inhoud gaat altijd boven vorm.",
+          "text": "Elk scenario maakt gebruik van erkende technieken zoals ericksoniaanse hypnose, yoga nidra of hartcoherentie. Ze zijn geschreven om een echte behoefte te ondersteunen, met toegankelijke en beproefde ontspanningstechnieken. Elk woord is gekozen om het gewenste gevoel op te roepen.",
           "role": "Oprichtster",
           "label": "01 — DE INTENTIE"
         },
@@ -384,7 +384,7 @@
           "eyebrow": "BELICHAAMDE STEMMEN",
           "title": "Een aanwezigheid",
           "italic": "die je begeleidt.",
-          "text": "Een mannenstem (Stefan), een vrouwenstem (Ninon). Twee warme aanwezigheden opgenomen in de studio, zodat de onderdompeling begint bij de eerste woorden.",
+          "text": "Een mannenstem (Stefan), een vrouwenstem (Ninon). Omhullende, professionele stemmen, opgenomen in de studio, die de juiste toon vinden om u te begeleiden zonder zich ooit op te dringen.",
           "role": "Acteur",
           "label": "02 — DE STEMMEN"
         },
@@ -392,11 +392,12 @@
           "eyebrow": "OP MAAT GECOMPONEERDE MUZIEK",
           "title": "Een emotie",
           "italic": "op zich.",
-          "text": "Originele composities met binaurale frequenties, op maat gemaakt voor elke immersie. De muziek decoreert niet — ze transporteert.",
+          "text": "Originele composities met binaurale frequenties voor een volledige onderdompeling. Natuurgeluiden opgenomen in Lacanau (regen, onweer, water…). De natuur, zoals ze is. Elke originele compositie verlengt de immersie en laat ruimte voor stilte, verbeelding en uw eigen ritme.",
           "role": "Componist",
           "label": "03 — DE MUZIEK"
         }
-      ]
+      ],
+      "excerptAria": "Bekijk het fragment: {title}"
     },
     "benefits": {
       "eyebrow": "EENVOUDIG VOOR UZELF ZORGEN",
@@ -436,7 +437,12 @@
       "eyebrow": "DE BIBLIOTHEEK",
       "h2": "De juiste audio, op het juiste moment.",
       "subtitle": "Een ervaring die aansluit bij uw wensen en het ritme van uw dag.",
-      "stats": "8 begeleide onderdompeling · vrouwelijke of mannelijke stem · 8 op maat gecomponeerde muziekstukken · 24 verschillende luisterervaringen mogelijk"
+      "stats": "8 begeleide onderdompeling · vrouwelijke of mannelijke stem · 8 op maat gecomponeerde muziekstukken · 24 verschillende luisterervaringen mogelijk",
+      "moments": {
+        "morning": "OCHTEND",
+        "day": "OVERDAG",
+        "evening": "AVOND"
+      }
     },
     "reviews": {
       "biz": {
@@ -455,14 +461,18 @@
         "h3": "Uw ruimte verdient een welzijnspauze.",
         "badge": "✦ 2 maanden gratis — zonder verplichting, zonder installatie",
         "cta": "Gratis testen",
-        "note": "Operationeel in 48u. Meerdere talen beschikbaar."
+        "note": "Operationeel in 48u. Meerdere talen beschikbaar.",
+        "text": "Geef uw bezoekers een attentie die ze niet vergeten. Een eenvoudige QR-code, een ervaring die het verschil maakt."
       },
       "perso": {
         "eyebrow": "UW AFSPRAAK MET UZELF",
         "h3": "De pauze die u zichzelf steeds beloofde.",
         "badge": "✦ 1 maand gratis — annuleer wanneer u wilt",
         "cta": "Gratis beginnen",
-        "note": "Daarna 5 €/maand · Zonder verplichting"
+        "note": "Daarna 5 €/maand · Zonder verplichting",
+        "text": "Een bibliotheek met immersies om tot rust te komen wanneer u dat nodig hebt. In uw eigen tempo, overal met u mee.",
+        "perMonth": "per maand",
+        "orYear": "of 49 € per jaar"
       }
     },
     "contact": {
@@ -494,7 +504,9 @@
       "h1italic": "op het juiste moment."
     },
     "video": {
-      "title": "Twee minuten om alles te begrijpen."
+      "title": "Twee minuten om alles te begrijpen.",
+      "aria": "Bekijk de video: {label}",
+      "defaultLabel": "Presentatie van Spots Zen"
     },
     "benefits": {
       "eyebrow": "WAT U ZULT VOELEN",
@@ -502,22 +514,27 @@
       "items": [
         {
           "badge": "SLAAP",
-          "title": "Diepere slaap"
+          "title": "Diepere slaap",
+          "text": "Laat de gedachten van de dag oplossen en vind weer een herstellende rust."
         },
         {
           "badge": "STRESS",
-          "title": "Minder angst, meer rust"
+          "title": "Minder angst, meer rust",
+          "text": "Een paar minuten begeleiding om de druk te verlichten en volledig bij uzelf terug te komen."
         },
         {
           "badge": "CONCENTRATIE",
-          "title": "Heldere geest op het juiste moment"
+          "title": "Heldere geest op het juiste moment",
+          "text": "Maak ruimte voor helderheid: vóór een vergadering, tussen twee taken door, of wanneer u het nodig hebt."
         },
         {
           "badge": "GEZIN",
-          "title": "Momenten om te delen"
+          "title": "Momenten om te delen",
+          "text": "Immersies voor alle leeftijden, om alleen of met het gezin te beluisteren, zonder enige moeite."
         }
       ],
-      "h2italic": "alles verandert."
+      "h2italic": "alles verandert.",
+      "subtitle": "Immersies afgestemd op uw behoeften, op het juiste moment van uw dag."
     },
     "steps": {
       "eyebrow": "HOE HET WERKT",
@@ -545,7 +562,15 @@
       "badge": {
         "subscriber": "Abonnee"
       },
-      "h2italic": "Audio die u volledig onderdompelt voor diepe ontspanning."
+      "h2italic": "Audio die u volledig onderdompelt voor diepe ontspanning.",
+      "subtitle": "Audio voor elk moment van de dag · Op maat gecomponeerde muziek met binaurale frequenties · De keuze tussen een vrouwen- en een mannenstem",
+      "moments": {
+        "morning": "OCHTEND",
+        "day": "OVERDAG",
+        "evening": "AVOND",
+        "anytime": "ALTIJD",
+        "kids": "KINDEREN"
+      }
     },
     "prices": {
       "eyebrow": "TARIEVEN",
@@ -594,7 +619,40 @@
       "cta": "Nu beginnen",
       "note": "Eerste maand gratis · Zonder verplichting · Annuleer wanneer u wilt",
       "proLink": "Bent u een bedrijf? Voor mijn bedrijf →",
-      "h2italic": "een echte pauze."
+      "h2italic": "een echte pauze.",
+      "subtitle": "Vanaf 5 €/maand krijgt u toegang tot een bibliotheek die voor u is ontworpen. Eerste maand gratis."
+    },
+    "craft": {
+      "eyebrow": "HET VAKMANSCHAP VAN SPOTS ZEN",
+      "subtitle": "Van het eerste woord tot de laatste noot: aandacht voor elk detail.",
+      "h2": "Elke immersie,",
+      "h2italic": "een hoge standaard.",
+      "items": [
+        {
+          "title": "De technieken",
+          "text": "De scenario's steunen op ericksoniaanse hypnose, yoga nidra en hartcoherentie. Elk woord is gekozen om de echo die het in het lichaam teweegbrengt, om zo het gewenste gevoel op te roepen.",
+          "signature": "Ninon Godin · Yogadocent · Oprichter",
+          "label": "01 — DE TECHNIEKEN"
+        },
+        {
+          "title": "De stemmen",
+          "text": "Al 40 jaar acteur. Een bekende Franse nasynchronisatiestem (Bruce Willis, Bryan Cranston…). Teksten die worden belichaamd, niet opgezegd.",
+          "signature": "Stefan Godin · Professioneel acteur",
+          "label": "02 — DE STEMMEN"
+        },
+        {
+          "title": "De muziek",
+          "text": "Originele composities met binaurale frequenties. Geluiden opgenomen in Lacanau (regen, onweer, water…). Volledige immersies.",
+          "signature": "Benoît Courti · Muzikant & componist",
+          "label": "03 — DE MUZIEK"
+        }
+      ]
+    },
+    "screens": {
+      "ariaLabel": "Echte preview van de Spots Zen-ervaring",
+      "recommended": "De bovenkant van de spotpagina met de aanbevolen audio voor het tijdstip",
+      "voice": "Het scherm om te kiezen tussen een vrouwen- en een mannenstem",
+      "player": "De Spots Zen-speler tijdens het luisteren"
     }
   },
   "pro": {

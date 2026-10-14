@@ -376,7 +376,7 @@
           "eyebrow": "RECOGNISED RELAXATION TECHNIQUES",
           "title": "Substance over",
           "italic": "style.",
-          "text": "Each scenario draws on proven techniques: cardiac coherence, 4-7-8 breathing, body scan, guided visualisation. Substance always comes before style.",
+          "text": "Each script uses recognised techniques such as Ericksonian hypnosis, yoga nidra and heart coherence. They are written to support a real need, with accessible, proven relaxation practices. Every word is chosen to create the sensation you are looking for.",
           "role": "Founder",
           "label": "01 — THE INTENTION"
         },
@@ -384,7 +384,7 @@
           "eyebrow": "EMBODIED VOICES",
           "title": "A presence",
           "italic": "that guides you.",
-          "text": "A male voice (Stefan), a female voice (Ninon). Two warm presences recorded in studio, so the immersion begins from the very first word.",
+          "text": "A male voice (Stefan), a female voice (Ninon). Warm, professional voices recorded in a studio, which find just the right tone to guide you without ever imposing.",
           "role": "Actor",
           "label": "02 — THE VOICES"
         },
@@ -392,11 +392,12 @@
           "eyebrow": "CUSTOM-COMPOSED MUSIC",
           "title": "An emotion",
           "italic": "in its own right.",
-          "text": "Original compositions with binaural frequencies, crafted specifically for each immersion. The music doesn't decorate — it transports.",
+          "text": "Original compositions with binaural frequencies for a complete immersion. Natural sounds recorded in Lacanau (rain, thunderstorms, water…). Nature, just as it is. Each original composition extends the immersion and leaves room for silence, for imagination, for your own pace.",
           "role": "Composer",
           "label": "03 — THE MUSIC"
         }
-      ]
+      ],
+      "excerptAria": "Watch the excerpt: {title}"
     },
     "benefits": {
       "eyebrow": "TAKING CARE OF YOURSELF, SIMPLY",
@@ -436,7 +437,12 @@
       "eyebrow": "THE LIBRARY",
       "h2": "The right audio, at the right time.",
       "subtitle": "An experience that adapts to your mood and the rhythm of your day.",
-      "stats": "8 guided immersions · female or male voice · 8 custom-composed pieces of music · 24 different listening experiences possible"
+      "stats": "8 guided immersions · female or male voice · 8 custom-composed pieces of music · 24 different listening experiences possible",
+      "moments": {
+        "morning": "MORNING",
+        "day": "DAYTIME",
+        "evening": "EVENING"
+      }
     },
     "reviews": {
       "biz": {
@@ -455,14 +461,18 @@
         "h3": "Your space deserves a wellness break.",
         "badge": "✦ 2 months free — no commitment, no installation",
         "cta": "Try for free",
-        "note": "Up and running in 48h. Multiple languages available."
+        "note": "Up and running in 48h. Multiple languages available.",
+        "text": "Give your visitors a gesture they won't forget. A simple QR code, an experience that makes the difference."
       },
       "perso": {
         "eyebrow": "YOUR APPOINTMENT WITH YOURSELF",
         "h3": "The break you kept promising yourself.",
         "badge": "✦ 1 month free — cancel whenever you like",
         "cta": "Start for free",
-        "note": "Then €5/month · No commitment"
+        "note": "Then €5/month · No commitment",
+        "text": "A library of immersions to find calm whenever you need it. At your own pace, wherever you are.",
+        "perMonth": "per month",
+        "orYear": "or €49 per year"
       }
     },
     "contact": {
@@ -494,7 +504,9 @@
       "h1italic": "at the right moment."
     },
     "video": {
-      "title": "Two minutes to understand everything."
+      "title": "Two minutes to understand everything.",
+      "aria": "Watch the video: {label}",
+      "defaultLabel": "Spots Zen presentation"
     },
     "benefits": {
       "eyebrow": "WHAT YOU WILL FEEL",
@@ -502,22 +514,27 @@
       "items": [
         {
           "badge": "SLEEP",
-          "title": "Deeper sleep"
+          "title": "Deeper sleep",
+          "text": "Let the thoughts of the day dissolve and rediscover restorative rest."
         },
         {
           "badge": "STRESS",
-          "title": "Less anxiety, more calm"
+          "title": "Less anxiety, more calm",
+          "text": "A few minutes of guidance to ease the pressure and come fully back to yourself."
         },
         {
           "badge": "FOCUS",
-          "title": "A clear mind at the right moment"
+          "title": "A clear mind at the right moment",
+          "text": "Make room for clarity: before a meeting, between two tasks, or whenever you need it."
         },
         {
           "badge": "FAMILY",
-          "title": "Moments to share"
+          "title": "Moments to share",
+          "text": "Immersions designed for all ages, to enjoy alone or as a family, effortlessly."
         }
       ],
-      "h2italic": "changes everything."
+      "h2italic": "changes everything.",
+      "subtitle": "Immersions designed for your needs, at the right moment of your day."
     },
     "steps": {
       "eyebrow": "HOW IT WORKS",
@@ -545,7 +562,15 @@
       "badge": {
         "subscriber": "Subscriber"
       },
-      "h2italic": "Audio that immerses you completely for a deep relaxation."
+      "h2italic": "Audio that immerses you completely for a deep relaxation.",
+      "subtitle": "Audio for every moment of the day · Bespoke music with binaural frequencies · A choice between a female and a male voice",
+      "moments": {
+        "morning": "MORNING",
+        "day": "DAYTIME",
+        "evening": "EVENING",
+        "anytime": "ANY TIME",
+        "kids": "KIDS"
+      }
     },
     "prices": {
       "eyebrow": "PRICING",
@@ -594,7 +619,40 @@
       "cta": "Start now",
       "note": "First month free · No commitment · Cancel whenever you like",
       "proLink": "Are you a business? For my business →",
-      "h2italic": "a real break."
+      "h2italic": "a real break.",
+      "subtitle": "From €5/month, access a library designed for you. First month free."
+    },
+    "craft": {
+      "eyebrow": "THE SPOTS ZEN CRAFT",
+      "subtitle": "From the first word to the last note: care in every detail.",
+      "h2": "Every immersion,",
+      "h2italic": "a standard of excellence.",
+      "items": [
+        {
+          "title": "The Techniques",
+          "text": "The scripts draw on Ericksonian hypnosis, yoga nidra and heart coherence. Each word is chosen for the echo it creates in the body, to bring about the sensation you are looking for.",
+          "signature": "Ninon Godin · Yoga teacher · Founder",
+          "label": "01 — THE TECHNIQUES"
+        },
+        {
+          "title": "The Voices",
+          "text": "An actor for 40 years. A well-known French dubbing voice (Bruce Willis, Bryan Cranston…). Texts that are embodied, not recited.",
+          "signature": "Stefan Godin · Professional actor",
+          "label": "02 — THE VOICES"
+        },
+        {
+          "title": "The Music",
+          "text": "Original compositions with binaural frequencies. Sounds recorded in Lacanau (rain, thunderstorms, water…). Complete immersions.",
+          "signature": "Benoît Courti · Musician & Composer",
+          "label": "03 — THE MUSIC"
+        }
+      ]
+    },
+    "screens": {
+      "ariaLabel": "A real preview of the Spots Zen experience",
+      "recommended": "The top of the spot page with the audio recommended for the time of day",
+      "voice": "The screen for choosing between a female and a male voice",
+      "player": "The Spots Zen player during a session"
     }
   },
   "pro": {

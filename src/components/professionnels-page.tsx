@@ -15,6 +15,8 @@ import pwaPlayer from "@/assets/pwa-player.png";
 type FieldDef = { name: "nom" | "email" | "etablissement" | "type_structure" | "taille" | "message"; labelKey: string; type?: "text" | "email" | "select" | "textarea"; optionsKey?: string };
 type Sector = { id: string; image: string; legal?: boolean; fields: FieldDef[] };
 
+// Section témoignages masquée tant qu'il n'y a pas de vrais avis (passer à true pour la réafficher).
+const SHOW_TESTIMONIALS = false;
 const sectorImages: Record<string, string> = { hebergements: imgHeb, entreprises: imgEnt, ecoles: imgEco, sante: imgSan, collectivites: imgCol };
 const msgField: FieldDef = { name: "message", labelKey: "pro.form.field.message", type: "textarea" };
 
@@ -155,12 +157,12 @@ export function ProfessionnelsPage() {
       </div>
     </section>
 
-    <section className="pr-section pr-alt">
+    {SHOW_TESTIMONIALS && <section className="pr-section pr-alt">
       <div className="pr-inner">
         <Heading eyebrow={t("pro.testi.eyebrow")}>{t("pro.testi.h2")}</Heading>
         <div className="pr-grid2">{[0, 1].map(i => <figure className="pr-card" key={i}><blockquote className="pr-testi">{t("pro.testi.placeholder")}</blockquote><span className="pr-sep" /><figcaption><strong>{t("pro.testi.name")}</strong><span>{t(`pro.testi.role${i}`)}</span></figcaption></figure>)}</div>
       </div>
-    </section>
+    </section>}
 
     {/* <SectionCarteSpots /> */}
     {/* À réactiver au lancement — ne pas intégrer maintenant */}

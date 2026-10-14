@@ -376,7 +376,7 @@
           "eyebrow": "DES TECHNIQUES DE RELAXATION RECONNUES",
           "title": "Le fond avant",
           "italic": "la forme.",
-          "text": "Chaque scénario utilise des techniques reconnues : cohérence cardiaque, respiration 4-7-8, scan corporel, visualisation guidée. Le fond prime sur la forme. Toujours.",
+          "text": "Chaque scénario utilise des techniques reconnues comme l'hypnose éricksonienne, le yoga nidra ou la cohérence cardiaque. Ils sont écrits pour accompagner un besoin réel, avec des pratiques de relaxation accessibles et éprouvées. Chaque mot est juste pour créer la sensation recherchée.",
           "role": "Fondatrice",
           "label": "01 — L'INTENTION"
         },
@@ -384,7 +384,7 @@
           "eyebrow": "DES VOIX INCARNÉES",
           "title": "Une présence",
           "italic": "qui vous accompagne.",
-          "text": "Une voix masculine (Stefan), une voix féminine (Ninon). Deux présences enveloppantes enregistrées en studio, pour que l'immersion commence dès les premiers mots.",
+          "text": "Une voix masculine (Stefan), une voix féminine (Ninon). Des voix enveloppantes et professionnelles enregistrées en studio, qui trouvent le ton juste pour vous guider sans jamais s'imposer.",
           "role": "Comédien",
           "label": "02 — LES VOIX"
         },
@@ -392,11 +392,12 @@
           "eyebrow": "UNE MUSIQUE COMPOSÉE SUR MESURE",
           "title": "Une émotion",
           "italic": "à part entière.",
-          "text": "Des compositions originales avec fréquences binaurales, créées sur mesure pour chaque immersion. La musique ne décore pas — elle transporte.",
+          "text": "Des compositions originales avec fréquences binaurales qui offrent une immersion complète. Des sons naturels captés à Lacanau (la pluie, l'orage, l'eau…). La nature, telle qu'elle est. Chaque composition originale prolonge l'immersion et laisse une place au silence, à l'imaginaire, à votre propre rythme.",
           "role": "Compositeur",
           "label": "03 — LA MUSIQUE"
         }
-      ]
+      ],
+      "excerptAria": "Voir l'extrait : {title}"
     },
     "benefits": {
       "eyebrow": "PRENDRE SOIN DE SOI, SIMPLEMENT",
@@ -436,7 +437,12 @@
       "eyebrow": "LA BIBLIOTHÈQUE",
       "h2": "Le bon audio, au bon moment.",
       "subtitle": "Une expérience qui s'accorde à vos envies et au rythme de votre journée.",
-      "stats": "8 immersions guidées · voix féminine ou masculine · 8 musiques composées sur mesure · 24 écoutes différentes possibles"
+      "stats": "8 immersions guidées · voix féminine ou masculine · 8 musiques composées sur mesure · 24 écoutes différentes possibles",
+      "moments": {
+        "morning": "MATIN",
+        "day": "JOURNÉE",
+        "evening": "SOIR"
+      }
     },
     "reviews": {
       "biz": {
@@ -455,14 +461,18 @@
         "h3": "Votre espace mérite une pause bien-être.",
         "badge": "✦ 2 mois offerts — sans engagement, sans installation",
         "cta": "Tester gratuitement",
-        "note": "Opérationnel en 48h. Plusieurs langues disponibles."
+        "note": "Opérationnel en 48h. Plusieurs langues disponibles.",
+        "text": "Offrez à vos visiteurs une attention qu'ils n'oublieront pas. Un simple QR code, une expérience qui fait la différence."
       },
       "perso": {
         "eyebrow": "VOTRE RENDEZ-VOUS AVEC VOUS-MÊME",
         "h3": "La pause que vous vous promettiez.",
         "badge": "✦ 1 mois offert — annulez quand vous voulez",
         "cta": "Commencer gratuitement",
-        "note": "Puis 5 €/mois · Sans engagement"
+        "note": "Puis 5 €/mois · Sans engagement",
+        "text": "Une bibliothèque d'immersions pour retrouver le calme quand vous en avez besoin. À votre rythme, partout avec vous.",
+        "perMonth": "par mois",
+        "orYear": "ou 49 € par an"
       }
     },
     "contact": {
@@ -494,7 +504,9 @@
       "h1italic": "au bon moment."
     },
     "video": {
-      "title": "Deux minutes pour tout comprendre."
+      "title": "Deux minutes pour tout comprendre.",
+      "aria": "Voir la vidéo : {label}",
+      "defaultLabel": "Présentation Spots Zen"
     },
     "benefits": {
       "eyebrow": "CE QUE VOUS ALLEZ RESSENTIR",
@@ -502,22 +514,27 @@
       "items": [
         {
           "badge": "SOMMEIL",
-          "title": "Un sommeil plus profond"
+          "title": "Un sommeil plus profond",
+          "text": "Laissez les pensées de la journée se dissoudre et retrouvez un repos réparateur."
         },
         {
           "badge": "STRESS",
-          "title": "Moins d'anxiété, plus de calme"
+          "title": "Moins d'anxiété, plus de calme",
+          "text": "Quelques minutes de guidance pour desserrer la pression et revenir pleinement à vous-même."
         },
         {
           "badge": "CONCENTRATION",
-          "title": "L'esprit clair au bon moment"
+          "title": "L'esprit clair au bon moment",
+          "text": "Faites de la place à la clarté : avant une réunion, entre deux tâches, ou quand vous en avez besoin."
         },
         {
           "badge": "FAMILLE",
-          "title": "Des moments à partager"
+          "title": "Des moments à partager",
+          "text": "Des immersions pensées pour tous les âges, à écouter seul ou en famille, sans aucune friction."
         }
       ],
-      "h2italic": "change tout."
+      "h2italic": "change tout.",
+      "subtitle": "Des immersions pensées pour vos besoins, au bon moment de votre journée."
     },
     "steps": {
       "eyebrow": "COMMENT ÇA MARCHE",
@@ -545,7 +562,15 @@
       "badge": {
         "subscriber": "Abonné·e"
       },
-      "h2italic": "Des audios qui vous plongent en immersion complète pour une relaxation profonde."
+      "h2italic": "Des audios qui vous plongent en immersion complète pour une relaxation profonde.",
+      "subtitle": "Des audios pour chaque moment de la journée · Des musiques composées sur mesure avec fréquences binaurales · Le choix entre voix féminine et masculine",
+      "moments": {
+        "morning": "MATIN",
+        "day": "JOURNÉE",
+        "evening": "SOIR",
+        "anytime": "TOUS MOMENTS",
+        "kids": "ENFANTS"
+      }
     },
     "prices": {
       "eyebrow": "TARIFS",
@@ -594,7 +619,40 @@
       "cta": "Commencer maintenant",
       "note": "Premier mois offert · Sans engagement · Résiliez quand vous voulez",
       "proLink": "Vous êtes un établissement ? Pour mon établissement →",
-      "h2italic": "une vraie pause."
+      "h2italic": "une vraie pause.",
+      "subtitle": "À partir de 5 €/mois, accédez à une bibliothèque pensée pour vous. Premier mois offert."
+    },
+    "craft": {
+      "eyebrow": "LE SAVOIR-FAIRE SPOTS ZEN",
+      "subtitle": "Du premier mot jusqu'à la dernière note : une attention portée à chaque détail.",
+      "h2": "Chaque immersion,",
+      "h2italic": "une exigence.",
+      "items": [
+        {
+          "title": "Les Techniques",
+          "text": "Les scénarios s'appuient sur l'hypnose éricksonienne, le yoga nidra et la cohérence cardiaque. Chaque mot est choisi pour l'écho qu'il produit dans le corps et ainsi créer la sensation recherchée.",
+          "signature": "Ninon Godin · Professeure de yoga · Fondatrice",
+          "label": "01 — LES TECHNIQUES"
+        },
+        {
+          "title": "Les Voix",
+          "text": "Comédien depuis 40 ans. Voix française connue (Bruce Willis, Bryan Cranston…). Des textes incarnés, pas récités.",
+          "signature": "Stefan Godin · Comédien professionnel",
+          "label": "02 — LES VOIX"
+        },
+        {
+          "title": "La Musique",
+          "text": "Des compositions originales avec fréquences binaurales. Des sons captés à Lacanau (la pluie, l'orage, l'eau…). Des immersions complètes.",
+          "signature": "Benoît Courti · Musicien Compositeur",
+          "label": "03 — LA MUSIQUE"
+        }
+      ]
+    },
+    "screens": {
+      "ariaLabel": "Aperçu réel de l'expérience Spots Zen",
+      "recommended": "Le haut de la page spot avec l'audio recommandé selon l'heure",
+      "voice": "L'écran de choix entre voix féminine et masculine",
+      "player": "Le lecteur Spots Zen pendant une écoute"
     }
   },
   "pro": {
