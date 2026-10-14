@@ -203,7 +203,12 @@
       "section": "Mijn abonnement",
       "plan": "Formule",
       "planDefault": "Maandabonnement",
-      "renewal": "Volgende verlenging"
+      "renewal": "Volgende verlenging",
+      "endDate": "Abonnement eindigt",
+      "endNotice": "Je abonnement eindigt op {{date}}. Tot dan heb je volledige toegang tot de bibliotheek.",
+      "paymentFailed": "Je laatste betaling is mislukt. Werk je kaart bij om je toegang te behouden.",
+      "manage": "Abonnement beheren of opzeggen",
+      "manageHint": "Je ontvangt een code per e-mail om je beveiligde Stripe-omgeving te openen."
     },
     "empty": "Momenteel zijn er geen audio's beschikbaar.",
     "subtitle": "Uw welzijns-audiobibliotheek, waar u ook bent."
@@ -312,7 +317,8 @@
     "cgu": "Gebruiksvoorwaarden",
     "privacy": "Privacybeleid",
     "cgv": "Algemene Verkoopvoorwaarden",
-    "cookies": "Cookiebeleid"
+    "cookies": "Cookiebeleid",
+    "cancel": "Abonnement opzeggen"
   },
   "home": {
     "meta": {

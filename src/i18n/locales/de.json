@@ -203,7 +203,12 @@
       "section": "Mein Abonnement",
       "plan": "Tarif",
       "planDefault": "Monatsabonnement",
-      "renewal": "Nächste Verlängerung"
+      "renewal": "Nächste Verlängerung",
+      "endDate": "Abonnement endet",
+      "endNotice": "Ihr Abonnement endet am {{date}}. Bis dahin haben Sie vollen Zugriff auf die Bibliothek.",
+      "paymentFailed": "Ihre letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Karte, um Ihren Zugang zu behalten.",
+      "manage": "Abonnement verwalten oder kündigen",
+      "manageHint": "Sie erhalten einen Code per E-Mail, um Ihren sicheren Stripe-Bereich zu öffnen."
     },
     "empty": "Momentan sind keine Audios verfügbar.",
     "subtitle": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind."
@@ -312,7 +317,8 @@
     "cgu": "Nutzungsbedingungen",
     "privacy": "Datenschutzrichtlinie",
     "cgv": "Allgemeine Geschäftsbedingungen",
-    "cookies": "Cookie-Richtlinie"
+    "cookies": "Cookie-Richtlinie",
+    "cancel": "Abonnement kündigen"
   },
   "home": {
     "meta": {

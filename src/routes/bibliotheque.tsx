@@ -121,7 +121,12 @@ function BibliothequePage() {
   const [prenom, setPrenom] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const [aboOpen, setAboOpen] = useState(false);
-  const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null } | null>(null);
+  const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null; statut: string | null; email: string | null; date_fin_prevue: string | null } | null>(null);
+  const isPaid = abo?.statut === "actif" || abo?.statut === "paiement_echoue";
+  const fmtDate = (s: string) => {
+    const [y, m, d] = s.slice(0, 10).split("-").map(Number);
+    return new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString(i18n.language || "fr", { day: "numeric", month: "long", year: "numeric" });
+  };
   const [audios, setAudios] = useState<Audio[]>([]);
   const [lang, setLang] = useState(() => ((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr"));
   const [langOpen, setLangOpen] = useState(false);
@@ -138,18 +143,25 @@ function BibliothequePage() {
       if (!user) { navigate({ to: "/connexion", replace: true }); return; }
       setUserId(user.id);
       const full = (user.user_metadata?.["full_name"] as string | undefined)?.trim();
-      /* abonnes_b2c.id is the account id; payant (actif) → date_renouvellement, offert/ambassadeur → date_fin_acces. */
+      /* abonnes_b2c.id is the account id; payant (actif/paiement_echoue) → date_renouvellement, offert/ambassadeur → date_fin_acces. */
       const { data: aboData } = await supabase
         .from("abonnes_b2c")
-        .select("formule, date_fin_acces, date_renouvellement, statut, prenom")
+        .select("formule, date_fin_acces, date_renouvellement, statut, prenom, email, date_fin_prevue" as "formule")
         .eq("id", user.id)
         .maybeSingle();
       /* Prénom : abonnes_b2c.prenom, sinon nom Google, sinon vide (jamais l'email). */
       const first = (v: unknown) => (typeof v === "string" ? v.trim().split(/\s+/)[0] ?? "" : "");
       setPrenom(first((aboData as { prenom?: string | null } | null)?.prenom) || first(full));
-      const ab = aboData as { formule: string | null; date_fin_acces: string | null; date_renouvellement?: string | null; statut?: string | null } | null;
-      setAbo(ab ? { formule: ab.formule, date_renouvellement: ab.statut === "actif" ? ab.date_renouvellement ?? null : ab.date_fin_acces } : null);
-      if (ab?.statut && ["actif", "offert", "ambassadeur"].includes(ab.statut)) {
+      const ab = aboData as unknown as { formule: string | null; date_fin_acces: string | null; date_renouvellement?: string | null; statut?: string | null; email?: string | null; date_fin_prevue?: string | null } | null;
+      const paid = ab?.statut === "actif" || ab?.statut === "paiement_echoue";
+      setAbo(ab ? {
+        formule: ab.formule,
+        date_renouvellement: paid ? ab.date_renouvellement ?? null : ab.date_fin_acces,
+        statut: ab.statut ?? null,
+        email: ab.email ?? null,
+        date_fin_prevue: ab.date_fin_prevue ?? null,
+      } : null);
+      if (ab?.statut && ["actif", "offert", "ambassadeur", "paiement_echoue"].includes(ab.statut)) {
         try { localStorage.removeItem("sz_spot_origine"); } catch { /* stockage indisponible */ }
       }
       const { data } = await supabase.rpc("get_library_catalog");
@@ -298,14 +310,34 @@ function BibliothequePage() {
 <span className="text-[var(--sz-muted)]">{t("lib.abo.plan")}</span>
                   <span className="text-right font-semibold text-[var(--sz-fg)]">{abo?.formule ?? t("lib.abo.planDefault")}</span>
                 </div>
-                <div className="flex justify-between gap-4 pb-2 text-sm">
-                  <span className="text-[var(--sz-muted)]">{t("lib.abo.renewal")}</span>
-                  <span className="text-right font-semibold text-[var(--sz-fg)]">
-                    {abo?.date_renouvellement
-                      ? new Date(abo.date_renouvellement).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-                      : "—"}
-                  </span>
-                </div>
+                {isPaid && abo?.date_fin_prevue ? (
+                  <>
+                    <div className="flex justify-between gap-4 text-sm">
+                      <span className="text-[var(--sz-muted)]">{t("lib.abo.endDate")}</span>
+                      <span className="text-right font-semibold text-[var(--sz-fg)]">{fmtDate(abo.date_fin_prevue)}</span>
+                    </div>
+                    <p className="text-xs text-[var(--sz-muted)]">{t("lib.abo.endNotice", { date: fmtDate(abo.date_fin_prevue) })}</p>
+                  </>
+                ) : (
+                  <div className="flex justify-between gap-4 pb-2 text-sm">
+                    <span className="text-[var(--sz-muted)]">{t("lib.abo.renewal")}</span>
+                    <span className="text-right font-semibold text-[var(--sz-fg)]">
+                      {abo?.date_renouvellement ? fmtDate(abo.date_renouvellement) : "—"}
+                    </span>
+                  </div>
+                )}
+                {isPaid && (
+                  <>
+                    {abo?.statut === "paiement_echoue" && (
+                      <p className="rounded-xl border border-[var(--sz-card-border)] px-3 py-2 text-sm text-[var(--sz-fg)]">{t("lib.abo.paymentFailed")}</p>
+                    )}
+                    <a href={portalUrl(abo?.email ?? undefined)} target="_blank" rel="noopener noreferrer"
+                      className="flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--sz-brand,#2D5A27)] px-5 py-3 text-center text-sm font-semibold text-[#F8F6F2]">
+                      {t("lib.abo.manage")}
+                    </a>
+                    <p className="text-center text-xs text-[var(--sz-muted)]">{t("lib.abo.manageHint")}</p>
+                  </>
+                )}
               </div>
             )}
           </section>

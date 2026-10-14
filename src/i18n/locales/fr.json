@@ -203,7 +203,12 @@
       "section": "Mon abonnement",
       "plan": "Formule",
       "planDefault": "Abonnement mensuel",
-      "renewal": "Prochain renouvellement"
+      "renewal": "Prochain renouvellement",
+      "endDate": "Fin de l'abonnement",
+      "endNotice": "Votre abonnement s'arrêtera le {{date}}. Vous gardez l'accès à toute la bibliothèque jusque-là.",
+      "paymentFailed": "Votre dernier paiement n'a pas abouti. Mettez à jour votre carte pour garder votre accès.",
+      "manage": "Gérer ou résilier mon abonnement",
+      "manageHint": "Vous recevrez un code par email pour accéder à votre espace sécurisé Stripe."
     },
     "empty": "Aucun audio disponible pour le moment.",
     "subtitle": "Votre bibliothèque audio bien-être, où que vous soyez."
@@ -312,7 +317,8 @@
     "cgu": "Conditions d'utilisation",
     "privacy": "Politique de confidentialité",
     "cgv": "Conditions générales de vente",
-    "cookies": "Politique de cookies"
+    "cookies": "Politique de cookies",
+    "cancel": "Résilier mon abonnement"
   },
   "home": {
     "meta": {
