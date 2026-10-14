@@ -63,7 +63,7 @@ function ConnexionPage() {
       .from("abonnes_b2c")
       .select("id")
       .eq("id", userId)
-      .in("statut", ["actif", "offert", "ambassadeur"])
+      .in("statut", ["actif", "offert", "ambassadeur", "paiement_echoue"])
       .maybeSingle();
     navigate({ to: abo ? "/bibliotheque" : "/offres" });
   }

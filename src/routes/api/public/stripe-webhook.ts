@@ -136,8 +136,29 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               if (error) throw error;
             }
           } else if (event.type === "customer.subscription.deleted") {
-            const { error } = await abonnes().update({ statut: "resilie" }).eq("stripe_subscription_id", obj.id);
+            const { error } = await abonnes().update({ statut: "resilie", date_fin_prevue: null }).eq("stripe_subscription_id", obj.id);
             if (error) throw error;
+          } else if (event.type === "customer.subscription.updated") {
+            const subId: string = obj.id;
+            const { data: row } = await abonnes().select("id, statut").eq("stripe_subscription_id", subId).maybeSingle();
+            if (row) {
+              const periodEnd: number | null = obj.items?.data?.[0]?.current_period_end ?? obj.current_period_end ?? null;
+              const priceId: string | undefined = obj.items?.data?.[0]?.price?.id;
+              let statut: string | null = null;
+              if (obj.status === "active" || obj.status === "trialing") statut = "actif";
+              else if (obj.status === "past_due") statut = "paiement_echoue";
+              else if (["canceled", "unpaid", "incomplete_expired"].includes(obj.status)) statut = "resilie";
+              const finalStatut = row.statut === "resilie" ? "resilie" : statut ?? row.statut;
+              const upd: Record<string, unknown> = {};
+              if (row.statut !== "resilie" && statut) upd["statut"] = statut;
+              upd["date_fin_prevue"] = (obj.cancel_at_period_end === true || obj.cancel_at) && finalStatut !== "resilie"
+                ? toDate(obj.cancel_at ?? periodEnd)
+                : null;
+              if (periodEnd) upd["date_renouvellement"] = toDate(periodEnd);
+              if (priceId && PRICE_TO_FORMULE[priceId]) upd["formule"] = PRICE_TO_FORMULE[priceId];
+              const { error } = await abonnes().update(upd).eq("stripe_subscription_id", subId);
+              if (error) throw error;
+            }
           }
         } catch (e) {
           console.error("stripe-webhook", event.type, (e as Error).message);
