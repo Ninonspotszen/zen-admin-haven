@@ -236,10 +236,12 @@
       "annual": {
         "badge": "Beste aanbieding",
         "label": "Jaarlijks",
-        "promo": "2 maanden gratis",
-        "desc": "Slechts 4 €/maand · Rust het hele jaar",
+        "promo": "1e maand gratis",
+        "desc": "Dat is 2 maanden gratis ten opzichte van het maandabonnement",
         "cta": "Beginnen"
-      }
+      },
+      "perMonth": "/maand",
+      "perYear": "/jaar"
     },
     "benefits": {
       "h2": "Wat u ontvangt"
@@ -250,7 +252,7 @@
       "parcours": "Programma's op maat voor volwassenen en kinderen",
       "langs": "Beschikbaar in 5 talen: FR · EN · DE · NL · ES",
       "noApp": "Geen app nodig, onmiddellijk luisteren",
-      "cancel": "Opzeggen met één klik · Geheel zonder verplichting"
+      "cancel": "Op elk moment opzegbaar · Geheel zonder verplichting"
     },
     "catalog": {
       "h2": "Catalogusoverzicht",
@@ -460,7 +462,7 @@
         "h3": "De pauze die u zichzelf steeds beloofde.",
         "badge": "✦ 1 maand gratis — annuleer wanneer u wilt",
         "cta": "Gratis beginnen",
-        "note": "5 €/maand daarna · Levenslang gegarandeerde prijs voor de eerste abonnees."
+        "note": "Daarna 5 €/maand · Zonder verplichting"
       }
     },
     "contact": {
@@ -549,15 +551,19 @@
       "eyebrow": "TARIEVEN",
       "h2": "Vanavond, hervind uw rust.",
       "monthly": {
-        "desc": "Eerste maand gratis. Opzeggen met één klik.",
-        "cta": "Gratis beginnen"
+        "desc": "Eerste maand gratis. Op elk moment opzegbaar.",
+        "cta": "Gratis beginnen",
+        "label": "MAANDELIJKS",
+        "sub": "per maand · zonder verplichting"
       },
       "annual": {
         "badge": "BESTE AANBIEDING",
-        "desc": "2 maanden gratis. Rust het hele jaar. Eenmalige afschrijving.",
-        "cta": "Beginnen · beste aanbieding"
+        "desc": "Eerste maand gratis, plus 2 maanden gratis over het jaar ten opzichte van het maandabonnement. Eenmalige afschrijving.",
+        "cta": "Beginnen · beste aanbieding",
+        "label": "JAARLIJKS",
+        "sub": "per jaar · oftewel 4,08 €/maand"
       },
-      "legend": "Minder dan een koffie per week. Lanceringsprijs · Levenslang gegarandeerde prijs voor de eerste abonnees."
+      "legend": "Minder dan een koffie per week."
     },
     "faq": {
       "eyebrow": "VEELGESTELDE VRAGEN",

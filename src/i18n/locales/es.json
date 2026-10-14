@@ -236,10 +236,12 @@
       "annual": {
         "badge": "Mejor oferta",
         "label": "Anual",
-        "promo": "2 meses gratuitos",
-        "desc": "Solo 4 €/mes · Serenidad durante todo el año",
+        "promo": "1er mes gratuito",
+        "desc": "Es decir, 2 meses gratis respecto a la fórmula mensual",
         "cta": "Comenzar"
-      }
+      },
+      "perMonth": "/mes",
+      "perYear": "/año"
     },
     "benefits": {
       "h2": "Lo que obtiene"
@@ -250,7 +252,7 @@
       "parcours": "Programas adaptados para adultos y niños",
       "langs": "Disponible en 5 idiomas: FR · EN · DE · NL · ES",
       "noApp": "Sin aplicación que descargar, escucha instantánea",
-      "cancel": "Cancelación con un clic · Sin ningún compromiso"
+      "cancel": "Cancelable en cualquier momento · Sin ningún compromiso"
     },
     "catalog": {
       "h2": "Vista previa del catálogo",
@@ -460,7 +462,7 @@
         "h3": "La pausa que siempre se prometió.",
         "badge": "✦ 1 mes gratuito — cancele cuando quiera",
         "cta": "Comenzar gratis",
-        "note": "5 €/mes después · Precio garantizado de por vida para los primeros suscriptores."
+        "note": "Luego 5 €/mes · Sin compromiso"
       }
     },
     "contact": {
@@ -549,15 +551,19 @@
       "eyebrow": "PRECIOS",
       "h2": "Esta noche, recupere su serenidad.",
       "monthly": {
-        "desc": "Primer mes gratuito. Cancelación con un clic.",
-        "cta": "Comenzar gratis"
+        "desc": "Primer mes gratuito. Cancelable en cualquier momento.",
+        "cta": "Comenzar gratis",
+        "label": "MENSUAL",
+        "sub": "al mes · sin compromiso"
       },
       "annual": {
         "badge": "MEJOR OFERTA",
-        "desc": "2 meses gratuitos. Serenidad durante todo el año. Cobro único.",
-        "cta": "Comenzar · mejor oferta"
+        "desc": "Primer mes gratuito, y 2 meses gratis al año respecto a la fórmula mensual. Cobro único.",
+        "cta": "Comenzar · mejor oferta",
+        "label": "ANUAL",
+        "sub": "al año · es decir, 4,08 €/mes"
       },
-      "legend": "Menos que un café a la semana. Oferta de lanzamiento · Precio garantizado de por vida para los primeros suscriptores."
+      "legend": "Menos que un café a la semana."
     },
     "faq": {
       "eyebrow": "PREGUNTAS FRECUENTES",
