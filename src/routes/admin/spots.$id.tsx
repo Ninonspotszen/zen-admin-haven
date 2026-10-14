@@ -5,6 +5,7 @@ import { ArrowLeft, Copy, Download, ExternalLink, Sun, CloudSun, Sunset, Moon } 
 import QRCode from "qrcode";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { spotPublicUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/admin/spots/$id")({
   head: () => ({
@@ -138,7 +139,13 @@ function SpotConfig() {
   const saveSpot = useMutation({
     mutationFn: async () => {
       if (pinCode && !/^\d{4}$/.test(pinCode)) throw new Error("Le code PIN doit contenir exactement 4 chiffres");
-      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: shortUrl || null, pin_code: pinCode || null }).eq("id", id);
+      const short = shortUrl.trim();
+      if (short) {
+        let ok = false;
+        try { ok = new URL(short).protocol === "https:"; } catch { ok = false; }
+        if (!ok) throw new Error("Le lien Short.io doit être une adresse complète commençant par https://");
+      }
+      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: short || null, pin_code: pinCode || null }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Spot sauvegardé"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
@@ -253,13 +260,23 @@ function SpotConfig() {
     return { total, moy, completion, parCreneau };
   }, [ecoutes.data]);
 
-  // Section Accès & QR — URL PWA spotszen.fr/spot/[slug]
-  const slug = (spot.data?.slug || nom || "spot").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const pwaUrl = `https://spotszen.fr/spot/${slug}`;
+  // Section Accès & QR — QR = lien Short.io enregistré, sinon page publique /spots/$id
+  const destinationUrl = spotPublicUrl(id);
+  const savedShort = (spot.data?.shortio_url ?? "").trim();
+  const qrUrl = savedShort || destinationUrl;
+  const fileBase = "qr-" + ((spot.data?.nom || nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "spot");
   const [qrData, setQrData] = useState<string | null>(null);
+  const [qrSvg, setQrSvg] = useState<string | null>(null);
   useEffect(() => {
-    QRCode.toDataURL(pwaUrl, { width: 512, margin: 2 }).then(setQrData).catch(() => setQrData(null));
-  }, [pwaUrl]);
+    QRCode.toDataURL(qrUrl, { width: 1024, margin: 4, errorCorrectionLevel: "M" }).then(setQrData).catch(() => setQrData(null));
+    QRCode.toString(qrUrl, { type: "svg", margin: 4, errorCorrectionLevel: "M" }).then(setQrSvg).catch(() => setQrSvg(null));
+  }, [qrUrl]);
+  const downloadSvg = () => {
+    if (!qrSvg) return;
+    const url = URL.createObjectURL(new Blob([qrSvg], { type: "image/svg+xml" }));
+    const a = document.createElement("a"); a.href = url; a.download = `${fileBase}.svg`; a.click();
+    URL.revokeObjectURL(url);
+  };
   const downloadPng = () => {
     if (!qrData) return;
     const a = document.createElement("a"); a.href = qrData; a.download = `qr-${slug}.png`; a.click();
@@ -443,12 +460,30 @@ function SpotConfig() {
           {/* Accès & QR Code */}
           <section className={card}>
             <h2 className="font-serif text-xl">Accès & QR Code</h2>
-            <p className="rounded-xl bg-secondary px-3 py-2 text-sm break-all font-mono">{pwaUrl.replace("https://", "")}</p>
-            <button onClick={() => navigator.clipboard.writeText(pwaUrl).then(() => toast.success("Lien copié"))}
-              className="flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><Copy className="h-4 w-4" />Copier le lien</button>
+            {savedShort ? (
+              <div className="space-y-1">
+                <p className="text-xs text-muted-foreground">Lien du QR (Short.io)</p>
+                <p className="rounded-xl bg-secondary px-3 py-2 text-sm break-all font-mono">{savedShort}</p>
+              </div>
+            ) : (
+              <p className="rounded-xl border border-orange-200 px-3 py-2 text-sm text-orange-700">
+                Aucun lien Short.io enregistré : ce QR pointe directement vers le site. Pour un QR durable, créez dans Short.io un lien vers l'adresse de destination ci-dessous, puis collez-le dans le champ « Lien Short.io » en haut de cette page et enregistrez.
+              </p>
+            )}
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Destination à configurer dans Short.io</p>
+              <p className="rounded-xl bg-secondary px-3 py-2 text-sm break-all font-mono select-all">{destinationUrl}</p>
+              <button onClick={() => navigator.clipboard.writeText(destinationUrl).then(() => toast.success("Adresse de destination copiée"))}
+                className="flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm"><Copy className="h-4 w-4" />Copier</button>
+            </div>
             {qrData && <img src={qrData} alt="QR code du spot" className="w-full max-w-[240px] mx-auto rounded-xl border" />}
             <button disabled={!qrData} onClick={downloadPng}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger le QR code</button>
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger le QR (PNG)</button>
+            <button disabled={!qrSvg} onClick={downloadSvg}
+              className="flex w-full items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm disabled:opacity-50"><Download className="h-4 w-4" />Télécharger pour impression (SVG)</button>
+            <a href={`${typeof window !== "undefined" ? window.location.origin : ""}/spots/${id}`} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1 text-sm underline"><ExternalLink className="h-4 w-4" />Tester ce spot maintenant</a>
+            <p className="text-xs text-muted-foreground text-center">Imprimez les QR après la mise en ligne de spotszen.fr.</p>
           </section>
 
           {/* Note interne */}
