@@ -166,6 +166,7 @@
       }
     },
     "greeting": "Bonjour {prenom} ♡",
+    "greetingNoName": "Bonjour ♡",
     "abo": {
       "section": "Mon abonnement",
       "plan": "Formule",

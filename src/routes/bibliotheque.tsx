@@ -138,13 +138,15 @@ function BibliothequePage() {
       if (!user) { navigate({ to: "/connexion", replace: true }); return; }
       setUserId(user.id);
       const full = (user.user_metadata?.["full_name"] as string | undefined)?.trim();
-      setPrenom(full ? full.split(/\s+/)[0] ?? "" : user.email ?? "");
       /* abonnes_b2c.id is the account id; renewal date lives in date_fin_acces. */
       const { data: aboData } = await supabase
         .from("abonnes_b2c")
-        .select("formule, date_fin_acces")
+        .select("formule, date_fin_acces, prenom")
         .eq("id", user.id)
         .maybeSingle();
+      /* Prénom : abonnes_b2c.prenom, sinon nom Google, sinon vide (jamais l'email). */
+      const first = (v: unknown) => (typeof v === "string" ? v.trim().split(/\s+/)[0] ?? "" : "");
+      setPrenom(first((aboData as { prenom?: string | null } | null)?.prenom) || first(full));
       setAbo(aboData ? { formule: aboData.formule, date_renouvellement: aboData.date_fin_acces } : null);
       const { data } = await supabase.rpc("get_library_catalog");
       if (data === null || data === undefined) { navigate({ to: "/offres", replace: true }); return; }
@@ -202,7 +204,7 @@ function BibliothequePage() {
 
         {state === "catalog" && (
           <p className="mt-4 text-xs text-[var(--sz-muted)]">
-            {t("lib.greeting", { prenom })}
+            {prenom ? t("lib.greeting", { prenom }) : t("lib.greetingNoName")}
           </p>
         )}
 
