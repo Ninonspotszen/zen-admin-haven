@@ -5,6 +5,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
 
 export const Route = createFileRoute("/spots/$id")({
   ssr: false,
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/spots/$id")({
   component: SpotPage,
 });
 
-type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null };
+type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null; mode_acces: string | null; domaine_email: string | null; pin_requis: boolean | null };
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
 type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; public_cible: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
@@ -110,13 +111,19 @@ function PlayIcon({ size = 18, color = "currentColor" }: { size?: number; color?
 function SpotPage() {
   const { t } = useTranslation();
   const { id } = Route.useParams();
-  const [state, setState] = useState<"loading" | "notfound" | "expired" | "pin" | "catalog">("loading");
+  const [state, setState] = useState<"loading" | "notfound" | "expired" | "pin" | "email" | "email_code" | "email_wrong_account" | "catalog">("loading");
   const [spot, setSpot] = useState<Spot | null>(null);
   const [days, setDays] = useState<number | null>(null);
   const [audios, setAudios] = useState<Audio[]>([]);
   const [pin, setPin] = useState("");
   const [pinError, setPinError] = useState("");
   const [checking, setChecking] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [resendIn, setResendIn] = useState(0);
+  const [sessionEmail, setSessionEmail] = useState("");
   const [lang, setLang] = useState(() => ((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr"));
   const [filter, setFilter] = useState("Tous");
   const [selected, setSelected] = useState<Audio | null>(null);
@@ -137,6 +144,19 @@ function SpotPage() {
       const visit = v as { ok: boolean; reason?: string; premiere_visite?: string; duree_acces_jours?: number } | null;
       if (visit && !visit.ok) return setState(visit.reason === "acces_expire" ? "expired" : "notfound");
       if (visit?.duree_acces_jours) setDays(visit.duree_acces_jours);
+      if (s.mode_acces === "email_domaine") {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          if (await loadCatalog(null)) return;
+          setSessionEmail(session.user.email ?? "");
+          return setState("email_wrong_account");
+        }
+        return setState("email");
+      }
+      if (s.pin_requis === false) {
+        if (await loadCatalog(null)) return;
+        return setState("notfound");
+      }
       const saved = sessionStorage.getItem(`sz_pin_${id}`);
       if (saved && (await loadCatalog(saved))) return;
       setState("pin");
@@ -144,11 +164,10 @@ function SpotPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  async function loadCatalog(p: string) {
-    /* The code stays mandatory: it is checked server-side before any audio is read. */
-    const { data: pinOk } = await supabase.rpc("verify_spot_pin", { p_id: id, p_pin: p });
-    if (pinOk !== true) return false;
-    const { data } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p });
+  async function loadCatalog(p: string | null) {
+    /* Access is checked server-side: NULL = refused, [] or list = catalogue. */
+    const { data } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p as string });
+    if (data === null || data === undefined) return false;
     const rows = (data as unknown as (Omit<Audio, "slug"> & { slug?: string | null })[] | null) ?? [];
     setAudios(
       [...rows]
@@ -161,7 +180,7 @@ function SpotPage() {
           traductions: r.traductions ?? null,
         })),
     );
-    sessionStorage.setItem(`sz_pin_${id}`, p);
+    if (p !== null) sessionStorage.setItem(`sz_pin_${id}`, p);
     setState("catalog");
     return true;
   }
@@ -173,6 +192,56 @@ function SpotPage() {
     const ok = await loadCatalog(pin);
     setChecking(false);
     if (!ok) setPinError(t("spot.pin.error.wrong"));
+  }
+
+  const domaine = spot?.domaine_email ?? "";
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const tm = setTimeout(() => setResendIn((n) => n - 1), 1000);
+    return () => clearTimeout(tm);
+  }, [resendIn]);
+
+  async function sendOtp(addr: string) {
+    const { error } = await supabase.auth.signInWithOtp({ email: addr, options: { emailRedirectTo: `${window.location.origin}/spots/${id}` } });
+    if (error) return error.status === 429 ? t("spot.email.error.rateLimit") : t("spot.email.error.send");
+    return null;
+  }
+
+  async function submitEmail(e: React.FormEvent) {
+    e.preventDefault();
+    setEmailError("");
+    const parsed = z.string().trim().toLowerCase().email().max(255).safeParse(emailInput);
+    const domainMsg = t("spot.email.error.domain", { domaine, ...IP });
+    if (!parsed.success || !domaine || !parsed.data.endsWith(`@${domaine}`)) return setEmailError(domainMsg);
+    const addr = parsed.data;
+    setChecking(true);
+    const { data: ok } = await supabase.rpc("check_spot_email_domain", { p_id: id, p_email: addr });
+    if (ok !== true) { setChecking(false); return setEmailError(domainMsg); }
+    const err = await sendOtp(addr);
+    setChecking(false);
+    if (err) return setEmailError(err);
+    setEmail(addr); setCode(""); setResendIn(60); setState("email_code");
+  }
+
+  async function submitCode(e: React.FormEvent) {
+    e.preventDefault();
+    setEmailError("");
+    if (!/^\d{8}$/.test(code)) return setEmailError(t("spot.email.error.code"));
+    setChecking(true);
+    const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email" });
+    if (error || !(await loadCatalog(null))) setEmailError(t("spot.email.error.code"));
+    setChecking(false);
+  }
+
+  async function resend() {
+    setEmailError("");
+    const err = await sendOtp(email);
+    if (err) setEmailError(err); else setResendIn(60);
+  }
+
+  async function useOther() {
+    await supabase.auth.signOut({ scope: "local" });
+    setEmailError(""); setEmailInput(""); setState("email");
   }
 
   const moment = currentMoment();
