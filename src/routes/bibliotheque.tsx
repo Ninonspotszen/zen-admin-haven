@@ -2,6 +2,7 @@ import { portalUrl } from "@/lib/stripe-portal";
 import i18n from "@/i18n/index";
 import { useTranslation } from "react-i18next";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -345,6 +346,8 @@ function BibliothequePage() {
           </section>
         </div>
       )}
+
+      <div className="text-[var(--sz-muted)]"><AppLegalFooter /></div>
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor="" lang={lang}
         onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}

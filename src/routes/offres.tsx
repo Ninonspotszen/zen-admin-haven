@@ -1,5 +1,6 @@
 import i18n from "@/i18n/index";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useEffect, useState } from "react";
@@ -181,6 +182,7 @@ function OffresPage() {
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
           </div>
         </section>
+        <p className="mt-3 px-6 text-center text-[12px] text-[var(--o-sub)]">{t("offers.cgvNotice")} <Link to="/cgv" className="underline underline-offset-2">{t("offers.cgvLink")}</Link>.</p>
 
         {/* BENEFITS */}
         <section className="mt-12 px-6">
@@ -228,9 +230,11 @@ function OffresPage() {
               {t("offers.cta.final")} <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
             <p className="mt-3 text-[12px] text-[var(--o-sub)]">{t("offers.cta.legal")}</p>
+            <p className="mt-3 text-center text-[12px] text-[var(--o-sub)]">{t("offers.cgvNotice")} <Link to="/cgv" className="underline underline-offset-2">{t("offers.cgvLink")}</Link>.</p>
           </div>
         </section>
       </main>
+      <div className="text-[var(--o-sub)]"><AppLegalFooter /></div>
       <div className="flex justify-center pb-10"><LanguageSwitcher /></div>
     </div>
   );

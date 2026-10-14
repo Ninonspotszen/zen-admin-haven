@@ -258,11 +258,13 @@
     },
     "cta": {
       "final": "Comenzar mi primer mes gratuito",
-      "legal": "Luego 5 €/mes · Sin compromiso · Cancelación en 1 clic"
+      "legal": "Luego 5 €/mes · Sin compromiso · Cancelable en cualquier momento"
     },
     "error": {
       "payment": "El pago no pudo iniciarse. Inténtelo de nuevo en un momento."
-    }
+    },
+    "cgvNotice": "Al suscribirse, acepta nuestras",
+    "cgvLink": "Condiciones Generales de Venta"
   },
   "access": {
     "meta": {
