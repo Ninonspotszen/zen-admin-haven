@@ -71,7 +71,8 @@
       }
     },
     "sponsor": {
-      "badge": "Aangeboden door {nom} ★★★★",
+      "badge": "Aangeboden door {nom}",
+      "unlimited": "· Uw toegang tot welzijn, waar u ook bent",
       "days": "· Uw welzijnstoeggang is {n} dagen geldig vanaf uw eerste bezoek"
     },
     "pin": {
@@ -158,7 +159,7 @@
   "player": {
     "ariaLabel": "Audiospeler",
     "back": "Terug",
-    "sponsor": "Aangeboden door {nom} ★★★★",
+    "sponsor": "Aangeboden door {nom}",
     "voice": {
       "masculine": "Mannelijk",
       "feminine": "Vrouwelijk"

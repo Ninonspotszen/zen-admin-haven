@@ -71,7 +71,8 @@
       }
     },
     "sponsor": {
-      "badge": "Offered by {nom} ★★★★",
+      "badge": "Offered by {nom}",
+      "unlimited": "· Your wellbeing access, wherever you are",
       "days": "· Your wellness access is valid for {n} days from your first visit"
     },
     "pin": {
@@ -158,7 +159,7 @@
   "player": {
     "ariaLabel": "Audio player",
     "back": "Back",
-    "sponsor": "Offered by {nom} ★★★★",
+    "sponsor": "Offered by {nom}",
     "voice": {
       "masculine": "Male",
       "feminine": "Female"
