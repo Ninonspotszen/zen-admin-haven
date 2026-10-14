@@ -71,7 +71,8 @@
       }
     },
     "sponsor": {
-      "badge": "Angeboten von {nom} ★★★★",
+      "badge": "Angeboten von {nom}",
+      "unlimited": "· Ihr Zugang zum Wohlbefinden, wo immer Sie sind",
       "days": "· Ihr Wellness-Zugang ist {n} Tage ab Ihrem ersten Besuch gültig"
     },
     "pin": {
@@ -158,7 +159,7 @@
   "player": {
     "ariaLabel": "Audio-Player",
     "back": "Zurück",
-    "sponsor": "Angeboten von {nom} ★★★★",
+    "sponsor": "Angeboten von {nom}",
     "voice": {
       "masculine": "Männlich",
       "feminine": "Weiblich"

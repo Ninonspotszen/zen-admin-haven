@@ -71,7 +71,8 @@
       }
     },
     "sponsor": {
-      "badge": "Offert par {nom} ★★★★",
+      "badge": "Offert par {nom}",
+      "unlimited": "· Votre accès bien-être, où que vous soyez",
       "days": "· Votre accès bien-être valable {n} jours à compter de votre première visite"
     },
     "pin": {
@@ -158,7 +159,7 @@
   "player": {
     "ariaLabel": "Lecteur audio",
     "back": "Retour",
-    "sponsor": "Offert par {nom} ★★★★",
+    "sponsor": "Offert par {nom}",
     "voice": {
       "masculine": "Masculine",
       "feminine": "Féminine"
