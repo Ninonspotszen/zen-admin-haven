@@ -116,7 +116,8 @@
       "morning": "Ochtend",
       "day": "Overdag",
       "evening": "Avond",
-      "night": "Nacht"
+      "night": "Nacht",
+      "anytime": "Altijd"
     },
     "voice": {
       "feminine": "Vrouwenstem",

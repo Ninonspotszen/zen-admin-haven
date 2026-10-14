@@ -19,7 +19,7 @@ const audios = [
   { moment: "MATIN", title: "Le Réveil du corps", duration: "8 min", image: STORAGE + "spots%20zen%20-%20meditation%20guidee%20-%20reveil%20du%20corps.jpg", Icon: Sun },
   { moment: "JOURNÉE", title: "La Sieste réparatrice", duration: "20 min", image: STORAGE + "spots%20zen%20meditation%20guidee%20%20sommeil%20sieste%20reparatrice.jpg", Icon: Wind },
   { moment: "SOIR", title: "Glisser vers le sommeil", duration: "18 min", image: STORAGE + "spots%20zen%20-%20meditation%20guidee%20-%20glisser%20vers%20le%20sommeil.jpg", Icon: Moon },
-  { moment: "NUIT", title: "Songe du soir — Orage", duration: "16 min", image: STORAGE + "spots%20zen%20-%20meditation%20guidee%20-%20sommeil%20-%20orage%20du%20soir.jpg", Icon: Moon },
+  { moment: "SOIR", title: "Songe du soir — Orage", duration: "16 min", image: STORAGE + "spots%20zen%20-%20meditation%20guidee%20-%20sommeil%20-%20orage%20du%20soir.jpg", Icon: Moon },
 ] as const;
 const benefits = [
   { Icon: Moon, title: "Un meilleur sommeil", text: "Laissez la journée derrière vous et retrouvez des nuits plus sereines." },

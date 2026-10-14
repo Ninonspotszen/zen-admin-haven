@@ -213,7 +213,10 @@ function AudioDetail() {
       <div className="mt-6 grid gap-4 rounded-2xl border bg-card p-6 sm:grid-cols-2">
         <div className="sm:col-span-2"><label className={label}>Titre (français)</label><input className={input} value={f.titre} onChange={set("titre")} /></div>
         <div><label className={label}>Type</label><input className={input} value={f.type} onChange={set("type")} /></div>
-        <div><label className={label}>Moment</label><input className={input} value={f.moment} onChange={set("moment")} /></div>
+        <div><label className={label}>Moment</label><select className={input} value={f.moment} onChange={set("moment")}>
+          <option value="">—</option>
+          {["Matin", "Journée", "Soir", "Nuit", "Tous moments"].map((moment) => <option key={moment} value={moment}>{moment}</option>)}
+        </select></div>
         <div><label className={label}>Public</label><input className={input} value={f.public_cible} onChange={set("public_cible")} /></div>
         <div><label className={label}>Durée (secondes)</label><input type="number" min={0} className={input} value={f.duree} onChange={set("duree")} /></div>
         <div>

@@ -31,7 +31,7 @@ export const Route = createFileRoute("/spots/$id")({
 
 type Spot = { id: string; nom: string | null; description: string | null; photo_url: string | null; adresse: string | null; client_nom: string | null };
 type Trad = { langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null };
-type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; public_cible?: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
+type Audio = { id: string; slug: string | null; ordre: number | null; type: string | null; moment: string | null; public_cible: string | null; image_url: string | null; duree_secondes: number | null; titre_fr: string | null; mis_en_avant: boolean | null; mis_en_avant_moment: string | null; traductions: Trad[] | null };
 
 const LOGO_LIGHT = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-clair.png";
 const LOGO_DARK = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png";
@@ -67,6 +67,7 @@ const MOMENT_KEY_MAP: Record<string, string> = {
   "Journée": "common.moment.day",
   "Soir": "common.moment.evening",
   "Nuit": "common.moment.night",
+  "Tous moments": "common.moment.anytime",
 };
 const IP = { interpolation: { prefix: "{", suffix: "}" } };
 
@@ -153,7 +154,7 @@ function SpotPage() {
       [...rows]
         .sort((a, b) => (a.ordre ?? 0) - (b.ordre ?? 0))
         .map((r) => ({
-          id: r.id, slug: r.slug ?? null, ordre: r.ordre, titre_fr: r.titre_fr, type: r.type, moment: r.moment,
+          id: r.id, slug: r.slug ?? null, ordre: r.ordre, titre_fr: r.titre_fr, type: r.type, moment: r.moment, public_cible: r.public_cible ?? null,
           image_url: r.image_url, duree_secondes: r.duree_secondes,
           mis_en_avant: r.mis_en_avant ?? null,
           mis_en_avant_moment: r.mis_en_avant_moment ?? null,
@@ -254,7 +255,7 @@ function SpotPage() {
             )}
 
             {/* FILTRES */}
-            <div className="noscroll -mx-5 mt-10 flex gap-2 overflow-x-auto px-5">
+            <div className="mt-10 flex flex-wrap gap-2">
               {categories.map((c) => (
                 <button key={c.slug} onClick={() => setFilter(c.slug)}
                   className={`shrink-0 rounded-full border px-5 py-2 text-xs font-semibold ${c.slug === filter ? "border-[var(--sz-brand)] bg-[var(--sz-brand)] text-[var(--sz-on-brand)]" : "border-[var(--sz-chip-border)] bg-transparent text-[var(--sz-chip-fg)]"}`}>
@@ -273,7 +274,7 @@ function SpotPage() {
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                         
-                        {a.mis_en_avant_moment && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY_MAP[a.mis_en_avant_moment] ?? "common.moment.day")}</span>}
+                        {a.moment && MOMENT_KEY_MAP[a.moment] && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY_MAP[a.moment] ?? "")}</span>}
                         <span className={`play-control absolute bottom-3 right-3 ${a.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                       </div>
                       <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>

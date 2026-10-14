@@ -138,6 +138,7 @@ function ClientDetail() {
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
   const [statut, setStatut] = useState("");
+  const [pilotEnd, setPilotEnd] = useState("");
   const [frequence, setFrequence] = useState("");
   const [montant, setMontant] = useState("");
   const [moisOfferts, setMoisOfferts] = useState("");
@@ -150,6 +151,7 @@ function ClientDetail() {
       setNom(client.nom);
       setType(client.type ?? "");
       setStatut(client.statut ?? "");
+      setPilotEnd(client.date_pilote_fin?.slice(0, 10) ?? "");
       setFrequence(client.frequence_facturation ?? "");
       setMontant(client.montant != null ? String(client.montant) : "");
       setMoisOfferts(client.mois_offerts != null ? String(client.mois_offerts) : "");
@@ -192,6 +194,7 @@ function ClientDetail() {
           nom: nom.trim(),
           type: type.trim() || null,
           statut: statut || null,
+          ...(statut === "Pilote" ? { date_pilote_fin: pilotEnd || null } : {}),
           frequence_facturation: frequence || null,
           montant: montantValue,
           mois_offerts: moisOffertsValue,
@@ -282,11 +285,13 @@ function ClientDetail() {
         <div className="flex flex-wrap items-center gap-3">
           <button
             disabled={activateEmail.isPending}
-            onClick={() => activateEmail.mutate(client.id)}
+            onClick={() => {
+              if (confirm(`Envoyer l’email d’accès à ${client.nom} ?`)) activateEmail.mutate(client.id);
+            }}
             className="flex w-fit items-center gap-2 rounded-xl border border-input bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary disabled:opacity-50"
           >
             <Send className="h-4 w-4 text-muted-foreground" />
-            {activateEmail.isPending ? "Envoi en cours…" : "Activer le compte"}
+            {activateEmail.isPending ? "Envoi en cours…" : "Envoyer l’email d’accès"}
           </button>
           {client.statut !== "Suspendu" && (
             <button
@@ -323,6 +328,12 @@ function ClientDetail() {
               <option value="">—</option>
               {STATUTS_CLIENT.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
+            {statut === "Pilote" && (
+              <div className="mt-4">
+                <label htmlFor="pilot-end" className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fin du pilote</label>
+                <input id="pilot-end" type="date" value={pilotEnd} onChange={(e) => edit(setPilotEnd)(e.target.value)} className={fieldInput} />
+              </div>
+            )}
           </Field>
         </div>
       </Section>

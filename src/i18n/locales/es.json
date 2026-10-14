@@ -116,7 +116,8 @@
       "morning": "Mañana",
       "day": "Mediodía",
       "evening": "Tarde",
-      "night": "Noche"
+      "night": "Noche",
+      "anytime": "En cualquier momento"
     },
     "voice": {
       "feminine": "Voz femenina",
