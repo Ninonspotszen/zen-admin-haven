@@ -28,5 +28,5 @@
 - [x] Verrouiller la lecture des spots (PIN) et clients : admin uniquement.
 - [x] Pages légales multilingues (5 routes, liens footer, documents Markdown).
 
-- [ ] Demande 1 : corrections Clients B2B dans les deux fichiers autorisés et mémo.
-- [ ] Demande 2 : filtres Enfant, moments et libellés dans les fichiers autorisés et mémo.
+- [x] Demande 1 : corrections Clients B2B dans les deux fichiers autorisés et mémo.
+- [x] Demande 2 : filtres Enfant, moments et libellés dans les fichiers autorisés et mémo.
