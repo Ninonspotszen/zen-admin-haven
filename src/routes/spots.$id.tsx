@@ -285,9 +285,9 @@ function SpotPage() {
           <div className="mt-10 rounded-2xl border border-[var(--sz-card-border)] bg-[var(--sz-card)] p-6 text-center">
             <h2 className="serif text-xl font-medium">{t("spot.expired.title")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--sz-muted)]">{t("spot.expired.text", { nom: spot?.client_nom ?? spot?.nom ?? "", ...IP })}</p>
-            <Link to="/offres" className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)]">
+            <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-12 w-full items-center justify-center rounded-full bg-[var(--sz-brand)] text-sm font-semibold text-[var(--sz-on-brand)]">
               {t("spot.expired.cta")}
-            </Link>
+            </a>
           </div>
         )}
 

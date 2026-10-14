@@ -96,3 +96,10 @@
 - register_spot_visit lit le dernier accès (ORDER BY premiere_visite DESC). qr_libre : accès pendant duree_acces_jours figés, puis `acces_expire` 30 jours, puis nouvel accès (nouvelle ligne, durée actuelle du client). email_domaine : jamais d'expiration. Pas de contrainte UNIQUE sur acces_spots.
 - Page spot état expired : carte douce (spot.expired.title/text/cta) → /offres, sans bandeau sponsor.
 - Fiche client : champ « Durée d'accès offerte (jours) » 1–365 visible seulement en Accès libre.
+
+## F9 — Tunnel B2B → B2C (14/10/2026)
+- /offres?spot_origine_id=<uuid> mémorise `sz_spot_origine` ({id,date}) en localStorage, 30 jours max.
+- Checkout transmet spotOrigineId → metadata Stripe (session + abonnement) ; le webhook remplit abonnes_b2c.spot_origine_id si spot existant, sans jamais écraser une valeur.
+- Bibliothèque : date = date_renouvellement si actif, sinon date_fin_acces ; purge `sz_spot_origine` pour actif/offert/ambassadeur.
+- Admin : colonne « Spot d'origine » (abonnés), « Abonnés convertis » (fiche client, statut actif).
+- /particuliers : tous les boutons d'abonnement vont vers /offres (liens Stripe directs supprimés).

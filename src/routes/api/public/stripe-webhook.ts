@@ -93,6 +93,16 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               }
               if (!userId) throw new Error("Aucun utilisateur résolu pour cette session Checkout");
 
+              // Spot d'origine : UUID valide ET spot existant ; ne fait jamais échouer le webhook.
+              let spotOrigine: string | null = null;
+              const rawSpot = obj.metadata?.spot_origine_id;
+              if (typeof rawSpot === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawSpot)) {
+                try {
+                  const { data: sp, error: spErr } = await supabaseAdmin.from("spots").select("id").eq("id", rawSpot).maybeSingle();
+                  if (!spErr && sp?.id) spotOrigine = sp.id;
+                } catch { spotOrigine = null; }
+              }
+
               const row: Record<string, unknown> = {
                 id: userId,
                 user_id: userId,
@@ -104,8 +114,9 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               };
               if (email) row["email"] = email;
 
-              const { data: existing } = await abonnes().select("id").eq("id", userId).maybeSingle();
+              const { data: existing } = await abonnes().select("id, spot_origine_id").eq("id", userId).maybeSingle();
               if (existing) {
+                if (!existing.spot_origine_id && spotOrigine) row["spot_origine_id"] = spotOrigine;
                 const { error } = await abonnes().update(row).eq("id", userId);
                 if (error) throw error;
               } else {
@@ -113,6 +124,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                   const { data: u } = await supabaseAdmin.auth.admin.getUserById(userId);
                   row["email"] = u?.user?.email ?? "";
                 }
+                if (spotOrigine) row["spot_origine_id"] = spotOrigine;
                 const { error } = await abonnes().insert(row);
                 if (error) throw error;
               }
