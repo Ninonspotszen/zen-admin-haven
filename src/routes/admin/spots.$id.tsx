@@ -54,7 +54,7 @@ function SpotConfig() {
     queryKey: ["spot-detail", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("spots").select("*, client:client_id(id, nom)").eq("id", id).single();
+        .from("spots").select("*, client:client_id(id, nom, mode_acces, domaine_email)").eq("id", id).single();
       if (error) throw error;
       return data as typeof data & { client: { id: string; nom: string } | null };
     },
@@ -284,6 +284,13 @@ function SpotConfig() {
               <Link to="/admin/clients/$id" params={{ id: spot.data.client.id }} className="text-primary hover:underline">{spot.data.client.nom}</Link>
             ) : "—"}
           </p>
+          {spot.data.client && (
+            <p className="text-sm text-muted-foreground">
+              Accès : {spot.data.client.mode_acces === "email_domaine"
+                ? `email professionnel @${spot.data.client.domaine_email ?? ""} (réglé sur la fiche client)`
+                : "libre"}
+            </p>
+          )}
         </div>
         <label className="flex items-center gap-3 rounded-full border bg-card px-4 py-2 text-sm">
           <span className="font-medium">{spot.data.statut === "actif" ? "Actif" : "Inactif"}</span>

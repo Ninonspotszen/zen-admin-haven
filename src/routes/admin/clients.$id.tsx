@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 import {
   Building2,
   Package,
@@ -46,6 +47,8 @@ type Client = {
   frequence_facturation: string | null;
   mois_offerts: number | null;
   date_debut: string | null;
+  mode_acces: string | null;
+  domaine_email: string | null;
 };
 
 // Date de renouvellement = date_debut + mois_offerts + (1 mois si Mensuel, 12 mois si Annuel)
@@ -58,6 +61,55 @@ function computeRenewal(debut: string, moisOfferts: string, frequence: string): 
   d.setMonth(d.getMonth() + offerts + duree);
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+
+// Accès visiteurs : validation du domaine email professionnel
+const DOMAIN_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
+const PUBLIC_MAIL_DOMAINS = ["gmail.com", "googlemail.com", "outlook.com", "outlook.fr", "hotmail.com", "hotmail.fr", "live.com", "live.fr", "msn.com", "yahoo.com", "yahoo.fr", "icloud.com", "me.com", "orange.fr", "wanadoo.fr", "free.fr", "sfr.fr", "laposte.net", "gmx.fr", "gmx.com", "proton.me", "protonmail.com"];
+const domainSchema = z
+  .string()
+  .min(1, "Le domaine email est obligatoire.")
+  .regex(DOMAIN_RE, "Domaine invalide (ex. centric.com).")
+  .refine((d) => !PUBLIC_MAIL_DOMAINS.includes(d), "Ce domaine est une messagerie grand public : tout le monde pourrait accéder.");
+const normalizeDomain = (v: string) => v.trim().toLowerCase().replace(/^@+/, "");
+function domainError(d: string): string | null {
+  const r = domainSchema.safeParse(d);
+  return r.success ? null : r.error.issues[0]?.message ?? "Domaine invalide";
+}
+
+function AccessModeFields({ mode, domaine, onMode, onDomaine, inputClass, name }: {
+  mode: string; domaine: string; onMode: (v: string) => void; onDomaine: (v: string) => void; inputClass: string; name: string;
+}) {
+  const err = mode === "email_domaine" && domaine ? domainError(domaine) : null;
+  const opts = [
+    { v: "qr_libre", l: "Accès libre", h: "On scanne le QR code et on écoute." },
+    { v: "email_domaine", l: "Email professionnel", h: "On reçoit un code sur son email pro." },
+  ];
+  return (
+    <div>
+      <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Accès des visiteurs</label>
+      <div className="grid gap-2 sm:grid-cols-2">
+        {opts.map((o) => (
+          <label key={o.v} className={`flex cursor-pointer gap-2 rounded-xl border px-3 py-2 text-sm ${mode === o.v ? "border-primary bg-primary/5" : "border-input"}`}>
+            <input type="radio" name={name} value={o.v} checked={mode === o.v} onChange={() => onMode(o.v)} className="mt-1" />
+            <span><span className="block font-semibold text-foreground">{o.l}</span><span className="block text-xs text-muted-foreground">{o.h}</span></span>
+          </label>
+        ))}
+      </div>
+      {mode === "email_domaine" && (
+        <div className="mt-3">
+          <label htmlFor={`${name}-domain`} className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Domaine email autorisé *</label>
+          <input id={`${name}-domain`} value={domaine} onChange={(e) => onDomaine(normalizeDomain(e.target.value))} placeholder="centric.com" className={inputClass} />
+          {err ? (
+            <p className="mt-1 text-xs text-destructive">{err}</p>
+          ) : (
+            <p className="mt-1 text-xs text-muted-foreground">Seules les adresses se terminant par @{domaine || "…"} pourront accéder aux audios.</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 const STATUTS_CLIENT = ["En attente de paiement", "Pilote", "Actif", "Suspendu"];
@@ -144,7 +196,10 @@ function ClientDetail() {
   const [moisOfferts, setMoisOfferts] = useState("");
   const [dateDebut, setDateDebut] = useState("");
   const [renouvellement, setRenouvellement] = useState("");
+  const [modeAcces, setModeAcces] = useState("qr_libre");
+  const [domaine, setDomaine] = useState("");
   const [dirty, setDirty] = useState(false);
+  const domainInvalid = modeAcces === "email_domaine" && domainError(domaine) !== null;
   useEffect(() => {
     if (client) {
       setNote(client.note_interne ?? "");
@@ -157,6 +212,8 @@ function ClientDetail() {
       setMoisOfferts(client.mois_offerts != null ? String(client.mois_offerts) : "");
       setDateDebut(client.date_debut ?? "");
       setRenouvellement(client.date_renouvellement ?? "");
+      setModeAcces(client.mode_acces ?? "qr_libre");
+      setDomaine(client.domaine_email ?? "");
       setDirty(false);
     }
   }, [client]);
@@ -170,11 +227,22 @@ function ClientDetail() {
     const calc = computeRenewal(d, m, f);
     if (calc) setRenouvellement(calc);
   };
+  const confirmAndSave = () => {
+    const prev = client?.mode_acces ?? "qr_libre";
+    if (prev !== modeAcces && (data?.spots.length ?? 0) > 0) {
+      const msg = modeAcces === "email_domaine"
+        ? `Les visiteurs devront désormais recevoir un code sur leur adresse @${domaine}. Continuer ?`
+        : "Les spots de ce client deviendront accessibles à toute personne qui scanne le QR code. Continuer ?";
+      if (!confirm(msg)) return;
+    }
+    save.mutate();
+  };
   const edit = (setter: (v: string) => void) => (v: string) => { setter(v); setDirty(true); };
 
   const save = useMutation({
     mutationFn: async () => {
       if (!nom.trim()) throw new Error("Le nom du client est obligatoire");
+      if (domainInvalid) throw new Error(domainError(domaine) ?? "Domaine invalide");
       let montantValue: number | null = null;
       if (montant.trim() !== "") {
         const m = Number(montant);
@@ -191,6 +259,8 @@ function ClientDetail() {
         .from("clients")
         .update({
           note_interne: note || null,
+          mode_acces: modeAcces,
+          domaine_email: modeAcces === "email_domaine" ? domaine : null,
           nom: nom.trim(),
           type: type.trim() || null,
           statut: statut || null,
@@ -305,8 +375,8 @@ function ClientDetail() {
             </button>
           )}
           <button
-            disabled={save.isPending || !dirty}
-            onClick={() => save.mutate()}
+            disabled={save.isPending || !dirty || domainInvalid}
+            onClick={confirmAndSave}
             className="flex w-fit items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
           >
             <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
@@ -335,6 +405,9 @@ function ClientDetail() {
               </div>
             )}
           </Field>
+          <div className="md:col-span-2">
+            <AccessModeFields mode={modeAcces} domaine={domaine} onMode={edit(setModeAcces)} onDomaine={edit(setDomaine)} inputClass={fieldInput} name="client-access" />
+          </div>
         </div>
       </Section>
 
@@ -377,7 +450,11 @@ function ClientDetail() {
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    {s.pin_code ? (
+                    {s.pin_code && client?.mode_acces === "email_domaine" ? (
+                      <span title="Ignoré : accès par email professionnel" className="inline-flex items-center gap-1.5 rounded-md bg-secondary px-2 py-1 font-mono text-xs font-semibold text-muted-foreground line-through">
+                        <KeyRound className="h-3 w-3" /> {s.pin_code}
+                      </span>
+                    ) : s.pin_code ? (
                       <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary px-2 py-1 font-mono text-xs font-semibold text-secondary-foreground">
                         <KeyRound className="h-3 w-3" /> {s.pin_code}
                       </span>
@@ -527,8 +604,8 @@ function ClientDetail() {
       {/* Pied de page : sauvegarde */}
       <div className="mt-6 flex justify-end">
         <button
-          disabled={save.isPending || !dirty}
-          onClick={() => save.mutate()}
+          disabled={save.isPending || !dirty || domainInvalid}
+          onClick={confirmAndSave}
           className="flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
         >
           <Save className="h-4 w-4" /> {save.isPending ? "Enregistrement…" : "Sauvegarder les modifications"}
