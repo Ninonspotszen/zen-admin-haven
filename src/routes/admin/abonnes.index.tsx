@@ -29,8 +29,11 @@ type Abonne = {
   date_fin_acces: string | null;
   langue_preferee: string | null;
   spot_origine_id: string | null;
+  date_fin_prevue?: string | null;
   spot_label?: string | null;
 };
+
+const fmtFr = (v: string) => { const [y, m, d] = v.slice(0, 10).split("-"); return `${d}/${m}/${y}`; };
 
 export const STATUTS = ["actif", "ambassadeur", "offert", "inactif", "paiement_echoue", "resilie"] as const;
 
@@ -66,7 +69,7 @@ function AbonnesPage() {
     queryFn: async (): Promise<Abonne[]> => {
       const { data, error } = await supabase
         .from("abonnes_b2c")
-        .select("id, email, prenom, formule, statut, date_fin_acces, langue_preferee, spot_origine_id")
+        .select("id, email, prenom, formule, statut, date_fin_acces, langue_preferee, spot_origine_id, date_fin_prevue" as "id")
         .order("created_at", { ascending: false });
       if (error) throw error;
       const rows = (data ?? []) as Abonne[];
@@ -189,7 +192,7 @@ function AbonnesPage() {
                   {a.prenom && <div className="mt-0.5 text-xs text-muted-foreground">{a.prenom}</div>}
                 </td>
                 <td className="px-4 py-4 text-foreground">{a.formule ?? "—"}</td>
-                <td className="px-4 py-4"><StatutBadge statut={a.statut} /></td>
+                <td className="px-4 py-4"><div className="flex flex-wrap items-center gap-1.5"><StatutBadge statut={a.statut} />{a.date_fin_prevue && (a.statut === "actif" || a.statut === "paiement_echoue") && (<span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-semibold text-orange-800">Résiliation prévue · {fmtFr(a.date_fin_prevue)}</span>)}</div></td>
                 <td className="px-4 py-4 text-foreground">{a.spot_label || "—"}</td>
                 <td className="px-4 py-4 tabular-nums text-foreground">
                   {a.date_fin_acces ? new Date(a.date_fin_acces).toLocaleDateString("fr-FR") : "—"}
