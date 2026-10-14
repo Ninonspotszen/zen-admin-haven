@@ -8,7 +8,6 @@ import {
   Clock,
   Download,
   Eye,
-  FileText,
   Hourglass,
   Mail,
   Play,
@@ -52,6 +51,7 @@ type ClientRow = {
   date_pilote_fin: string | null;
   date_renouvellement: string | null;
   montant: number | null;
+  frequence_facturation: string | null;
   domaine_email: string | null;
   emails_autorises: string[] | null;
   note_interne: string | null;
@@ -62,7 +62,7 @@ async function fetchClients(): Promise<ClientRow[]> {
   const { data: clients, error } = await supabase
     .from("clients")
     .select(
-      "id, nom, type, pack_souscrit, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, domaine_email, emails_autorises, note_interne, spots(id)",
+      "id, nom, type, pack_souscrit, statut, statut_paiement, date_pilote_fin, date_renouvellement, montant, frequence_facturation, domaine_email, emails_autorises, note_interne, spots(id)",
     )
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -83,6 +83,14 @@ async function fetchClients(): Promise<ClientRow[]> {
 
 const isPaid = (c: ClientRow) => c.statut_paiement === "Virement reçu";
 const fmtEuro = (n: number) => n.toLocaleString("fr-FR");
+const annualAmount = (c: ClientRow) => (c.montant ?? 0) * (c.frequence_facturation?.toLowerCase() === "mensuel" ? 12 : 1);
+const amountSuffix = (frequency: string | null) => frequency?.toLowerCase() === "mensuel" ? "€/mois" : frequency?.toLowerCase() === "annuel" ? "€/an" : "€";
+const pilotDefaultDate = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 28);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+};
 const daysUntil = (d: string) => Math.ceil((new Date(d).getTime() - Date.now()) / 86400000);
 const monthYear = (d: string) =>
   new Date(d).toLocaleDateString("fr-FR", { month: "short", year: "numeric" });
@@ -108,7 +116,7 @@ function ClientsPage() {
       if (error) throw error;
     },
     onSuccess: (_d, c) => {
-      toast.success(`${c.nom} est maintenant actif annuel`);
+      toast.success(`${c.nom} est maintenant actif`);
       qc.invalidateQueries({ queryKey: ["clients-b2b"] });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -126,15 +134,14 @@ function ClientsPage() {
       c.nom.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
-  const revenus = clients.filter(isPaid).reduce((s, c) => s + (c.montant ?? 0), 0);
+  const revenus = clients.filter(isPaid).reduce((s, c) => s + annualAmount(c), 0);
   const pending = clients.filter((c) => !isPaid(c) && c.statut !== "Suspendu");
-  const pendingTotal = pending.reduce((s, c) => s + (c.montant ?? 0), 0);
-  const actifs = clients.filter((c) => c.statut !== "Suspendu").length;
+  const pendingTotal = pending.reduce((s, c) => s + annualAmount(c), 0);
 
   function exportCsv() {
-    const head = ["Nom", "Type", "Pack souscrit", "Statut", "Paiement", "Montant (€/an)", "Fin pilote", "Renouvellement", "Note interne", "Écoutes"];
+    const head = ["Nom", "Type", "Pack souscrit", "Statut", "Paiement", "Montant (€)", "Fréquence", "Fin pilote", "Renouvellement", "Note interne", "Écoutes"];
     const rows = visible.map((c) => [
-      c.nom, c.type ?? "", c.pack_souscrit ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "",
+      c.nom, c.type ?? "", c.pack_souscrit ?? "", c.statut ?? "", c.statut_paiement ?? "", c.montant ?? "", c.frequence_facturation ?? "",
       c.date_pilote_fin ?? "", c.date_renouvellement ?? "", c.note_interne ?? "", c.ecoutes,
     ]);
     const csv = [head, ...rows]
@@ -164,7 +171,7 @@ function ClientsPage() {
         <div>
           <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">Clients B2B</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {actifs} comptes actifs · {counts["Pilote"] ?? 0} en pilote · {counts["Actif"] ?? 0} actifs
+            {clients.length} clients · {counts["Pilote"] ?? 0} en pilote · {counts["Actif"] ?? 0} actifs · {counts["En attente de paiement"] ?? 0} en attente
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -212,7 +219,7 @@ function ClientsPage() {
       </div>
 
       {/* Tableau */}
-      <div className="overflow-hidden rounded-2xl border bg-card">
+      <div className="overflow-x-auto rounded-2xl border bg-card">
         <table className="w-full text-sm">
           <thead className="border-b bg-secondary/50">
             <tr className="text-left text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -256,7 +263,7 @@ function ClientsPage() {
                 <td className="px-4 py-5"><Paiement c={c} /></td>
                 <td className="px-4 py-5 text-right">
                   {c.montant != null ? (
-                    <span className="font-mono text-xs font-semibold text-foreground">{fmtEuro(c.montant)} €/an</span>
+                    <span className="font-mono text-xs font-semibold text-foreground">{fmtEuro(c.montant)} {amountSuffix(c.frequence_facturation)}</span>
                   ) : (
                     <span className="text-muted-foreground">—</span>
                   )}
@@ -272,7 +279,6 @@ function ClientsPage() {
                   <div className="flex items-center justify-end gap-2">
                     <ActionBtn icon={Eye} label="Voir" onClick={() => navigate({ to: "/admin/clients/$id", params: { id: c.id } })} />
                     <ActionBtn icon={Mail} label="Email" onClick={() => sendEmail(c)} />
-                    <ActionBtn icon={FileText} label="Facture" onClick={() => toast.info("Les factures arrivent bientôt")} />
                     {c.statut !== "Actif" && c.statut !== "Suspendu" && (
                       <button
                         disabled={activate.isPending}
@@ -333,6 +339,7 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
   const [nom, setNom] = useState("");
   const [type, setType] = useState("");
   const [statut, setStatut] = useState<string>("En attente de paiement");
+  const [pilotEnd, setPilotEnd] = useState(pilotDefaultDate);
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
   const [frequence, setFrequence] = useState("");
@@ -371,6 +378,7 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
           nom: nom.trim(),
           type: type.trim() || null,
           statut,
+          ...(statut === "Pilote" ? { date_pilote_fin: pilotEnd || null } : {}),
           emails_autorises: email.trim() ? [email.trim()] : null,
           note_interne: note.trim() || null,
           frequence_facturation: frequence || null,
@@ -417,6 +425,12 @@ function CreateClientDialog({ open, onClose }: { open: boolean; onClose: () => v
               {STATUTS.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
+          {statut === "Pilote" && (
+            <div>
+              <label htmlFor="new-pilot-end" className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Fin du pilote</label>
+              <input id="new-pilot-end" type="date" value={pilotEnd} onChange={(e) => setPilotEnd(e.target.value)} className={inputCls} />
+            </div>
+          )}
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email de contact</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} placeholder="contact@etablissement.fr" />
@@ -501,13 +515,14 @@ function Paiement({ c }: { c: ClientRow }) {
 }
 
 function Alerte({ c }: { c: ClientRow }) {
-  // Badge orange : fin de pilote à 30 jours ou moins
+  // Fin de pilote : terminé ou dans les sept prochains jours
   if (c.statut === "Pilote" && c.date_pilote_fin) {
     const d = daysUntil(c.date_pilote_fin);
-    if (d <= 30)
+    if (d < 0) return <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-destructive/10 px-2.5 py-1 text-xs font-semibold text-destructive"><AlertTriangle className="h-3 w-3" /> Pilote terminé</span>;
+    if (d <= 7)
       return (
         <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-warning-foreground/20 bg-warning px-2.5 py-1 text-xs font-semibold text-warning-foreground">
-          <AlertTriangle className="h-3 w-3" /> {d < 0 ? `Pilote terminé (J+${-d})` : `J-${d} fin pilote`}
+          <AlertTriangle className="h-3 w-3" /> {`J-${d} fin pilote`}
         </span>
       );
   }

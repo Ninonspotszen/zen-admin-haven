@@ -44,3 +44,11 @@
 - Filtre « Enfant » (spot + bibliothèque) : `a.public_cible === "enfant"` (et non plus `moment`).
 - Durées en dur alignées sur les durées validées dans particuliers-page.tsx et home-page.tsx.
 - /offres : aperçu en grille 2×2 au format des immersions de la page spot, cadenas 44 px en bas à droite, cartes non interactives.
+
+
+## Corrections Clients B2B (14/10/2026)
+- Montant = échéance mensuelle ou annuelle ; synthèses annualisées (mensuel × 12), CSV avec fréquence.
+- Tableau défilant horizontalement, bouton Facture supprimé (facturation externe), compteurs par statut.
+- Fin du pilote modifiable à la création (J+28 en date locale) et sur la fiche ; sauvegardée uniquement en statut Pilote.
+- Alerte orange J-0 à J-7 ; pilote terminé en rouge ; renouvellement inchangé.
+- Envoi d’email d’accès renommé avec confirmation, action existante conservée.
