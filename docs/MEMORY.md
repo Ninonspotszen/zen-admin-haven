@@ -72,3 +72,9 @@
 - Création et fiche client : choix « Accès libre » (`qr_libre`) / « Email professionnel » (`email_domaine`) + domaine normalisé (trim, minuscules, sans @), validé par zod (regex de la contrainte) et refus des messageries grand public.
 - `domaine_email` = null en accès libre. Confirmation si le mode change et que le client a des spots.
 - Liste : pastille `@domaine` sous le nom. Fiche client : PIN barré « Ignoré : accès par email professionnel ». Fiche spot : ligne « Accès : … » en lecture seule.
+
+## Pré-remplissage des audios à la création d'un spot (14/10/2026)
+- Trigger `spots_assign_default_audios` (AFTER INSERT sur `spots`) → `spot_assign_default_audios()` (SECURITY DEFINER, EXECUTE retiré à PUBLIC/anon/authenticated).
+- Ajoute tous les audios publiés non masqués pour le client (`client_audios.visible=false` exclus), actifs, ordre selon `audios.ordre` puis `titre_fr`.
+- Recommandations : reveil-du-corps-f Matin, sieste-reparatrice-f Journée, songe-du-soir-orage-f Soir, glisser-vers-le-sommeil-f Nuit (rien si l'audio n'est pas assigné).
+- Spots existants non modifiés.
