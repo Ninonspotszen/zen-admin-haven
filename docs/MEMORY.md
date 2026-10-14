@@ -78,3 +78,10 @@
 - Ajoute tous les audios publiés non masqués pour le client (`client_audios.visible=false` exclus), actifs, ordre selon `audios.ordre` puis `titre_fr`.
 - Recommandations : reveil-du-corps-f Matin, sieste-reparatrice-f Journée, songe-du-soir-orage-f Soir, glisser-vers-le-sommeil-f Nuit (rien si l'audio n'est pas assigné).
 - Spots existants non modifiés.
+
+## F1 — Accès visiteur par email professionnel + PIN facultatif (14/10/2026)
+- /spots/$id : `get_spot_catalog` appelé directement (plus de `verify_spot_pin`) ; NULL = refusé, [] = catalogue vide. PIN mémorisé seulement s'il existe.
+- Mode `email_domaine` : session → catalogue ou « mauvais compte » ; sinon email (zod + domaine + `check_spot_email_domain`) → code OTP 8 chiffres (`verifyOtp`), renvoi après 60 s. Email en state React uniquement.
+- `pin_requis = false` → catalogue direct. Écoutes toujours anonymes.
+- Admin : PIN facultatif (vide → null, sinon 4 chiffres) à la création et sur la fiche spot.
+- Clés `spot.email.*` dans les 5 langues.

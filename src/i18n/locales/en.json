@@ -91,6 +91,32 @@
     "audio": {
       "duration": "Duration",
       "listen": "Listen"
+    },
+    "email": {
+      "title": "Your wellbeing access",
+      "hint": "Use your @{domaine} email",
+      "placeholder": "firstname@{domaine}",
+      "cta": {
+        "idle": "Get my code",
+        "sending": "Sending…"
+      },
+      "codeSent": "A code has been sent to {email}. Enter it below, or click the link in the message.",
+      "codeLabel": "Code received by email",
+      "codeCta": {
+        "idle": "Access the audios",
+        "checking": "Checking…"
+      },
+      "resend": "Resend code",
+      "resendIn": "Resend code in {n} s",
+      "changeEmail": "Change address",
+      "wrongAccount": "You are signed in as {email}. This space is reserved for @{domaine} addresses.",
+      "useOther": "Use another address",
+      "error": {
+        "domain": "This address cannot access this space. Use your @{domaine} email.",
+        "code": "This code is invalid or has expired. You can request a new one.",
+        "rateLimit": "Lots of requests right now. Please try again in a few minutes.",
+        "send": "Sending failed. Check your address and try again."
+      }
     }
   },
   "common": {

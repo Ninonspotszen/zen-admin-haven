@@ -91,6 +91,32 @@
     "audio": {
       "duration": "Dauer",
       "listen": "Anhören"
+    },
+    "email": {
+      "title": "Ihr Wohlfühl-Zugang",
+      "hint": "Verwenden Sie Ihre E-Mail @{domaine}",
+      "placeholder": "vorname@{domaine}",
+      "cta": {
+        "idle": "Code erhalten",
+        "sending": "Wird gesendet…"
+      },
+      "codeSent": "Ein Code wurde an {email} gesendet. Geben Sie ihn unten ein oder klicken Sie auf den Link in der Nachricht.",
+      "codeLabel": "Per E-Mail erhaltener Code",
+      "codeCta": {
+        "idle": "Zu den Audios",
+        "checking": "Wird geprüft…"
+      },
+      "resend": "Code erneut senden",
+      "resendIn": "Code erneut senden in {n} s",
+      "changeEmail": "Adresse ändern",
+      "wrongAccount": "Sie sind mit {email} angemeldet. Dieser Bereich ist Adressen @{domaine} vorbehalten.",
+      "useOther": "Andere Adresse verwenden",
+      "error": {
+        "domain": "Mit dieser Adresse ist kein Zugang möglich. Verwenden Sie Ihre E-Mail @{domaine}.",
+        "code": "Dieser Code ist ungültig oder abgelaufen. Sie können einen neuen anfordern.",
+        "rateLimit": "Derzeit viele Anfragen. Bitte versuchen Sie es in einigen Minuten erneut.",
+        "send": "Senden fehlgeschlagen. Prüfen Sie Ihre Adresse und versuchen Sie es erneut."
+      }
     }
   },
   "common": {

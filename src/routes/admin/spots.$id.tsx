@@ -131,12 +131,14 @@ function SpotConfig() {
   // Section 1
   const [nom, setNom] = useState("");
   const [shortUrl, setShortUrl] = useState("");
+  const [pinCode, setPinCode] = useState("");
   useEffect(() => {
-    if (spot.data) { setNom(spot.data.nom ?? ""); setShortUrl(spot.data.shortio_url ?? ""); }
+    if (spot.data) { setNom(spot.data.nom ?? ""); setShortUrl(spot.data.shortio_url ?? ""); setPinCode(spot.data.pin_code ?? ""); }
   }, [spot.data]);
   const saveSpot = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: shortUrl || null }).eq("id", id);
+      if (pinCode && !/^\d{4}$/.test(pinCode)) throw new Error("Le code PIN doit contenir exactement 4 chiffres");
+      const { error } = await supabase.from("spots").update({ nom: nom || null, adresse: adresse || null, shortio_url: shortUrl || null, pin_code: pinCode || null }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Spot sauvegardé"); qc.invalidateQueries({ queryKey: ["spot-detail", id] }); qc.invalidateQueries({ queryKey: ["spots-list"] }); },
@@ -314,6 +316,10 @@ function SpotConfig() {
               <div className="space-y-3">
                 <label className="block space-y-1 text-sm">Nom du spot<input className={input} value={nom} onChange={(e) => setNom(e.target.value)} /></label>
                 <label className="block space-y-1 text-sm">Lieu / adresse<input className={input} value={adresse} onChange={(e) => setAdresse(e.target.value)} /></label>
+                <label className="block space-y-1 text-sm">Code PIN (facultatif)<input className={input} value={pinCode} inputMode="numeric" maxLength={4} onChange={(e) => setPinCode(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="Ex. 1234" /></label>
+                <p className="text-xs text-muted-foreground">Laisser vide : le spot s'ouvre directement au scan.</p>
+                {pinCode && !/^\d{4}$/.test(pinCode) && <p className="text-xs text-destructive">4 chiffres exactement</p>}
+                {spot.data.client?.mode_acces === "email_domaine" && <p className="text-xs text-muted-foreground">Ignoré : accès par email professionnel</p>}
                 <label className="block space-y-1 text-sm">Lien Short.io<input className={input} value={shortUrl} onChange={(e) => setShortUrl(e.target.value)} placeholder="https://…" /></label>
                 <p className="text-xs text-muted-foreground">Ce lien redirige dynamiquement les visiteurs vers l'application.</p>
                 <button onClick={() => saveSpot.mutate()} disabled={saveSpot.isPending}

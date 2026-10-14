@@ -91,6 +91,32 @@
     "audio": {
       "duration": "Durée",
       "listen": "Écouter"
+    },
+    "email": {
+      "title": "Votre accès bien-être",
+      "hint": "Utilisez votre email @{domaine}",
+      "placeholder": "prenom@{domaine}",
+      "cta": {
+        "idle": "Recevoir mon code",
+        "sending": "Envoi…"
+      },
+      "codeSent": "Un code vous a été envoyé à {email}. Saisissez-le ci-dessous, ou cliquez sur le lien du message.",
+      "codeLabel": "Code reçu par email",
+      "codeCta": {
+        "idle": "Accéder aux audios",
+        "checking": "Vérification…"
+      },
+      "resend": "Renvoyer le code",
+      "resendIn": "Renvoyer le code dans {n} s",
+      "changeEmail": "Modifier l'adresse",
+      "wrongAccount": "Vous êtes connecté avec {email}. Cet espace est réservé aux adresses @{domaine}.",
+      "useOther": "Utiliser une autre adresse",
+      "error": {
+        "domain": "Cette adresse ne permet pas d'accéder à cet espace. Utilisez votre email @{domaine}.",
+        "code": "Ce code n'est pas valide ou a expiré. Vous pouvez en demander un nouveau.",
+        "rateLimit": "Beaucoup de demandes en ce moment. Réessayez dans quelques minutes.",
+        "send": "L'envoi n'a pas abouti. Vérifiez votre adresse et réessayez."
+      }
     }
   },
   "common": {
