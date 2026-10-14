@@ -236,10 +236,12 @@
       "annual": {
         "badge": "Meilleure offre",
         "label": "Annuel",
-        "promo": "2 mois offerts",
-        "desc": "Soit 4 €/mois · Sérénité à l'année",
+        "promo": "1er mois offert",
+        "desc": "Soit 2 mois offerts par rapport à la formule mensuelle",
         "cta": "Commencer"
-      }
+      },
+      "perMonth": "/mois",
+      "perYear": "/an"
     },
     "benefits": {
       "h2": "Ce que vous obtenez"
@@ -250,7 +252,7 @@
       "parcours": "Des parcours adaptés pour adultes et pour enfants",
       "langs": "Disponible en 5 langues : FR · EN · DE · NL · ES",
       "noApp": "Sans application à télécharger, écoute instantanée",
-      "cancel": "Résiliation en un clic · Sans aucun engagement"
+      "cancel": "Résiliable à tout moment · Sans aucun engagement"
     },
     "catalog": {
       "h2": "Aperçu du catalogue",
@@ -460,7 +462,7 @@
         "h3": "La pause que vous vous promettiez.",
         "badge": "✦ 1 mois offert — annulez quand vous voulez",
         "cta": "Commencer gratuitement",
-        "note": "5€/mois ensuite · Tarif garanti à vie pour les premiers abonnés."
+        "note": "Puis 5 €/mois · Sans engagement"
       }
     },
     "contact": {
@@ -549,15 +551,19 @@
       "eyebrow": "TARIFS",
       "h2": "Ce soir, retrouvez votre sérénité.",
       "monthly": {
-        "desc": "Premier mois offert. Résiliation en un clic.",
-        "cta": "Commencer gratuitement"
+        "desc": "Premier mois offert. Résiliable à tout moment.",
+        "cta": "Commencer gratuitement",
+        "label": "MENSUEL",
+        "sub": "par mois · sans engagement"
       },
       "annual": {
         "badge": "MEILLEURE OFFRE",
-        "desc": "2 mois offerts. La sérénité tout au long de l'année. Prélèvement en une fois.",
-        "cta": "Commencer · meilleure offre"
+        "desc": "Premier mois offert, puis 2 mois offerts sur l'année par rapport à la formule mensuelle. Prélèvement en une fois.",
+        "cta": "Commencer · meilleure offre",
+        "label": "ANNUEL",
+        "sub": "par an · soit 4,08 €/mois"
       },
-      "legend": "Moins qu'un café par semaine. Offre de lancement · Tarif garanti à vie pour les premiers abonnés."
+      "legend": "Moins qu'un café par semaine."
     },
     "faq": {
       "eyebrow": "QUESTIONS FRÉQUENTES",

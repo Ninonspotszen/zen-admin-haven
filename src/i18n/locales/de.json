@@ -236,10 +236,12 @@
       "annual": {
         "badge": "Bestes Angebot",
         "label": "Jährlich",
-        "promo": "2 Monate kostenlos",
-        "desc": "Nur 4 €/Monat · Gelassenheit fürs ganze Jahr",
+        "promo": "1. Monat kostenlos",
+        "desc": "Das sind 2 Monate geschenkt im Vergleich zum Monatsabo",
         "cta": "Jetzt starten"
-      }
+      },
+      "perMonth": "/Monat",
+      "perYear": "/Jahr"
     },
     "benefits": {
       "h2": "Was Sie erhalten"
@@ -250,7 +252,7 @@
       "parcours": "Maßgeschneiderte Programme für Erwachsene und Kinder",
       "langs": "Verfügbar in 5 Sprachen: FR · EN · DE · NL · ES",
       "noApp": "Keine App erforderlich, sofortiges Hören",
-      "cancel": "Kündigung per Klick · Keinerlei Verpflichtung"
+      "cancel": "Jederzeit kündbar · Keinerlei Verpflichtung"
     },
     "catalog": {
       "h2": "Katalogvorschau",
@@ -460,7 +462,7 @@
         "h3": "Die Pause, die Sie sich immer versprochen haben.",
         "badge": "✦ 1 Monat kostenlos — jederzeit kündbar",
         "cta": "Kostenlos starten",
-        "note": "Danach 5 €/Monat · Lebenslang garantierter Preis für die ersten Abonnenten."
+        "note": "Danach 5 €/Monat · Ohne Verpflichtung"
       }
     },
     "contact": {
@@ -549,15 +551,19 @@
       "eyebrow": "PREISE",
       "h2": "Heute Abend, finden Sie Ihre Gelassenheit wieder.",
       "monthly": {
-        "desc": "Erster Monat kostenlos. Kündigung per Klick.",
-        "cta": "Kostenlos starten"
+        "desc": "Erster Monat kostenlos. Jederzeit kündbar.",
+        "cta": "Kostenlos starten",
+        "label": "MONATLICH",
+        "sub": "pro Monat · ohne Verpflichtung"
       },
       "annual": {
         "badge": "BESTES ANGEBOT",
-        "desc": "2 Monate kostenlos. Gelassenheit das ganze Jahr. Einmalige Abbuchung.",
-        "cta": "Starten · bestes Angebot"
+        "desc": "Erster Monat kostenlos, dazu 2 Monate geschenkt aufs Jahr im Vergleich zum Monatsabo. Einmalige Abbuchung.",
+        "cta": "Starten · bestes Angebot",
+        "label": "JÄHRLICH",
+        "sub": "pro Jahr · also 4,08 €/Monat"
       },
-      "legend": "Weniger als ein Kaffee pro Woche. Einführungsangebot · Lebenslang garantierter Preis für die ersten Abonnenten."
+      "legend": "Weniger als ein Kaffee pro Woche."
     },
     "faq": {
       "eyebrow": "HÄUFIG GESTELLTE FRAGEN",

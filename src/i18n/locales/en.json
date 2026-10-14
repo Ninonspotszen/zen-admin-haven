@@ -236,10 +236,12 @@
       "annual": {
         "badge": "Best value",
         "label": "Annual",
-        "promo": "2 months free",
-        "desc": "Just €4/month · Serenity all year long",
+        "promo": "1st month free",
+        "desc": "That's 2 months free compared with the monthly plan",
         "cta": "Get started"
-      }
+      },
+      "perMonth": "/month",
+      "perYear": "/year"
     },
     "benefits": {
       "h2": "What you get"
@@ -250,7 +252,7 @@
       "parcours": "Tailored programmes for adults and children",
       "langs": "Available in 5 languages: FR · EN · DE · NL · ES",
       "noApp": "No app to download, instant listening",
-      "cancel": "Cancel in one click · No commitment whatsoever"
+      "cancel": "Cancel anytime · No commitment whatsoever"
     },
     "catalog": {
       "h2": "Catalogue preview",
@@ -460,7 +462,7 @@
         "h3": "The break you kept promising yourself.",
         "badge": "✦ 1 month free — cancel whenever you like",
         "cta": "Start for free",
-        "note": "€5/month after · Lifetime price guaranteed for early subscribers."
+        "note": "Then €5/month · No commitment"
       }
     },
     "contact": {
@@ -549,15 +551,19 @@
       "eyebrow": "PRICING",
       "h2": "Tonight, rediscover your serenity.",
       "monthly": {
-        "desc": "First month free. Cancel in one click.",
-        "cta": "Start for free"
+        "desc": "First month free. Cancel anytime.",
+        "cta": "Start for free",
+        "label": "MONTHLY",
+        "sub": "per month · no commitment"
       },
       "annual": {
         "badge": "BEST VALUE",
-        "desc": "2 months free. Serenity throughout the year. Billed in one payment.",
-        "cta": "Start · best value"
+        "desc": "First month free, then 2 months free over the year compared with the monthly plan. Billed in one payment.",
+        "cta": "Start · best value",
+        "label": "ANNUAL",
+        "sub": "per year · just €4.08/month"
       },
-      "legend": "Less than a coffee a week. Launch offer · Lifetime price guaranteed for early subscribers."
+      "legend": "Less than a coffee a week."
     },
     "faq": {
       "eyebrow": "FREQUENTLY ASKED QUESTIONS",
