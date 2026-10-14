@@ -1,6 +1,7 @@
 import i18n from "@/i18n/index";
 import { useTranslation } from "react-i18next";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -238,6 +239,7 @@ function ConnexionPage() {
           {t("auth.badge.security")}
         </div>
       </main>
+      <div className="text-[var(--szc-muted)]"><AppLegalFooter /></div>
     </div>
   );
 }

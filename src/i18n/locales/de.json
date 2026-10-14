@@ -258,11 +258,13 @@
     },
     "cta": {
       "final": "Meinen ersten Monat kostenlos beginnen",
-      "legal": "Danach 5 €/Monat · Ohne Verpflichtung · Kündigung per Klick"
+      "legal": "Danach 5 €/Monat · Ohne Verpflichtung · Jederzeit kündbar"
     },
     "error": {
       "payment": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es gleich erneut."
-    }
+    },
+    "cgvNotice": "Mit Ihrem Abonnement akzeptieren Sie unsere",
+    "cgvLink": "Allgemeinen Geschäftsbedingungen"
   },
   "access": {
     "meta": {

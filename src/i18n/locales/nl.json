@@ -258,11 +258,13 @@
     },
     "cta": {
       "final": "Mijn eerste maand gratis beginnen",
-      "legal": "Daarna 5 €/maand · Zonder verplichting · Opzeggen met 1 klik"
+      "legal": "Daarna 5 €/maand · Zonder verplichting · Op elk moment opzegbaar"
     },
     "error": {
       "payment": "De betaling kon niet worden gestart. Probeer het over een ogenblik opnieuw."
-    }
+    },
+    "cgvNotice": "Door u te abonneren, gaat u akkoord met onze",
+    "cgvLink": "Algemene Verkoopvoorwaarden"
   },
   "access": {
     "meta": {

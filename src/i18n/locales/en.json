@@ -258,11 +258,13 @@
     },
     "cta": {
       "final": "Start my first month free",
-      "legal": "Then €5/month · No commitment · Cancel in 1 click"
+      "legal": "Then €5/month · No commitment · Cancel anytime"
     },
     "error": {
       "payment": "Payment could not be started. Please try again in a moment."
-    }
+    },
+    "cgvNotice": "By subscribing, you accept our",
+    "cgvLink": "Terms of Sale"
   },
   "access": {
     "meta": {

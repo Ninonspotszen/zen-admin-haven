@@ -2,6 +2,7 @@ import i18n from "@/i18n/index";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -448,6 +449,8 @@ function SpotPage() {
           <div className="mt-6 flex justify-center"><LanguageSwitcher /></div>
           </section></div>
       )}
+
+      <div className="text-[var(--sz-muted)]"><AppLegalFooter /></div>
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor={spot?.client_nom ?? spot?.nom ?? ""} lang={lang}
         onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); }} spotId={id} onClose={() => setSelected(null)} onSelect={setSelected} />}
