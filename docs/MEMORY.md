@@ -85,3 +85,9 @@
 - `pin_requis = false` → catalogue direct. Écoutes toujours anonymes.
 - Admin : PIN facultatif (vide → null, sinon 4 chiffres) à la création et sur la fiche spot.
 - Clés `spot.email.*` dans les 5 langues.
+
+## Bandeau « Offert par » de la fiche spot (14/10/2026)
+- Étoiles retirées des 5 langues : `spot.sponsor.badge` et `player.sponsor` = « Offert par {nom} » (plus de `★★★★`).
+- Nouvelle clé `spot.sponsor.unlimited` dans les 5 langues.
+- `spots.$id.tsx` : `spot.mode_acces === "email_domaine"` → badge + `spot.sponsor.unlimited` ; sinon badge + `spot.sponsor.days` si la durée est connue.
+- Vérifié en navigateur : spot démo « Offert par Camping le Tedey · Votre accès bien-être valable 7 jours… » et spot email « Offert par Test Email Pro · Votre accès bien-être, où que vous soyez », sans étoiles ; lecteur plein écran sans étoiles.
