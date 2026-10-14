@@ -179,7 +179,7 @@ function OffresPage() {
           <div className="mt-4 grid grid-cols-2 gap-3 px-6">
             {items.map((a) => {
               const min = a.duree_secondes ? `${Math.round(a.duree_secondes / 60)} min` : "";
-              const moment = a.moment && MOMENT_KEY[a.moment] ? t(MOMENT_KEY[a.moment]) : null;
+              const moment = a.moment && MOMENT_KEY[a.moment] ? t(MOMENT_KEY[a.moment] ?? "") : null;
               return (
                 <article key={a.id} className="rounded-2xl text-left">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[var(--o-thumb)]">

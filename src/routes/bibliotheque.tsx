@@ -242,7 +242,7 @@ function BibliothequePage() {
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                         {a.image_url ? <img src={a.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                         
-                        {a.moment && MOMENT_KEY[a.moment] && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY[a.moment])}</span>}
+                        {a.moment && MOMENT_KEY[a.moment] && <span className="tag absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold">{t(MOMENT_KEY[a.moment] ?? "")}</span>}
                         <span className={`play-control absolute bottom-3 right-3 ${a.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                       </div>
                       <p className="audio-copy audio-title serif mt-2 line-clamp-2 px-1 text-sm font-medium leading-tight">{titleOf(a, lang)}</p>
