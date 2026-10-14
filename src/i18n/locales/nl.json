@@ -166,6 +166,7 @@
       }
     },
     "greeting": "Goedendag {prenom} ♡",
+    "greetingNoName": "Hallo ♡",
     "abo": {
       "section": "Mijn abonnement",
       "plan": "Formule",

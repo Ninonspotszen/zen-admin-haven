@@ -59,3 +59,11 @@
 - Spot et bibliothèque : les six filtres se répartissent sur plusieurs lignes ; les cartes guidées affichent audios.moment traduit si connu, sans changer la grande carte ni sa sélection.
 - Valeurs Moment : Matin, Journée, Soir, Nuit, Tous moments ; liste fermée sur la fiche audio, clé common.moment.anytime dans les cinq langues.
 - Offres : mêmes badges traduits, y compris Tous moments. Vitrines : lac Matin, étoiles Soir · Enfants, ballon Tous moments · Enfants, orage Soir.
+
+## Salutation bibliothèque (14/10/2026)
+- Prénom : abonnes_b2c.prenom (1er mot), sinon 1er mot du nom Google, sinon vide → `lib.greetingNoName` (« Bonjour ♡ »). Jamais l'email.
+
+## Dashboard admin (14/10/2026)
+- Renouvellements 30 j : clients `Actif` uniquement ; dates passées en rouge « en retard ».
+- Abonnés expirant sous 7 j : statuts `offert`/`ambassadeur`, date entre aujourd'hui et J+7.
+- Dates de référence calculées en date locale (pas de toISOString).

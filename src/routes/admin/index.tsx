@@ -38,9 +38,14 @@ type DashboardData = {
 };
 
 async function fetchDashboard(): Promise<DashboardData> {
-  const in30 = new Date(Date.now() + 30 * 86400_000).toISOString().slice(0, 10);
-  const in7 = new Date(Date.now() + 7 * 86400_000).toISOString().slice(0, 10);
   const now = new Date();
+  const localDay = (offset: number) => {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+  const today = localDay(0);
+  const in30 = localDay(30);
+  const in7 = localDay(7);
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
   const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
 
@@ -58,12 +63,12 @@ async function fetchDashboard(): Promise<DashboardData> {
   ] = await Promise.all([
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Actif"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Pilote"),
-    supabase.from("clients").select("id, nom, date_renouvellement").lte("date_renouvellement", in30).not("date_renouvellement", "is", null).order("date_renouvellement"),
+    supabase.from("clients").select("id, nom, date_renouvellement").eq("statut", "Actif").lte("date_renouvellement", in30).not("date_renouvellement", "is", null).order("date_renouvellement"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).eq("statut", "actif"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", monthStart),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", prevMonthStart).lt("created_at", monthStart),
     supabase.from("clients").select("id, nom, date_pilote_fin").eq("statut", "Pilote").lte("date_pilote_fin", in30).not("date_pilote_fin", "is", null).order("date_pilote_fin"),
-    supabase.from("abonnes_b2c").select("id, email, date_fin_acces").lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
+    supabase.from("abonnes_b2c").select("id, email, date_fin_acces").in("statut", ["offert", "ambassadeur"]).gte("date_fin_acces", today).lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut_paiement", "Virement reçu"),
     supabase.from("ecoutes").select("audio_id"),
   ]);
@@ -101,6 +106,13 @@ async function fetchDashboard(): Promise<DashboardData> {
 function fmtDate(d: string | null) {
   if (!d) return "—";
   return new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+}
+
+function isOverdue(d: string | null) {
+  if (!d) return false;
+  const n = new Date();
+  const today = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, "0")}-${String(n.getDate()).padStart(2, "0")}`;
+  return d.slice(0, 10) < today;
 }
 
 function AdminDashboard() {
@@ -145,7 +157,11 @@ function AdminDashboard() {
                     <Link to="/admin/clients/$id" params={{ id: c.id }} className="font-medium text-foreground hover:underline">
                       {c.nom}
                     </Link>
-                    <span className="text-muted-foreground">{fmtDate(c.date_renouvellement)}</span>
+                    {isOverdue(c.date_renouvellement) ? (
+                      <span className="text-destructive">{fmtDate(c.date_renouvellement)} · en retard</span>
+                    ) : (
+                      <span className="text-muted-foreground">{fmtDate(c.date_renouvellement)}</span>
+                    )}
                   </li>
                 ))}
               </ul>

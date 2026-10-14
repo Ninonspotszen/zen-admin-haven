@@ -166,6 +166,7 @@
       }
     },
     "greeting": "Guten Tag {prenom} ♡",
+    "greetingNoName": "Hallo ♡",
     "abo": {
       "section": "Mein Abonnement",
       "plan": "Tarif",
