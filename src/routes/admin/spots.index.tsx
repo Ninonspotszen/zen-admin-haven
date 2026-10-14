@@ -154,7 +154,7 @@ function CreateSpotDialog({ open, onClose }: { open: boolean; onClose: () => voi
     enabled: open,
   });
 
-  const pinValid = /^\d{4}$/.test(pin);
+  const pinValid = pin === "" || /^\d{4}$/.test(pin);
 
   const create = useMutation({
     mutationFn: async () => {
@@ -167,7 +167,7 @@ function CreateSpotDialog({ open, onClose }: { open: boolean; onClose: () => voi
           nom: nom.trim(),
           client_id: clientId,
           adresse: adresse.trim() || null,
-          pin_code: pin,
+          pin_code: pin || null,
           shortio_url: shortio.trim() || null,
           statut,
         })
@@ -211,7 +211,7 @@ function CreateSpotDialog({ open, onClose }: { open: boolean; onClose: () => voi
             <input value={adresse} onChange={(e) => setAdresse(e.target.value)} className={inputCls} placeholder="Ex. 12 rue des Fleurs, Annecy" />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Code PIN *</label>
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Code PIN (facultatif)</label>
             <input
               value={pin}
               onChange={(e) => {
@@ -224,6 +224,7 @@ function CreateSpotDialog({ open, onClose }: { open: boolean; onClose: () => voi
               className={inputCls}
               placeholder="Ex. 1234"
             />
+            <p className="mt-1 text-xs text-muted-foreground">Laisser vide : le spot s'ouvre directement au scan.</p>
             {pinError && <p className="mt-1 text-xs text-destructive">{pinError}</p>}
           </div>
           <div>
