@@ -118,6 +118,11 @@
         "rateLimit": "Derzeit viele Anfragen. Bitte versuchen Sie es in einigen Minuten erneut.",
         "send": "Senden fehlgeschlagen. Prüfen Sie Ihre Adresse und versuchen Sie es erneut."
       }
+    },
+    "expired": {
+      "title": "Ihr Wohlfühl-Zugang ist beendet",
+      "text": "Ihr von {nom} angebotener Zugang ist abgelaufen. Genießen Sie alle Ihre Immersionen zu Hause, wo immer Sie sind.",
+      "cta": "Abonnement entdecken"
     }
   },
   "common": {

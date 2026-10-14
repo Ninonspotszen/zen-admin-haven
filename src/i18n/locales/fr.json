@@ -118,6 +118,11 @@
         "rateLimit": "Beaucoup de demandes en ce moment. Réessayez dans quelques minutes.",
         "send": "L'envoi n'a pas abouti. Vérifiez votre adresse et réessayez."
       }
+    },
+    "expired": {
+      "title": "Votre accès bien-être est terminé",
+      "text": "Votre accès offert par {nom} est arrivé à son terme. Retrouvez toutes vos immersions chez vous, où que vous soyez.",
+      "cta": "Découvrir l'abonnement"
     }
   },
   "common": {

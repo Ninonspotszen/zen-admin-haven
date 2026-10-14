@@ -91,3 +91,8 @@
 - Nouvelle clé `spot.sponsor.unlimited` dans les 5 langues.
 - `spots.$id.tsx` : `spot.mode_acces === "email_domaine"` → badge + `spot.sponsor.unlimited` ; sinon badge + `spot.sponsor.days` si la durée est connue.
 - Vérifié en navigateur : spot démo « Offert par Camping le Tedey · Votre accès bien-être valable 7 jours… » et spot email « Offert par Test Email Pro · Votre accès bien-être, où que vous soyez », sans étoiles ; lecteur plein écran sans étoiles.
+
+## Expiration douce (14/10/2026)
+- register_spot_visit lit le dernier accès (ORDER BY premiere_visite DESC). qr_libre : accès pendant duree_acces_jours figés, puis `acces_expire` 30 jours, puis nouvel accès (nouvelle ligne, durée actuelle du client). email_domaine : jamais d'expiration. Pas de contrainte UNIQUE sur acces_spots.
+- Page spot état expired : carte douce (spot.expired.title/text/cta) → /offres, sans bandeau sponsor.
+- Fiche client : champ « Durée d'accès offerte (jours) » 1–365 visible seulement en Accès libre.

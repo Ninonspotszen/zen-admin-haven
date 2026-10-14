@@ -118,6 +118,11 @@
         "rateLimit": "Veel aanvragen op dit moment. Probeer het over enkele minuten opnieuw.",
         "send": "Verzenden mislukt. Controleer uw adres en probeer het opnieuw."
       }
+    },
+    "expired": {
+      "title": "Uw wellbeing-toegang is beëindigd",
+      "text": "Uw toegang aangeboden door {nom} is afgelopen. Geniet thuis van al uw immersies, waar u ook bent.",
+      "cta": "Ontdek het abonnement"
     }
   },
   "common": {
