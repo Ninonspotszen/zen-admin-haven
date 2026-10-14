@@ -126,7 +126,7 @@ function BibliothequePage() {
   const isPaid = abo?.statut === "actif" || abo?.statut === "paiement_echoue";
   const fmtDate = (s: string) => {
     const [y, m, d] = s.slice(0, 10).split("-").map(Number);
-    return new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString(i18n.language || "fr", { day: "numeric", month: "long", year: "numeric" });
+    return new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1).toLocaleDateString(i18n.language || "fr", { day: "numeric", month: "long", year: "numeric" });
   };
   const [audios, setAudios] = useState<Audio[]>([]);
   const [lang, setLang] = useState(() => ((LANGS as readonly string[]).includes(i18n.language) ? i18n.language : "fr"));
