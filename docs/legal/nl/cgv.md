@@ -27,15 +27,19 @@ Beide formules omvatten een **gratis proefperiode van 30 dagen**, uitsluitend bi
 De betaling geschiedt online via Stripe (stripe.com), een beveiligde betalingsprovider. Spots Zen slaat geen bankgegevens op. De betaling is verschuldigd na afloop van de proefperiode van 30 dagen en wordt vervolgens automatisch verlengd volgens de gekozen formule.
 
 ## 4. Toegang tot de dienst
+
 De toegang tot de audiocatalogus wordt geactiveerd zodra uw abonnement is bevestigd, ook tijdens de gratis proefperiode. Door u te abonneren, erkent u dat de levering van de digitale dienst onmiddellijk begint en doet u uitdrukkelijk afstand van uw herroepingsrecht van 14 dagen, in overeenstemming met artikel L221-28 van de Franse Consumentenwet.
 
 ## 5. Opzegging
+
 U kunt uw abonnement op elk moment opzeggen, zonder kosten of boetes, via het onderdeel „Mijn abonnement” in uw bibliotheek of via de link „Abonnement opzeggen” onderaan elke pagina van de website. De opzegging gaat in aan het einde van de lopende, reeds betaalde periode; u behoudt toegang tot die datum. Als u opzegt tijdens de gratis proefperiode, wordt er niets afgeschreven. U ontvangt per e-mail een bevestiging van de opzegging met vermelding van de ingangsdatum. Er vindt geen terugbetaling naar rato plaats.
 
 ## 6. Verlenging
+
 Het abonnement wordt bij afloop automatisch verlengd voor dezelfde duur. Bij het jaarabonnement ontvangt u ten vroegste drie maanden en uiterlijk één maand vóór de verlengingsdatum een herinneringsmail, waarin u wordt gewezen op de mogelijkheid om niet te verlengen. U kunt de automatische verlenging op elk moment uitschakelen via „Mijn abonnement”.
 
 ## 7. Betalingsfout
+
 Bij een mislukte betaling wordt u per e-mail op de hoogte gebracht en gevraagd uw betaalmethode bij te werken. Er worden automatisch nieuwe betalingspogingen gedaan en u behoudt gedurende deze periode toegang tot de dienst. Als de betaling niet binnen 30 dagen kan worden voldaan, wordt het abonnement automatisch beëindigd.
 
 ## 8. Aansprakelijkheid
