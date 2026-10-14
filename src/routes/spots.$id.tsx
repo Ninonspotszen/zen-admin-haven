@@ -288,7 +288,7 @@ function SpotPage() {
             <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#2D5A27] align-middle" />
             {t("spot.sponsor.badge", { nom: spot.client_nom ?? spot.nom, ...IP })}
             {spot.mode_acces === "email_domaine"
-              ? ` ${t("spot.sponsor.unlimited", ...IP)}`
+              ? ` ${t("spot.sponsor.unlimited", IP)}`
               : days ? ` ${t("spot.sponsor.days", { n: days, ...IP })}` : ""}
           </p>
         )}
