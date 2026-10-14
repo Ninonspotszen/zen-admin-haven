@@ -10,7 +10,7 @@ const PRICES = {
 export const createCheckoutSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({ plan: z.enum(["mensuel", "annuel"]), origin: z.string().url() }).parse(d),
+    z.object({ plan: z.enum(["mensuel", "annuel"]), origin: z.string().url(), spotOrigineId: z.string().uuid().optional() }).parse(d),
   )
   .handler(async ({ data, context }) => {
     const key = process.env['STRIPE_SECRET_KEY'];
@@ -27,6 +27,10 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     });
     const email = (context.claims as { email?: string })?.email;
     if (email) body.set("customer_email", email);
+    if (data.spotOrigineId) {
+      body.set("metadata[spot_origine_id]", data.spotOrigineId);
+      body.set("subscription_data[metadata][spot_origine_id]", data.spotOrigineId);
+    }
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/x-www-form-urlencoded" },

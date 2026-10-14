@@ -8,6 +8,21 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { createCheckoutSession } from "@/lib/checkout.functions";
+import { z } from "zod";
+
+const ORIGIN_KEY = "sz_spot_origine";
+const ORIGIN_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+/* Spot d'origine mémorisé (valide et < 30 jours), sinon undefined. Stockage bloqué toléré. */
+function readSpotOrigine(): string | undefined {
+  try {
+    const raw = localStorage.getItem(ORIGIN_KEY);
+    if (!raw) return undefined;
+    const v = JSON.parse(raw) as { id?: unknown; date?: unknown };
+    const ok = z.string().uuid().safeParse(v.id).success && typeof v.date === "number" && Date.now() - v.date < ORIGIN_TTL_MS;
+    if (!ok) { localStorage.removeItem(ORIGIN_KEY); return undefined; }
+    return v.id as string;
+  } catch { return undefined; }
+}
 
 export const Route = createFileRoute("/offres")({
   ssr: false,
@@ -70,13 +85,24 @@ function OffresPage() {
     if (!session) { window.location.href = "/connexion"; return; }
     setBusy(plan);
     try {
-      const { url } = await createCheckoutSession({ data: { plan, origin: window.location.origin } });
+      const spotOrigineId = readSpotOrigine();
+      const { url } = await createCheckoutSession({ data: { plan, origin: window.location.origin, spotOrigineId } });
       window.location.href = url;
     } catch {
       setBusy(null);
       alert(t("offers.error.payment"));
     }
   };
+
+  useEffect(() => {
+    try {
+      readSpotOrigine(); // purge une clé expirée
+      const param = new URLSearchParams(window.location.search).get("spot_origine_id");
+      if (param && z.string().uuid().safeParse(param).success) {
+        localStorage.setItem(ORIGIN_KEY, JSON.stringify({ id: param, date: Date.now() }));
+      }
+    } catch { /* stockage indisponible */ }
+  }, []);
 
   useEffect(() => {
     const apply = (l: string) => { if ((LANGS as readonly string[]).includes(l)) setLang(l); };

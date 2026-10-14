@@ -138,16 +138,20 @@ function BibliothequePage() {
       if (!user) { navigate({ to: "/connexion", replace: true }); return; }
       setUserId(user.id);
       const full = (user.user_metadata?.["full_name"] as string | undefined)?.trim();
-      /* abonnes_b2c.id is the account id; renewal date lives in date_fin_acces. */
+      /* abonnes_b2c.id is the account id; payant (actif) → date_renouvellement, offert/ambassadeur → date_fin_acces. */
       const { data: aboData } = await supabase
         .from("abonnes_b2c")
-        .select("formule, date_fin_acces, prenom")
+        .select("formule, date_fin_acces, date_renouvellement, statut, prenom")
         .eq("id", user.id)
         .maybeSingle();
       /* Prénom : abonnes_b2c.prenom, sinon nom Google, sinon vide (jamais l'email). */
       const first = (v: unknown) => (typeof v === "string" ? v.trim().split(/\s+/)[0] ?? "" : "");
       setPrenom(first((aboData as { prenom?: string | null } | null)?.prenom) || first(full));
-      setAbo(aboData ? { formule: aboData.formule, date_renouvellement: aboData.date_fin_acces } : null);
+      const ab = aboData as { formule: string | null; date_fin_acces: string | null; date_renouvellement?: string | null; statut?: string | null } | null;
+      setAbo(ab ? { formule: ab.formule, date_renouvellement: ab.statut === "actif" ? ab.date_renouvellement ?? null : ab.date_fin_acces } : null);
+      if (ab?.statut && ["actif", "offert", "ambassadeur"].includes(ab.statut)) {
+        try { localStorage.removeItem("sz_spot_origine"); } catch { /* stockage indisponible */ }
+      }
       const { data } = await supabase.rpc("get_library_catalog");
       if (data === null || data === undefined) { navigate({ to: "/offres", replace: true }); return; }
       const list = ((data as unknown as Audio[]) ?? []).slice()

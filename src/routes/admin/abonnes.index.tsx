@@ -28,6 +28,8 @@ type Abonne = {
   statut: string | null;
   date_fin_acces: string | null;
   langue_preferee: string | null;
+  spot_origine_id: string | null;
+  spot_label?: string | null;
 };
 
 export const STATUTS = ["actif", "ambassadeur", "offert", "inactif", "paiement_echoue", "resilie"] as const;
@@ -64,10 +66,19 @@ function AbonnesPage() {
     queryFn: async (): Promise<Abonne[]> => {
       const { data, error } = await supabase
         .from("abonnes_b2c")
-        .select("id, email, prenom, formule, statut, date_fin_acces, langue_preferee")
+        .select("id, email, prenom, formule, statut, date_fin_acces, langue_preferee, spot_origine_id")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data ?? [];
+      const rows = (data ?? []) as Abonne[];
+      const ids = [...new Set(rows.map((r) => r.spot_origine_id).filter((v): v is string => !!v))];
+      const labels: Record<string, string> = {};
+      if (ids.length) {
+        const { data: spots } = await supabase.from("spots").select("id, nom, client:client_id(nom)").in("id", ids);
+        for (const s of (spots ?? []) as { id: string; nom: string | null; client: { nom: string | null } | null }[]) {
+          labels[s.id] = [s.nom, s.client?.nom].filter(Boolean).join(" — ");
+        }
+      }
+      return rows.map((r) => ({ ...r, spot_label: r.spot_origine_id ? labels[r.spot_origine_id] ?? null : null }));
     },
   });
 
@@ -149,19 +160,20 @@ function AbonnesPage() {
               <th className="px-6 py-4">Email</th>
               <th className="px-4 py-4">Formule</th>
               <th className="px-4 py-4">Statut</th>
+              <th className="px-4 py-4">Spot d'origine</th>
               <th className="px-4 py-4">Fin d'accès</th>
               <th className="px-6 py-4">Langue</th>
             </tr>
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
+              <tr><td colSpan={6} className="px-6 py-10 text-center text-muted-foreground">Chargement…</td></tr>
             )}
             {error && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
+              <tr><td colSpan={6} className="px-6 py-10 text-center text-destructive">Erreur : {(error as Error).message}</td></tr>
             )}
             {!isLoading && !error && visible.length === 0 && (
-              <tr><td colSpan={5} className="px-6 py-10 text-center text-muted-foreground">Aucun abonné</td></tr>
+              <tr><td colSpan={6} className="px-6 py-10 text-center text-muted-foreground">Aucun abonné</td></tr>
             )}
             {visible.map((a) => (
               <tr
@@ -178,6 +190,7 @@ function AbonnesPage() {
                 </td>
                 <td className="px-4 py-4 text-foreground">{a.formule ?? "—"}</td>
                 <td className="px-4 py-4"><StatutBadge statut={a.statut} /></td>
+                <td className="px-4 py-4 text-foreground">{a.spot_label || "—"}</td>
                 <td className="px-4 py-4 tabular-nums text-foreground">
                   {a.date_fin_acces ? new Date(a.date_fin_acces).toLocaleDateString("fr-FR") : "—"}
                 </td>

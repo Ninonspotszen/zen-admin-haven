@@ -12,8 +12,6 @@ import pwaVoice from "@/assets/pwa-choix-voix.png";
 import pwaPlayer from "@/assets/pwa-player.png";
 
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
-const monthlyLink = import.meta.env['VITE_STRIPE_MONTHLY_LINK'] as string | undefined;
-const annualLink = import.meta.env['VITE_STRIPE_ANNUAL_LINK'] as string | undefined;
 const catalogue = [
   { title: "Le Réveil du corps", moment: "MATIN", duration: "8min", match: "reveil-du-corps" },
   { title: "La Sieste réparatrice", moment: "JOURNÉE", duration: "20min", match: "sieste-reparatrice" },
@@ -56,8 +54,8 @@ function Heading({ eyebrow, children, subtitle }: { eyebrow: string; children: R
   return <div className="p-heading"><p className="p-eyebrow">{eyebrow}</p><h2>{children}</h2>{subtitle && <p>{subtitle}</p>}</div>;
 }
 function Cta({ children, annual = false, variant = "", arrow = false }: { children: ReactNode; annual?: boolean; variant?: string; arrow?: boolean }) {
-  const href = annual ? annualLink : monthlyLink;
-  return href ? <Button asChild className={`p-cta ${variant}`}><a href={href}>{children}{arrow && <ArrowRight aria-hidden />}</a></Button> : <Button asChild className={`p-cta ${variant}`}><Link to="/offres">{children}{arrow && <ArrowRight aria-hidden />}</Link></Button>;
+  void annual;
+  return <Button asChild className={`p-cta ${variant}`}><Link to="/offres">{children}{arrow && <ArrowRight aria-hidden />}</Link></Button>;
 }
 function VideoThumb({ image, time, label, main = false }: { image: string; time?: number; label?: string; main?: boolean }) {
   return <VideoButton className={`p-thumb ${main ? "p-main-thumb" : ""}`} time={time} label={`Voir la vidéo : ${label ?? "Présentation Spots Zen"}`}><img src={image} alt="" loading="lazy" width={720} height={405} /><span className="p-play"><Play size={20} fill="currentColor" aria-hidden /></span>{label && <span className="p-thumb-label">{label}</span>}</VideoButton>;

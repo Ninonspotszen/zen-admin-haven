@@ -14,6 +14,7 @@ import {
   Save,
   Send,
   UserX,
+  Users,
   Wallet,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -175,11 +176,21 @@ function ClientDetail() {
         total = (ecoutes ?? []).length;
         moyenneMin = valeurs.length ? valeurs.reduce((a, b) => a + b, 0) / valeurs.length / 60 : null;
       }
+      // Abonnés convertis : abonnés actifs dont le spot d'origine appartient à ce client
+      let convertis = 0;
+      if (spotIds.length) {
+        const { count } = await supabase
+          .from("abonnes_b2c")
+          .select("id", { count: "exact", head: true })
+          .eq("statut", "actif")
+          .in("spot_origine_id", spotIds);
+        convertis = count ?? 0;
+      }
       return {
         client: (client ?? null) as Client | null,
         spots: (spots ?? []) as Spot[],
         audios: (clientAudios ?? []) as AudioRow[],
-        ecoutes: { total, moyenneMin },
+        ecoutes: { total, moyenneMin, convertis },
       };
     },
   });
@@ -501,6 +512,11 @@ function ClientDetail() {
               {data!.ecoutes.moyenneMin != null
                 ? `${Math.floor(data!.ecoutes.moyenneMin)} min ${String(Math.round((data!.ecoutes.moyenneMin % 1) * 60)).padStart(2, "0")} s`
                 : "—"}
+            </div>
+          </Field>
+          <Field label="Abonnés convertis" icon={Users}>
+            <div className="rounded-xl border border-input bg-secondary/50 px-3 py-2 text-sm font-semibold text-foreground">
+              {data!.ecoutes.convertis.toLocaleString("fr-FR")}
             </div>
           </Field>
         </div>
