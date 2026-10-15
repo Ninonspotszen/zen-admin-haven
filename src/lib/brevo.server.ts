@@ -1,4 +1,4 @@
-export const BREVO_TEMPLATES = { resiliationFr: 2 } as const;
+export const BREVO_TEMPLATES = { resiliationFr: 2, bienvenueFr: 4 } as const;
 
 export async function sendBrevoTemplate(opts: {
   templateId: number;

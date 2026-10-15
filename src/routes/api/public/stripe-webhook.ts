@@ -30,6 +30,12 @@ async function verifyStripeSignature(payload: string, header: string, secret: st
 }
 
 const toDate = (ts?: number | null) => (ts ? new Date(ts * 1000).toISOString().slice(0, 10) : null);
+const MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+// "2026-11-14" → "14 novembre 2026"
+const dateFr = (iso: string) => {
+  const [y, m, d] = iso.split("-");
+  return `${Number(d)} ${MOIS[Number(m) - 1]} ${y}`;
+};
 const idOf = (v: unknown): string | null =>
   typeof v === "string" ? v : (v as { id?: string } | null)?.id ?? null;
 
@@ -62,6 +68,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
             if ((userId || email) && subscriptionId) {
               let priceId = "";
               let periodEnd: number | null = null;
+              let trialEnd: number | null = null;
               const stripeKey = process.env["STRIPE_SECRET_KEY"];
               if (stripeKey) {
                 const res = await fetch(`https://api.stripe.com/v1/subscriptions/${subscriptionId}`, {
@@ -72,6 +79,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                   const item = sub.items?.data?.[0];
                   priceId = item?.price?.id ?? "";
                   periodEnd = item?.current_period_end ?? sub.current_period_end ?? null;
+                  trialEnd = sub.status === "trialing" ? sub.trial_end ?? null : null;
                 }
               }
 
@@ -114,7 +122,12 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               };
               if (email) row["email"] = email;
 
-              const { data: existing } = await abonnes().select("id, spot_origine_id").eq("id", userId).maybeSingle();
+              const { data: existing } = await abonnes()
+                .select("id, spot_origine_id, stripe_subscription_id, prenom")
+                .eq("id", userId)
+                .maybeSingle();
+              // Email de bienvenue : une seule fois par abonnement (Stripe peut renvoyer l'événement).
+              const nouvelAbonnement = existing?.stripe_subscription_id !== subscriptionId;
               if (existing) {
                 if (!existing.spot_origine_id && spotOrigine) row["spot_origine_id"] = spotOrigine;
                 const { error } = await abonnes().update(row).eq("id", userId);
@@ -127,6 +140,22 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                 if (spotOrigine) row["spot_origine_id"] = spotOrigine;
                 const { error } = await abonnes().insert(row);
                 if (error) throw error;
+              }
+
+              const destinataire = (row["email"] as string | undefined) || null;
+              if (nouvelAbonnement && destinataire) {
+                const finEssai = toDate(trialEnd);
+                const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+                await sendBrevoTemplate({
+                  templateId: BREVO_TEMPLATES.bienvenueFr,
+                  toEmail: destinataire,
+                  toName: existing?.prenom ?? null,
+                  params: {
+                    PRENOM: existing?.prenom?.trim() || null,
+                    // Absent si pas d'essai : le paragraphe « premier mois offert » est alors masqué.
+                    DATE_FIN_ESSAI: finEssai ? dateFr(finEssai) : null,
+                  },
+                });
               }
             }
           } else if (event.type === "invoice.payment_failed") {
@@ -160,9 +189,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               if (error) throw error;
               const newFin = upd["date_fin_prevue"] as string | null;
               if (!row.date_fin_prevue && newFin && row.email) {
-                const MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-                const [y, m, d] = newFin.split("-");
-                const dateFin = `${Number(d)} ${MOIS[Number(m) - 1]} ${y}`;
+                const dateFin = dateFr(newFin);
                 const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
                 await sendBrevoTemplate({
                   templateId: BREVO_TEMPLATES.resiliationFr,
