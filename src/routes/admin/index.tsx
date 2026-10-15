@@ -1,15 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Building2,
-  Users,
-  AlertTriangle,
-  Music,
-  ArrowRight,
-  Wallet,
-} from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Building2, Users, AlertTriangle, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { DashboardStats, LiveBadge, STATUT_LABEL, useDashboardLive } from "@/components/admin/dashboard-stats";
 
 export const Route = createFileRoute("/admin/")({
   head: () => ({
@@ -30,12 +24,13 @@ type DashboardData = {
   clientsPilote: number;
   renouvellements: { id: string; nom: string; date_renouvellement: string | null }[];
   abonnesActifs: number;
-  deltaMois: number;
+  inscriptionsMois: number;
+  statuts: [string, number][];
+  totalAbonnes: number;
   pilotesExpirant: { id: string; nom: string; date_pilote_fin: string | null }[];
   abonnesExpirant: { id: string; email: string; date_fin_acces: string | null }[];
   virementsRecus: number;
   paiementsEchoues: { id: string; email: string }[];
-  topAudio: { audio_id: string; nb_ecoutes: number; titre: string | null } | null;
 };
 
 async function fetchDashboard(): Promise<DashboardData> {
@@ -48,7 +43,6 @@ async function fetchDashboard(): Promise<DashboardData> {
   const in30 = localDay(30);
   const in7 = localDay(7);
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
 
   const [
     actifs,
@@ -56,42 +50,29 @@ async function fetchDashboard(): Promise<DashboardData> {
     renouvellements,
     abonnesActifs,
     abonnesMois,
-    abonnesMoisPrec,
+    tousAbonnes,
     pilotesExpirant,
     abonnesExpirant,
     virementsRecus,
     paiementsEchoues,
-    ecoutes,
   ] = await Promise.all([
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Actif"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Pilote"),
     supabase.from("clients").select("id, nom, date_renouvellement").eq("statut", "Actif").lte("date_renouvellement", in30).not("date_renouvellement", "is", null).order("date_renouvellement"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).eq("statut", "actif"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", monthStart),
-    supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", prevMonthStart).lt("created_at", monthStart),
+    supabase.from("abonnes_b2c").select("statut"),
     supabase.from("clients").select("id, nom, date_pilote_fin").eq("statut", "Pilote").lte("date_pilote_fin", in30).not("date_pilote_fin", "is", null).order("date_pilote_fin"),
     supabase.from("abonnes_b2c").select("id, email, date_fin_acces").in("statut", ["offert", "ambassadeur"]).gte("date_fin_acces", today).lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut_paiement", "Virement reçu"),
     // Statut posé par le webhook Stripe (invoice.payment_failed) pendant les relances.
     supabase.from("abonnes_b2c").select("id, email").eq("statut", "paiement_echoue").order("email"),
-    supabase.from("ecoutes").select("audio_id"),
   ]);
 
-  // Top audio : groupement côté front (pas de GROUP BY via l'API)
-  let topAudio: DashboardData["topAudio"] = null;
-  const counts = new Map<string, number>();
-  for (const row of ecoutes.data ?? []) {
-    if (row.audio_id) counts.set(row.audio_id, (counts.get(row.audio_id) ?? 0) + 1);
-  }
-  const top = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
-  if (top) {
-    const { data: trad } = await supabase
-      .from("audios_traductions")
-      .select("titre")
-      .eq("audio_id", top[0])
-      .eq("langue", "fr")
-      .maybeSingle();
-    topAudio = { audio_id: top[0], nb_ecoutes: top[1], titre: trad?.titre ?? null };
+  const statuts = new Map<string, number>();
+  for (const a of tousAbonnes.data ?? []) {
+    const k = STATUT_LABEL[a.statut ?? ""] ?? (a.statut || "non renseigné");
+    statuts.set(k, (statuts.get(k) ?? 0) + 1);
   }
 
   return {
@@ -99,12 +80,13 @@ async function fetchDashboard(): Promise<DashboardData> {
     clientsPilote: pilote.count ?? 0,
     renouvellements: renouvellements.data ?? [],
     abonnesActifs: abonnesActifs.count ?? 0,
-    deltaMois: (abonnesMois.count ?? 0) - (abonnesMoisPrec.count ?? 0),
+    inscriptionsMois: abonnesMois.count ?? 0,
+    statuts: [...statuts].sort((a, b) => b[1] - a[1]),
+    totalAbonnes: tousAbonnes.data?.length ?? 0,
     pilotesExpirant: pilotesExpirant.data ?? [],
     abonnesExpirant: abonnesExpirant.data ?? [],
     virementsRecus: virementsRecus.count ?? 0,
     paiementsEchoues: paiementsEchoues.data ?? [],
-    topAudio,
   };
 }
 
@@ -121,18 +103,35 @@ function isOverdue(d: string | null) {
 }
 
 function AdminDashboard() {
-  const { data, isLoading } = useQuery({ queryKey: ["admin-dashboard"], queryFn: fetchDashboard });
+  const qc = useQueryClient();
+  const live = useDashboardLive(qc);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["admin-dashboard"],
+    queryFn: fetchDashboard,
+    refetchInterval: live.status === "coupe" ? 60_000 : false,
+  });
   const today = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div className="space-y-8">
       {/* Bloc 5 — Header */}
-      <div>
-        <h1 className="font-serif text-3xl text-foreground">Bonjour Ninon</h1>
-        <p className="mt-1 text-sm capitalize text-muted-foreground">{today}</p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-serif text-3xl text-foreground">Bonjour Ninon</h1>
+          <p className="mt-1 text-sm capitalize text-muted-foreground">{today}</p>
+        </div>
+        <LiveBadge status={live.status} derniere={live.derniere} />
       </div>
 
-      {isLoading || !data ? (
+      <h2 className="flex items-center gap-2 font-serif text-2xl text-foreground">
+        <LayoutDashboard className="h-5 w-5 text-primary" aria-hidden /> Pilotage
+      </h2>
+
+      {error ? (
+        <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          La synthèse n'a pas pu être chargée ({(error as Error).message}). Rechargez la page dans un instant.
+        </p>
+      ) : isLoading || !data ? (
         <p className="text-sm text-muted-foreground">Chargement de la synthèse…</p>
       ) : (
         <>
@@ -144,10 +143,16 @@ function AdminDashboard() {
               icon={Users}
               label="Abonnés actifs"
               value={data.abonnesActifs}
-              hint={`${data.deltaMois >= 0 ? "+" : ""}${data.deltaMois} ce mois`}
+              hint={`${data.inscriptionsMois} inscription${data.inscriptionsMois > 1 ? "s" : ""} ce mois`}
               href="/admin/abonnes"
             />
-            <StatCard icon={Wallet} label="Panier moyen" value="—" hint="Bientôt disponible" />
+            <StatCard
+              icon={Users}
+              label="Abonnés par statut"
+              value={data.totalAbonnes}
+              hint={data.statuts.map(([k, n]) => `${n} ${k}`).join(" · ") || "Aucun abonné"}
+              href="/admin/abonnes"
+            />
           </div>
 
           {/* Prochains renouvellements */}
@@ -230,27 +235,10 @@ function AdminDashboard() {
             </div>
           </section>
 
-          {/* Bloc 4 — Top audio */}
-          <section className="rounded-2xl border bg-card p-5">
-            <h2 className="flex items-center gap-2 font-serif text-lg text-foreground">
-              <Music className="h-4 w-4 text-primary" /> Top audio
-            </h2>
-            {data.topAudio ? (
-              <div className="mt-3 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-foreground">{data.topAudio.titre ?? "Sans titre"}</p>
-                  <p className="text-xs text-muted-foreground">{data.topAudio.nb_ecoutes} écoute{data.topAudio.nb_ecoutes > 1 ? "s" : ""}</p>
-                </div>
-                <Link to="/admin/audios/$id" params={{ id: data.topAudio.audio_id }} className="flex items-center gap-1 text-sm text-primary hover:underline">
-                  Voir la fiche <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            ) : (
-              <p className="mt-2 text-sm text-muted-foreground">Aucune écoute enregistrée pour l'instant.</p>
-            )}
-          </section>
         </>
       )}
+
+      <DashboardStats live={live.status} />
     </div>
   );
 }

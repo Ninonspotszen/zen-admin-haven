@@ -31,7 +31,8 @@ Application web progressive (PWA) avec trois espaces : la page d'un spot pour le
 - **Bibliothèque abonné** (`/bibliotheque`) : catalogue filtrable, gestion de l'abonnement.
 - **Emails automatiques** : bienvenue à l'abonnement, confirmation de résiliation, accès offert.
 - **Feature IA, traduction assistée** : dans la fiche d'un audio, Claude (Haiku 5.5) propose le titre et la description en EN, DE, NL, ES ; l'admin relit et enregistre. Chaque passage est journalisé (`agent_logs`). Détail : [`docs/fiche-6-briques-traduction-ia.md`](docs/fiche-6-briques-traduction-ia.md).
-- **Back-office** (`/admin`) : clients B2B, spots et QR codes, bibliothèque audio, abonnés, accès offerts, statistiques d'écoute.
+- **Back-office** (`/admin`) : clients B2B, spots et QR codes, bibliothèque audio, abonnés, accès offerts.
+- **Dashboard admin en temps réel** (`/admin`, réservé au rôle admin) : pilotage, écoutes (par jour, top audios, moment de la journée, langue, voix, dernières écoutes), clients B2C (accès, revenu mensuel estimé, inscriptions, résiliations, conversion depuis un spot) et activité par spot. Mise à jour automatique via Supabase Realtime.
 - **PWA installable** : épinglable sur l'écran d'accueil comme une application.
 
 ## 🚀 Installation en local
