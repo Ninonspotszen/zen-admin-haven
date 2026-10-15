@@ -187,7 +187,14 @@
       "calm": "Verleng deze rust, waar u ook bent.",
       "subscribe": "Abonneer u op Spots Zen →"
     },
-    "tagline": "Spots Zen · Welzijnsonderdompeling"
+    "tagline": "Spots Zen · Welzijnsonderdompeling",
+    "status": {
+      "loading": "Uw immersie wordt geladen…",
+      "slow": "De verbinding is zwak: het laden van de immersie duurt even.",
+      "offline": "U bent niet meer verbonden met internet. De immersie gaat verder zodra het netwerk terug is.",
+      "error": "Deze immersie kan nu niet worden geladen.",
+      "retry": "Opnieuw proberen"
+    }
   },
   "lib": {
     "meta": {

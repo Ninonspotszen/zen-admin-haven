@@ -187,7 +187,14 @@
       "calm": "Verlängern Sie diese Ruhe, wo immer Sie sind.",
       "subscribe": "Spots Zen abonnieren →"
     },
-    "tagline": "Spots Zen · Wellness-Eintauchungen"
+    "tagline": "Spots Zen · Wellness-Eintauchungen",
+    "status": {
+      "loading": "Ihre Immersion wird geladen…",
+      "slow": "Die Verbindung ist schwach: Das Laden der Immersion dauert etwas länger.",
+      "offline": "Sie sind nicht mehr mit dem Internet verbunden. Die Immersion wird fortgesetzt, sobald das Netz wieder da ist.",
+      "error": "Diese Immersion kann gerade nicht geladen werden.",
+      "retry": "Erneut versuchen"
+    }
   },
   "lib": {
     "meta": {

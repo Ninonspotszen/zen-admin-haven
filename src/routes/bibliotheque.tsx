@@ -6,6 +6,8 @@ import { AppLegalFooter } from "@/components/app-legal-footer";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useAudioStatus, useListenLog } from "@/lib/player-hooks";
+import { AudioStatusNotice } from "@/components/audio-status-notice";
 
 export const Route = createFileRoute("/bibliotheque")({
   ssr: false,
@@ -408,7 +410,6 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
   const [time, setTime] = useState(0);
   const [dur, setDur] = useState(audio.duree_secondes ?? 0);
   const [langOpen, setLangOpen] = useState(false);
-  const logged = useRef(false);
   const idx = list.findIndex((a) => a.id === audio.id);
   const next = list.length > 1 ? list[(idx + 1) % list.length] : null;
 
@@ -423,23 +424,21 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
   useEffect(() => {
     const el = ref.current;
     if (!el || !trad) return;
-    const log = () => {
-      if (logged.current || el.currentTime < 5) return;
-      logged.current = true;
-      void supabase.from("ecoutes").insert({ audio_id: audio.id, spot_id: spotId, user_id: userId ?? null, langue: trad.langue, voix: trad.voix, duree_ecoute_sec: Math.round(el.currentTime) });
-    };
-    const onTime = () => { setTime(el.currentTime); log(); };
-    const onEnd = () => { log(); if (next) onSelect(next); };
+    // L'écoute est enregistrée par useListenLog (durée réelle, sans identifiant d'abonné).
+    const onTime = () => { setTime(el.currentTime); };
+    const onEnd = () => { if (next) onSelect(next); };
     el.addEventListener("timeupdate", onTime);
     el.addEventListener("ended", onEnd);
-    window.addEventListener("pagehide", log);
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({ title: trad.titre, artist: "Spots Zen", artwork: audio.image_url ? [{ src: audio.image_url }] : [] });
       navigator.mediaSession.setActionHandler("seekbackward", () => { el.currentTime = Math.max(0, el.currentTime - 15); });
       navigator.mediaSession.setActionHandler("seekforward", () => { el.currentTime = Math.min(el.duration || 0, el.currentTime + 15); });
     }
-    return () => { el.removeEventListener("timeupdate", onTime); el.removeEventListener("ended", onEnd); window.removeEventListener("pagehide", log); };
-  }, [audio.id, audio.image_url, spotId, userId, trad, next, onSelect]);
+    return () => { el.removeEventListener("timeupdate", onTime); el.removeEventListener("ended", onEnd); };
+  }, [audio.id, audio.image_url, trad, next, onSelect]);
+
+  useListenLog(ref, { audioId: audio.id, spotId, langue: trad?.langue, voix: trad?.voix });
+  const { status: netStatus, retry } = useAudioStatus(ref, trad?.cloudinary_url);
 
   const close = () => { ref.current?.pause(); onClose(); };
   const toggle = () => { const el = ref.current; if (!el) return; if (el.paused) void el.play(); else el.pause(); };
@@ -456,7 +455,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
   const pct = dur ? Math.min(100, (time / dur) * 100) : 0;
 
   return (
-    <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title || "Lecteur audio"}>
+    <div className="szp fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title || tr("player.ariaLabel")}>
       <style>{PLAYER_CSS}</style>
       {audio.image_url && (
         <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden>
@@ -526,6 +525,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
             style={{ ["--p" as string]: `${pct}%` }}
             onChange={(e) => { const v = Number(e.target.value); setTime(v); if (ref.current) ref.current.currentTime = v; }} />
           <div className="mt-2 flex justify-between text-xs" style={{ color: "#9AA09A" }}><span>{mmss(time)}</span><span>{mmss(dur)}</span></div>
+          <AudioStatusNotice status={netStatus} onRetry={retry} />
         </div>
 
         {/* CONTROLES */}

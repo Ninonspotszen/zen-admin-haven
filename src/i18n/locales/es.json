@@ -187,7 +187,14 @@
       "calm": "Prolongue esta calma donde quiera que esté.",
       "subscribe": "Suscríbase a Spots Zen →"
     },
-    "tagline": "Spots Zen · Inmersiones de bienestar"
+    "tagline": "Spots Zen · Inmersiones de bienestar",
+    "status": {
+      "loading": "Cargando la inmersión…",
+      "slow": "La conexión es débil: la inmersión tarda un poco en cargarse.",
+      "offline": "Ya no está conectado a Internet. La inmersión se reanudará en cuanto vuelva la red.",
+      "error": "No es posible cargar esta inmersión en este momento.",
+      "retry": "Reintentar"
+    }
   },
   "lib": {
     "meta": {

@@ -187,7 +187,14 @@
       "calm": "Extend this sense of calm wherever you are.",
       "subscribe": "Subscribe to Spots Zen →"
     },
-    "tagline": "Spots Zen · Wellness immersions"
+    "tagline": "Spots Zen · Wellness immersions",
+    "status": {
+      "loading": "Loading your immersion…",
+      "slow": "Your connection is weak: the immersion is taking a little while to load.",
+      "offline": "You are no longer connected to the internet. The immersion will resume as soon as the network is back.",
+      "error": "This immersion can't be loaded right now.",
+      "retry": "Try again"
+    }
   },
   "lib": {
     "meta": {
