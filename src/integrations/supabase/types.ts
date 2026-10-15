@@ -121,6 +121,59 @@ export type Database = {
           },
         ]
       }
+      agent_logs: {
+        Row: {
+          agent: string
+          audio_id: string | null
+          cout_usd: number | null
+          created_at: string
+          declenche_par: string | null
+          duree_ms: number | null
+          erreur: string | null
+          id: string
+          modele: string | null
+          statut: string
+          tokens_entree: number | null
+          tokens_sortie: number | null
+        }
+        Insert: {
+          agent: string
+          audio_id?: string | null
+          cout_usd?: number | null
+          created_at?: string
+          declenche_par?: string | null
+          duree_ms?: number | null
+          erreur?: string | null
+          id?: string
+          modele?: string | null
+          statut: string
+          tokens_entree?: number | null
+          tokens_sortie?: number | null
+        }
+        Update: {
+          agent?: string
+          audio_id?: string | null
+          cout_usd?: number | null
+          created_at?: string
+          declenche_par?: string | null
+          duree_ms?: number | null
+          erreur?: string | null
+          id?: string
+          modele?: string | null
+          statut?: string
+          tokens_entree?: number | null
+          tokens_sortie?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_logs_audio_id_fkey"
+            columns: ["audio_id"]
+            isOneToOne: false
+            referencedRelation: "audios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audio_filtres: {
         Row: {
           audio_id: string | null

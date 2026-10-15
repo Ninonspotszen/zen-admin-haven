@@ -21,6 +21,7 @@ Application web progressive (PWA) avec trois espaces : la page d'un spot pour le
 | Audio | Cloudinary (hébergement des fichiers) · ElevenLabs (production des voix traduites) |
 | QR codes | Short.io (liens permanents imprimés) |
 | Traductions de l'interface | i18next (FR, EN, DE, NL, ES) |
+| IA | API Claude d'Anthropic (modèle Haiku 5.5) : traduction assistée du catalogue |
 
 ## ✨ Fonctionnalités principales
 
@@ -29,6 +30,7 @@ Application web progressive (PWA) avec trois espaces : la page d'un spot pour le
 - **Abonnement** (`/offres`) : 5 €/mois ou 49 €/an, premier mois offert à la première souscription, paiement et résiliation via Stripe.
 - **Bibliothèque abonné** (`/bibliotheque`) : catalogue filtrable, gestion de l'abonnement.
 - **Emails automatiques** : bienvenue à l'abonnement, confirmation de résiliation, accès offert.
+- **Feature IA, traduction assistée** : dans la fiche d'un audio, Claude (Haiku 5.5) propose le titre et la description en EN, DE, NL, ES ; l'admin relit et enregistre. Chaque passage est journalisé (`agent_logs`). Détail : [`docs/fiche-6-briques-traduction-ia.md`](docs/fiche-6-briques-traduction-ia.md).
 - **Back-office** (`/admin`) : clients B2B, spots et QR codes, bibliothèque audio, abonnés, accès offerts, statistiques d'écoute.
 - **PWA installable** : épinglable sur l'écran d'accueil comme une application.
 
@@ -56,6 +58,8 @@ Autres commandes : `bun run build` (build de production), `bun run lint`, `bun r
 | `STRIPE_WEBHOOK_SECRET` | Vérification de la signature des webhooks Stripe | Vercel, **secret** |
 | `BREVO_API_KEY` | Envoi des emails transactionnels (clé restreinte) | Vercel, **secret** |
 | `EMAILS_ACTIFS` | Interrupteur des emails : seuls les envois avec la valeur `true` partent | Vercel |
+| `ANTHROPIC_API_KEY` | Feature IA : traduction assistée du catalogue (API Claude) | Vercel, **secret** |
+| `TRADUCTION_IA_ACTIVE` | Bouton off de la feature IA : seule la valeur `true` autorise l'appel à Claude | Vercel |
 
 🔒 Aucune clé secrète n'est versionnée. Le fichier `.env` présent dans le repo est géré par Lovable et ne contient que l'URL Supabase et la **clé publique** (rôle `anon`), conçue pour être visible dans le navigateur : l'accès aux données est protégé par les règles RLS de Supabase.
 

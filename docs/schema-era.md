@@ -1,7 +1,7 @@
 # Schéma ERA — Base de données Spots Zen
 
 > Régénéré le 15/10/2026 à partir de la base réelle (`src/integrations/supabase/types.ts`), après le nettoyage du 15/10 (écoutes anonymes : plus de colonne `user_id` dans `ecoutes`).
-> 13 tables. L'état de la RLS table par table est vérifié dans le rapport d'audit sécurité.
+> 14 tables (dont `agent_logs`, journal de la feature IA, ajoutée le 15/10). L'état de la RLS table par table est vérifié dans le rapport d'audit sécurité.
 
 ## Diagramme de relations
 
@@ -145,6 +145,20 @@ erDiagram
         string timestamp
         string voix
     }
+    agent_logs {
+        string id PK
+        string created_at
+        string agent
+        string audio_id FK
+        string declenche_par
+        string modele
+        string statut
+        int duree_ms
+        int tokens_entree
+        int tokens_sortie
+        float cout_usd
+        string erreur
+    }
     contact_requests {
         string created_at
         string email
@@ -172,6 +186,7 @@ erDiagram
     spots ||--o{ abonnes_b2c : "spot d origine"
     audios ||--o{ ecoutes : "écouté"
     spots ||--o{ ecoutes : "écouté sur"
+    audios ||--o{ agent_logs : "traduit par l'IA"
 ```
 
 Liens vers les comptes : `profiles.id` et `abonnes_b2c.id` référencent `auth.users.id` (comptes Supabase Auth, non représentés ci-dessus).
@@ -201,6 +216,7 @@ Liens vers les comptes : `profiles.id` et `abonnes_b2c.id` référencent `auth.u
 | `profiles` | Rôle de chaque compte (`admin` ou `user`), utilisé par `is_admin()` |
 | `ecoutes` | Écoutes **anonymes** : audio, spot, langue, voix, durée réellement écoutée |
 | `contact_requests` | Demandes envoyées depuis le formulaire `/professionnels` |
+| `agent_logs` | Journal de la feature IA : une ligne par clic sur « Traduire avec l'IA » (statut réussi, échec ou désactivé, modèle, durée, tokens, coût, erreur). Lecture et ajout réservés aux admins, aucune modification ni suppression possible depuis l'app |
 
 ## Fonctions SECURITY DEFINER
 

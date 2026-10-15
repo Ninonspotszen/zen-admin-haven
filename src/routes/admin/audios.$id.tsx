@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import { traduireAudio } from "@/lib/traduction-ia.functions";
 
 export const Route = createFileRoute("/admin/audios/$id")({
   head: () => ({
@@ -58,6 +59,7 @@ function AudioDetail() {
   const [f, setF] = useState({ titre: "", type: "", moment: "", public_cible: "", duree: "", statut: "brouillon", note: "" });
   const [tr, setTr] = useState<Record<Lang, LangState>>(emptyAll);
   const [lang, setLang] = useState<Lang>("fr");
+  const [iaInfo, setIaInfo] = useState(false);
 
   const trads: { id: string; langue: string; voix: string | null; titre: string; description: string | null; cloudinary_url: string | null }[] =
     data?.audios_traductions ?? [];
@@ -164,6 +166,57 @@ function AudioDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  // Feature IA : Claude propose les traductions, rien n'est enregistré avant « Sauvegarder ».
+  const TARGETS = ["en", "de", "nl", "es"] as const;
+  const translate = useMutation({
+    mutationFn: () => {
+      const description = isMusic ? undefined : (tr.fr.feminine.description || tr.fr.masculine.description || "").trim() || undefined;
+      return traduireAudio({ data: { audioId: id, titre: f.titre, description, musique: isMusic } });
+    },
+    onSuccess: (res) => {
+      setTr((p) => {
+        const next = { ...p };
+        for (const l of TARGETS) {
+          const t = res[l];
+          if (isMusic) {
+            next[l] = { ...p[l], aucune: { ...p[l].aucune, titre: t.titre } };
+          } else {
+            const fill = (b: VoiceBlock): VoiceBlock => ({ ...b, titre: t.titre, description: t.description ?? b.description });
+            next[l] = { ...p[l], feminine: fill(p[l].feminine), masculine: fill(p[l].masculine) };
+          }
+        }
+        return next;
+      });
+      setIaInfo(true);
+      setLang("en");
+      toast.success("Propositions de traduction ajoutées : relisez chaque langue avant de sauvegarder");
+    },
+    // Chaque clic écrit une ligne de journal (réussi, échec ou désactivé) : on rafraîchit l'affichage.
+    onSettled: () => qc.invalidateQueries({ queryKey: ["agent_logs", id] }),
+  });
+  const journalIA = useQuery({
+    queryKey: ["agent_logs", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("agent_logs")
+        .select("id, created_at, statut, modele, duree_ms, tokens_entree, tokens_sortie, cout_usd, erreur")
+        .eq("audio_id", id)
+        .order("created_at", { ascending: false })
+        .limit(10);
+      if (error) throw error;
+      return data;
+    },
+  });
+  const hasExistingTranslations = TARGETS.some((l) =>
+    isMusic ? tr[l].aucune.titre.trim() : tr[l].feminine.titre.trim() || tr[l].masculine.titre.trim(),
+  );
+  const askTranslation = () => {
+    if (!f.titre.trim()) { toast.error("Renseignez d'abord le titre français"); return; }
+    if (hasExistingTranslations && !confirm("Des traductions existent déjà. Les remplacer par les propositions de l'IA ? (Rien n'est enregistré tant que vous ne cliquez pas sur « Sauvegarder ».)")) return;
+    setIaInfo(false);
+    translate.mutate();
+  };
+
   if (isLoading) return <p className="text-muted-foreground">Chargement…</p>;
   if (error || !data) return <p className="text-destructive">Audio introuvable.</p>;
 
@@ -241,6 +294,64 @@ function AudioDetail() {
           );
         })}
       </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={askTranslation}
+          disabled={translate.isPending}
+          className="inline-flex items-center gap-2 rounded-xl border border-input bg-card px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-secondary disabled:opacity-60"
+        >
+          <Sparkles className="h-4 w-4 text-primary" aria-hidden />
+          {translate.isPending ? "Traduction en cours…" : "Traduire avec l'IA (EN · DE · NL · ES)"}
+        </button>
+        <span className="text-xs text-muted-foreground">
+          {isMusic ? "Titre" : "Titre et description"} proposés à partir du français, à relire avant de sauvegarder.
+        </span>
+      </div>
+      <div aria-live="polite">
+        {translate.isError && (
+          <p role="alert" className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-800">
+            {(translate.error as Error).message}
+          </p>
+        )}
+        {iaInfo && !translate.isPending && (
+          <p className="mt-3 rounded-xl border border-primary/30 bg-primary/5 px-3 py-2 text-xs text-foreground">
+            Propositions de l'IA ajoutées en EN, DE, NL et ES. Relisez chaque langue (onglets ci-dessus), corrigez si besoin, puis cliquez sur « Sauvegarder les modifications ».
+          </p>
+        )}
+      </div>
+
+      <details className="mt-3 rounded-xl border bg-card px-4 py-2 text-xs">
+        <summary className="cursor-pointer font-semibold text-muted-foreground">
+          Journal de l'IA pour cet audio ({journalIA.data?.length ?? 0} passage{(journalIA.data?.length ?? 0) > 1 ? "s" : ""})
+        </summary>
+        {journalIA.isError ? (
+          <p className="mt-2 text-destructive">Journal indisponible.</p>
+        ) : !journalIA.data?.length ? (
+          <p className="mt-2 text-muted-foreground">Aucun passage pour l'instant.</p>
+        ) : (
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="text-muted-foreground">
+                <tr><th className="py-1 pr-3 font-semibold">Date</th><th className="py-1 pr-3 font-semibold">Statut</th><th className="py-1 pr-3 font-semibold">Durée</th><th className="py-1 pr-3 font-semibold">Tokens (entrée / sortie)</th><th className="py-1 pr-3 font-semibold">Coût</th><th className="py-1 font-semibold">Erreur</th></tr>
+              </thead>
+              <tbody>
+                {journalIA.data.map((j) => (
+                  <tr key={j.id} className="border-t align-top">
+                    <td className="py-1 pr-3 whitespace-nowrap">{new Date(j.created_at).toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short", timeStyle: "short" })}</td>
+                    <td className="py-1 pr-3">{j.statut === "reussi" ? "✅ réussi" : j.statut === "echec" ? "❌ échec" : "⏸ désactivé"}</td>
+                    <td className="py-1 pr-3 whitespace-nowrap">{j.duree_ms != null ? `${(j.duree_ms / 1000).toFixed(1)} s` : "—"}</td>
+                    <td className="py-1 pr-3">{j.tokens_entree != null ? `${j.tokens_entree} / ${j.tokens_sortie ?? 0}` : "—"}</td>
+                    <td className="py-1 pr-3 whitespace-nowrap">{j.cout_usd != null ? `${Number(j.cout_usd).toFixed(4)} $` : "—"}</td>
+                    <td className="py-1 text-muted-foreground">{j.erreur ?? ""}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </details>
 
       {incomplete.length > 0 && (
         <div className="mt-3 space-y-1">
