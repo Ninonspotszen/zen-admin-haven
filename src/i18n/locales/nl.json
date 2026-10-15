@@ -889,7 +889,7 @@
       "cta": "Offerte aanvragen →",
       "altContact": "Of schrijf ons rechtstreeks: bonjour@spotszen.fr",
       "notePersonal": "Persoonlijk antwoord binnen 24 uur · Vrijblijvend",
-      "ctaStart": "Nu beginnen →",
+      "ctaStart": "Mijn aanvraag versturen →",
       "field": {
         "nom": "Voornaam · Achternaam",
         "email": "Professioneel e-mailadres",
@@ -897,7 +897,7 @@
         "fonction": "Uw functie",
         "message": "Bericht",
         "messageLibre": "Vrij bericht",
-        "taille": "Aantal personen / kamers"
+        "taille": "Aantal personen"
       },
       "generalOptions": [
         "Toeristische accommodatie",

@@ -889,7 +889,7 @@
       "cta": "Angebot anfordern →",
       "altContact": "Oder schreiben Sie uns direkt: bonjour@spotszen.fr",
       "notePersonal": "Persönliche Antwort innerhalb von 24 Stunden · Unverbindlich",
-      "ctaStart": "Jetzt starten →",
+      "ctaStart": "Anfrage senden →",
       "field": {
         "nom": "Vorname · Nachname",
         "email": "Berufliche E-Mail",
@@ -897,7 +897,7 @@
         "fonction": "Ihre Funktion",
         "message": "Nachricht",
         "messageLibre": "Freie Nachricht",
-        "taille": "Anzahl Personen / Zimmer"
+        "taille": "Anzahl Personen"
       },
       "generalOptions": [
         "Touristische Unterkunft",

@@ -889,7 +889,7 @@
       "cta": "Demander un devis →",
       "altContact": "Ou écrivez-nous directement : bonjour@spotszen.fr",
       "notePersonal": "Réponse personnalisée sous 24 heures · Sans engagement",
-      "ctaStart": "Commencer maintenant →",
+      "ctaStart": "Envoyer ma demande →",
       "field": {
         "nom": "Prénom · Nom",
         "email": "Email professionnel",
@@ -897,7 +897,7 @@
         "fonction": "Votre fonction",
         "message": "Message",
         "messageLibre": "Message libre",
-        "taille": "Nombre de personnes / chambres"
+        "taille": "Nombre de personnes"
       },
       "generalOptions": [
         "Hébergement touristique",

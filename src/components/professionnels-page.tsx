@@ -22,7 +22,7 @@ const msgField: FieldDef = { name: "message", labelKey: "pro.form.field.message"
 
 const sectors: Sector[] = [
   { id: "hebergements", image: imgHeb,
-    fields: [{ name: "etablissement", labelKey: "pro.sector.hebergements.fields.etablissement" }, { name: "type_structure", labelKey: "pro.sector.hebergements.fields.type_structure", type: "select", optionsKey: "pro.sector.hebergements.options" }, { name: "taille", labelKey: "pro.sector.hebergements.fields.taille" }, msgField] },
+    fields: [{ name: "etablissement", labelKey: "pro.sector.hebergements.fields.etablissement" }, { name: "nom", labelKey: "pro.form.field.fonction" }, { name: "email", labelKey: "pro.form.field.email", type: "email" }, { name: "type_structure", labelKey: "pro.sector.hebergements.fields.type_structure", type: "select", optionsKey: "pro.sector.hebergements.options" }, { name: "taille", labelKey: "pro.sector.hebergements.fields.taille" }, msgField] },
   { id: "entreprises", image: imgEnt,
     fields: [{ name: "etablissement", labelKey: "pro.sector.entreprises.fields.etablissement" }, { name: "nom", labelKey: "pro.form.field.fonction" }, { name: "email", labelKey: "pro.sector.entreprises.fields.email", type: "email" }, { name: "taille", labelKey: "pro.sector.entreprises.fields.taille", type: "select", optionsKey: "pro.sector.entreprises.options" }, msgField] },
   { id: "ecoles", image: imgEco,
