@@ -441,7 +441,9 @@ export type Database = {
           id: string
           message: string | null
           nom: string | null
+          notification: string | null
           secteur: string
+          statut: string
           taille: string | null
           type_structure: string | null
         }
@@ -452,7 +454,9 @@ export type Database = {
           id?: string
           message?: string | null
           nom?: string | null
+          notification?: string | null
           secteur: string
+          statut?: string
           taille?: string | null
           type_structure?: string | null
         }
@@ -463,7 +467,9 @@ export type Database = {
           id?: string
           message?: string | null
           nom?: string | null
+          notification?: string | null
           secteur?: string
+          statut?: string
           taille?: string | null
           type_structure?: string | null
         }

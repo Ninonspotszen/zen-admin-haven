@@ -2,7 +2,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { Zap, Mic, Globe, RefreshCw, TrendingUp, AlertCircle, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { HomeHeader, HomeFooter } from "@/components/home-chrome";
-import { supabase } from "@/integrations/supabase/client";
+import { envoyerDemandeContact } from "@/lib/contact.functions";
 import hero from "@/assets/pro-hero.jpg";
 import imgHeb from "@/assets/pro-hebergements.jpg";
 import imgEnt from "@/assets/pro-entreprises.jpg";
@@ -59,9 +59,14 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
       const v = String(fd.get(f.name) ?? "").trim();
       row[f.name] = row[f.name] ? `${row[f.name]} · ${v}` : v || null;
     }
+    row["site_web"] = String(fd.get("site_web") ?? "");
     setState("sending");
-    const { error } = await supabase.from("contact_requests").insert(row as never);
-    setState(error ? "error" : "done");
+    try {
+      await envoyerDemandeContact({ data: row as never });
+      setState("done");
+    } catch {
+      setState("error");
+    }
   }
   return (
     <div className={`pr-form-card ${large ? "pr-form-large" : ""}`}>
@@ -69,6 +74,8 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
         <form onSubmit={submit}>
           <h3 className="pr-form-title">{title}</h3>
           <p className="pr-form-note">{large ? t("pro.form.note") : t("pro.form.notePersonal")}</p>
+          {/* Champ piège anti-robots : invisible et ignoré par les lecteurs d'écran. */}
+          <input type="text" name="site_web" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }} />
           {fields.map(f => {
             const id = `${secteur}-${f.name}-${f.labelKey.length}`;
             const label = t(f.labelKey);

@@ -44,3 +44,45 @@ export async function sendBrevoTemplate(opts: {
     return "failed";
   }
 }
+
+/**
+ * Email interne envoyé à Spots Zen (jamais à un client) : alerte « nouvelle demande de contact ».
+ * Interrupteur dédié NOTIF_CONTACT_ACTIVE (indépendant d'EMAILS_ACTIFS, qui ne concerne que les clients).
+ * Ne lève jamais d'erreur.
+ */
+export async function sendBrevoInternalAlert(opts: {
+  subject: string;
+  html: string;
+  replyTo?: { email: string; name?: string | null } | null;
+}): Promise<EmailStatus> {
+  try {
+    if (process.env["NOTIF_CONTACT_ACTIVE"] !== "true") {
+      console.info("brevo: alerte interne désactivée (NOTIF_CONTACT_ACTIVE)");
+      return "disabled";
+    }
+    const key = process.env["BREVO_API_KEY"];
+    if (!key) {
+      console.warn("brevo: BREVO_API_KEY manquante");
+      return "failed";
+    }
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: { "api-key": key, "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        sender: { email: "bonjour@spotszen.fr", name: "Site Spots Zen" },
+        to: [{ email: "bonjour@spotszen.fr", name: "Spots Zen" }],
+        ...(opts.replyTo ? { replyTo: { email: opts.replyTo.email, name: opts.replyTo.name ?? undefined } } : {}),
+        subject: opts.subject,
+        htmlContent: opts.html,
+      }),
+    });
+    if (!res.ok) {
+      console.error("brevo (alerte interne):", res.status, await res.text());
+      return "failed";
+    }
+    return "sent";
+  } catch (e) {
+    console.error("brevo (alerte interne):", (e as Error).message);
+    return "failed";
+  }
+}

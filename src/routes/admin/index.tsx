@@ -27,6 +27,7 @@ type DashboardData = {
   inscriptionsMois: number;
   statuts: [string, number][];
   totalAbonnes: number;
+  demandesATraiter: number;
   pilotesExpirant: { id: string; nom: string; date_pilote_fin: string | null }[];
   abonnesExpirant: { id: string; email: string; date_fin_acces: string | null }[];
   virementsRecus: number;
@@ -51,6 +52,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     abonnesActifs,
     abonnesMois,
     tousAbonnes,
+    demandes,
     pilotesExpirant,
     abonnesExpirant,
     virementsRecus,
@@ -62,6 +64,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).eq("statut", "actif"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", monthStart),
     supabase.from("abonnes_b2c").select("statut"),
+    supabase.from("contact_requests").select("id", { count: "exact", head: true }).neq("statut", "traitee"),
     supabase.from("clients").select("id, nom, date_pilote_fin").eq("statut", "Pilote").lte("date_pilote_fin", in30).not("date_pilote_fin", "is", null).order("date_pilote_fin"),
     supabase.from("abonnes_b2c").select("id, email, date_fin_acces").in("statut", ["offert", "ambassadeur"]).gte("date_fin_acces", today).lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut_paiement", "Virement reçu"),
@@ -83,6 +86,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     inscriptionsMois: abonnesMois.count ?? 0,
     statuts: [...statuts].sort((a, b) => b[1] - a[1]),
     totalAbonnes: tousAbonnes.data?.length ?? 0,
+    demandesATraiter: demandes.count ?? 0,
     pilotesExpirant: pilotesExpirant.data ?? [],
     abonnesExpirant: abonnesExpirant.data ?? [],
     virementsRecus: virementsRecus.count ?? 0,
@@ -231,6 +235,16 @@ function AdminDashboard() {
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Paiements B2B</h3>
                 <p className="mt-2 text-sm text-foreground">{data.virementsRecus} virement{data.virementsRecus > 1 ? "s" : ""} reçu{data.virementsRecus > 1 ? "s" : ""}</p>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Demandes de contact</h3>
+                {data.demandesATraiter === 0 ? (
+                  <p className="mt-2 text-sm text-muted-foreground">Aucune demande à traiter.</p>
+                ) : (
+                  <Link to="/admin/demandes" className="mt-2 inline-block text-sm font-medium text-amber-700 hover:underline">
+                    {data.demandesATraiter} demande{data.demandesATraiter > 1 ? "s" : ""} à traiter →
+                  </Link>
+                )}
               </div>
             </div>
           </section>

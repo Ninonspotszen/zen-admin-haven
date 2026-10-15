@@ -73,6 +73,7 @@ export function useDashboardLive(qc: QueryClient) {
       .on("postgres_changes", { event: "*", schema: "public", table: "ecoutes" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "acces_spots" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "abonnes_b2c" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "contact_requests" }, refresh)
       .subscribe((s) =>
         setStatus(
           s === "SUBSCRIBED"

@@ -24,6 +24,7 @@ import { Route as PolitiqueConfidentialiteRouteImport } from './routes/politique
 import { Route as PolitiqueCookiesRouteImport } from './routes/politique-cookies'
 import { Route as ProfessionnelsRouteImport } from './routes/professionnels'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminDemandesRouteImport } from './routes/admin/demandes'
 import { Route as SpotsIdRouteImport } from './routes/spots.$id'
 import { Route as AdminAbonnesIndexRouteImport } from './routes/admin/abonnes.index'
 import { Route as AdminAbonnesIdRouteImport } from './routes/admin/abonnes.$id'
@@ -111,6 +112,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminDemandesRoute = AdminDemandesRouteImport.update({
+  id: '/demandes',
+  path: '/demandes',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const SpotsIdRoute = SpotsIdRouteImport.update({
   id: '/spots/$id',
   path: '/spots/$id',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
+  '/admin/demandes': typeof AdminDemandesRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
+  '/admin/demandes': typeof AdminDemandesRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -231,6 +239,7 @@ export interface FileRoutesById {
   '/politique-confidentialite': typeof PolitiqueConfidentialiteRoute
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
+  '/admin/demandes': typeof AdminDemandesRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/politique-cookies'
     | '/professionnels'
+    | '/admin/demandes'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/politique-cookies'
     | '/professionnels'
+    | '/admin/demandes'
     | '/spots/$id'
     | '/admin'
     | '/admin/abonnes/$id'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '/politique-confidentialite'
     | '/politique-cookies'
     | '/professionnels'
+    | '/admin/demandes'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -452,6 +464,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/demandes': {
+      id: '/admin/demandes'
+      path: '/demandes'
+      fullPath: '/admin/demandes'
+      preLoaderRoute: typeof AdminDemandesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/spots/$id': {
       id: '/spots/$id'
       path: '/spots/$id'
@@ -526,6 +545,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteRouteChildren {
+  AdminDemandesRoute: typeof AdminDemandesRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAbonnesIdRoute: typeof AdminAbonnesIdRoute
   AdminAudiosIdRoute: typeof AdminAudiosIdRoute
@@ -538,6 +558,7 @@ interface AdminRouteRouteChildren {
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminDemandesRoute: AdminDemandesRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAbonnesIdRoute: AdminAbonnesIdRoute,
   AdminAudiosIdRoute: AdminAudiosIdRoute,
