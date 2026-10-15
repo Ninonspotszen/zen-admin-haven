@@ -242,11 +242,14 @@ function GiftAccessPanel({ onClose }: { onClose: () => void }) {
         },
       }),
     onSuccess: (r) => {
-      toast.success(
-        r.webhookSent
-          ? "Accès offert créé et email déclenché"
-          : "Accès offert créé (webhook Make non configuré — aucun email envoyé)",
-      );
+      // L'accès est créé dans tous les cas ; on dit clairement si la personne a été prévenue.
+      if (r.emailStatus === "sent") {
+        toast.success("Accès offert créé et email envoyé");
+      } else if (r.emailStatus === "disabled") {
+        toast.success("Accès offert créé — emails désactivés avant le lancement : prévenez la personne vous-même");
+      } else {
+        toast.warning("Accès offert créé, mais l'email n'a pas pu être envoyé : prévenez la personne vous-même");
+      }
       qc.invalidateQueries({ queryKey: ["abonnes"] });
       onClose();
     },

@@ -12,13 +12,11 @@ import {
   KeyRound,
   Link2,
   Save,
-  Send,
   UserX,
   Users,
   Wallet,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { triggerActivationEmail } from "@/lib/clients.functions";
 
 export const Route = createFileRoute("/admin/clients/$id")({
   head: () => ({
@@ -330,15 +328,6 @@ function ClientDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const activateEmail = useMutation({
-    mutationFn: (clientId: string) => triggerActivationEmail({ data: clientId }),
-    onSuccess: () => {
-      toast.success("Email d'accès envoyé au client");
-      qc.invalidateQueries({ queryKey: ["client-detail", id] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
-
   if (isLoading) {
     return (
       <div className="rounded-2xl border bg-card px-6 py-10 text-center text-muted-foreground">
@@ -373,16 +362,6 @@ function ClientDetail() {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            disabled={activateEmail.isPending}
-            onClick={() => {
-              if (confirm(`Envoyer l’email d’accès à ${client.nom} ?`)) activateEmail.mutate(client.id);
-            }}
-            className="flex w-fit items-center gap-2 rounded-xl border border-input bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:bg-secondary disabled:opacity-50"
-          >
-            <Send className="h-4 w-4 text-muted-foreground" />
-            {activateEmail.isPending ? "Envoi en cours…" : "Envoyer l’email d’accès"}
-          </button>
           {client.statut !== "Suspendu" && (
             <button
               disabled={suspend.isPending}

@@ -56,28 +56,20 @@ export const giftAccess = createServerFn({ method: "POST" })
       .single();
     if (error) throw new Error(error.message);
 
-    // Webhook Make : optionnel tant que l'URL n'est pas configurée.
-    const webhookUrl = process.env["MAKE_GIFT_ACCESS_WEBHOOK_URL"];
-    let webhookSent = false;
-    if (webhookUrl) {
-      const res = await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          abonneId: inserted.id,
-          action: "gift_access",
-          email: data.email,
-          prenom: data.prenom ?? null,
-          nom: data.nom ?? null,
-          spotId: data.spotId ?? null,
-          dureeJours: data.dureeJours,
-          dateFinAcces: dateFin,
-          codeParrainage: data.codeParrainage ?? null,
-          message: data.message ?? null,
-        }),
-      });
-      if (!res.ok) throw new Error(`Accès créé, mais le webhook Make a répondu avec le code ${res.status}`);
-      webhookSent = true;
-    }
-    return { ok: true, id: inserted.id, webhookSent };
+    // Email « Accès offert » (Brevo n°5). Un échec d'envoi n'annule pas l'accès créé :
+    // le résultat est renvoyé à l'admin pour qu'il sache si la personne a été prévenue.
+    const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+    const { dateFr } = await import("@/lib/date-fr");
+    const emailStatus = await sendBrevoTemplate({
+      templateId: BREVO_TEMPLATES.accesOffertFr,
+      toEmail: data.email,
+      toName: data.prenom || null,
+      params: {
+        PRENOM: data.prenom?.trim() || null,
+        DATE_FIN: dateFr(dateFin),
+        EMAIL: data.email,
+        MESSAGE: data.message?.trim() || null,
+      },
+    });
+    return { ok: true, id: inserted.id, emailStatus };
   });

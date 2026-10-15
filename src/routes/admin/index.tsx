@@ -34,6 +34,7 @@ type DashboardData = {
   pilotesExpirant: { id: string; nom: string; date_pilote_fin: string | null }[];
   abonnesExpirant: { id: string; email: string; date_fin_acces: string | null }[];
   virementsRecus: number;
+  paiementsEchoues: { id: string; email: string }[];
   topAudio: { audio_id: string; nb_ecoutes: number; titre: string | null } | null;
 };
 
@@ -59,6 +60,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     pilotesExpirant,
     abonnesExpirant,
     virementsRecus,
+    paiementsEchoues,
     ecoutes,
   ] = await Promise.all([
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut", "Actif"),
@@ -70,6 +72,8 @@ async function fetchDashboard(): Promise<DashboardData> {
     supabase.from("clients").select("id, nom, date_pilote_fin").eq("statut", "Pilote").lte("date_pilote_fin", in30).not("date_pilote_fin", "is", null).order("date_pilote_fin"),
     supabase.from("abonnes_b2c").select("id, email, date_fin_acces").in("statut", ["offert", "ambassadeur"]).gte("date_fin_acces", today).lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut_paiement", "Virement reçu"),
+    // Statut posé par le webhook Stripe (invoice.payment_failed) pendant les relances.
+    supabase.from("abonnes_b2c").select("id, email").eq("statut", "paiement_echoue").order("email"),
     supabase.from("ecoutes").select("audio_id"),
   ]);
 
@@ -99,6 +103,7 @@ async function fetchDashboard(): Promise<DashboardData> {
     pilotesExpirant: pilotesExpirant.data ?? [],
     abonnesExpirant: abonnesExpirant.data ?? [],
     virementsRecus: virementsRecus.count ?? 0,
+    paiementsEchoues: paiementsEchoues.data ?? [],
     topAudio,
   };
 }
@@ -142,7 +147,7 @@ function AdminDashboard() {
               hint={`${data.deltaMois >= 0 ? "+" : ""}${data.deltaMois} ce mois`}
               href="/admin/abonnes"
             />
-            <StatCard icon={Wallet} label="Panier moyen" value="—" hint="Données Stripe via Make" />
+            <StatCard icon={Wallet} label="Panier moyen" value="—" hint="Bientôt disponible" />
           </div>
 
           {/* Prochains renouvellements */}
@@ -206,7 +211,17 @@ function AdminDashboard() {
               </div>
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Alertes Stripe B2C / paiements échoués</h3>
-                <p className="mt-2 text-sm text-muted-foreground">— (webhook Make, pas de lecture directe)</p>
+                {data.paiementsEchoues.length === 0 ? (
+                  <p className="mt-2 text-sm text-muted-foreground">Aucun paiement en échec</p>
+                ) : (
+                  <ul className="mt-2 space-y-1 text-sm">
+                    {data.paiementsEchoues.map((a) => (
+                      <li key={a.id}>
+                        <Link to="/admin/abonnes/$id" params={{ id: a.id }} className="text-amber-700 hover:underline">{a.email}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div>
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Paiements B2B</h3>
