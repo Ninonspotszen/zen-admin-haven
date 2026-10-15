@@ -15,14 +15,14 @@ import pwaPlayer from "@/assets/pwa-player.png";
 const SHOW_REVIEWS = false;
 const STORAGE = "https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/";
 const catalogue = [
-  { title: "Le Réveil du corps", moments: ["morning"], duration: "8min", match: "reveil-du-corps" },
-  { title: "La Sieste réparatrice", moments: ["day"], duration: "20min", match: "sieste-reparatrice" },
-  { title: "Glisser vers le sommeil", moments: ["evening"], duration: "18min", match: "glisser-vers-le-sommeil" },
-  { title: "Respiration Niveau 1", moments: ["anytime"], duration: "5min", match: "respiration-niveau-1" },
-  { title: "Songe du soir — Orage", moments: ["evening"], duration: "16min", match: "songe-du-soir-orage" },
-  { title: "Au bord du lac", moments: ["morning"], duration: "9min", match: "au-bord-du-lac" },
-  { title: "Le Voyage dans les étoiles", moments: ["evening", "kids"], duration: "10min", match: "voyage-dans-les-etoiles" },
-  { title: "La Respiration du ballon", moments: ["anytime", "kids"], duration: "5min", match: "ballon" },
+  { title: "Le Réveil du corps", moments: ["morning"], duration: "8 min", match: "reveil-du-corps" },
+  { title: "La Sieste réparatrice", moments: ["day"], duration: "20 min", match: "sieste-reparatrice" },
+  { title: "Glisser vers le sommeil", moments: ["evening"], duration: "18 min", match: "glisser-vers-le-sommeil" },
+  { title: "Respiration Niveau 1", moments: ["anytime"], duration: "5 min", match: "respiration-niveau-1" },
+  { title: "Songe du soir — Orage", moments: ["evening"], duration: "16 min", match: "songe-du-soir-orage" },
+  { title: "Au bord du lac", moments: ["morning"], duration: "9 min", match: "au-bord-du-lac" },
+  { title: "Le Voyage dans les étoiles", moments: ["evening", "kids"], duration: "10 min", match: "voyage-dans-les-etoiles" },
+  { title: "La Respiration du ballon", moments: ["anytime", "kids"], duration: "5 min", match: "ballon" },
 ];
 const benefits = [
   { badge: "SOMMEIL", Icon: Moon, title: "Un sommeil plus profond", text: "Laissez les pensées de la journée se dissoudre et retrouvez un repos réparateur." },

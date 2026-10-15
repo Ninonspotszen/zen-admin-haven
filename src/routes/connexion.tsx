@@ -47,6 +47,9 @@ function ConnexionPage() {
   const [sending, setSending] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [codeError, setCodeError] = useState<string | null>(null);
   const redirected = useRef(false);
 
   useEffect(() => {
@@ -103,6 +106,18 @@ function ConnexionPage() {
       return;
     }
     setSentTo(email);
+  }
+
+  // Le même email contient un lien ET un code : le code sert si le lien s'ouvre sur un autre
+  // appareil ou dans une autre application. Une fois validé, onAuthStateChange redirige.
+  async function handleCode(e: React.FormEvent) {
+    e.preventDefault();
+    if (!sentTo) return;
+    setCodeError(null);
+    setVerifying(true);
+    const { error: verifyError } = await supabase.auth.verifyOtp({ email: sentTo, token: code.trim(), type: "email" });
+    setVerifying(false);
+    if (verifyError) setCodeError(t("auth.code.error"));
   }
 
   return (
@@ -192,10 +207,45 @@ function ConnexionPage() {
 
         {/* FORMULAIRE EMAIL */}
         {sentTo ? (
-          <p className="mt-6 rounded-2xl bg-[var(--szc-surface)] px-5 py-4 text-center text-sm leading-relaxed text-[var(--szc-fg)]">
-            {t("auth.email.sent.prefix", { email: sentTo })} <strong>{sentTo}</strong>{" "}
-            {t("auth.email.sent.suffix")}
-          </p>
+          <div className="mt-6 w-full">
+            <p className="rounded-2xl bg-[var(--szc-surface)] px-5 py-4 text-center text-sm leading-relaxed text-[var(--szc-fg)]">
+              {t("auth.email.sent.prefix", { email: sentTo })} <strong>{sentTo}</strong>{" "}
+              {t("auth.email.sent.suffix")}
+            </p>
+            <form onSubmit={handleCode} className="mt-6 w-full">
+              <label htmlFor="code" className="text-sm font-medium text-[var(--szc-fg)]">
+                {t("auth.code.label")}
+              </label>
+              <input
+                id="code"
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                pattern="[0-9]{6,10}"
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+                placeholder={t("auth.code.placeholder")}
+                aria-describedby={codeError ? "code-error" : undefined}
+                className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-center text-base tracking-[0.3em] text-[var(--szc-fg)] outline-none placeholder:tracking-normal placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)]"
+              />
+              {codeError && <p id="code-error" role="alert" className="mt-3 text-center text-sm text-[#B4452F]">{codeError}</p>}
+              <button
+                type="submit"
+                disabled={verifying}
+                className="mt-4 h-12 w-full rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8] transition-opacity disabled:opacity-60"
+              >
+                {verifying ? t("auth.code.cta.checking") : t("auth.code.cta.idle")}
+              </button>
+            </form>
+            <button
+              type="button"
+              onClick={() => { setSentTo(null); setCode(""); setCodeError(null); }}
+              className="mt-4 w-full text-center text-sm text-[var(--szc-muted)] underline underline-offset-2"
+            >
+              {t("auth.code.otherEmail")}
+            </button>
+          </div>
         ) : (
           <form onSubmit={handleEmail} className="mt-6 w-full">
             <label htmlFor="email" className="text-sm font-medium text-[var(--szc-fg)]">
@@ -225,9 +275,9 @@ function ConnexionPage() {
         {/* MENTIONS LÉGALES */}
         <p className="mt-8 text-center text-xs leading-relaxed text-[var(--szc-muted)]">
           {t("auth.legal.prefix")}{" "}
-          <a href="#" className="underline">{t("auth.legal.cgu")}</a>{" "}
+          <a href="/cgu" className="underline">{t("auth.legal.cgu")}</a>{" "}
           {t("auth.legal.and")}{" "}
-          <a href="#" className="underline">{t("auth.legal.privacy")}</a>.
+          <a href="/politique-confidentialite" className="underline">{t("auth.legal.privacy")}</a>.
         </p>
 
         {/* BADGE */}

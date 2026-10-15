@@ -50,6 +50,16 @@
     },
     "badge": {
       "security": "Sofortige und sichere Anmeldung"
+    },
+    "code": {
+      "label": "Sie haben einen Code erhalten? Geben Sie ihn hier ein:",
+      "placeholder": "Per E-Mail erhaltener Code",
+      "cta": {
+        "idle": "Code bestätigen",
+        "checking": "Wird überprüft…"
+      },
+      "error": "Falscher oder abgelaufener Code. Prüfen Sie ihn oder fordern Sie einen neuen Link an.",
+      "otherEmail": "Andere E-Mail-Adresse verwenden"
     }
   },
   "spot": {

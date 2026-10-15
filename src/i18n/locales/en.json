@@ -50,6 +50,16 @@
     },
     "badge": {
       "security": "Instant and secure sign-in"
+    },
+    "code": {
+      "label": "Received a code? Enter it here:",
+      "placeholder": "Code received by email",
+      "cta": {
+        "idle": "Confirm the code",
+        "checking": "Checking…"
+      },
+      "error": "Incorrect or expired code. Check it, or request a new link.",
+      "otherEmail": "Use another email address"
     }
   },
   "spot": {

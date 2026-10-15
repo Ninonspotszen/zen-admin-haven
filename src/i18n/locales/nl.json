@@ -50,6 +50,16 @@
     },
     "badge": {
       "security": "Onmiddellijk en beveiligd inloggen"
+    },
+    "code": {
+      "label": "Heeft u een code ontvangen? Vul hem hier in:",
+      "placeholder": "Code ontvangen per e-mail",
+      "cta": {
+        "idle": "Code bevestigen",
+        "checking": "Controleren…"
+      },
+      "error": "Onjuiste of verlopen code. Controleer hem of vraag een nieuwe link aan.",
+      "otherEmail": "Een ander e-mailadres gebruiken"
     }
   },
   "spot": {

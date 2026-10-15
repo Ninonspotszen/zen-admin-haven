@@ -50,6 +50,16 @@
     },
     "badge": {
       "security": "Acceso instantáneo y seguro"
+    },
+    "code": {
+      "label": "¿Ha recibido un código? Introdúzcalo aquí:",
+      "placeholder": "Código recibido por email",
+      "cta": {
+        "idle": "Validar el código",
+        "checking": "Comprobando…"
+      },
+      "error": "Código incorrecto o caducado. Compruébelo o solicite un nuevo enlace.",
+      "otherEmail": "Usar otra dirección de email"
     }
   },
   "spot": {
