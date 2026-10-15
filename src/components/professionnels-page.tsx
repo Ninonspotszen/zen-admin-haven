@@ -9,8 +9,8 @@ import imgEnt from "@/assets/pro-entreprises.jpg";
 import imgEco from "@/assets/pro-ecoles.jpg";
 import imgSan from "@/assets/pro-sante.jpg";
 import imgCol from "@/assets/pro-collectivites.jpg";
-import pwaRecommended from "@/assets/pwa-recommande.png";
-import pwaPlayer from "@/assets/pwa-player.png";
+import pwaRecommended from "@/assets/pwa-recommande.webp";
+import pwaPlayer from "@/assets/pwa-player.webp";
 
 type FieldDef = { name: "nom" | "email" | "etablissement" | "type_structure" | "taille" | "message"; labelKey: string; type?: "text" | "email" | "select" | "textarea"; optionsKey?: string };
 type Sector = { id: string; image: string; legal?: boolean; fields: FieldDef[] };

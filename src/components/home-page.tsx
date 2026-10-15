@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { VideoButton } from "@/components/video-modal";
 import forestLake from "@/assets/home-forest-lake.jpg";
 import sunsetLake from "@/assets/home-sunset-lake.jpg";
-import pwaLibrary from "@/assets/pwa-bibliotheque.png";
-import pwaPlayer from "@/assets/pwa-player.png";
+import pwaLibrary from "@/assets/pwa-bibliotheque.webp";
+import pwaPlayer from "@/assets/pwa-player.webp";
 
 // Passer à true uniquement avec de vrais avis clients (faux avis interdits : art. L121-4 C. conso).
 const SHOW_REVIEWS = false;

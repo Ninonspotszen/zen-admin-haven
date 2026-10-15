@@ -7,9 +7,9 @@ import { HomeHeader, HomeFooter } from "@/components/home-chrome";
 import { VideoButton } from "@/components/video-modal";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/particuliers-hero.jpg";
-import pwaRecommended from "@/assets/pwa-recommande.png";
-import pwaVoice from "@/assets/pwa-choix-voix.png";
-import pwaPlayer from "@/assets/pwa-player.png";
+import pwaRecommended from "@/assets/pwa-recommande.webp";
+import pwaLibrary from "@/assets/pwa-bibliotheque.webp";
+import pwaPlayer from "@/assets/pwa-player.webp";
 
 // Passer à true uniquement avec de vrais avis clients (faux avis interdits : art. L121-4 C. conso).
 const SHOW_REVIEWS = false;
@@ -98,5 +98,5 @@ export function ParticuliersPage() {
 
 function PwaScreens() {
   const { t } = useTranslation();
-  return <div className="p-phones" aria-label={t("part.screens.ariaLabel")}><figure className="p-phone"><img src={pwaRecommended} alt={t("part.screens.recommended")} loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaVoice} alt={t("part.screens.voice")} loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaPlayer} alt={t("part.screens.player")} loading="lazy" width={780} height={1688} /></figure></div>;
+  return <div className="p-phones" aria-label={t("part.screens.ariaLabel")}><figure className="p-phone"><img src={pwaRecommended} alt={t("part.screens.recommended")} loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaLibrary} alt={t("part.screens.library")} loading="lazy" width={780} height={1688} /></figure><figure className="p-phone"><img src={pwaPlayer} alt={t("part.screens.player")} loading="lazy" width={780} height={1688} /></figure></div>;
 }

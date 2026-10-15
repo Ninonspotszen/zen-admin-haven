@@ -667,8 +667,8 @@
     },
     "screens": {
       "ariaLabel": "Vista real de la experiencia Spots Zen",
-      "recommended": "La parte superior de la página del spot con el audio recomendado según la hora",
-      "voice": "La pantalla para elegir entre voz femenina y masculina",
+      "recommended": "La parte superior de la biblioteca con el audio destacado según la hora",
+      "library": "La lista de audios de la biblioteca",
       "player": "El reproductor Spots Zen durante una escucha"
     }
   },
