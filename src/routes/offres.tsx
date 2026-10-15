@@ -143,20 +143,20 @@ function OffresPage() {
       <style>{CSS}</style>
 
       <header className="sticky top-0 z-30 border-b border-[var(--o-border)] bg-[var(--o-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
-        <div className="relative mx-auto flex h-14 max-w-md items-center justify-center px-5">
+        <div className="relative mx-auto flex h-14 max-w-md items-center justify-center px-5 md:max-w-3xl lg:max-w-5xl">
           <img src={LOGO_FOR_LIGHT} alt="Spots Zen" className="logo-light h-8 w-auto object-contain" />
           <img src={LOGO_FOR_DARK} alt="Spots Zen" className="logo-dark h-8 w-auto object-contain" />
         </div>
       </header>
 
-      <main className="mx-auto max-w-md pb-12">
+      <main className="mx-auto max-w-md pb-12 md:max-w-3xl md:pb-20 lg:max-w-5xl">
         {/* HERO */}
-        <section className="px-6 pb-12 pt-6 text-center">
+        <section className="px-6 pb-12 pt-6 text-center md:pb-14 md:pt-14">
           <p className="flex items-center justify-center gap-3 text-[12px] uppercase tracking-[0.25em] text-[var(--o-eyebrow)]">
             <span aria-hidden>—</span>{t("offers.hero.eyebrow")}<span aria-hidden>—</span>
           </p>
-          <h1 className="serif mt-4 text-[30px] font-normal leading-tight">{t("offers.hero.h1")}</h1>
-          <p className="mt-3 text-[14px] text-[var(--o-sub)]">{t("offers.hero.subtitle")}</p>
+          <h1 className="serif mx-auto mt-4 max-w-2xl text-[30px] font-normal leading-tight md:text-[44px] lg:text-[52px]">{t("offers.hero.h1")}</h1>
+          <p className="mt-3 text-[14px] text-[var(--o-sub)] md:text-[17px]">{t("offers.hero.subtitle")}</p>
         </section>
 
         {/* PROMO */}
@@ -165,30 +165,30 @@ function OffresPage() {
         </p>
 
         {/* PRICING */}
-        <section className="mt-5 grid grid-cols-2 gap-3.5 px-6">
-          <div className="ocard flex flex-col rounded-2xl p-5">
+        <section className="mt-5 grid grid-cols-2 gap-3.5 px-6 md:mx-auto md:mt-8 md:max-w-2xl md:gap-6">
+          <div className="ocard flex flex-col rounded-2xl p-5 md:p-8">
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-eyebrow)]">{t("offers.plan.monthly.label")}</p>
-            <p className="serif mt-2 text-[24px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perMonth")}</span></p>
+            <p className="serif mt-2 text-[24px] md:text-[36px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perMonth")}</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.monthly.promo")}</span>
-            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.monthly.desc")}</p>
+            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)] md:text-[14px]">{t("offers.plan.monthly.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">{t("offers.plan.monthly.cta")}</button>
           </div>
-          <div className="ocard relative flex flex-col rounded-2xl p-5">
+          <div className="ocard relative flex flex-col rounded-2xl p-5 md:p-8">
             <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">{t("offers.plan.annual.badge")}</span>
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-promo)]">{t("offers.plan.annual.label")}</p>
-            <p className="serif mt-2 text-[24px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perYear")}</span></p>
+            <p className="serif mt-2 text-[24px] md:text-[36px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perYear")}</span></p>
             <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.annual.promo")}</span>
-            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)]">{t("offers.plan.annual.desc")}</p>
+            <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)] md:text-[14px]">{t("offers.plan.annual.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
           </div>
         </section>
         <p className="mt-3 px-6 text-center text-[12px] text-[var(--o-sub)]">{t("offers.cgvNotice")} <Link to="/cgv" className="underline underline-offset-2">{t("offers.cgvLink")}</Link>.</p>
 
         {/* BENEFITS */}
-        <section className="mt-12 px-6">
-          <div className="ocard rounded-2xl p-6">
+        <section className="mt-12 px-6 md:mt-16">
+          <div className="ocard rounded-2xl p-6 md:p-10">
             <h2 className="serif flex items-center gap-3 text-[18px]"><Flower2 className="h-5 w-5 text-[var(--o-promo)]" aria-hidden />{t("offers.benefits.h2")}</h2>
-            <ul className="mt-5 space-y-4">
+            <ul className="mt-5 space-y-4 md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-4 md:space-y-0">
               {benefits.map(({ Icon, text, strong }) => (
                 <li key={text} className={`flex gap-3 text-[13px] ${strong ? "font-medium text-[var(--o-promo)]" : "text-[var(--o-sub)]"}`}>
                   <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[var(--o-promo)]" aria-hidden />{text}
@@ -199,12 +199,12 @@ function OffresPage() {
         </section>
 
         {/* CATALOG PREVIEW */}
-        <section className="mt-12">
+        <section className="mt-12 md:mt-16">
           <div className="px-6">
             <h2 className="serif text-[18px]">{t("offers.catalog.h2")}</h2>
             <p className="mt-1 flex items-center gap-1.5 text-[13px] text-[var(--o-eyebrow)]"><Lock className="h-[13px] w-[13px]" aria-hidden />{t("offers.catalog.locked")}</p>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-3 px-6">
+          <div className="mt-4 grid grid-cols-2 gap-3 px-6 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
             {items.map((a) => {
               const min = a.duree_secondes ? `${Math.round(a.duree_secondes / 60)} min` : "";
               const moment = a.moment && MOMENT_KEY[a.moment] ? t(MOMENT_KEY[a.moment] ?? "") : null;
@@ -224,8 +224,8 @@ function OffresPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="mt-12 px-6">
-          <div className="ocard rounded-2xl p-6 text-center">
+        <section className="mt-12 px-6 md:mx-auto md:mt-16 md:max-w-xl">
+          <div className="ocard rounded-2xl p-6 text-center md:p-8">
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#2D5A27] px-5 text-[15px] font-semibold text-[#F8F6F2]">
               {t("offers.cta.final")} <ArrowRight className="h-4 w-4" aria-hidden />
             </button>

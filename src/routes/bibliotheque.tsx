@@ -193,7 +193,7 @@ function BibliothequePage() {
 
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 border-b border-[rgba(195,185,156,0.25)] bg-[var(--sz-bar)] pt-[env(safe-area-inset-top)] backdrop-blur-[12px]">
-        <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5">
+        <div className="mx-auto flex h-14 max-w-md items-center justify-between px-5 md:max-w-3xl lg:max-w-6xl md:px-8">
           <img src={LOGO_DARK} alt="Spots Zen" className="logo-for-light h-8 w-auto object-contain" />
           <img src={LOGO_LIGHT} alt="Spots Zen" className="logo-for-dark h-8 w-auto object-contain" />
           <div className="relative">
@@ -215,11 +215,11 @@ function BibliothequePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-md px-5 pb-10">
+      <main className="mx-auto max-w-md px-5 pb-10 md:max-w-3xl lg:max-w-6xl md:px-8">
         {state === "loading" && (
           <div className="mt-6 space-y-4">
             <div className="aspect-video animate-pulse rounded-2xl bg-[var(--sz-hair)]" />
-            <div className="grid grid-cols-2 gap-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-hair)]" />)}</div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">{[0, 1].map((i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-[var(--sz-hair)]" />)}</div>
           </div>
         )}
 
@@ -233,13 +233,13 @@ function BibliothequePage() {
           <>
             {/* HERO */}
             {hero && (
-              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left" aria-label={`${t("spot.audio.listen")} ${titleOf(hero, lang)}`}>
+              <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left lg:aspect-[21/8]" aria-label={`${t("spot.audio.listen")} ${titleOf(hero, lang)}`}>
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                 {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
                 {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {t(MOMENT_KEY[hero.mis_en_avant_moment] ?? "common.moment.day")}</span>}
                 <span className={`play-control absolute right-3 top-3 ${hero.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className={`serif text-[22px] font-medium leading-tight ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
+                <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 lg:p-8">
+                  <p className={`serif text-[22px] font-medium leading-tight md:text-[28px] lg:text-[34px] ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
                   <p className={`text-xs ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-duration"}`}>{[fmt(hero.duree_secondes), hero.type].filter(Boolean).join(" · ")}</p>
                 </div>
               </button>
@@ -259,7 +259,7 @@ function BibliothequePage() {
             {guided.length > 0 && (
               <section className="mt-10">
                 <Eyebrow>{t("common.section.guided")}</Eyebrow>
-                <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5 lg:grid-cols-4">
                   {guided.map((a) => (
                     <button key={a.id} onClick={() => setSelected(a)} className="audio-card rounded-2xl text-left">
                       <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
@@ -281,7 +281,7 @@ function BibliothequePage() {
               <section className="mt-10">
 <Eyebrow>{t("common.section.music")}</Eyebrow>
                 <p className="mt-1 text-xs text-[var(--sz-muted)]">{t("common.section.musicSubtitle")}</p>
-                <ul className="mt-3">
+                <ul className="mt-3 md:grid md:grid-cols-2 md:gap-x-8">
                   {music.map((a) => (
                     <li key={a.id} className="flex items-center gap-3 border-b border-[var(--sz-hair)] py-3 last:border-b-0">
                       <Thumb audio={a} />
@@ -302,7 +302,7 @@ function BibliothequePage() {
       </main>
 
       {state === "catalog" && (
-        <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+        <div className="mx-auto max-w-md px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:max-w-xl">
           <section className="audio-card rounded-2xl border border-[var(--sz-card-border)] px-5">
             <button onClick={() => setAboOpen((o) => !o)} aria-expanded={aboOpen}
               className="flex h-14 w-full items-center justify-between bg-transparent text-sm font-semibold text-[var(--sz-fg)]">
@@ -463,7 +463,7 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
           <div className="absolute inset-0" style={{ background: "rgba(15,20,15,0.80)" }} />
         </div>
       )}
-      <div className="relative z-[1] mx-auto flex min-h-full max-w-md flex-col px-5 pb-[env(safe-area-inset-bottom)] pt-[calc(1rem+env(safe-area-inset-top))]">
+      <div className="relative z-[1] mx-auto flex min-h-full max-w-md flex-col px-5 md:max-w-xl pb-[env(safe-area-inset-bottom)] pt-[calc(1rem+env(safe-area-inset-top))]">
         {/* HEADER */}
         <div className="flex items-center justify-end gap-2">
           <div className="relative">
