@@ -2,8 +2,12 @@
 -- Idempotent : peut être relancé sans effet de bord.
 
 -- 1. Écoutes anonymes (décision RGPD du 18/09/2026) -----------------------------------
--- La règle d'ajout citait user_id : on la réécrit d'abord, sinon la suppression de la
--- colonne la casserait et plus aucune écoute ne serait enregistrée.
+-- Trois règles citaient user_id : on les retire ou on les réécrit d'abord, sinon la
+-- suppression de la colonne échoue. ecoutes_insert_own et ecoutes_select_own (créées hors
+-- repo) n'avaient de sens qu'avec des écoutes nominatives et n'étaient lues par aucune page ;
+-- ecoutes_insert_own ne vérifiait en plus pas que l'audio était publié.
+DROP POLICY IF EXISTS "ecoutes_insert_own" ON public.ecoutes;
+DROP POLICY IF EXISTS "ecoutes_select_own" ON public.ecoutes;
 DROP POLICY IF EXISTS "anon_insert_ecoutes" ON public.ecoutes;
 CREATE POLICY "anon_insert_ecoutes" ON public.ecoutes
 FOR INSERT TO anon, authenticated

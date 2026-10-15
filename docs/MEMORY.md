@@ -106,7 +106,7 @@
 
 ## Écoutes anonymes et expiration des accès offerts (15/10/2026)
 - Migration `20261015120000_ecoutes_anonymes_expiration_acces_offerts.sql` (à exécuter dans le SQL Editor).
-- `ecoutes` : policy `anon_insert_ecoutes` réécrite sans `user_id`, puis colonne `user_id` supprimée (sans CASCADE). Écoutes anonymes, conformément à la décision RGPD du 18/09/2026.
+- `ecoutes` : policies `ecoutes_insert_own` et `ecoutes_select_own` supprimées (créées hors repo, inutilisées ; la première ne vérifiait pas que l'audio était publié), `anon_insert_ecoutes` réécrite sans `user_id`, puis colonne `user_id` supprimée (sans CASCADE). Écoutes anonymes, conformément à la décision RGPD du 18/09/2026.
 - `ecoutes` : toujours en ajout seul pour les visiteurs (aucun UPDATE) ; une ligne par écoute, envoyée à la fin avec la durée réellement écoutée.
 - `get_library_catalog()` : `offert` et `ambassadeur` n'ouvrent la bibliothèque que jusqu'à `date_fin_acces` (incluse) ; `actif` et `paiement_echoue` inchangés.
 - Make retiré : plus aucun webhook Make dans le code ; l'email « Accès offert » passe par Brevo (modèle n°5), le bouton « Envoyer l'email d'accès » B2B est supprimé (pas d'email de contact dans `clients`).
