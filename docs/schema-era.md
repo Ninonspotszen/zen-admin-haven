@@ -1,208 +1,220 @@
 # Schéma ERA — Base de données Spots Zen
 
-> Généré le 12/10/2026 · Source : `src/integrations/supabase/types.ts`
+> Régénéré le 15/10/2026 à partir de la base réelle (`src/integrations/supabase/types.ts`), après le nettoyage du 15/10 (écoutes anonymes : plus de colonne `user_id` dans `ecoutes`).
+> 13 tables. L'état de la RLS table par table est vérifié dans le rapport d'audit sécurité.
 
 ## Diagramme de relations
 
 ```mermaid
 erDiagram
     clients {
-        uuid id PK
-        string nom
-        string type
-        string statut
-        string email
-        string mode_acces
+        string couleur_primaire
+        string created_at
+        string date_debut
+        string date_debut_acces
+        string date_pilote_fin
+        string date_renouvellement
         string domaine_email
-        string langue_preferee
-        string statut_paiement
-        date date_pilote_fin
-        date date_renouvellement
-        date date_debut_acces
         int duree_acces_jours
-        timestamp created_at
-    }
-
-    spots {
-        uuid id PK
-        uuid client_id FK
+        text_array emails_autorises
+        string frequence_facturation
+        string id PK
+        string langue_preferee
+        string logo_url
+        string mode_acces
+        int mois_offerts
+        int montant
         string nom
+        string note_interne
+        string pack_souscrit
+        string shortio_slug
         string statut
-        string pin
-        string shortio_url
-        timestamp created_at
+        string statut_paiement
+        string type
     }
-
-    audios {
-        uuid id PK
-        uuid musique_suite_id FK
+    spots {
+        string adresse
+        string client_id FK
+        string created_at
+        string description
+        string id PK
+        int latitude
+        int longitude
         string nom
+        string note_interne
+        string photo_url
+        string pin_code
+        string shortio_url
+        string slug
+        string statut
+    }
+    spot_audios {
+        bool actif
+        string audio_id FK
+        string client_id FK
+        string id PK
+        bool mis_en_avant
+        string mis_en_avant_moment
+        int ordre
+        string spot_id FK
+    }
+    client_audios {
+        string audio_id FK
+        string client_id FK
+        string id PK
+        int priorite
+        bool visible
+    }
+    acces_spots {
+        int duree_acces_jours
+        string id PK
+        string premiere_visite
+        string spot_id FK
+        string uuid_visiteur
+    }
+    audios {
+        string created_at
+        int duree_secondes
+        string groupe_slug
+        string id PK
+        string image_url
+        string moment
+        string musique_suite_id FK
+        string note_production
+        int ordre
+        string public_cible
+        string reference_interne
+        string slug
+        string statut
+        string titre_fr
         string type
         string voix
-        int duree_secondes
-        string statut
-        timestamp created_at
     }
-
     audios_traductions {
-        uuid id PK
-        uuid audio_id FK
+        string audio_id FK
+        string cloudinary_url
+        string created_at
+        string description
+        string id PK
         string langue
         string titre
-        string description
-        string cloudinary_url
-        timestamp created_at
+        string voix
     }
-
-    abonnes_b2c {
-        uuid id PK
-        uuid user_id FK
-        uuid parrain_id FK
-        uuid spot_origine_id FK
-        string email
+    filtres {
+        string id PK
         string nom
+        text_array valeurs_possibles
+    }
+    audio_filtres {
+        string audio_id FK
+        string filtre_id FK
+        string id PK
+        string valeur
+    }
+    abonnes_b2c {
+        string code_parrainage
+        string created_at
+        string date_fin_acces
+        string date_fin_prevue
+        string date_renouvellement
+        string email
+        string formule
+        string id PK
+        string langue_preferee
+        string note_interne
+        string parrain_id FK
+        string prenom
+        string spot_origine_id FK
         string statut
         string stripe_customer_id
         string stripe_subscription_id
-        string code_parrainage
-        string langue_preferee
-        timestamp created_at
+        string user_id
     }
-
-    subscriptions {
-        uuid id PK
-        uuid user_id FK
-        string stripe_subscription_id
-        string statut
-        timestamp created_at
-    }
-
     profiles {
-        uuid id PK
+        string created_at
         string email
+        string id PK
         string role
-        timestamp created_at
     }
-
-    acces_spots {
-        uuid id PK
-        uuid spot_id FK
-        string uuid_visiteur
-        int duree_acces_jours
-        timestamp premiere_visite
-    }
-
     ecoutes {
-        uuid id PK
-        uuid spot_id FK
-        uuid audio_id FK
-        uuid user_id FK
-        string uuid_visiteur
+        string audio_id FK
         int duree_ecoute_sec
-        timestamp created_at
+        string id PK
+        string langue
+        string spot_id FK
+        string timestamp
+        string voix
     }
-
-    spot_audios {
-        uuid id PK
-        uuid spot_id FK
-        uuid audio_id FK
-        uuid client_id FK
-        bool actif
-    }
-
-    client_audios {
-        uuid id PK
-        uuid client_id FK
-        uuid audio_id FK
-        bool actif
-    }
-
-    filtres {
-        uuid id PK
-        string nom
-        string type
-    }
-
-    audio_filtres {
-        uuid id PK
-        uuid audio_id FK
-        uuid filtre_id FK
-    }
-
     contact_requests {
-        uuid id PK
+        string created_at
         string email
-        string statut
-        timestamp created_at
+        string etablissement
+        string id PK
+        string message
+        string nom
+        string secteur
+        string taille
+        string type_structure
     }
 
-    %% Relations B2B
     clients ||--o{ spots : "possède"
-    clients ||--o{ client_audios : "accès catalogue"
-
-    %% Relations Spots
-    spots ||--o{ spot_audios : "catalogue spot"
+    audios ||--o{ spot_audios : "audio du spot"
+    clients ||--o{ spot_audios : "client du spot"
+    spots ||--o{ spot_audios : "catalogue du spot"
+    audios ||--o{ client_audios : "audio accordé"
+    clients ||--o{ client_audios : "catalogue du client"
     spots ||--o{ acces_spots : "visites"
-    spots ||--o{ ecoutes : "écoutes"
-
-    %% Relations Audios
+    audios ||--o{ audios : "musique associée"
     audios ||--o{ audios_traductions : "traduit en"
-    audios ||--o{ spot_audios : "disponible sur"
-    audios ||--o{ client_audios : "accordé à"
-    audios ||--o{ ecoutes : "écouté via"
-    audios ||--o| audios : "musique_suite_id (auto-chain)"
     audios ||--o{ audio_filtres : "catégorisé par"
-    filtres ||--o{ audio_filtres : "appliqué à"
-
-    %% Relations B2C
-    abonnes_b2c ||--o{ ecoutes : "écoute"
-    abonnes_b2c ||--o| abonnes_b2c : "parrain_id (parrainage)"
-    abonnes_b2c ||--o| spots : "spot_origine_id (conversion)"
-    abonnes_b2c ||--o| profiles : "user_id"
-    subscriptions ||--o| profiles : "user_id"
+    filtres ||--o{ audio_filtres : "filtre"
+    abonnes_b2c ||--o{ abonnes_b2c : "parrain"
+    spots ||--o{ abonnes_b2c : "spot d origine"
+    audios ||--o{ ecoutes : "écouté"
+    spots ||--o{ ecoutes : "écouté sur"
 ```
+
+Liens vers les comptes : `profiles.id` et `abonnes_b2c.id` référencent `auth.users.id` (comptes Supabase Auth, non représentés ci-dessus).
 
 ## Description des tables
 
 ### Cœur B2B
 | Table | Rôle |
 |---|---|
-| `clients` | Établissements partenaires (hôtels, spas, cliniques…) |
-| `spots` | Points d'accès physiques (totem, borne) avec QR/NFC |
-| `spot_audios` | Catalogue d'audios activés sur un spot donné |
-| `client_audios` | Catalogue global accordé à un client B2B |
-| `acces_spots` | Suivi des visites par UUID visiteur (cookie) |
+| `clients` | Établissements partenaires : statut (En attente de paiement · Pilote · Actif · Suspendu), mode d'accès (`qr_libre` ou `email_domaine`), facturation |
+| `spots` | Lieux physiques équipés d'un QR code (Short.io), PIN optionnel (`pin_code`, vide = accès libre) |
+| `spot_audios` | Audios proposés sur un spot, ordre et mise en avant par moment |
+| `client_audios` | Audios visibles ou masqués pour un client (catalogue personnalisé) |
+| `acces_spots` | Visites d'un spot par visiteur anonyme (UUID stocké sur l'appareil) et durée d'accès |
 
-### Cœur Audio
+### Cœur audio
 | Table | Rôle |
 |---|---|
-| `audios` | Catalogue maître des méditations/musiques |
-| `audios_traductions` | Titre, description et URL Cloudinary par langue |
-| `filtres` | Tags de filtrage (type, voix, durée…) |
-| `audio_filtres` | Association audio ↔ filtre |
+| `audios` | Catalogue maître : type, moment, public, durée, statut (`publié` / `brouillon`), musique associée |
+| `audios_traductions` | Titre, description, voix (`feminine` · `masculine` · `aucune`) et URL Cloudinary, par langue |
+| `filtres` · `audio_filtres` | Filtres de la bibliothèque et leurs valeurs par audio |
 
-### Cœur B2C
+### Cœur B2C et suivi
 | Table | Rôle |
 |---|---|
-| `abonnes_b2c` | Abonnés particuliers (Stripe + parrainage) |
-| `subscriptions` | Abonnements Stripe actifs |
-| `profiles` | Profils auth (rôle admin ou user) |
-| `ecoutes` | Historique d'écoutes (analytics) |
-| `contact_requests` | Demandes de contact formulaire |
+| `abonnes_b2c` | Abonnés particuliers : statut (`actif` · `paiement_echoue` · `offert` · `ambassadeur` · `inactif` · `resilie`), Stripe, spot d'origine, parrainage, dates de fin |
+| `profiles` | Rôle de chaque compte (`admin` ou `user`), utilisé par `is_admin()` |
+| `ecoutes` | Écoutes **anonymes** : audio, spot, langue, voix, durée réellement écoutée |
+| `contact_requests` | Demandes envoyées depuis le formulaire `/professionnels` |
 
-## Fonctions SECURITY DEFINER (RLS)
+## Fonctions SECURITY DEFINER
 
 | Fonction | Rôle |
 |---|---|
-| `is_admin()` | Vérifie `profiles.role = 'admin'` pour `auth.uid()` |
-| `get_spot_public()` | Données spot sans RLS (QR public), dont mode_acces, domaine_email (mode email) et pin_requis |
-| `spot_email_ok()` | Accès email valide pour l'utilisateur connecté (mode `email_domaine`) |
-| `check_spot_email_domain()` | Vérifie qu'une adresse correspond au domaine du client avant envoi du lien |
-| `verify_spot_pin()` | Vérification PIN côté serveur |
-| `get_spot_catalog()` | Catalogue audio d'un spot (PIN en `qr_libre`, domaine email en `email_domaine`) |
-| `get_audio_public()` | Métadonnées audio publiques |
-| `register_spot_visit()` | Enregistre une visite `acces_spots` |
-| `handle_new_user()` | Crée le profil à l'inscription |
-| `link_abonne_on_signup()` | Lie l'abonné B2C à son compte auth |
+| `is_admin()` | Vrai si `profiles.role = 'admin'` pour l'utilisateur connecté ; utilisée par toutes les règles RLS admin |
+| `get_spot_public()` | Infos publiques d'un spot pour la page QR (sans exposer la table) |
+| `get_spot_catalog()` | Catalogue d'un spot selon son mode d'accès |
+| `get_library_catalog()` | Catalogue de la bibliothèque : abonnés `actif`/`paiement_echoue`, et `offert`/`ambassadeur` **jusqu'à `date_fin_acces`** |
+| `get_audio_public()` · `get_public_titles()` | Métadonnées et titres publics des audios |
+| `register_spot_visit()` | Enregistre une visite dans `acces_spots` |
+| `check_spot_email_domain()` | Vérifie qu'une adresse appartient au domaine du client avant l'envoi du lien |
+| `verify_spot_pin()` · `spot_email_ok()` | Anciennes fonctions, accès fermé le 14/10/2026 (toujours présentes dans la base) |
 
-> `mode_acces` (`qr_libre` par défaut | `email_domaine`) est porté par **clients**, pas par spots.
+## Règle notable
+
+- `ecoutes` n'accepte que des **ajouts** (aucune modification par les visiteurs), et seulement pour un audio publié : les statistiques ne peuvent pas être trafiquées.
