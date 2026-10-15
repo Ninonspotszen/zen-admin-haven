@@ -424,7 +424,6 @@ export type Database = {
           langue: string | null
           spot_id: string | null
           timestamp: string | null
-          user_id: string | null
           voix: string | null
         }
         Insert: {
@@ -434,7 +433,6 @@ export type Database = {
           langue?: string | null
           spot_id?: string | null
           timestamp?: string | null
-          user_id?: string | null
           voix?: string | null
         }
         Update: {
@@ -444,7 +442,6 @@ export type Database = {
           langue?: string | null
           spot_id?: string | null
           timestamp?: string | null
-          user_id?: string | null
           voix?: string | null
         }
         Relationships: [
