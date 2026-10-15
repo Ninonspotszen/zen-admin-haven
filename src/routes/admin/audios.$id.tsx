@@ -306,7 +306,7 @@ function AudioDetail() {
           {translate.isPending ? "Traduction en cours…" : "Traduire avec l'IA (EN · DE · NL · ES)"}
         </button>
         <span className="text-xs text-muted-foreground">
-          {isMusic ? "Titre" : "Titre et description"} proposés à partir du français, à relire avant de sauvegarder.
+          {isMusic ? "Titre proposé" : "Titre et description proposés"} à partir du français, à relire avant de sauvegarder.
         </span>
       </div>
       <div aria-live="polite">
