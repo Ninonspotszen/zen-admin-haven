@@ -4,44 +4,41 @@
 
 ## 1. What is a cookie?
 
-A cookie is a small text file placed on your device when you visit a website. It allows information to be stored between two visits.
+A cookie is a small text file placed on your device when you visit a website. It allows information to be remembered between visits. Local storage (localStorage) is an equivalent space in your browser: this policy covers both.
 
-## 2. Cookies Used by Spots Zen
+## 2. What Spots Zen stores in your browser
 
-### Strictly necessary cookies (no consent required)
+### Strictly necessary items (no consent required)
 
-| Cookie | Purpose | Duration |
-|---|---|---|
-| `uuid_visiteur` | Anonymous identifier to manage your access to the spot (QR code) | 13 months |
-| Supabase session cookie | Maintaining your account login session | Session |
-
-These cookies are essential to the operation of the service. They cannot be disabled.
-
-### Analytics cookies (subject to consent)
-
-| Cookie | Purpose | Duration |
-|---|---|---|
-| Analytics cookies | Anonymous measurement of service usage (audio listened to, duration) | 13 months |
-
-This data is processed in an aggregated manner and does not allow you to be personally identified.
-
-### Third-party cookies (subject to consent)
-
-| Cookie | Issuer | Purpose | Duration |
+| Item | Type | Purpose | Duration |
 |---|---|---|---|
-| Stripe cookies | Stripe Inc. | Payment security | Session |
-| Axeptio cookies | Axeptio SAS | Storing your consent preferences | 13 months |
+| `sz_visitor` | Local storage | Anonymous identifier to manage your access to the spot (QR code) | Until you clear your browser data |
+| Supabase session | Local storage | Keeping you signed in to your account | Until you sign out |
+| `sz-lang` | Local storage | Remembering the language you chose | Until you clear your browser data |
+
+These items are essential for the service to work.
+
+### No analytics or advertising cookies
+
+Spots Zen uses no analytics, advertising or tracking tools. Listening statistics are recorded anonymously on our servers, without cookies.
+
+### Third-party services
+
+| Service | Provider | When | Purpose |
+|---|---|---|---|
+| Payment | Stripe Inc. | On the payment page hosted by Stripe | Payment security (cookies set by Stripe) |
+| Presentation videos | YouTube (youtube-nocookie.com) | Only when you click to play a video | Video playback |
 
 ## 3. Managing Your Preferences
 
-On your first visit, a banner allows you to accept or decline non-essential cookies. You may change your preferences at any time via the **"Cookie Settings"** link at the bottom of each page.
+Because Spots Zen only uses strictly necessary items, no consent banner is displayed.
 
-You may also configure your browser to block or delete cookies:
+You can clear this data or block cookies at any time from your browser:
 - [Chrome](https://support.google.com/chrome/answer/95647)
 - [Firefox](https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer)
 - [Safari](https://support.apple.com/en-gb/guide/safari/sfri11471/mac)
 
-Disabling strictly necessary cookies may impair the functioning of the service.
+Clearing this data signs you out and may reset your access to a spot.
 
 ## 4. Contact
 

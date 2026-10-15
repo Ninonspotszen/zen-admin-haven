@@ -11,13 +11,13 @@ Email : bonjour@spotszen.fr
 ## 2. Données collectées
 
 ### Visiteurs via QR code (sans compte)
-- Identifiant anonyme (cookie UUID) pour gérer la durée d'accès
+- Identifiant anonyme enregistré dans votre navigateur (stockage local, ce n'est pas un cookie) pour gérer la durée d'accès
 - Historique d'écoutes anonymisé (audio écouté, durée, langue, moment)
 - Aucune donnée personnelle identifiable n'est collectée
 
 ### Abonnés B2C (avec compte)
-- Email et nom
-- Historique d'écoutes (audio, durée, langue, voix)
+- Email et prénom
+- Écoutes : enregistrées de façon anonyme (audio, durée, langue, voix), sans lien avec votre compte
 - Langue préférée
 - Données de paiement (gérées exclusivement par Stripe — non stockées par Spots Zen)
 - Identifiant Stripe (customer ID, subscription ID)
@@ -30,10 +30,10 @@ Email : bonjour@spotszen.fr
 
 | Donnée | Finalité | Base légale |
 |---|---|---|
-| Email, nom | Gestion du compte et de l'abonnement | Exécution du contrat |
+| Email, prénom | Gestion du compte et de l'abonnement | Exécution du contrat |
 | Historique d'écoutes | Amélioration du service, analytics | Intérêt légitime |
 | Données de paiement | Facturation via Stripe | Exécution du contrat |
-| Cookie UUID | Gestion de l'accès temporaire | Intérêt légitime |
+| Identifiant anonyme de visite | Gestion de l'accès temporaire | Intérêt légitime |
 | Email (formulaire contact) | Réponse à la demande | Consentement |
 
 ## 4. Sous-traitants (DPA)
@@ -47,7 +47,10 @@ Spots Zen fait appel aux sous-traitants suivants, tous soumis à des garanties c
 | Brevo (Sendinblue) | Emails transactionnels | France |
 | Cloudinary Inc. | Hébergement fichiers audio | UE |
 | ElevenLabs Inc. | Synthèse vocale (production) | UE |
-| Axeptio | Gestion des consentements cookies | France |
+| Vercel Inc. | Hébergement du site et du serveur de l'application | États-Unis |
+| Google (Google Ireland Ltd) | Connexion avec un compte Google (facultative) | UE / États-Unis |
+| Short.io (Short.cm Inc.) | Liens courts des QR codes (statistiques de clics) | UE / États-Unis |
+| Anthropic PBC | Traduction assistée du catalogue audio (aucune donnée personnelle transmise) | États-Unis |
 
 ## 5. Durée de conservation
 
@@ -76,7 +79,7 @@ Les données sont hébergées sur des serveurs sécurisés. Les accès sont prot
 
 ## 8. Transferts hors UE
 
-Certains sous-traitants (Cloudinary, ElevenLabs) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types (CCT) conformes au RGPD.
+Certains sous-traitants (Vercel, Google, Short.io, Cloudinary, ElevenLabs) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types (CCT) conformes au RGPD.
 
 ## 9. Contact
 

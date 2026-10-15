@@ -4,44 +4,41 @@
 
 ## 1. Was ist ein Cookie?
 
-Ein Cookie ist eine kleine Textdatei, die beim Besuch einer Website auf Ihrem Gerät gespeichert wird. Sie ermöglicht es, Informationen zwischen zwei Besuchen zu speichern.
+Ein Cookie ist eine kleine Textdatei, die beim Besuch einer Website auf Ihrem Gerät gespeichert wird. Damit lassen sich Informationen zwischen zwei Besuchen merken. Der lokale Speicher (localStorage) ist ein vergleichbarer Bereich in Ihrem Browser: Diese Richtlinie gilt für beides.
 
-## 2. Von Spots Zen verwendete Cookies
+## 2. Was Spots Zen in Ihrem Browser speichert
 
-### Unbedingt erforderliche Cookies (keine Einwilligung erforderlich)
+### Unbedingt erforderliche Elemente (keine Einwilligung erforderlich)
 
-| Cookie | Zweck | Dauer |
-|---|---|---|
-| `uuid_visiteur` | Anonyme Kennung zur Verwaltung Ihres Zugangs zum Spot (QR-Code) | 13 Monate |
-| Supabase-Sitzungs-Cookie | Aufrechterhaltung Ihrer Kontoanmeldung | Sitzung |
-
-Diese Cookies sind für den Betrieb des Dienstes unerlässlich. Sie können nicht deaktiviert werden.
-
-### Analyse-Cookies (einwilligungspflichtig)
-
-| Cookie | Zweck | Dauer |
-|---|---|---|
-| Analyse-Cookies | Anonyme Messung der Dienstnutzung (gehörte Audios, Dauer) | 13 Monate |
-
-Diese Daten werden aggregiert verarbeitet und ermöglichen keine persönliche Identifizierung.
-
-### Drittanbieter-Cookies (einwilligungspflichtig)
-
-| Cookie | Anbieter | Zweck | Dauer |
+| Element | Art | Zweck | Dauer |
 |---|---|---|---|
-| Stripe-Cookies | Stripe Inc. | Zahlungssicherheit | Sitzung |
-| Axeptio-Cookies | Axeptio SAS | Speicherung Ihrer Einwilligungspräferenzen | 13 Monate |
+| `sz_visitor` | Lokaler Speicher | Anonyme Kennung zur Verwaltung Ihres Zugangs zum Spot (QR-Code) | Bis Sie Ihre Browserdaten löschen |
+| Supabase-Sitzung | Lokaler Speicher | Aufrechterhaltung Ihrer Anmeldung in Ihrem Konto | Bis zur Abmeldung |
+| `sz-lang` | Lokaler Speicher | Speicherung der gewählten Sprache | Bis Sie Ihre Browserdaten löschen |
+
+Diese Elemente sind für den Betrieb des Dienstes unerlässlich.
+
+### Keine Analyse- oder Werbe-Cookies
+
+Spots Zen verwendet keine Tools zur Reichweitenmessung, Werbung oder Nachverfolgung. Hörstatistiken werden anonym auf unseren Servern erfasst, ohne Cookies.
+
+### Dienste von Drittanbietern
+
+| Dienst | Anbieter | Wann | Zweck |
+|---|---|---|---|
+| Zahlung | Stripe Inc. | Auf der von Stripe gehosteten Zahlungsseite | Sicherheit der Zahlungen (von Stripe gesetzte Cookies) |
+| Präsentationsvideos | YouTube (youtube-nocookie.com) | Nur wenn Sie ein Video per Klick starten | Wiedergabe des Videos |
 
 ## 3. Verwaltung Ihrer Präferenzen
 
-Bei Ihrem ersten Besuch ermöglicht ein Banner, nicht wesentliche Cookies zu akzeptieren oder abzulehnen. Sie können Ihre Präferenzen jederzeit über den Link **"Cookie-Einstellungen"** am unteren Rand jeder Seite ändern.
+Da Spots Zen nur unbedingt erforderliche Elemente verwendet, wird kein Einwilligungsbanner angezeigt.
 
-Sie können Ihren Browser auch so konfigurieren, dass Cookies blockiert oder gelöscht werden:
+Sie können diese Daten jederzeit löschen oder Cookies in Ihrem Browser blockieren:
 - [Chrome](https://support.google.com/chrome/answer/95647)
 - [Firefox](https://support.mozilla.org/de/kb/cookies-erlauben-und-ablehnen)
 - [Safari](https://support.apple.com/de-de/guide/safari/sfri11471/mac)
 
-Die Deaktivierung unbedingt erforderlicher Cookies kann die Funktionsfähigkeit des Dienstes beeinträchtigen.
+Durch das Löschen dieser Daten werden Sie abgemeldet, und Ihr Zugang zu einem Spot kann zurückgesetzt werden.
 
 ## 4. Kontakt
 

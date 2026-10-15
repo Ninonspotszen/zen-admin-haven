@@ -11,13 +11,13 @@ Correo electrónico: bonjour@spotszen.fr
 ## 2. Datos recopilados
 
 ### Visitantes a través de código QR (sin cuenta)
-- Identificador anónimo (cookie UUID) para gestionar la duración del acceso
+- Identificador anónimo guardado en su navegador (almacenamiento local, no es una cookie) para gestionar la duración del acceso
 - Historial de escuchas anonimizado (audio escuchado, duración, idioma, momento)
 - No se recopilan datos personales identificables
 
 ### Suscriptores B2C (con cuenta)
-- Correo electrónico y nombre
-- Historial de escuchas (audio, duración, idioma, voz)
+- Correo electrónico y nombre de pila
+- Escuchas: registradas de forma anónima (audio, duración, idioma, voz), sin vínculo con su cuenta
 - Idioma preferido
 - Datos de pago (gestionados exclusivamente por Stripe — no almacenados por Spots Zen)
 - Identificador Stripe (ID de cliente, ID de suscripción)
@@ -30,10 +30,10 @@ Correo electrónico: bonjour@spotszen.fr
 
 | Dato | Finalidad | Base legal |
 |---|---|---|
-| Correo electrónico, nombre | Gestión de cuenta y suscripción | Ejecución del contrato |
+| Correo electrónico, nombre de pila | Gestión de cuenta y suscripción | Ejecución del contrato |
 | Historial de escuchas | Mejora del servicio, análisis | Interés legítimo |
 | Datos de pago | Facturación a través de Stripe | Ejecución del contrato |
-| Cookie UUID | Gestión del acceso temporal | Interés legítimo |
+| Identificador anónimo de visita | Gestión del acceso temporal | Interés legítimo |
 | Correo electrónico (formulario de contacto) | Respuesta a la solicitud | Consentimiento |
 
 ## 4. Subencargados (DPA)
@@ -47,7 +47,10 @@ Spots Zen recurre a los siguientes subencargados, todos sujetos a garantías con
 | Brevo (Sendinblue) | Correos electrónicos transaccionales | Francia |
 | Cloudinary Inc. | Alojamiento de archivos de audio | UE |
 | ElevenLabs Inc. | Síntesis de voz (producción) | UE |
-| Axeptio | Gestión del consentimiento de cookies | Francia |
+| Vercel Inc. | Alojamiento del sitio y del servidor de la aplicación | Estados Unidos |
+| Google (Google Ireland Ltd) | Inicio de sesión con una cuenta de Google (opcional) | UE / Estados Unidos |
+| Short.io (Short.cm Inc.) | Enlaces cortos de los códigos QR (estadísticas de clics) | UE / Estados Unidos |
+| Anthropic PBC | Traducción asistida del catálogo de audio (no se envían datos personales) | Estados Unidos |
 
 ## 5. Período de conservación
 
@@ -76,7 +79,7 @@ Los datos se alojan en servidores seguros. Los accesos están protegidos mediant
 
 ## 8. Transferencias fuera de la UE
 
-Algunos subencargados (Cloudinary, ElevenLabs) pueden tratar datos fuera de la UE. Estas transferencias están reguladas por cláusulas contractuales tipo (CCT) conformes con el RGPD.
+Algunos subencargados (Vercel, Google, Short.io, Cloudinary, ElevenLabs) pueden tratar datos fuera de la UE. Estas transferencias están reguladas por cláusulas contractuales tipo (CCT) conformes con el RGPD.
 
 ## 9. Contacto
 

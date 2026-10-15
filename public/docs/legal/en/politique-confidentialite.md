@@ -11,13 +11,13 @@ Email: bonjour@spotszen.fr
 ## 2. Data Collected
 
 ### Visitors via QR code (without account)
-- Anonymous identifier (UUID cookie) to manage access duration
+- Anonymous identifier stored in your browser (local storage, not a cookie) to manage access duration
 - Anonymised listening history (audio listened to, duration, language, time of day)
 - No personally identifiable data is collected
 
 ### B2C Subscribers (with account)
-- Email and name
-- Listening history (audio, duration, language, voice)
+- Email and first name
+- Listens: recorded anonymously (audio, duration, language, voice), not linked to your account
 - Preferred language
 - Payment data (managed exclusively by Stripe — not stored by Spots Zen)
 - Stripe identifier (customer ID, subscription ID)
@@ -30,10 +30,10 @@ Email: bonjour@spotszen.fr
 
 | Data | Purpose | Legal basis |
 |---|---|---|
-| Email, name | Account and subscription management | Contract performance |
+| Email, first name | Account and subscription management | Contract performance |
 | Listening history | Service improvement, analytics | Legitimate interest |
 | Payment data | Billing via Stripe | Contract performance |
-| UUID cookie | Temporary access management | Legitimate interest |
+| Anonymous visit identifier | Temporary access management | Legitimate interest |
 | Email (contact form) | Responding to the request | Consent |
 
 ## 4. Sub-processors (DPA)
@@ -47,7 +47,10 @@ Spots Zen uses the following sub-processors, all subject to contractual guarante
 | Brevo (Sendinblue) | Transactional emails | France |
 | Cloudinary Inc. | Audio file hosting | EU |
 | ElevenLabs Inc. | Voice synthesis (production) | EU |
-| Axeptio | Cookie consent management | France |
+| Vercel Inc. | Website and application server hosting | United States |
+| Google (Google Ireland Ltd) | Sign-in with a Google account (optional) | EU / United States |
+| Short.io (Short.cm Inc.) | Short links for QR codes (click statistics) | EU / United States |
+| Anthropic PBC | AI-assisted translation of the audio catalogue (no personal data sent) | United States |
 
 ## 5. Retention Period
 
@@ -76,7 +79,7 @@ Data is hosted on secure servers. Access is protected by authentication and Supa
 
 ## 8. Transfers Outside the EU
 
-Some sub-processors (Cloudinary, ElevenLabs) may process data outside the EU. These transfers are governed by standard contractual clauses (SCCs) compliant with the GDPR.
+Some sub-processors (Vercel, Google, Short.io, Cloudinary, ElevenLabs) may process data outside the EU. These transfers are governed by standard contractual clauses (SCCs) compliant with the GDPR.
 
 ## 9. Contact
 

@@ -11,13 +11,13 @@ E-mail: bonjour@spotszen.fr
 ## 2. Verzamelde gegevens
 
 ### Bezoekers via QR-code (zonder account)
-- Anonieme identifier (UUID-cookie) om de toegangsduur te beheren
+- Anonieme identifier die in uw browser wordt opgeslagen (lokale opslag, geen cookie) om de toegangsduur te beheren
 - Geanonimiseerde luistergeschiedenis (beluisterde audio, duur, taal, tijdstip)
 - Er worden geen persoonlijk identificeerbare gegevens verzameld
 
 ### B2C-abonnees (met account)
-- E-mail en naam
-- Luistergeschiedenis (audio, duur, taal, stem)
+- E-mail en voornaam
+- Luistersessies: anoniem geregistreerd (audio, duur, taal, stem), niet gekoppeld aan uw account
 - Voorkeurstaal
 - Betalingsgegevens (uitsluitend beheerd door Stripe — niet opgeslagen door Spots Zen)
 - Stripe-identifier (klant-ID, abonnement-ID)
@@ -30,10 +30,10 @@ E-mail: bonjour@spotszen.fr
 
 | Gegevens | Doel | Rechtsgrondslag |
 |---|---|---|
-| E-mail, naam | Account- en abonnementsbeheer | Uitvoering van overeenkomst |
+| E-mail, voornaam | Account- en abonnementsbeheer | Uitvoering van overeenkomst |
 | Luistergeschiedenis | Serviceverbetering, analyses | Gerechtvaardigd belang |
 | Betalingsgegevens | Facturering via Stripe | Uitvoering van overeenkomst |
-| UUID-cookie | Beheer van tijdelijke toegang | Gerechtvaardigd belang |
+| Anonieme bezoekidentifier | Beheer van tijdelijke toegang | Gerechtvaardigd belang |
 | E-mail (contactformulier) | Beantwoording van het verzoek | Toestemming |
 
 ## 4. Subverwerkers (VVA)
@@ -47,7 +47,10 @@ Spots Zen maakt gebruik van de volgende subverwerkers, die alle onderworpen zijn
 | Brevo (Sendinblue) | Transactionele e-mails | Frankrijk |
 | Cloudinary Inc. | Hosting audiobestanden | EU |
 | ElevenLabs Inc. | Stemmensynthese (productie) | EU |
-| Axeptio | Cookietoestemmingsbeheer | Frankrijk |
+| Vercel Inc. | Hosting van de website en de applicatieserver | Verenigde Staten |
+| Google (Google Ireland Ltd) | Inloggen met een Google-account (optioneel) | EU / Verenigde Staten |
+| Short.io (Short.cm Inc.) | Korte links van de QR-codes (klikstatistieken) | EU / Verenigde Staten |
+| Anthropic PBC | AI-ondersteunde vertaling van de audiocatalogus (geen persoonsgegevens verzonden) | Verenigde Staten |
 
 ## 5. Bewaartermijnen
 
@@ -76,7 +79,7 @@ Gegevens worden gehost op beveiligde servers. Toegang is beschermd door authenti
 
 ## 8. Overdrachten buiten de EU
 
-Sommige subverwerkers (Cloudinary, ElevenLabs) kunnen gegevens buiten de EU verwerken. Deze overdrachten worden geregeld door standaard contractuele clausules (SCC) conform de AVG.
+Sommige subverwerkers (Vercel, Google, Short.io, Cloudinary, ElevenLabs) kunnen gegevens buiten de EU verwerken. Deze overdrachten worden geregeld door standaard contractuele clausules (SCC) conform de AVG.
 
 ## 9. Contact
 

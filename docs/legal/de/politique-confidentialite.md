@@ -11,13 +11,13 @@ E-Mail: bonjour@spotszen.fr
 ## 2. Erhobene Daten
 
 ### Besucher über QR-Code (ohne Konto)
-- Anonyme Kennung (UUID-Cookie) zur Verwaltung der Zugriffsdauer
+- Anonyme Kennung, die in Ihrem Browser gespeichert wird (lokaler Speicher, kein Cookie), zur Verwaltung der Zugriffsdauer
 - Anonymisierter Hörverlauf (gehörtes Audio, Dauer, Sprache, Tageszeit)
 - Es werden keine personenbezogenen Daten erhoben
 
 ### B2C-Abonnenten (mit Konto)
-- E-Mail und Name
-- Hörverlauf (Audio, Dauer, Sprache, Stimme)
+- E-Mail und Vorname
+- Hörvorgänge: anonym erfasst (Audio, Dauer, Sprache, Stimme), ohne Verbindung zu Ihrem Konto
 - Bevorzugte Sprache
 - Zahlungsdaten (ausschließlich von Stripe verwaltet — nicht von Spots Zen gespeichert)
 - Stripe-Kennung (Kunden-ID, Abonnement-ID)
@@ -30,10 +30,10 @@ E-Mail: bonjour@spotszen.fr
 
 | Daten | Zweck | Rechtsgrundlage |
 |---|---|---|
-| E-Mail, Name | Konto- und Abonnementverwaltung | Vertragserfüllung |
+| E-Mail, Vorname | Konto- und Abonnementverwaltung | Vertragserfüllung |
 | Hörverlauf | Serviceverbesserung, Analysen | Berechtigtes Interesse |
 | Zahlungsdaten | Abrechnung über Stripe | Vertragserfüllung |
-| UUID-Cookie | Verwaltung des vorübergehenden Zugangs | Berechtigtes Interesse |
+| Anonyme Besuchskennung | Verwaltung des vorübergehenden Zugangs | Berechtigtes Interesse |
 | E-Mail (Kontaktformular) | Beantwortung der Anfrage | Einwilligung |
 
 ## 4. Auftragsverarbeiter (AVV)
@@ -47,7 +47,10 @@ Spots Zen nutzt folgende Auftragsverarbeiter, die alle vertraglichen Garantien g
 | Brevo (Sendinblue) | Transaktions-E-Mails | Frankreich |
 | Cloudinary Inc. | Audio-Datei-Hosting | EU |
 | ElevenLabs Inc. | Sprachsynthese (Produktion) | EU |
-| Axeptio | Cookie-Einwilligungsverwaltung | Frankreich |
+| Vercel Inc. | Hosting der Website und des Anwendungsservers | USA |
+| Google (Google Ireland Ltd) | Anmeldung mit einem Google-Konto (optional) | EU / USA |
+| Short.io (Short.cm Inc.) | Kurzlinks der QR-Codes (Klickstatistiken) | EU / USA |
+| Anthropic PBC | KI-gestützte Übersetzung des Audiokatalogs (keine personenbezogenen Daten übermittelt) | USA |
 
 ## 5. Aufbewahrungsfristen
 
@@ -76,7 +79,7 @@ Die Daten werden auf sicheren Servern gehostet. Der Zugang ist durch Authentifiz
 
 ## 8. Übermittlungen außerhalb der EU
 
-Einige Auftragsverarbeiter (Cloudinary, ElevenLabs) können Daten außerhalb der EU verarbeiten. Diese Übermittlungen werden durch Standardvertragsklauseln (SCC) gemäß DSGVO geregelt.
+Einige Auftragsverarbeiter (Vercel, Google, Short.io, Cloudinary, ElevenLabs) können Daten außerhalb der EU verarbeiten. Diese Übermittlungen werden durch Standardvertragsklauseln (SCC) gemäß DSGVO geregelt.
 
 ## 9. Kontakt
 
