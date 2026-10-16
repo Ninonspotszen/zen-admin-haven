@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { testerRobotQuotidien } from "@/lib/crm.functions";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/emails")({
@@ -33,6 +34,7 @@ const fmt = (d: string) => new Date(d).toLocaleString("fr-FR", { timeZone: "Euro
 const db = supabase as any;
 
 function EmailsPage() {
+  const test = useMutation({ mutationFn: () => testerRobotQuotidien() });
   const envois = useQuery({
     queryKey: ["emails_automatiques"],
     queryFn: async () => {
@@ -65,6 +67,43 @@ function EmailsPage() {
         Envoyés chaque matin par le robot quotidien, une seule fois par personne et par occasion. Tant que l'interrupteur
         EMAILS_ACTIFS n'est pas à « true » dans Vercel, rien ne part et ce journal reste vide.
       </p>
+
+      <section className="mt-8 rounded-2xl border bg-card p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-serif text-xl text-foreground">Tester le robot</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Simulation : montre les emails qui partiraient aujourd'hui. Rien n'est envoyé ni enregistré.</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => test.mutate()}
+            disabled={test.isPending}
+            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+          >
+            {test.isPending ? "Simulation…" : "Lancer la simulation"}
+          </button>
+        </div>
+        {test.error && <p role="alert" className="mt-4 text-sm text-destructive">Échec : {(test.error as Error).message}</p>}
+        {test.data && (
+          <div className="mt-4 text-sm">
+            <p className="text-muted-foreground">
+              Jour : {test.data.jour} · {test.data.envois.length} email(s) concerné(s) · résumé du matin : {test.data.rubriques} rubrique(s)
+            </p>
+            {test.data.envois.length === 0 ? (
+              <p className="mt-2 text-foreground">Aucun email ne partirait aujourd'hui.</p>
+            ) : (
+              <ul className="mt-2 space-y-1">
+                {test.data.envois.map((e, i) => (
+                  <li key={i} className="text-foreground">
+                    <span className="font-semibold">{TYPE[e.type] ?? e.type}</span> · {e.email} · <span className="text-muted-foreground">{e.detail}</span>
+                    {e.statut === "deja_envoye" && <span className="text-muted-foreground"> · déjà envoyé</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </section>
 
       <section className="mt-8 rounded-2xl border bg-card">
         <h2 className="border-b px-6 py-4 font-serif text-xl text-foreground">Journal des envois</h2>

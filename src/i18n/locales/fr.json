@@ -751,7 +751,7 @@
         }
       ],
       "cta": "Votre établissement est prêt ? Demander un devis →",
-      "note": "Réponse sous 24 heures · Sans engagement"
+      "note": "Réponse sous 24 heures ouvrées · Sans engagement"
     },
     "sector": {
       "hebergements": {
@@ -898,11 +898,11 @@
         "placeholder": "Choisir…"
       },
       "error": "Une erreur est survenue. Merci de réessayer.",
-      "success": "✓ Message envoyé ! Nous vous répondons sous 24 heures. À très vite.",
-      "note": "Réponse sous 24 heures · Sans engagement",
+      "success": "✓ Message envoyé ! Nous vous répondons sous 24 heures ouvrées. À très vite.",
+      "note": "Réponse sous 24 heures ouvrées · Sans engagement",
       "cta": "Demander un devis →",
       "altContact": "Ou écrivez-nous directement : bonjour@spotszen.fr",
-      "notePersonal": "Réponse personnalisée sous 24 heures · Sans engagement",
+      "notePersonal": "Réponse personnalisée sous 24 heures ouvrées · Sans engagement",
       "ctaStart": "Envoyer ma demande →",
       "field": {
         "nom": "Prénom · Nom",

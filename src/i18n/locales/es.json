@@ -751,7 +751,7 @@
         }
       ],
       "cta": "¿Su establecimiento está listo? Solicitar presupuesto →",
-      "note": "Respuesta en 24 horas · Sin compromiso"
+      "note": "Respuesta en 24 horas laborables · Sin compromiso"
     },
     "sector": {
       "hebergements": {
@@ -898,11 +898,11 @@
         "placeholder": "Elegir…"
       },
       "error": "Se ha producido un error. Por favor, inténtelo de nuevo.",
-      "success": "✓ ¡Mensaje enviado! Le responderemos en 24 horas. Hasta pronto.",
-      "note": "Respuesta en 24 horas · Sin compromiso",
+      "success": "✓ ¡Mensaje enviado! Le responderemos en 24 horas laborables. Hasta pronto.",
+      "note": "Respuesta en 24 horas laborables · Sin compromiso",
       "cta": "Solicitar presupuesto →",
       "altContact": "O escríbanos directamente: bonjour@spotszen.fr",
-      "notePersonal": "Respuesta personalizada en 24 horas · Sin compromiso",
+      "notePersonal": "Respuesta personalizada en 24 horas laborables · Sin compromiso",
       "ctaStart": "Enviar mi solicitud →",
       "field": {
         "nom": "Nombre · Apellidos",

@@ -751,7 +751,7 @@
         }
       ],
       "cta": "Ist Ihre Einrichtung bereit? Angebot anfordern →",
-      "note": "Antwort innerhalb von 24 Stunden · Unverbindlich"
+      "note": "Antwort innerhalb von 24 Stunden an Werktagen · Unverbindlich"
     },
     "sector": {
       "hebergements": {
@@ -898,11 +898,11 @@
         "placeholder": "Auswählen…"
       },
       "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
-      "success": "✓ Nachricht gesendet! Wir antworten Ihnen innerhalb von 24 Stunden. Bis bald.",
-      "note": "Antwort innerhalb von 24 Stunden · Unverbindlich",
+      "success": "✓ Nachricht gesendet! Wir antworten Ihnen innerhalb von 24 Stunden an Werktagen. Bis bald.",
+      "note": "Antwort innerhalb von 24 Stunden an Werktagen · Unverbindlich",
       "cta": "Angebot anfordern →",
       "altContact": "Oder schreiben Sie uns direkt: bonjour@spotszen.fr",
-      "notePersonal": "Persönliche Antwort innerhalb von 24 Stunden · Unverbindlich",
+      "notePersonal": "Persönliche Antwort innerhalb von 24 Stunden an Werktagen · Unverbindlich",
       "ctaStart": "Anfrage senden →",
       "field": {
         "nom": "Vorname · Nachname",

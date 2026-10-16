@@ -73,3 +73,17 @@ export const enregistrerVisiteurSpot = createServerFn({ method: "POST" })
     if (data.newsletter) await syncBrevoContact({ email: data.email, langue, listes: ["VISITEURS_SPOTS", "NEWSLETTER"] });
     return { ok: true as const };
   });
+
+/**
+ * Bouton « Tester le robot » de l'onglet Emails (admin) : lance le robot quotidien en simulation.
+ * Rien n'est envoyé ni enregistré ; renvoie la liste des emails qui partiraient aujourd'hui.
+ */
+export const testerRobotQuotidien = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: isAdmin, error } = await context.supabase.rpc("is_admin");
+    if (error) throw new Error(error.message);
+    if (!isAdmin) throw new Error("Accès réservé aux administrateurs");
+    const { lancerRobotQuotidien } = await import("@/lib/emails-auto.server");
+    return lancerRobotQuotidien({ simulationForcee: true });
+  });

@@ -751,7 +751,7 @@
         }
       ],
       "cta": "Is uw instelling klaar? Offerte aanvragen →",
-      "note": "Reactie binnen 24 uur · Vrijblijvend"
+      "note": "Reactie binnen 24 werkuren · Vrijblijvend"
     },
     "sector": {
       "hebergements": {
@@ -898,11 +898,11 @@
         "placeholder": "Kiezen…"
       },
       "error": "Er is een fout opgetreden. Probeer het opnieuw.",
-      "success": "✓ Bericht verzonden! We antwoorden binnen 24 uur. Tot snel.",
-      "note": "Reactie binnen 24 uur · Vrijblijvend",
+      "success": "✓ Bericht verzonden! We antwoorden binnen 24 werkuren. Tot snel.",
+      "note": "Reactie binnen 24 werkuren · Vrijblijvend",
       "cta": "Offerte aanvragen →",
       "altContact": "Of schrijf ons rechtstreeks: bonjour@spotszen.fr",
-      "notePersonal": "Persoonlijk antwoord binnen 24 uur · Vrijblijvend",
+      "notePersonal": "Persoonlijk antwoord binnen 24 werkuren · Vrijblijvend",
       "ctaStart": "Mijn aanvraag versturen →",
       "field": {
         "nom": "Voornaam · Achternaam",

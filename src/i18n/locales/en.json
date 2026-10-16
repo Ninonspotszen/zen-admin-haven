@@ -751,7 +751,7 @@
         }
       ],
       "cta": "Is your establishment ready? Request a quote →",
-      "note": "Response within 24 hours · No commitment"
+      "note": "Response within 24 working hours · No commitment"
     },
     "sector": {
       "hebergements": {
@@ -898,11 +898,11 @@
         "placeholder": "Choose…"
       },
       "error": "An error occurred. Please try again.",
-      "success": "✓ Message sent! We will reply within 24 hours. See you soon.",
-      "note": "Reply within 24 hours · No commitment",
+      "success": "✓ Message sent! We will reply within 24 working hours. See you soon.",
+      "note": "Reply within 24 working hours · No commitment",
       "cta": "Request a quote →",
       "altContact": "Or write to us directly: bonjour@spotszen.fr",
-      "notePersonal": "Personalised reply within 24 hours · No commitment",
+      "notePersonal": "Personalised reply within 24 working hours · No commitment",
       "ctaStart": "Send my request →",
       "field": {
         "nom": "First name · Last name",
