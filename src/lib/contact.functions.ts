@@ -37,14 +37,13 @@ const SECTEUR_LABEL: Record<(typeof SECTEURS)[number], string> = {
   general: "Général",
 };
 
-// Qui profitera de Spots Zen, selon la cible : complète la phrase de l'accusé de réception.
-const PUBLIC_LABEL: Record<(typeof SECTEURS)[number], string> = {
-  hebergements: "clients",
-  entreprises: "collaborateurs",
-  ecoles: "étudiants",
-  sante: "patients",
-  collectivites: "habitants et visiteurs",
-  general: "visiteurs",
+// Qui profitera de Spots Zen, selon la cible et la langue : complète une phrase de l'accusé de réception.
+const PUBLIC_LABEL: Record<string, Record<(typeof SECTEURS)[number], string>> = {
+  fr: { hebergements: "clients", entreprises: "collaborateurs", ecoles: "étudiants", sante: "patients", collectivites: "habitants et visiteurs", general: "visiteurs" },
+  en: { hebergements: "guests", entreprises: "employees", ecoles: "students", sante: "patients", collectivites: "residents and visitors", general: "visitors" },
+  de: { hebergements: "Gäste", entreprises: "Mitarbeitenden", ecoles: "Studierenden", sante: "Patientinnen und Patienten", collectivites: "Einwohner und Besucher", general: "Besucher" },
+  nl: { hebergements: "gasten", entreprises: "medewerkers", ecoles: "studenten", sante: "patiënten", collectivites: "inwoners en bezoekers", general: "bezoekers" },
+  es: { hebergements: "huéspedes", entreprises: "empleados", ecoles: "estudiantes", sante: "pacientes", collectivites: "vecinos y visitantes", general: "visitantes" },
 };
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -83,11 +82,12 @@ ${data.message ? `<p style="margin-top:16px;white-space:pre-wrap;border-left:3px
 
     // Accusé de réception au prospect : la personne sait que sa demande est arrivée.
     const { sendBrevoTemplate, syncBrevoContact, modele } = await import("@/lib/brevo.server");
+    const m = modele("accuseB2b", langue);
     const accuse = await sendBrevoTemplate({
-      templateId: modele("accuseB2b", langue).templateId,
+      templateId: m.templateId,
       toEmail: data.email,
       toName: data.nom,
-      params: { ETABLISSEMENT: data.etablissement, PUBLIC: PUBLIC_LABEL[data.secteur] },
+      params: { ETABLISSEMENT: data.etablissement, PUBLIC: PUBLIC_LABEL[m.langue]![data.secteur] },
     });
     await supabaseAdmin
       .from("contact_requests")

@@ -218,6 +218,7 @@ function GiftAccessPanel({ onClose }: { onClose: () => void }) {
   const [duree, setDuree] = useState("30");
   const [codeParrainage, setCodeParrainage] = useState("");
   const [message, setMessage] = useState("");
+  const [langue, setLangue] = useState<"fr" | "en" | "de" | "nl" | "es">("fr");
 
   const { data: spots = [] } = useQuery({
     queryKey: ["spots-list"],
@@ -239,6 +240,7 @@ function GiftAccessPanel({ onClose }: { onClose: () => void }) {
           dureeJours: Number(duree) || 30,
           codeParrainage: codeParrainage || undefined,
           message: message || undefined,
+          langue,
         },
       }),
     onSuccess: (r) => {
@@ -300,6 +302,16 @@ function GiftAccessPanel({ onClose }: { onClose: () => void }) {
               {spots.map((s) => (
                 <option key={s.id} value={s.id}>{s.nom ?? s.id}</option>
               ))}
+            </select>
+          </div>
+          <div>
+            <label className={label} htmlFor="gift-langue">Langue de l'email</label>
+            <select id="gift-langue" className={input} value={langue} onChange={(e) => setLangue(e.target.value as typeof langue)}>
+              <option value="fr">Français</option>
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+              <option value="nl">Nederlands</option>
+              <option value="es">Español</option>
             </select>
           </div>
           <div>

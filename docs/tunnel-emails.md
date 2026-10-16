@@ -26,8 +26,8 @@ flowchart TD
     S[Paiement Stripe] --> E4["n°4 Bienvenue (immédiat)"]
     S --> A2["Alerte à Ninon : nouvel abonné"]
     S --> L3[[Liste Brevo Abonnés]]
-    E4 --> J3["J+3 · n°9 Trois repères"]
-    J3 --> I["14 jours sans connexion · n°10 Une pause vous attend"]
+    E4 --> J3["J+3 · n°15 Trois repères"]
+    J3 --> I["14 jours sans connexion · n°16 Un moment de pause pour vous"]
     S --> AN["Annuel : 31 à 45 j avant · n°11 Information de reconduction (L.215-1)"]
     S --> ST["Stripe : fin d'essai, reçus, échec de paiement, carte expirée"]
     S --> RES["Résiliation · n°2 + alerte à Ninon"]
@@ -36,9 +36,9 @@ flowchart TD
   subgraph OFF["Accès offert / ambassadeur"]
     G[Admin : « Offrir un accès »] --> E5["n°5 Accès offert (immédiat)"]
     G --> L4[[Liste Brevo Accès offerts]]
-    E5 --> J3b["J+3 · n°9"]
-    E5 --> J7["J-7 avant la fin · n°7"]
-    J7 --> FIN["Lendemain de la fin · n°8 Continuer avec l'abonnement"]
+    E5 --> J3b["J+3 · n°15"]
+    E5 --> J7["J-7 avant la fin · n°13"]
+    J7 --> FIN["Lendemain de la fin · n°14 Continuer avec l'abonnement"]
     FIN --> O
   end
 ```
@@ -54,10 +54,10 @@ flowchart TD
 | Paiement Stripe / échec / résiliation | Alerte interne à Ninon | — | webhook Stripe | `NOTIF_ABONNES_ACTIVE` |
 | Résiliation programmée | Confirmation de résiliation | n°2 | webhook Stripe | `EMAILS_ACTIFS` |
 | Accès offert créé | Accès offert | n°5 | admin | `EMAILS_ACTIFS` |
-| J+3 après l'inscription | Trois repères | n°9 | robot quotidien | `EMAILS_ACTIFS` |
-| 14 jours sans connexion | Une pause vous attend | n°10 | robot quotidien | `EMAILS_ACTIFS` |
-| Fin d'accès offert − 7 jours | Encore une semaine | n°7 | robot quotidien | `EMAILS_ACTIFS` |
-| Lendemain de la fin d'accès offert | Continuer avec Spots Zen | n°8 | robot quotidien | `EMAILS_ACTIFS` |
+| J+3 après l'inscription | Trois repères | n°15 | robot quotidien | `EMAILS_ACTIFS` |
+| 14 jours sans connexion | Un moment de pause pour vous | n°16 | robot quotidien | `EMAILS_ACTIFS` |
+| Fin d'accès offert − 7 jours | Encore une semaine | n°13 | robot quotidien | `EMAILS_ACTIFS` |
+| Lendemain de la fin d'accès offert | Continuer avec Spots Zen | n°14 | robot quotidien | `EMAILS_ACTIFS` |
 | Annuel, 31 à 45 j avant le renouvellement | Information de reconduction | n°11 | robot quotidien | `EMAILS_ACTIFS` |
 | Chaque matin, s'il y a quelque chose | Résumé pour Ninon | — | robot quotidien | `NOTIF_RESUME_ACTIVE` |
 | Fin d'essai, reçus, échec de paiement, carte expirée | Emails Stripe | Stripe | Stripe | réglages Stripe |
@@ -68,8 +68,24 @@ Tant que `EMAILS_ACTIFS` ≠ `true`, le robot tourne en **simulation** : il calc
 
 ## 3. Langues
 
-`src/lib/brevo.server.ts` → `MODELES` : un numéro de modèle par email et par langue (fr, en, de, nl, es). La langue est celle choisie dans la bibliothèque (`abonnes_b2c.langue_preferee`, enregistrée à chaque visite). Une langue sans modèle retombe sur le français.
-Pour l'instant seuls les modèles français existent : les traductions seront créées une fois les textes français validés, puis leurs numéros ajoutés à `MODELES`.
+Chaque email existe en 5 langues dans Brevo (tous inactifs). `src/lib/brevo.server.ts` → `MODELES` :
+
+| Email | FR | EN | DE | NL | ES |
+|---|---|---|---|---|---|
+| Bienvenue | 4 | 21 | 22 | 23 | 24 |
+| Résiliation | 2 | 17 | 18 | 19 | 20 |
+| Accès offert | 5 | 25 | 26 | 27 | 28 |
+| Accusé de réception B2B | 6 | 29 | 30 | 31 | 32 |
+| Accès offert J-7 | 13 | 33 | 34 | 35 | 36 |
+| Accès offert terminé | 14 | 37 | 38 | 39 | 40 |
+| Accueil J+3 | 15 | 41 | 42 | 43 | 44 |
+| Relance inactivité | 16 | 45 | 46 | 47 | 48 |
+| Rappel annuel L.215-1 | 11 | 49 | 50 | 51 | 52 |
+| Visiteur spot | 12 | 53 | 54 | 55 | 56 |
+
+La langue est celle choisie dans la bibliothèque (`abonnes_b2c.langue_preferee`, enregistrée à chaque visite), celle du site pour un formulaire, ou celle choisie par Ninon pour un accès offert. Les dates et le prix sont écrits dans la langue de l'email (« 14 November 2026 », « €49 »). Une langue inconnue retombe sur le français.
+Les 4 emails d'accompagnement (J-7, fin d'accès, J+3, relance) portent la ligne « Répondez STOP » ; la case « A répondu STOP » de la fiche abonné les coupe.
+Sources des traductions : `docs/emails/traductions/` (textes et script de génération).
 
 ## 4. Mise en service (dans cet ordre)
 

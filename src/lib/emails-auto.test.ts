@@ -62,6 +62,10 @@ describe("robot quotidien", () => {
     expect(parType["essai@x.fr"]).toBeUndefined(); // ni rappel annuel pendant l essai, ni accueil avant J+3
     expect(parType["res@x.fr"]).toBeUndefined();
     expect(sent.find((s) => s.toEmail === "annuel@x.fr").params.DATE_LIMITE).toBeTruthy();
+    // Langue : l'abonné germanophone reçoit le modèle allemand, les autres le français.
+    expect(sent.find((s) => s.toEmail === "j3@x.fr").templateId).toBe(42);
+    expect(sent.find((s) => s.toEmail === "j7@x.fr").templateId).toBe(13);
+    expect(sent.find((s) => s.toEmail === "annuel@x.fr").params.MONTANT).toMatch(/^49\s€$/); // espace insécable fine, comme en typographie française
     const nb = sent.filter((s) => s.toEmail).length;
     const r2 = await lancerRobotQuotidien();
     expect(r2.envois.length).toBe(0);

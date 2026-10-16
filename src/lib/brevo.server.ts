@@ -1,5 +1,3 @@
-export const BREVO_TEMPLATES = { resiliationFr: 2, bienvenueFr: 4, accesOffertFr: 5 } as const;
-
 /**
  * Modèles Brevo par email et par langue (tous créés INACTIFS, à activer par Ninon).
  * Une langue absente retombe sur le français : on n'envoie jamais un email vide.
@@ -8,18 +6,29 @@ export const BREVO_TEMPLATES = { resiliationFr: 2, bienvenueFr: 4, accesOffertFr
 export const LANGUES = ["fr", "en", "de", "nl", "es"] as const;
 export type Langue = (typeof LANGUES)[number];
 export const MODELES = {
-  bienvenue: { fr: 4 },
-  resiliation: { fr: 2 },
-  accesOffert: { fr: 5 },
-  accuseB2b: { fr: 6 },
-  accesJ7: { fr: 7 },
-  accesFin: { fr: 8 },
-  accueilJ3: { fr: 9 },
-  relanceInactif: { fr: 10 },
-  rappelAnnuel: { fr: 11 },
-  visiteurSpot: { fr: 12 },
+  bienvenue: { fr: 4, en: 21, de: 22, nl: 23, es: 24 },
+  resiliation: { fr: 2, en: 17, de: 18, nl: 19, es: 20 },
+  accesOffert: { fr: 5, en: 25, de: 26, nl: 27, es: 28 },
+  accuseB2b: { fr: 6, en: 29, de: 30, nl: 31, es: 32 },
+  accesJ7: { fr: 13, en: 33, de: 34, nl: 35, es: 36 },
+  accesFin: { fr: 14, en: 37, de: 38, nl: 39, es: 40 },
+  accueilJ3: { fr: 15, en: 41, de: 42, nl: 43, es: 44 },
+  relanceInactif: { fr: 16, en: 45, de: 46, nl: 47, es: 48 },
+  rappelAnnuel: { fr: 11, en: 49, de: 50, nl: 51, es: 52 },
+  visiteurSpot: { fr: 12, en: 53, de: 54, nl: 55, es: 56 },
 } as const satisfies Record<string, Partial<Record<Langue, number>> & { fr: number }>;
 export type Modele = keyof typeof MODELES;
+
+/** "2026-11-14" → date écrite dans la langue de l'email (« 14 novembre 2026 », « 14 November 2026 »…). */
+const LOCALES: Record<Langue, string> = { fr: "fr-FR", en: "en-GB", de: "de-DE", nl: "nl-NL", es: "es-ES" };
+export function dateLangue(iso: string, langue: Langue): string {
+  return new Intl.DateTimeFormat(LOCALES[langue], { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
+    .format(new Date(`${iso.slice(0, 10)}T12:00:00Z`));
+}
+/** Montant affiché dans la langue de l'email (49 € / €49). */
+export function prixLangue(euros: number, langue: Langue): string {
+  return new Intl.NumberFormat(LOCALES[langue], { style: "currency", currency: "EUR", maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(euros);
+}
 
 export function modele(nom: Modele, langue?: string | null): { templateId: number; langue: Langue } {
   const l = (LANGUES as readonly string[]).includes(langue ?? "") ? (langue as Langue) : "fr";

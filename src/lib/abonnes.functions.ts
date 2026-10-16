@@ -10,6 +10,8 @@ const giftSchema = z.object({
   dureeJours: z.number().int().min(1, "Durée minimale : 1 jour").max(365, "Durée maximale : 365 jours").default(30),
   codeParrainage: z.string().trim().max(50).optional(),
   message: z.string().trim().max(1000).optional(),
+  // Langue de l'email d'accès offert (et de la bibliothèque à la première visite). Français par défaut.
+  langue: z.enum(["fr", "en", "de", "nl", "es"]).default("fr"),
 });
 
 export const giftAccess = createServerFn({ method: "POST" })
@@ -51,6 +53,7 @@ export const giftAccess = createServerFn({ method: "POST" })
         date_fin_acces: dateFin,
         code_parrainage: data.codeParrainage || null,
         note_interne: data.message || null,
+        langue_preferee: data.langue,
       })
       .select("id")
       .single();
@@ -58,15 +61,15 @@ export const giftAccess = createServerFn({ method: "POST" })
 
     // Email « Accès offert » (Brevo n°5). Un échec d'envoi n'annule pas l'accès créé :
     // le résultat est renvoyé à l'admin pour qu'il sache si la personne a été prévenue.
-    const { sendBrevoTemplate, syncBrevoContact, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
-    const { dateFr } = await import("@/lib/date-fr");
+    const { sendBrevoTemplate, syncBrevoContact, modele, dateLangue } = await import("@/lib/brevo.server");
+    const { templateId, langue } = modele("accesOffert", data.langue);
     const emailStatus = await sendBrevoTemplate({
-      templateId: BREVO_TEMPLATES.accesOffertFr,
+      templateId,
       toEmail: data.email,
       toName: data.prenom || null,
       params: {
         PRENOM: data.prenom?.trim() || null,
-        DATE_FIN: dateFr(dateFin),
+        DATE_FIN: dateLangue(dateFin, langue),
         EMAIL: data.email,
         MESSAGE: data.message?.trim() || null,
       },

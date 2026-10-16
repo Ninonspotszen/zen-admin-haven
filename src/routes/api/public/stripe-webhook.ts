@@ -142,15 +142,16 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               const destinataire = (row["email"] as string | undefined) || null;
               if (nouvelAbonnement && destinataire) {
                 const finEssai = toDate(trialEnd);
-                const { sendBrevoTemplate, sendBrevoInternalAlert, syncBrevoContact, modele } = await import("@/lib/brevo.server");
+                const { sendBrevoTemplate, sendBrevoInternalAlert, syncBrevoContact, modele, dateLangue } = await import("@/lib/brevo.server");
+                const bienvenue = modele("bienvenue", existing?.langue_preferee);
                 await sendBrevoTemplate({
-                  templateId: modele("bienvenue", existing?.langue_preferee).templateId,
+                  templateId: bienvenue.templateId,
                   toEmail: destinataire,
                   toName: existing?.prenom ?? null,
                   params: {
                     PRENOM: existing?.prenom?.trim() || null,
                     // Absent si pas d'essai : le paragraphe « premier mois offert » est alors masqué.
-                    DATE_FIN_ESSAI: finEssai ? dateFr(finEssai) : null,
+                    DATE_FIN_ESSAI: finEssai ? dateLangue(finEssai, bienvenue.langue) : null,
                   },
                 });
                 // Alerte pour Ninon + rangement dans la liste Brevo « Abonnés ».
@@ -209,12 +210,13 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               const newFin = upd["date_fin_prevue"] as string | null;
               if (!row.date_fin_prevue && newFin && row.email) {
                 const dateFin = dateFr(newFin);
-                const { sendBrevoTemplate, sendBrevoInternalAlert, modele } = await import("@/lib/brevo.server");
+                const { sendBrevoTemplate, sendBrevoInternalAlert, modele, dateLangue } = await import("@/lib/brevo.server");
+                const resil = modele("resiliation", row.langue_preferee);
                 await sendBrevoTemplate({
-                  templateId: modele("resiliation", row.langue_preferee).templateId,
+                  templateId: resil.templateId,
                   toEmail: row.email,
                   toName: row.prenom,
-                  params: { PRENOM: row.prenom?.trim() || null, DATE_FIN: dateFin },
+                  params: { PRENOM: row.prenom?.trim() || null, DATE_FIN: dateLangue(newFin, resil.langue) },
                 });
                 await sendBrevoInternalAlert({
                   interrupteur: "NOTIF_ABONNES_ACTIVE",

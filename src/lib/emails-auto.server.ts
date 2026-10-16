@@ -14,7 +14,7 @@
  *   - chaque envoi a une clé unique dans emails_automatiques : jamais deux fois le même email ;
  *   - les comptes créés avant DEBUT_TUNNEL (tests) ne reçoivent ni accueil ni relance.
  */
-import type { EmailStatus } from "@/lib/brevo.server";
+import type { EmailStatus, Langue } from "@/lib/brevo.server";
 
 const DEBUT_TUNNEL = "2026-10-19T00:00:00+02:00"; // lancement public
 const JOURS_INACTIVITE = 14;
@@ -47,7 +47,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } = {}) {
   const simulation = opts.simulationForcee === true || process.env["EMAILS_ACTIFS"] !== "true";
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { sendBrevoTemplate, sendBrevoInternalAlert, modele } = await import("@/lib/brevo.server");
+  const { sendBrevoTemplate, sendBrevoInternalAlert, modele, dateLangue, prixLangue } = await import("@/lib/brevo.server");
   const { dateFr } = await import("@/lib/date-fr");
   // Colonnes récentes, absentes des types générés.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +70,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
     cle: string,
     a: Abonne,
     nom: Parameters<typeof modele>[0],
-    params: Record<string, string | null>,
+    params: (l: Langue) => Record<string, string | null>,
     detail: string,
   ) {
     if (!a.email) return;
@@ -91,7 +91,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
       console.error("robot: journal impossible", insErr.message);
       return; // sans trace, on n'envoie pas (sinon risque de doublon demain)
     }
-    const statut = await sendBrevoTemplate({ templateId, toEmail: a.email, toName: a.prenom, params });
+    const statut = await sendBrevoTemplate({ templateId, toEmail: a.email, toName: a.prenom, params: params(langue) });
     await db.from("emails_automatiques").update({ statut }).eq("id", ligne.id);
     envois.push({ type, email: a.email, detail, statut });
   }
@@ -106,12 +106,12 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
     // 1. Accès offert : J-7
     if (offertValide(a) && a.date_fin_acces === plusJours(aujourdHui, 7)) {
       await uneFois("acces_j7", `acces_j7:${a.id}:${a.date_fin_acces}`, a, "accesJ7",
-        { PRENOM: prenom(a), DATE_FIN: dateFr(a.date_fin_acces) }, `fin d'accès le ${a.date_fin_acces}`);
+        (l) => ({ PRENOM: prenom(a), DATE_FIN: dateLangue(a.date_fin_acces!, l) }), `fin d'accès le ${a.date_fin_acces}`);
     }
     // 2. Accès offert terminé (rattrapage sur 3 jours si le robot n'est pas passé)
     if (offertValide(a) && a.date_fin_acces! < aujourdHui && a.date_fin_acces! >= plusJours(aujourdHui, -3)) {
       await uneFois("acces_fin", `acces_fin:${a.id}:${a.date_fin_acces}`, a, "accesFin",
-        { PRENOM: prenom(a), DATE_FIN: dateFr(a.date_fin_acces!), EMAIL: a.email }, `accès terminé le ${a.date_fin_acces}`);
+        (l) => ({ PRENOM: prenom(a), DATE_FIN: dateLangue(a.date_fin_acces!, l), EMAIL: a.email }), `accès terminé le ${a.date_fin_acces}`);
     }
 
     const accesEnCours =
@@ -121,7 +121,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
 
     // 3. Accueil J+3 (fenêtre de 2 jours pour rattraper un passage manqué)
     if (accesEnCours && apresLancement && maintenant - cree >= 3 * 864e5 && maintenant - cree < 5 * 864e5) {
-      await uneFois("accueil_j3", `accueil_j3:${a.id}`, a, "accueilJ3", { PRENOM: prenom(a) }, "inscrit il y a 3 jours");
+      await uneFois("accueil_j3", `accueil_j3:${a.id}`, a, "accueilJ3", () => ({ PRENOM: prenom(a) }), "inscrit il y a 3 jours");
     }
 
     // 4. Relance après 14 jours sans connexion (pas pendant un préavis de résiliation, pas à moins de 3 jours d'une fin d'accès)
@@ -131,7 +131,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
       if (maintenant - derniere >= JOURS_INACTIVITE * 864e5) {
         const repere = new Date(derniere).toISOString().slice(0, 10);
         await uneFois("relance_inactif", `relance_inactif:${a.id}:${repere}`, a, "relanceInactif",
-          { PRENOM: prenom(a), PAYANT: a.statut === "actif" ? "oui" : null }, `sans connexion depuis le ${repere}`);
+          () => ({ PRENOM: prenom(a), PAYANT: a.statut === "actif" ? "oui" : null }), `sans connexion depuis le ${repere}`);
       }
     }
 
@@ -142,12 +142,12 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
       // la première échéance d'un annuel avec mois d'essai n'est pas une reconduction annuelle
       !Number.isNaN(cree) && Date.parse(a.date_renouvellement) - cree > 300 * 864e5
     ) {
-      await uneFois("rappel_annuel", `rappel_annuel:${a.id}:${a.date_renouvellement}`, a, "rappelAnnuel", {
+      await uneFois("rappel_annuel", `rappel_annuel:${a.id}:${a.date_renouvellement}`, a, "rappelAnnuel", (l) => ({
         PRENOM: prenom(a),
-        DATE_RENOUVELLEMENT: dateFr(a.date_renouvellement),
-        DATE_LIMITE: dateFr(plusJours(a.date_renouvellement, -1)),
-        MONTANT: process.env["PRIX_ANNUEL_AFFICHE"] || "49 €",
-      }, `renouvellement le ${a.date_renouvellement}`);
+        DATE_RENOUVELLEMENT: dateLangue(a.date_renouvellement!, l),
+        DATE_LIMITE: dateLangue(plusJours(a.date_renouvellement!, -1), l),
+        MONTANT: prixLangue(Number(process.env["PRIX_ANNUEL_EUROS"] || 49), l),
+      }), `renouvellement le ${a.date_renouvellement}`);
     }
   }
 
