@@ -70,6 +70,6 @@ export const enregistrerVisiteurSpot = createServerFn({ method: "POST" })
       params: { LIEU: lieu, SPOT_ID: data.spotId, NEWSLETTER: data.newsletter ? "oui" : null },
     });
     await db.from("spot_leads").update({ email_statut: statut }).eq("id", lead.id);
-    if (data.newsletter) await syncBrevoContact({ email: data.email, listes: ["VISITEURS_SPOTS", "NEWSLETTER"] });
+    if (data.newsletter) await syncBrevoContact({ email: data.email, langue, listes: ["VISITEURS_SPOTS", "NEWSLETTER"] });
     return { ok: true as const };
   });

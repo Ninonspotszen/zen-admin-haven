@@ -922,7 +922,8 @@
         "Municipio",
         "Organismo público",
         "Otro"
-      ]
+      ],
+      "optout": "Podrá recibir de vez en cuando las novedades de Spots Zen para profesionales. Marque esta casilla si no lo desea. También podrá darse de baja en cualquier momento."
     },
     "quote": {
       "eyebrow": "EMPECEMOS JUNTOS",

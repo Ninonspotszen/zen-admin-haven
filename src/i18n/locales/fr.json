@@ -922,7 +922,8 @@
         "Commune",
         "Collectivité",
         "Autre"
-      ]
+      ],
+      "optout": "Vous pourrez recevoir de temps en temps les actualités de Spots Zen pour les professionnels. Cochez cette case si vous ne le souhaitez pas. Vous pourrez aussi vous désinscrire à tout moment."
     },
     "quote": {
       "eyebrow": "DÉMARRONS ENSEMBLE",

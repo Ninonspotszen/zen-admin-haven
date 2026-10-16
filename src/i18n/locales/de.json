@@ -922,7 +922,8 @@
         "Gemeinde",
         "Kommune",
         "Sonstiges"
-      ]
+      ],
+      "optout": "Sie erhalten gelegentlich Neuigkeiten von Spots Zen für Fachleute. Kreuzen Sie dieses Kästchen an, wenn Sie das nicht möchten. Sie können sich auch jederzeit abmelden."
     },
     "quote": {
       "eyebrow": "LASSEN SIE UNS BEGINNEN",

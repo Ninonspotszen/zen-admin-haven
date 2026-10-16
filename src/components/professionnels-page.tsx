@@ -61,6 +61,8 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
     }
     row["site_web"] = String(fd.get("site_web") ?? "");
     row["langue"] = (i18n.language || "fr").slice(0, 2);
+    // Prospection B2B : information + opposition simple (case à cocher pour refuser).
+    (row as Record<string, unknown>)["refus_actualites"] = fd.get("refus_actualites") === "on";
     setState("sending");
     try {
       await envoyerDemandeContact({ data: row as never });
@@ -87,6 +89,10 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
                 : <input id={id} name={f.name} type={f.type ?? "text"} maxLength={200} required={f.type === "email"} />}
             </label>;
           })}
+          <label className="pr-optout" style={{ display: "flex", gap: 8, alignItems: "flex-start", fontSize: 13, lineHeight: 1.45, margin: "4px 0 12px" }}>
+            <input type="checkbox" name="refus_actualites" style={{ marginTop: 3 }} />
+            <span>{t("pro.form.optout")}</span>
+          </label>
           {state === "error" && <p className="pr-error">{t("pro.form.error")}</p>}
           <button className="pr-btn pr-btn-full" type="submit" disabled={state === "sending"}>{cta}</button>
         </form>

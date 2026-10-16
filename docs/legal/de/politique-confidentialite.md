@@ -42,6 +42,7 @@ E-Mail: bonjour@spotszen.fr
 | Anonyme Besuchskennung | Verwaltung des vorübergehenden Zugangs | Berechtigtes Interesse |
 | E-Mail (Kontaktformular) | Beantwortung der Anfrage | Einwilligung |
 | E-Mail (Kontaktformular) | Eingangsbestätigung der Anfrage | Einwilligung |
+| Geschäftliche E-Mail (Formular für Fachleute) | Neuigkeiten von Spots Zen für Fachleute, sofern Sie das Kästchen zur Ablehnung nicht angekreuzt haben | Berechtigtes Interesse, mit jederzeitigem Widerspruchsrecht |
 | Datum des letzten Besuchs | Service-E-Mails: Tipps für den Einstieg, Erinnerung nach längerer Zeit ohne Besuch | Berechtigtes Interesse |
 | E-Mail, Zugangs- und Verlängerungsdaten | Ende eines geschenkten Zugangs, Hinweis vor der Verlängerung eines Jahresabonnements | Vertragserfüllung; gesetzliche Pflicht (Art. L.215-1 des französischen Verbrauchergesetzbuchs) |
 | E-Mail (Besucher eines Spots) | Versand des angeforderten Links | Einwilligung (Ihre Anfrage) |

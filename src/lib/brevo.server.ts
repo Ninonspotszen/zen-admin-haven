@@ -132,12 +132,14 @@ export async function sendBrevoInternalAlert(opts: {
  * BREVO_LISTE_* (une liste absente est simplement ignorée). Ne lève jamais d'erreur.
  * Aucun email n'est envoyé par cette fonction : elle range seulement le contact.
  */
-export type ListeBrevo = "ABONNES" | "NEWSLETTER" | "PROSPECTS_B2B" | "VISITEURS_SPOTS" | "ACCES_OFFERTS";
+export type ListeBrevo = "ABONNES" | "NEWSLETTER" | "PROSPECTS_B2B" | "VISITEURS_SPOTS" | "ACCES_OFFERTS" | "ACTUALITES_PRO";
 export async function syncBrevoContact(opts: {
   email: string;
   prenom?: string | null | undefined;
   nom?: string | null | undefined;
   extId?: string | null | undefined;
+  /** Langue du contact (attribut Brevo LANGUE, à créer dans Brevo puis BREVO_ATTRIBUT_LANGUE=true). */
+  langue?: string | null | undefined;
   listes?: ListeBrevo[];
   retirerDe?: ListeBrevo[];
 }): Promise<"synced" | "disabled" | "failed"> {
@@ -151,6 +153,7 @@ export async function syncBrevoContact(opts: {
     if (opts.prenom?.trim()) attributes["PRENOM"] = opts.prenom.trim();
     if (opts.nom?.trim()) attributes["NOM"] = opts.nom.trim();
     if (opts.extId) attributes["EXT_ID"] = opts.extId;
+    if (opts.langue && process.env["BREVO_ATTRIBUT_LANGUE"] === "true") attributes["LANGUE"] = opts.langue;
     const headers = { "api-key": key, "content-type": "application/json", accept: "application/json" };
     const res = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",

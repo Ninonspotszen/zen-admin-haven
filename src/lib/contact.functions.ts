@@ -24,6 +24,7 @@ const inputSchema = z.object({
   taille: opt(100),
   message: opt(5000),
   langue: z.string().max(5).optional(),
+  refus_actualites: z.boolean().default(false),
   // Champ piège invisible : un humain le laisse vide, un robot le remplit.
   site_web: z.string().max(500).optional(),
 });
@@ -54,10 +55,11 @@ export const envoyerDemandeContact = createServerFn({ method: "POST" })
     if (data.site_web) return { ok: true as const }; // robot : on fait comme si, sans rien enregistrer
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { site_web: _piege, langue, ...row } = data;
+    const { site_web: _piege, langue, refus_actualites, ...row } = data;
     const { data: inserted, error } = await supabaseAdmin
       .from("contact_requests")
-      .insert({ ...row, statut: "nouvelle" })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .insert({ ...row, statut: "nouvelle", refus_actualites } as any)
       .select("id")
       .single();
     if (error || !inserted) {
@@ -94,6 +96,13 @@ ${data.message ? `<p style="margin-top:16px;white-space:pre-wrap;border-left:3px
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .update({ notification: statut, accuse_reception: accuse } as any)
       .eq("id", inserted.id);
-    await syncBrevoContact({ email: data.email, nom: data.nom, listes: ["PROSPECTS_B2B"] });
+    // Liste « Prospects B2B » : suivi de la demande. « Actualités pro » seulement si la personne n'a pas refusé.
+    await syncBrevoContact({
+      email: data.email,
+      nom: data.nom,
+      langue: m.langue,
+      listes: refus_actualites ? ["PROSPECTS_B2B"] : ["PROSPECTS_B2B", "ACTUALITES_PRO"],
+      retirerDe: refus_actualites ? ["ACTUALITES_PRO"] : [],
+    });
     return { ok: true as const };
   });

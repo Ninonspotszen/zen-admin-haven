@@ -32,7 +32,7 @@ const aujourdhui = () => new Date().toLocaleDateString("en-CA", { timeZone: "Eur
 type Demande = {
   id: string; created_at: string; secteur: string; nom: string | null; email: string | null; etablissement: string | null;
   type_structure: string | null; taille: string | null; message: string | null; statut: string; notification: string | null;
-  accuse_reception: string | null; note: string | null; prochaine_action: string | null;
+  accuse_reception: string | null; note: string | null; prochaine_action: string | null; refus_actualites: boolean | null;
 };
 const SECTEUR: Record<string, string> = {
   hebergements: "Hébergement touristique",
@@ -58,7 +58,7 @@ function DemandesPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("contact_requests")
-        .select("id, created_at, secteur, nom, email, etablissement, type_structure, taille, message, statut, notification, accuse_reception, note, prochaine_action" as "id")
+        .select("id, created_at, secteur, nom, email, etablissement, type_structure, taille, message, statut, notification, accuse_reception, note, prochaine_action, refus_actualites" as "id")
         .order("created_at", { ascending: false })
         .limit(200);
       if (error) throw error;
@@ -157,6 +157,7 @@ function DemandesPage() {
                       {SECTEUR[d.secteur] ?? d.secteur}
                       {d.notification ? ` · ${NOTIF[d.notification] ?? d.notification}` : ""}
                       {d.accuse_reception ? ` · accusé de réception : ${ACCUSE[d.accuse_reception] ?? d.accuse_reception}` : ""}
+                      {d.refus_actualites ? " · ne veut pas recevoir les actualités" : ""}
                     </p>
                     <p className="mt-1 font-serif text-lg text-foreground">{d.etablissement || d.nom || "Sans nom"}</p>
                     <p className="text-sm text-muted-foreground">

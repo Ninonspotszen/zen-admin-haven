@@ -74,6 +74,6 @@ export const giftAccess = createServerFn({ method: "POST" })
         MESSAGE: data.message?.trim() || null,
       },
     });
-    await syncBrevoContact({ email: data.email, prenom: data.prenom, nom: data.nom, extId: userId, listes: ["ACCES_OFFERTS"] });
+    await syncBrevoContact({ email: data.email, prenom: data.prenom, nom: data.nom, extId: userId, langue, listes: ["ACCES_OFFERTS"] });
     return { ok: true, id: inserted.id, emailStatus };
   });

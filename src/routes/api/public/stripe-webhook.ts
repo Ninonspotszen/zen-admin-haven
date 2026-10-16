@@ -160,7 +160,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                   subject: `Nouvel abonné · ${row["formule"] ?? "formule inconnue"}${finEssai ? " · essai" : ""}`,
                   html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1c2e1e"><p>Nouvel abonnement : <b>${escHtml(destinataire)}</b> (${String(row["formule"] ?? "?")}).</p>${finEssai ? `<p>Fin de l'essai gratuit le ${dateFr(finEssai)}.</p>` : ""}${spotOrigine ? "<p>Venu d'un spot partenaire.</p>" : ""}<p style="color:#6b6b6b">Fiche dans l'admin, onglet « Abonnés ».</p></div>`,
                 });
-                await syncBrevoContact({ email: destinataire, prenom: existing?.prenom, extId: userId, listes: ["ABONNES"], retirerDe: ["ACCES_OFFERTS"] });
+                await syncBrevoContact({ email: destinataire, prenom: existing?.prenom, extId: userId, langue: bienvenue.langue, listes: ["ABONNES"], retirerDe: ["ACCES_OFFERTS"] });
               }
             }
           } else if (event.type === "invoice.payment_failed") {

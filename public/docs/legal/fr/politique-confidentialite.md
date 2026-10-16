@@ -42,6 +42,7 @@ Email : bonjour@spotszen.fr
 | Identifiant anonyme de visite | Gestion de l'accès temporaire | Intérêt légitime |
 | Email (formulaire contact) | Réponse à la demande | Consentement |
 | Email (formulaire contact) | Accusé de réception de la demande | Consentement |
+| Email professionnel (formulaire Professionnels) | Actualités de Spots Zen pour les professionnels, sauf si vous avez coché la case de refus | Intérêt légitime, avec droit d'opposition à tout moment |
 | Date de dernière connexion | Emails de service : conseils de démarrage, rappel après une période sans connexion | Intérêt légitime |
 | Email, dates d'accès et de renouvellement | Fin d'un accès offert, information avant la reconduction d'un abonnement annuel | Exécution du contrat ; obligation légale (art. L.215-1 du Code de la consommation) |
 | Email (visiteur d'un spot) | Envoi du lien demandé | Consentement (votre demande) |

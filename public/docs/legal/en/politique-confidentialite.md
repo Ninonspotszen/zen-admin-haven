@@ -42,6 +42,7 @@ Email: bonjour@spotszen.fr
 | Anonymous visit identifier | Temporary access management | Legitimate interest |
 | Email (contact form) | Responding to the request | Consent |
 | Email (contact form) | Acknowledging receipt of the request | Consent |
+| Business email (Professionals form) | Spots Zen news for professionals, unless you ticked the opt-out box | Legitimate interest, with the right to object at any time |
 | Date of last visit | Service emails: getting-started tips, reminder after a period without visiting | Legitimate interest |
 | Email, access and renewal dates | End of a complimentary access, notice before an annual subscription renews | Contract performance; legal obligation (art. L.215-1 of the French Consumer Code) |
 | Email (spot visitor) | Sending the requested link | Consent (your request) |

@@ -42,6 +42,7 @@ E-mail: bonjour@spotszen.fr
 | Anonieme bezoekidentifier | Beheer van tijdelijke toegang | Gerechtvaardigd belang |
 | E-mail (contactformulier) | Beantwoording van het verzoek | Toestemming |
 | E-mail (contactformulier) | Ontvangstbevestiging van het verzoek | Toestemming |
+| Zakelijk e-mailadres (formulier voor professionals) | Nieuws van Spots Zen voor professionals, tenzij u het weigeringsvakje hebt aangevinkt | Gerechtvaardigd belang, met recht van bezwaar op elk moment |
 | Datum van laatste bezoek | Service-e-mails: tips om te beginnen, herinnering na een periode zonder bezoek | Gerechtvaardigd belang |
 | E-mail, toegangs- en verlengingsdata | Einde van een aangeboden toegang, bericht vóór de verlenging van een jaarabonnement | Uitvoering van overeenkomst; wettelijke verplichting (art. L.215-1 van het Franse consumentenwetboek) |
 | E-mail (bezoeker van een spot) | Versturen van de gevraagde link | Toestemming (uw aanvraag) |

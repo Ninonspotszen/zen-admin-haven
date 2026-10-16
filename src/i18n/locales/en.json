@@ -922,7 +922,8 @@
         "Municipality",
         "Local authority",
         "Other"
-      ]
+      ],
+      "optout": "You may occasionally receive Spots Zen news for professionals. Tick this box if you would rather not. You can also unsubscribe at any time."
     },
     "quote": {
       "eyebrow": "LET'S GET STARTED",

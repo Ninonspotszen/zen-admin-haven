@@ -42,6 +42,7 @@ Correo electrónico: bonjour@spotszen.fr
 | Identificador anónimo de visita | Gestión del acceso temporal | Interés legítimo |
 | Correo electrónico (formulario de contacto) | Respuesta a la solicitud | Consentimiento |
 | Correo electrónico (formulario de contacto) | Acuse de recibo de la solicitud | Consentimiento |
+| Correo electrónico profesional (formulario Profesionales) | Novedades de Spots Zen para profesionales, salvo si marcó la casilla de rechazo | Interés legítimo, con derecho de oposición en cualquier momento |
 | Fecha de la última visita | Correos de servicio: consejos para empezar, recordatorio tras un periodo sin visitas | Interés legítimo |
 | Correo electrónico, fechas de acceso y de renovación | Fin de un acceso ofrecido, aviso antes de la renovación de una suscripción anual | Ejecución del contrato; obligación legal (art. L.215-1 del Código de Consumo francés) |
 | Correo electrónico (visitante de un spot) | Envío del enlace solicitado | Consentimiento (su solicitud) |
