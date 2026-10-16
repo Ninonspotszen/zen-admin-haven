@@ -383,7 +383,7 @@ function BibliothequePage() {
       <div className="text-[var(--sz-muted)]"><AppLegalFooter /></div>
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor="" lang={lang}
-        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); noterVisite(l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}
+        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); noterVisite(l); }} spotId={null} userId={userId} abonnePayant={isPaid} onClose={() => setSelected(null)} onSelect={setSelected} />}
     </div>
   );
 }
@@ -433,8 +433,8 @@ function SkipIcon({ forward }: { forward?: boolean }) {
   );
 }
 
-function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, onSelect }: {
-  audio: Audio; list: Audio[]; sponsor: string; lang: string; onLang: (l: string) => void; spotId: string | null; userId?: string | null; onClose: () => void; onSelect: (a: Audio) => void;
+function Player({ audio, list, sponsor, lang, onLang, spotId, userId, abonnePayant, onClose, onSelect }: {
+  audio: Audio; list: Audio[]; sponsor: string; lang: string; onLang: (l: string) => void; spotId: string | null; userId?: string | null; abonnePayant?: boolean; onClose: () => void; onSelect: (a: Audio) => void;
 }) {
   const { t: tr } = useTranslation();
   const trads = tradsFor(audio, lang);
@@ -603,14 +603,14 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, userId, onClose, o
           </div>
         )}
 
-        {/* CTA */}
-        <section className="mt-6 rounded-3xl p-6 text-center" style={{ background: "#F0EDE8" }}>
-<p className="serif text-xl" style={{ color: "#1C2E1E" }}>{tr("player.cta.home")}</p>
+        {/* CTA : masqué pour un abonné payant (il a déjà l'abonnement) ; montré aux accès offerts et ambassadeurs. */}
+        {!abonnePayant && <section className="mt-6 rounded-3xl p-6 text-center" style={{ background: "#F0EDE8" }}>
+          <p className="serif text-xl" style={{ color: "#1C2E1E" }}>{tr("player.cta.home")}</p>
           <p className="mt-2 text-sm" style={{ color: "#5A6B5C" }}>{tr("player.cta.calm")}</p>
-          <a href={`/offres?spot_origine_id=${spotId}`} className="mt-4 flex h-[52px] w-full items-center justify-center rounded-full text-sm font-semibold" style={{ background: "#2D5A27", color: "#F0EDE8" }}>
+          <a href={spotId ? `/offres?spot_origine_id=${spotId}` : "/offres"} className="mt-4 flex h-[52px] w-full items-center justify-center rounded-full text-sm font-semibold" style={{ background: "#2D5A27", color: "#F0EDE8" }}>
             {tr("player.cta.subscribe")}
           </a>
-        </section>
+        </section>}
 
         <p className="mx-auto mb-8 mt-6 flex items-center gap-1.5 text-[11px]" style={{ color: "#9AA09A" }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#9AA09A" aria-hidden><path d="M20 4C10 4 4 10 4 18c0 .7.1 1.4.2 2C6 14 10 10 16 8c-5 3-8 7-9.5 12C14 20 20 14 20 4z" /></svg>

@@ -298,7 +298,12 @@
       "payment": "Payment could not be started. Please try again in a moment."
     },
     "cgvNotice": "By subscribing, you accept our",
-    "cgvLink": "Terms of Sale"
+    "cgvLink": "Terms of Sale",
+    "back": {
+      "library": "Back to my library",
+      "spot": "Back to the spot",
+      "home": "Back to home"
+    }
   },
   "access": {
     "meta": {

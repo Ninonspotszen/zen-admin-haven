@@ -298,7 +298,12 @@
       "payment": "Le paiement n'a pas pu démarrer. Réessayez dans un instant."
     },
     "cgvNotice": "En vous abonnant, vous acceptez nos",
-    "cgvLink": "Conditions générales de vente"
+    "cgvLink": "Conditions générales de vente",
+    "back": {
+      "library": "Retour à ma bibliothèque",
+      "spot": "Retour au spot",
+      "home": "Retour à l'accueil"
+    }
   },
   "access": {
     "meta": {

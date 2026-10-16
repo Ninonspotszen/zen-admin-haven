@@ -298,7 +298,12 @@
       "payment": "De betaling kon niet worden gestart. Probeer het over een ogenblik opnieuw."
     },
     "cgvNotice": "Door u te abonneren, gaat u akkoord met onze",
-    "cgvLink": "Algemene Verkoopvoorwaarden"
+    "cgvLink": "Algemene Verkoopvoorwaarden",
+    "back": {
+      "library": "Terug naar mijn bibliotheek",
+      "spot": "Terug naar de spot",
+      "home": "Terug naar de startpagina"
+    }
   },
   "access": {
     "meta": {
