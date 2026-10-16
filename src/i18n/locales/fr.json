@@ -240,7 +240,9 @@
       "manage": "Gérer ou résilier mon abonnement",
       "manageHint": "Vous recevrez un lien par email pour accéder à votre espace sécurisé Stripe.",
       "newsletter": "Recevoir les nouvelles de Spots Zen par email",
-      "newsletterHint": "Nouveautés et conseils, désinscription à tout moment."
+      "newsletterHint": "Nouveautés et conseils, désinscription à tout moment.",
+      "newsletterSaved": "Enregistré",
+      "newsletterError": "Le changement n'a pas pu être enregistré, réessayez."
     },
     "empty": "Aucun audio disponible pour le moment.",
     "subtitle": "Votre bibliothèque audio bien-être, où que vous soyez."

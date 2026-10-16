@@ -240,7 +240,9 @@
       "manage": "Abonnement beheren of opzeggen",
       "manageHint": "Je ontvangt een link per e-mail om je beveiligde Stripe-omgeving te openen.",
       "newsletter": "Nieuws van Spots Zen per e-mail ontvangen",
-      "newsletterHint": "Nieuwe inhoud en tips, op elk moment opzegbaar."
+      "newsletterHint": "Nieuwe inhoud en tips, op elk moment opzegbaar.",
+      "newsletterSaved": "Opgeslagen",
+      "newsletterError": "De wijziging kon niet worden opgeslagen. Probeer het opnieuw."
     },
     "empty": "Momenteel zijn er geen audio's beschikbaar.",
     "subtitle": "Uw welzijns-audiobibliotheek, waar u ook bent."

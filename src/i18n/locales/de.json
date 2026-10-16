@@ -240,7 +240,9 @@
       "manage": "Abonnement verwalten oder kündigen",
       "manageHint": "Sie erhalten einen Link per E-Mail, um Ihren sicheren Stripe-Bereich zu öffnen.",
       "newsletter": "Neuigkeiten von Spots Zen per E-Mail erhalten",
-      "newsletterHint": "Neue Inhalte und Tipps, jederzeit abbestellbar."
+      "newsletterHint": "Neue Inhalte und Tipps, jederzeit abbestellbar.",
+      "newsletterSaved": "Gespeichert",
+      "newsletterError": "Die Änderung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
     },
     "empty": "Momentan sind keine Audios verfügbar.",
     "subtitle": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind."

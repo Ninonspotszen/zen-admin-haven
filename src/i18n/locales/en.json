@@ -240,7 +240,9 @@
       "manage": "Manage or cancel my subscription",
       "manageHint": "You'll receive a link by email to access your secure Stripe area.",
       "newsletter": "Receive Spots Zen news by email",
-      "newsletterHint": "New content and tips, unsubscribe at any time."
+      "newsletterHint": "New content and tips, unsubscribe at any time.",
+      "newsletterSaved": "Saved",
+      "newsletterError": "Your change could not be saved. Please try again."
     },
     "empty": "No audio available at the moment.",
     "subtitle": "Your wellness audio library, wherever you are."

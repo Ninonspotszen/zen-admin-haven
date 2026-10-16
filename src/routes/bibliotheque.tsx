@@ -137,6 +137,8 @@ function BibliothequePage() {
   const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null; statut: string | null; email: string | null; date_fin_prevue: string | null } | null>(null);
   const [newsletter, setNewsletter] = useState(false);
   const [newsletterBusy, setNewsletterBusy] = useState(false);
+  // Retour visible après la case newsletter (test du 16/10 : sans message, on doutait que ce soit enregistré).
+  const [newsletterMsg, setNewsletterMsg] = useState<"ok" | "err" | null>(null);
   const isPaid = abo?.statut === "actif" || abo?.statut === "paiement_echoue";
   const fmtDate = (s: string) => {
     const [y, m, d] = s.slice(0, 10).split("-").map(Number);
@@ -370,10 +372,19 @@ function BibliothequePage() {
                     onChange={async (e) => {
                       const ok = e.target.checked;
                       setNewsletterBusy(true);
-                      try { await changerNewsletter({ data: { ok } }); setNewsletter(ok); } catch { /* état inchangé */ } finally { setNewsletterBusy(false); }
+                      setNewsletterMsg(null);
+                      try {
+                        await changerNewsletter({ data: { ok } });
+                        setNewsletter(ok);
+                        setNewsletterMsg("ok");
+                        setTimeout(() => setNewsletterMsg((m) => (m === "ok" ? null : m)), 3000);
+                      } catch { setNewsletterMsg("err"); } finally { setNewsletterBusy(false); }
                     }} />
                   <span>{t("lib.abo.newsletter")}<span className="mt-0.5 block text-xs text-[var(--sz-muted)]">{t("lib.abo.newsletterHint")}</span></span>
                 </label>
+                <p role="status" aria-live="polite" className="min-h-5 pl-7 text-xs font-medium text-[var(--sz-fg)]">
+                  {newsletterMsg === "ok" ? `✓ ${t("lib.abo.newsletterSaved")}` : newsletterMsg === "err" ? t("lib.abo.newsletterError") : ""}
+                </p>
               </div>
             )}
           </section>
