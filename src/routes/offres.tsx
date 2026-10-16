@@ -108,12 +108,14 @@ function OffresPage() {
   /* Lien de retour (test du 16/10 sur téléphone : sans lui, on restait bloqué sur cette page).
      Accès en cours → bibliothèque ; sinon venu d'un spot → ce spot ; sinon → accueil. */
   const [retour, setRetour] = useState<{ href: string; label: string }>({ href: "/", label: "offers.back.home" });
+  const [connecte, setConnecte] = useState(false);
   useEffect(() => {
     (async () => {
       const param = new URLSearchParams(window.location.search).get("spot_origine_id");
       if (param && z.string().uuid().safeParse(param).success) setRetour({ href: `/spots/${param}`, label: "offers.back.spot" });
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
+      setConnecte(true);
       const { data } = await supabase.from("abonnes_b2c").select("statut").eq("id", session.user.id).maybeSingle();
       const statut = (data as { statut?: string | null } | null)?.statut;
       if (statut && ["actif", "offert", "ambassadeur", "paiement_echoue"].includes(statut)) {
@@ -167,9 +169,17 @@ function OffresPage() {
       </header>
 
       <main className="mx-auto max-w-md pb-12 md:max-w-3xl md:pb-20 lg:max-w-5xl">
-        <a href={retour.href} className="ml-4 mt-2 inline-flex min-h-[44px] items-center gap-1.5 px-2 text-[13px] font-medium text-[var(--o-sub)] underline-offset-2 hover:underline">
-          <ArrowLeft className="h-4 w-4" aria-hidden />{t(retour.label)}
-        </a>
+        <div className="mt-2 flex items-center justify-between px-4">
+          <a href={retour.href} className="inline-flex min-h-[44px] items-center gap-1.5 px-2 text-[13px] font-medium text-[var(--o-sub)] underline-offset-2 hover:underline">
+            <ArrowLeft className="h-4 w-4" aria-hidden />{t(retour.label)}
+          </a>
+          {connecte && (
+            <button type="button" onClick={async () => { await supabase.auth.signOut(); window.location.href = "/"; }}
+              className="inline-flex min-h-[44px] items-center px-2 text-[13px] font-medium text-[var(--o-sub)] underline-offset-2 hover:underline">
+              {t("common.logout")}
+            </button>
+          )}
+        </div>
 
         {/* HERO */}
         <section className="px-6 pb-12 pt-6 text-center md:pb-14 md:pt-14">

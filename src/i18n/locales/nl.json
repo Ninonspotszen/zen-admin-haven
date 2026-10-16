@@ -182,7 +182,8 @@
     "cta": {
       "home": "Geniet van deze audio's thuis ♡",
       "subscribe": "Abonneer u op Spots Zen →"
-    }
+    },
+    "logout": "Uitloggen"
   },
   "player": {
     "ariaLabel": "Audiospeler",

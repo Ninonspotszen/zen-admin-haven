@@ -182,7 +182,8 @@
     "cta": {
       "home": "Genießen Sie diese Audios zu Hause ♡",
       "subscribe": "Spots Zen abonnieren →"
-    }
+    },
+    "logout": "Abmelden"
   },
   "player": {
     "ariaLabel": "Audio-Player",

@@ -385,6 +385,11 @@ function BibliothequePage() {
                 <p role="status" aria-live="polite" className="min-h-5 pl-7 text-xs font-medium text-[var(--sz-fg)]">
                   {newsletterMsg === "ok" ? `✓ ${t("lib.abo.newsletterSaved")}` : newsletterMsg === "err" ? t("lib.abo.newsletterError") : ""}
                 </p>
+                {/* Déconnexion (test du 16/10 : aucun moyen de se déconnecter côté client). */}
+                <button type="button" onClick={async () => { await supabase.auth.signOut(); window.location.href = "/"; }}
+                  className="min-h-11 w-full border-t border-[var(--sz-hair)] pt-3 text-center text-sm font-medium text-[var(--sz-muted)] underline-offset-2 hover:underline">
+                  {t("common.logout")}
+                </button>
               </div>
             )}
           </section>
