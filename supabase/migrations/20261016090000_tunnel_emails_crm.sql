@@ -76,15 +76,9 @@ ALTER TABLE public.contact_requests
   ADD CONSTRAINT contact_requests_statut_check
   CHECK (statut IN ('nouvelle', 'en_cours', 'demo', 'devis', 'pilote', 'client', 'perdue', 'traitee'));
 
--- Le visiteur du formulaire ne peut toujours rien pré-remplir côté suivi.
+-- Pas d'insertion directe depuis le navigateur : le formulaire passe par le serveur (clé service),
+-- qui applique la limite anti-abus (audit sécurité du 16/10, migration 20261016130000).
 DROP POLICY IF EXISTS "Anyone can submit a contact request" ON public.contact_requests;
-CREATE POLICY "Anyone can submit a contact request" ON public.contact_requests
-FOR INSERT TO anon, authenticated
-WITH CHECK (
-  secteur IS NOT NULL AND length(secteur) BETWEEN 1 AND 100 AND statut = 'nouvelle'
-  AND notification IS NULL AND accuse_reception IS NULL AND note IS NULL
-  AND prochaine_action IS NULL AND client_id IS NULL
-);
 
 -- 4. Visiteurs des spots ----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.spot_leads (
