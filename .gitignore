@@ -32,3 +32,7 @@ dist-ssr
 *.sw?
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+
+# Rapports des tests Playwright
+test-results/
+playwright-report/
