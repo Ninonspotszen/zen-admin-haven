@@ -1,4 +1,5 @@
 import { portalUrl } from "@/lib/stripe-portal";
+import { changerNewsletter } from "@/lib/crm.functions";
 import i18n from "@/i18n/index";
 import { useTranslation } from "react-i18next";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -126,6 +127,8 @@ function BibliothequePage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [aboOpen, setAboOpen] = useState(false);
   const [abo, setAbo] = useState<{ formule: string | null; date_renouvellement: string | null; statut: string | null; email: string | null; date_fin_prevue: string | null } | null>(null);
+  const [newsletter, setNewsletter] = useState(false);
+  const [newsletterBusy, setNewsletterBusy] = useState(false);
   const isPaid = abo?.statut === "actif" || abo?.statut === "paiement_echoue";
   const fmtDate = (s: string) => {
     const [y, m, d] = s.slice(0, 10).split("-").map(Number);
@@ -150,7 +153,7 @@ function BibliothequePage() {
       /* abonnes_b2c.id is the account id; payant (actif/paiement_echoue) → date_renouvellement, offert/ambassadeur → date_fin_acces. */
       const { data: aboData } = await supabase
         .from("abonnes_b2c")
-        .select("formule, date_fin_acces, date_renouvellement, statut, prenom, email, date_fin_prevue" as "formule")
+        .select("formule, date_fin_acces, date_renouvellement, statut, prenom, email, date_fin_prevue, newsletter_ok" as "formule")
         .eq("id", user.id)
         .maybeSingle();
       /* Prénom : abonnes_b2c.prenom, sinon nom Google, sinon vide (jamais l'email). */
@@ -165,6 +168,7 @@ function BibliothequePage() {
         email: ab.email ?? null,
         date_fin_prevue: ab.date_fin_prevue ?? null,
       } : null);
+      setNewsletter((aboData as { newsletter_ok?: boolean } | null)?.newsletter_ok === true);
       if (ab?.statut === "paiement_echoue") setAboOpen(true);
       if (ab?.statut && ["actif", "offert", "ambassadeur", "paiement_echoue"].includes(ab.statut)) {
         try { localStorage.removeItem("sz_spot_origine"); } catch { /* stockage indisponible */ }
@@ -175,6 +179,8 @@ function BibliothequePage() {
         .sort((a, b) => (a.ordre ?? Number.MAX_SAFE_INTEGER) - (b.ordre ?? Number.MAX_SAFE_INTEGER));
       setAudios(list);
       setState("catalog");
+      // Dernière connexion + langue utilisée (relances et emails dans la bonne langue). Sans effet si la fonction n'existe pas encore.
+      noterVisite(i18n.language?.slice(0, 2) ?? "fr");
     })();
   }, [navigate]);
 
@@ -343,6 +349,15 @@ function BibliothequePage() {
                     <p className="text-center text-xs text-[var(--sz-muted)]">{t("lib.abo.manageHint")}</p>
                   </>
                 )}
+                <label className="flex cursor-pointer items-start gap-3 border-t border-[var(--sz-hair)] pt-3 text-sm text-[var(--sz-fg)]">
+                  <input type="checkbox" className="mt-1 h-4 w-4 accent-[#2D5A27]" checked={newsletter} disabled={newsletterBusy}
+                    onChange={async (e) => {
+                      const ok = e.target.checked;
+                      setNewsletterBusy(true);
+                      try { await changerNewsletter({ data: { ok } }); setNewsletter(ok); } catch { /* état inchangé */ } finally { setNewsletterBusy(false); }
+                    }} />
+                  <span>{t("lib.abo.newsletter")}<span className="mt-0.5 block text-xs text-[var(--sz-muted)]">{t("lib.abo.newsletterHint")}</span></span>
+                </label>
               </div>
             )}
           </section>
@@ -352,11 +367,17 @@ function BibliothequePage() {
       <div className="text-[var(--sz-muted)]"><AppLegalFooter /></div>
 
       {selected && <Player key={selected.id} audio={selected} list={playable} sponsor="" lang={lang}
-        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}
+        onLang={(l) => { setLang(l); localStorage.setItem("sz-lang", l); i18n.changeLanguage(l); noterVisite(l); }} spotId={null} userId={userId} onClose={() => setSelected(null)} onSelect={setSelected} />}
     </div>
   );
 }
 
+
+/** Note la visite et la langue (relances, emails dans la bonne langue). N'interrompt jamais la page. */
+function noterVisite(langue: string) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Promise.resolve((supabase as any).rpc("enregistrer_visite", { p_langue: langue })).catch(() => undefined);
+}
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <h2 className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--sz-muted)]">{children}</h2>;

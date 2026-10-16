@@ -133,6 +133,18 @@
       "title": "Votre accès bien-être est terminé",
       "text": "Votre accès offert par {nom} est arrivé à son terme. Retrouvez toutes vos immersions chez vous, où que vous soyez.",
       "cta": "Découvrir l'abonnement"
+    },
+    "lead": {
+      "title": "Continuer chez vous ?",
+      "text": "Recevez par email le lien pour retrouver Spots Zen chez vous, sur votre téléphone ou votre ordinateur.",
+      "placeholder": "Votre adresse email",
+      "newsletter": "J'accepte aussi de recevoir les nouvelles de Spots Zen par email (désinscription en un clic).",
+      "cta": "Recevoir le lien",
+      "sending": "Envoi…",
+      "done": "C'est noté : le lien arrive dans votre boîte mail.",
+      "error": "Une erreur est survenue. Réessayez dans un instant.",
+      "privacy": "Votre adresse sert uniquement à vous envoyer ce lien, et les nouvelles si vous avez coché la case.",
+      "privacyLink": "Politique de confidentialité"
     }
   },
   "common": {
@@ -225,7 +237,9 @@
       "endNotice": "Votre abonnement s'arrêtera le {date}. Vous gardez l'accès à toute la bibliothèque jusque-là.",
       "paymentFailed": "Votre dernier paiement n'a pas abouti. Mettez à jour votre carte pour garder votre accès.",
       "manage": "Gérer ou résilier mon abonnement",
-      "manageHint": "Vous recevrez un lien par email pour accéder à votre espace sécurisé Stripe."
+      "manageHint": "Vous recevrez un lien par email pour accéder à votre espace sécurisé Stripe.",
+      "newsletter": "Recevoir les nouvelles de Spots Zen par email",
+      "newsletterHint": "Nouveautés et conseils, désinscription à tout moment."
     },
     "empty": "Aucun audio disponible pour le moment.",
     "subtitle": "Votre bibliothèque audio bien-être, où que vous soyez."

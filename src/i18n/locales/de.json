@@ -133,6 +133,18 @@
       "title": "Ihr Wohlfühl-Zugang ist beendet",
       "text": "Ihr von {nom} angebotener Zugang ist abgelaufen. Genießen Sie alle Ihre Immersionen zu Hause, wo immer Sie sind.",
       "cta": "Abonnement entdecken"
+    },
+    "lead": {
+      "title": "Zu Hause weiterhören?",
+      "text": "Erhalten Sie per E-Mail den Link, um Spots Zen zu Hause wiederzufinden, auf Ihrem Handy oder Computer.",
+      "placeholder": "Ihre E-Mail-Adresse",
+      "newsletter": "Ich möchte außerdem Neuigkeiten von Spots Zen per E-Mail erhalten (Abmeldung mit einem Klick).",
+      "cta": "Link erhalten",
+      "sending": "Wird gesendet…",
+      "done": "Erledigt: Der Link ist auf dem Weg in Ihr Postfach.",
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es gleich noch einmal.",
+      "privacy": "Ihre Adresse wird nur verwendet, um Ihnen diesen Link zu senden, und Neuigkeiten, falls Sie das Kästchen angekreuzt haben.",
+      "privacyLink": "Datenschutzerklärung"
     }
   },
   "common": {
@@ -225,7 +237,9 @@
       "endNotice": "Ihr Abonnement endet am {date}. Bis dahin haben Sie vollen Zugriff auf die Bibliothek.",
       "paymentFailed": "Ihre letzte Zahlung ist fehlgeschlagen. Aktualisieren Sie Ihre Karte, um Ihren Zugang zu behalten.",
       "manage": "Abonnement verwalten oder kündigen",
-      "manageHint": "Sie erhalten einen Link per E-Mail, um Ihren sicheren Stripe-Bereich zu öffnen."
+      "manageHint": "Sie erhalten einen Link per E-Mail, um Ihren sicheren Stripe-Bereich zu öffnen.",
+      "newsletter": "Neuigkeiten von Spots Zen per E-Mail erhalten",
+      "newsletterHint": "Neue Inhalte und Tipps, jederzeit abbestellbar."
     },
     "empty": "Momentan sind keine Audios verfügbar.",
     "subtitle": "Ihre Wellness-Audio-Bibliothek, wo immer Sie sind."

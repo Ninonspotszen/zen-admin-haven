@@ -133,6 +133,18 @@
       "title": "Your wellbeing access has ended",
       "text": "Your access offered by {nom} has come to an end. Enjoy all your immersions at home, wherever you are.",
       "cta": "Discover the subscription"
+    },
+    "lead": {
+      "title": "Continue at home?",
+      "text": "Get the link by email to find Spots Zen again at home, on your phone or computer.",
+      "placeholder": "Your email address",
+      "newsletter": "I also agree to receive Spots Zen news by email (unsubscribe in one click).",
+      "cta": "Send me the link",
+      "sending": "Sending…",
+      "done": "Done: the link is on its way to your inbox.",
+      "error": "Something went wrong. Please try again in a moment.",
+      "privacy": "Your address is only used to send you this link, and news if you ticked the box.",
+      "privacyLink": "Privacy policy"
     }
   },
   "common": {
@@ -225,7 +237,9 @@
       "endNotice": "Your subscription will end on {date}. You keep full access to the library until then.",
       "paymentFailed": "Your last payment didn't go through. Update your card to keep your access.",
       "manage": "Manage or cancel my subscription",
-      "manageHint": "You'll receive a link by email to access your secure Stripe area."
+      "manageHint": "You'll receive a link by email to access your secure Stripe area.",
+      "newsletter": "Receive Spots Zen news by email",
+      "newsletterHint": "New content and tips, unsubscribe at any time."
     },
     "empty": "No audio available at the moment.",
     "subtitle": "Your wellness audio library, wherever you are."

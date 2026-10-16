@@ -133,6 +133,18 @@
       "title": "Uw wellbeing-toegang is beëindigd",
       "text": "Uw toegang aangeboden door {nom} is afgelopen. Geniet thuis van al uw immersies, waar u ook bent.",
       "cta": "Ontdek het abonnement"
+    },
+    "lead": {
+      "title": "Thuis verder luisteren?",
+      "text": "Ontvang per e-mail de link om Spots Zen thuis terug te vinden, op uw telefoon of computer.",
+      "placeholder": "Uw e-mailadres",
+      "newsletter": "Ik wil ook nieuws van Spots Zen per e-mail ontvangen (uitschrijven met één klik).",
+      "cta": "Stuur mij de link",
+      "sending": "Bezig met verzenden…",
+      "done": "Gelukt: de link is onderweg naar uw mailbox.",
+      "error": "Er ging iets mis. Probeer het zo meteen opnieuw.",
+      "privacy": "Uw adres wordt alleen gebruikt om u deze link te sturen, en nieuws als u het vakje hebt aangevinkt.",
+      "privacyLink": "Privacybeleid"
     }
   },
   "common": {
@@ -225,7 +237,9 @@
       "endNotice": "Je abonnement eindigt op {date}. Tot dan heb je volledige toegang tot de bibliotheek.",
       "paymentFailed": "Je laatste betaling is mislukt. Werk je kaart bij om je toegang te behouden.",
       "manage": "Abonnement beheren of opzeggen",
-      "manageHint": "Je ontvangt een link per e-mail om je beveiligde Stripe-omgeving te openen."
+      "manageHint": "Je ontvangt een link per e-mail om je beveiligde Stripe-omgeving te openen.",
+      "newsletter": "Nieuws van Spots Zen per e-mail ontvangen",
+      "newsletterHint": "Nieuwe inhoud en tips, op elk moment opzegbaar."
     },
     "empty": "Momenteel zijn er geen audio's beschikbaar.",
     "subtitle": "Uw welzijns-audiobibliotheek, waar u ook bent."

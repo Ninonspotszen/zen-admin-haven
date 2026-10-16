@@ -448,6 +448,7 @@ function SpotPage() {
           <a href={`/offres?spot_origine_id=${id}`} className="mt-5 flex h-[52px] w-full items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F0EDE8]">
             {t("common.cta.subscribe")}
           </a>
+          <SpotLeadForm spotId={id} />
           <div className="mt-6 flex justify-center"><LanguageSwitcher /></div>
           </section></div>
       )}
@@ -683,5 +684,51 @@ function Player({ audio, list, sponsor, lang, onLang, spotId, onClose, onSelect 
         </p>
       </div>
     </div>
+  );
+}
+
+/** « Recevoir le lien chez moi » : un email avec le lien vers l'abonnement, rattaché à ce spot. */
+function SpotLeadForm({ spotId }: { spotId: string }) {
+  const { t, i18n } = useTranslation();
+  const [etat, setEtat] = useState<"idle" | "sending" | "done" | "error">("idle");
+  async function envoyer(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    setEtat("sending");
+    try {
+      const { enregistrerVisiteurSpot } = await import("@/lib/crm.functions");
+      await enregistrerVisiteurSpot({ data: {
+        email: String(fd.get("email") ?? ""),
+        spotId,
+        langue: (i18n.language || "fr").slice(0, 2),
+        newsletter: fd.get("newsletter") === "on",
+        site_web: String(fd.get("site_web") ?? ""),
+      } });
+      setEtat("done");
+    } catch {
+      setEtat("error");
+    }
+  }
+  if (etat === "done") return <p role="status" className="mt-6 text-sm text-[var(--sz-fg)]">{t("spot.lead.done")}</p>;
+  return (
+    <form onSubmit={envoyer} className="mt-6 border-t border-[var(--sz-hair)] pt-6 text-left">
+      <label htmlFor="spot-lead-email" className="block text-sm font-semibold text-[var(--sz-fg)]">{t("spot.lead.title")}</label>
+      <p className="mt-1 text-xs leading-relaxed text-[var(--sz-muted)]">{t("spot.lead.text")}</p>
+      <input id="spot-lead-email" name="email" type="email" required autoComplete="email" placeholder={t("spot.lead.placeholder")}
+        className="mt-3 h-12 w-full rounded-full border border-[var(--sz-card-border)] bg-transparent px-5 text-sm text-[var(--sz-fg)]" />
+      <input type="text" name="site_web" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
+      <label className="mt-3 flex cursor-pointer items-start gap-2 text-xs leading-relaxed text-[var(--sz-muted)]">
+        <input type="checkbox" name="newsletter" className="mt-0.5 h-4 w-4 accent-[#2D5A27]" />
+        <span>{t("spot.lead.newsletter")}</span>
+      </label>
+      <button type="submit" disabled={etat === "sending"}
+        className="mt-4 flex h-12 w-full items-center justify-center rounded-full border border-[#2D5A27] text-sm font-semibold text-[var(--sz-fg)] disabled:opacity-60">
+        {etat === "sending" ? t("spot.lead.sending") : t("spot.lead.cta")}
+      </button>
+      {etat === "error" && <p role="alert" className="mt-2 text-xs text-[var(--sz-fg)]">{t("spot.lead.error")}</p>}
+      <p className="mt-3 text-[11px] leading-relaxed text-[var(--sz-muted)]">
+        {t("spot.lead.privacy")} <a href="/politique-confidentialite" className="underline">{t("spot.lead.privacyLink")}</a>
+      </p>
+    </form>
   );
 }
