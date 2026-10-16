@@ -96,7 +96,8 @@
       "error": {
         "format": "Der Code enthält 4 Ziffern.",
         "wrong": "Falscher Code. Überprüfen Sie den Aushang.",
-        "expired": "Code abgelaufen"
+        "expired": "Code abgelaufen",
+        "tooMany": "Zu viele Versuche. Bitte versuchen Sie es in ein paar Minuten erneut."
       }
     },
     "audio": {

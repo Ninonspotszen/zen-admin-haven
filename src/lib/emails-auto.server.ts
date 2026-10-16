@@ -151,6 +151,9 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
     }
   }
 
+  // Ménage : les compteurs anti-abus de plus de 2 jours ne servent plus.
+  if (!simulation) await db.from("limites_tentatives").delete().lt("created_at", new Date(maintenant - 2 * 864e5).toISOString());
+
   // 6. Résumé du matin pour Ninon -------------------------------------------------------
   const blocs: string[] = [];
   const liste = (titre: string, lignes: string[]) =>

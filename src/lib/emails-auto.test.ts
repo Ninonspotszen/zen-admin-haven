@@ -21,6 +21,7 @@ function q(table: string) {
         then: (res: any) => res(dup ? { error: { code: "23505" } } : (tables[table]!.push({ id: "x", ...row }), { error: null })) };
       return ins;
     },
+    delete: () => ({ lt: async () => ({ error: null }) }),
     update: (u: any) => ({ eq: async (k: string, v: any) => { for (const r of tables[table] ?? []) if (r[k] === v) Object.assign(r, u); return { error: null }; } }),
   };
   return api;

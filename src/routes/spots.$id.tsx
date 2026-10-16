@@ -150,18 +150,18 @@ function SpotPage() {
       if (s.mode_acces === "email_domaine") {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          if (await loadCatalog(null)) return;
+          if ((await loadCatalog(null)) === true) return;
           setSessionEmail(session.user.email ?? "");
           return setState("email_wrong_account");
         }
         return setState("email");
       }
       if (s.pin_requis === false) {
-        if (await loadCatalog(null)) return;
+        if ((await loadCatalog(null)) === true) return;
         return setState("notfound");
       }
       const saved = sessionStorage.getItem(`sz_pin_${id}`);
-      if (saved && (await loadCatalog(saved))) return;
+      if (saved && (await loadCatalog(saved)) === true) return;
       setState("pin");
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,7 +169,8 @@ function SpotPage() {
 
   async function loadCatalog(p: string | null) {
     /* Access is checked server-side: NULL = refused, [] or list = catalogue. */
-    const { data } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p as string });
+    const { data, error } = await supabase.rpc("get_spot_catalog", { p_id: id, p_pin: p as string });
+    if (error?.message?.includes("trop_de_tentatives")) return "bloque" as const;
     if (data === null || data === undefined) return false;
     const rows = (data as unknown as (Omit<Audio, "slug"> & { slug?: string | null })[] | null) ?? [];
     setAudios(
@@ -194,7 +195,8 @@ function SpotPage() {
     setChecking(true); setPinError("");
     const ok = await loadCatalog(pin);
     setChecking(false);
-    if (!ok) setPinError(t("spot.pin.error.wrong"));
+    if (ok === "bloque") setPinError(t("spot.pin.error.tooMany"));
+    else if (!ok) setPinError(t("spot.pin.error.wrong"));
   }
 
   const domaine = spot?.domaine_email ?? "";
@@ -232,7 +234,7 @@ function SpotPage() {
     if (!/^\d{8}$/.test(code)) return setEmailError(t("spot.email.error.code"));
     setChecking(true);
     const { error } = await supabase.auth.verifyOtp({ email, token: code, type: "email" });
-    if (error || !(await loadCatalog(null))) setEmailError(t("spot.email.error.code"));
+    if (error || (await loadCatalog(null)) !== true) setEmailError(t("spot.email.error.code"));
     setChecking(false);
   }
 

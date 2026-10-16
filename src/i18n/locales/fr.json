@@ -96,7 +96,8 @@
       "error": {
         "format": "Le code contient 4 chiffres.",
         "wrong": "Code incorrect. Vérifiez l'affichette.",
-        "expired": "Code expiré"
+        "expired": "Code expiré",
+        "tooMany": "Trop d'essais. Réessayez dans quelques minutes."
       }
     },
     "audio": {

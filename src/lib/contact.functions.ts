@@ -53,6 +53,9 @@ export const envoyerDemandeContact = createServerFn({ method: "POST" })
   .inputValidator((d) => inputSchema.parse(d))
   .handler(async ({ data }) => {
     if (data.site_web) return { ok: true as const }; // robot : on fait comme si, sans rien enregistrer
+    // Anti-abus : 5 demandes par heure et par connexion, 50 par jour au total.
+    const { limiteDepassee } = await import("@/lib/limites.server");
+    if (await limiteDepassee({ type: "contact", parIpParHeure: 5, totalParJour: 50 })) throw new Error("Trop de demandes");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { site_web: _piege, langue, refus_actualites, ...row } = data;

@@ -96,7 +96,8 @@
       "error": {
         "format": "El código contiene 4 dígitos.",
         "wrong": "Código incorrecto. Compruebe el cartel.",
-        "expired": "Código expirado"
+        "expired": "Código expirado",
+        "tooMany": "Demasiados intentos. Inténtelo de nuevo dentro de unos minutos."
       }
     },
     "audio": {

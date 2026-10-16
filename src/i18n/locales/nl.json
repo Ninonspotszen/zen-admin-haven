@@ -96,7 +96,8 @@
       "error": {
         "format": "De code bestaat uit 4 cijfers.",
         "wrong": "Onjuiste code. Controleer het display.",
-        "expired": "Code verlopen"
+        "expired": "Code verlopen",
+        "tooMany": "Te veel pogingen. Probeer het over enkele minuten opnieuw."
       }
     },
     "audio": {

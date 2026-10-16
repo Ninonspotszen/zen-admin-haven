@@ -43,6 +43,10 @@ export const enregistrerVisiteurSpot = createServerFn({ method: "POST" })
   .inputValidator((d) => visiteurSchema.parse(d))
   .handler(async ({ data }) => {
     if (data.site_web) return { ok: true as const };
+    // Anti-abus : 3 demandes par heure et par connexion, 100 par jour au total
+    // (protège aussi le quota Brevo de 300 emails par jour du plan gratuit).
+    const { limiteDepassee } = await import("@/lib/limites.server");
+    if (await limiteDepassee({ type: "visiteur", parIpParHeure: 3, totalParJour: 100 })) throw new Error("Trop de demandes");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const db = supabaseAdmin as any;

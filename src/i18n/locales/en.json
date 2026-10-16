@@ -96,7 +96,8 @@
       "error": {
         "format": "The code contains 4 digits.",
         "wrong": "Incorrect code. Check the display card.",
-        "expired": "Expired code"
+        "expired": "Expired code",
+        "tooMany": "Too many attempts. Please try again in a few minutes."
       }
     },
     "audio": {
