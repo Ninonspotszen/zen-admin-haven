@@ -66,6 +66,14 @@ html.dark .sz .logo-for-dark{display:block}
 .sz input[type=range]{accent-color:var(--sz-brand)}
 `;
 
+/** Audio recommandé à chaque moment de la journée (mêmes choix que les spots, cf. spot_assign_default_audios). */
+const RECOMMANDATION_B2C: Record<string, string> = {
+  Matin: "reveil-du-corps-f",
+  "Journée": "sieste-reparatrice-f",
+  Soir: "songe-du-soir-orage-f",
+  Nuit: "glisser-vers-le-sommeil-f",
+};
+
 function currentMoment() {
   const h = new Date().getHours();
   if (h >= 6 && h < 12) return "Matin";
@@ -186,7 +194,15 @@ function BibliothequePage() {
 
   const moment = currentMoment();
   const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
-  const hero = playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ?? playable[0];
+  // Immersion recommandée selon le moment : mêmes choix que pour les spots (décision du 14/10/2026).
+  // Le catalogue de la bibliothèque ne porte pas de « mis en avant » (réservé aux spots) : avant ce correctif,
+  // la bibliothèque affichait toujours le premier audio de la liste, quelle que soit l'heure.
+  const hero =
+    playable.find((a) => a.mis_en_avant && a.mis_en_avant_moment === moment) ??
+    playable.find((a) => a.slug === RECOMMANDATION_B2C[moment]) ??
+    playable.find((a) => !isMusic(a) && a.moment === moment) ??
+    playable[0];
+  const heroMoment = hero && (hero.mis_en_avant_moment ?? (hero.slug === RECOMMANDATION_B2C[moment] ? moment : null));
   const categories = ["Tous", "Méditation", "Respiration", "Musique", "Visualisation", "Enfant"];
   const match = (a: Audio) =>
     filter === "Tous" ? true : filter === "Enfant" ? a.public_cible === "enfant" : a.type === filter;
@@ -242,7 +258,7 @@ function BibliothequePage() {
               <button onClick={() => setSelected(hero)} className="relative mt-5 block aspect-video w-full overflow-hidden rounded-2xl text-left lg:aspect-[21/8]" aria-label={`${t("spot.audio.listen")} ${titleOf(hero, lang)}`}>
                 {hero.image_url ? <img src={hero.image_url} alt="" className="absolute inset-0 h-full w-full object-cover" /> : <div className="absolute inset-0 flex items-center justify-center"><span className="missing-image" aria-hidden>♪</span></div>}
                 {hero.image_url && <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(15,20,16,0.85)_100%)]" />}
-                {hero.mis_en_avant_moment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {t(MOMENT_KEY[hero.mis_en_avant_moment] ?? "common.moment.day")}</span>}
+                {heroMoment && <span className="tag absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold">⏱ {t(MOMENT_KEY[heroMoment] ?? "common.moment.day")}</span>}
                 <span className={`play-control absolute right-3 top-3 ${hero.image_url ? "play-on-photo" : ""}`}><PlayIcon /></span>
                 <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 lg:p-8">
                   <p className={`serif text-[22px] font-medium leading-tight md:text-[28px] lg:text-[34px] ${hero.image_url ? "text-[var(--sz-on-brand)]" : "audio-title"}`}>{titleOf(hero, lang)}</p>
