@@ -19,9 +19,15 @@ Email: bonjour@spotszen.fr
 - Email and first name
 - Listens: recorded anonymously (audio, duration, language, voice), not linked to your account
 - Preferred language
+- Date of your last visit to the library
+- Your choice to receive Spots Zen news or not, and the date of that choice
 - Payment data (managed exclusively by Stripe — not stored by Spots Zen)
 - Stripe identifier (customer ID, subscription ID)
 - Referral code (if applicable)
+
+### Visitors who ask for the link by email (from a QR code)
+- Email, spot the request came from, language
+- Your choice to receive Spots Zen news or not (box never pre-ticked)
 
 ### Contact forms
 - Name, email, type of establishment, needs
@@ -35,6 +41,11 @@ Email: bonjour@spotszen.fr
 | Payment data | Billing via Stripe | Contract performance |
 | Anonymous visit identifier | Temporary access management | Legitimate interest |
 | Email (contact form) | Responding to the request | Consent |
+| Email (contact form) | Acknowledging receipt of the request | Consent |
+| Date of last visit | Service emails: getting-started tips, reminder after a period without visiting | Legitimate interest |
+| Email, access and renewal dates | End of a complimentary access, notice before an annual subscription renews | Contract performance; legal obligation (art. L.215-1 of the French Consumer Code) |
+| Email (spot visitor) | Sending the requested link | Consent (your request) |
+| Email (Spots Zen news) | Sending Spots Zen news | Consent, which can be withdrawn at any time |
 
 ## 4. Sub-processors (DPA)
 
@@ -44,7 +55,7 @@ Spots Zen uses the following sub-processors, all subject to contractual guarante
 |---|---|---|
 | Supabase Inc. | Database | EU (EU servers) |
 | Stripe Inc. | Online payment | EU (EU servers) |
-| Brevo (Sendinblue) | Transactional emails | France |
+| Brevo (Sendinblue) | Sending emails and contact management | France |
 | Cloudinary Inc. | Audio file hosting | EU |
 | ElevenLabs Inc. | Voice synthesis (production) | EU |
 | Vercel Inc. | Website and application server hosting | United States |
@@ -57,6 +68,8 @@ Spots Zen uses the following sub-processors, all subject to contractual guarante
 - **Subscriber data**: 3 years after the end of the commercial relationship
 - **Anonymised listening history**: 2 years
 - **Contact form data**: 1 year after last contact
+- **Visitors who asked for the link by email**: 3 years after the request
+- **Choice to receive Spots Zen news**: until you withdraw your consent (unsubscribe link or box unticked in “My subscription”)
 - **Cookies**: maximum 13 months (in accordance with CNIL recommendations)
 
 ## 6. Your Rights

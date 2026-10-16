@@ -19,9 +19,15 @@ Email : bonjour@spotszen.fr
 - Email et prénom
 - Écoutes : enregistrées de façon anonyme (audio, durée, langue, voix), sans lien avec votre compte
 - Langue préférée
+- Date de dernière connexion à la bibliothèque
+- Votre choix de recevoir ou non les nouvelles de Spots Zen, et la date de ce choix
 - Données de paiement (gérées exclusivement par Stripe — non stockées par Spots Zen)
 - Identifiant Stripe (customer ID, subscription ID)
 - Code de parrainage (si applicable)
+
+### Visiteurs qui demandent le lien par email (depuis un QR code)
+- Email, spot d'où vient la demande, langue
+- Votre choix de recevoir ou non les nouvelles de Spots Zen (case jamais pré-cochée)
 
 ### Formulaires de contact
 - Nom, email, type d'établissement, besoins
@@ -35,6 +41,11 @@ Email : bonjour@spotszen.fr
 | Données de paiement | Facturation via Stripe | Exécution du contrat |
 | Identifiant anonyme de visite | Gestion de l'accès temporaire | Intérêt légitime |
 | Email (formulaire contact) | Réponse à la demande | Consentement |
+| Email (formulaire contact) | Accusé de réception de la demande | Consentement |
+| Date de dernière connexion | Emails de service : conseils de démarrage, rappel après une période sans connexion | Intérêt légitime |
+| Email, dates d'accès et de renouvellement | Fin d'un accès offert, information avant la reconduction d'un abonnement annuel | Exécution du contrat ; obligation légale (art. L.215-1 du Code de la consommation) |
+| Email (visiteur d'un spot) | Envoi du lien demandé | Consentement (votre demande) |
+| Email (nouvelles de Spots Zen) | Envoi des nouvelles de Spots Zen | Consentement, retirable à tout moment |
 
 ## 4. Sous-traitants (DPA)
 
@@ -44,7 +55,7 @@ Spots Zen fait appel aux sous-traitants suivants, tous soumis à des garanties c
 |---|---|---|
 | Supabase Inc. | Base de données | UE (serveurs EU) |
 | Stripe Inc. | Paiement en ligne | UE (serveurs EU) |
-| Brevo (Sendinblue) | Emails transactionnels | France |
+| Brevo (Sendinblue) | Envoi des emails et gestion des contacts | France |
 | Cloudinary Inc. | Hébergement fichiers audio | UE |
 | ElevenLabs Inc. | Synthèse vocale (production) | UE |
 | Vercel Inc. | Hébergement du site et du serveur de l'application | États-Unis |
@@ -57,6 +68,8 @@ Spots Zen fait appel aux sous-traitants suivants, tous soumis à des garanties c
 - **Données abonnés** : 3 ans après la fin de la relation commerciale
 - **Historique d'écoutes anonymisé** : 2 ans
 - **Données formulaire contact** : 1 an après le dernier contact
+- **Visiteurs ayant demandé le lien par email** : 3 ans après la demande
+- **Choix de recevoir les nouvelles de Spots Zen** : jusqu'au retrait de votre consentement (lien de désinscription ou case décochée dans « Mon abonnement »)
 - **Cookies** : 13 mois maximum (conformément aux recommandations CNIL)
 
 ## 6. Vos droits

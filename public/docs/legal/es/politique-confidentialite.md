@@ -19,9 +19,15 @@ Correo electrónico: bonjour@spotszen.fr
 - Correo electrónico y nombre de pila
 - Escuchas: registradas de forma anónima (audio, duración, idioma, voz), sin vínculo con su cuenta
 - Idioma preferido
+- Fecha de su última visita a la biblioteca
+- Su elección de recibir o no las novedades de Spots Zen, y la fecha de esa elección
 - Datos de pago (gestionados exclusivamente por Stripe — no almacenados por Spots Zen)
 - Identificador Stripe (ID de cliente, ID de suscripción)
 - Código de referido (si corresponde)
+
+### Visitantes que piden el enlace por correo electrónico (desde un código QR)
+- Correo electrónico, spot desde el que se hizo la solicitud, idioma
+- Su elección de recibir o no las novedades de Spots Zen (casilla nunca premarcada)
 
 ### Formularios de contacto
 - Nombre, correo electrónico, tipo de establecimiento, necesidades
@@ -35,6 +41,11 @@ Correo electrónico: bonjour@spotszen.fr
 | Datos de pago | Facturación a través de Stripe | Ejecución del contrato |
 | Identificador anónimo de visita | Gestión del acceso temporal | Interés legítimo |
 | Correo electrónico (formulario de contacto) | Respuesta a la solicitud | Consentimiento |
+| Correo electrónico (formulario de contacto) | Acuse de recibo de la solicitud | Consentimiento |
+| Fecha de la última visita | Correos de servicio: consejos para empezar, recordatorio tras un periodo sin visitas | Interés legítimo |
+| Correo electrónico, fechas de acceso y de renovación | Fin de un acceso ofrecido, aviso antes de la renovación de una suscripción anual | Ejecución del contrato; obligación legal (art. L.215-1 del Código de Consumo francés) |
+| Correo electrónico (visitante de un spot) | Envío del enlace solicitado | Consentimiento (su solicitud) |
+| Correo electrónico (novedades de Spots Zen) | Envío de las novedades de Spots Zen | Consentimiento, revocable en cualquier momento |
 
 ## 4. Subencargados (DPA)
 
@@ -44,7 +55,7 @@ Spots Zen recurre a los siguientes subencargados, todos sujetos a garantías con
 |---|---|---|
 | Supabase Inc. | Base de datos | UE (servidores UE) |
 | Stripe Inc. | Pago en línea | UE (servidores UE) |
-| Brevo (Sendinblue) | Correos electrónicos transaccionales | Francia |
+| Brevo (Sendinblue) | Envío de correos electrónicos y gestión de contactos | Francia |
 | Cloudinary Inc. | Alojamiento de archivos de audio | UE |
 | ElevenLabs Inc. | Síntesis de voz (producción) | UE |
 | Vercel Inc. | Alojamiento del sitio y del servidor de la aplicación | Estados Unidos |
@@ -57,6 +68,8 @@ Spots Zen recurre a los siguientes subencargados, todos sujetos a garantías con
 - **Datos de suscriptores**: 3 años tras el fin de la relación comercial
 - **Historial de escuchas anonimizado**: 2 años
 - **Datos del formulario de contacto**: 1 año tras el último contacto
+- **Visitantes que pidieron el enlace por correo electrónico**: 3 años después de la solicitud
+- **Elección de recibir las novedades de Spots Zen**: hasta que retire su consentimiento (enlace de baja o casilla desmarcada en «Mi suscripción»)
 - **Cookies**: máximo 13 meses (conforme a las recomendaciones de la CNIL)
 
 ## 6. Sus derechos

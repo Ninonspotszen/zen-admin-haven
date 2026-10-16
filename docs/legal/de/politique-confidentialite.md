@@ -19,9 +19,15 @@ E-Mail: bonjour@spotszen.fr
 - E-Mail und Vorname
 - Hörvorgänge: anonym erfasst (Audio, Dauer, Sprache, Stimme), ohne Verbindung zu Ihrem Konto
 - Bevorzugte Sprache
+- Datum Ihres letzten Besuchs in der Bibliothek
+- Ihre Entscheidung, Neuigkeiten von Spots Zen zu erhalten oder nicht, und das Datum dieser Entscheidung
 - Zahlungsdaten (ausschließlich von Stripe verwaltet — nicht von Spots Zen gespeichert)
 - Stripe-Kennung (Kunden-ID, Abonnement-ID)
 - Empfehlungscode (falls zutreffend)
+
+### Besucher, die den Link per E-Mail anfordern (über einen QR-Code)
+- E-Mail, Spot, von dem die Anfrage stammt, Sprache
+- Ihre Entscheidung, Neuigkeiten von Spots Zen zu erhalten oder nicht (Kästchen nie vorab angekreuzt)
 
 ### Kontaktformulare
 - Name, E-Mail, Art des Unternehmens, Bedarf
@@ -35,6 +41,11 @@ E-Mail: bonjour@spotszen.fr
 | Zahlungsdaten | Abrechnung über Stripe | Vertragserfüllung |
 | Anonyme Besuchskennung | Verwaltung des vorübergehenden Zugangs | Berechtigtes Interesse |
 | E-Mail (Kontaktformular) | Beantwortung der Anfrage | Einwilligung |
+| E-Mail (Kontaktformular) | Eingangsbestätigung der Anfrage | Einwilligung |
+| Datum des letzten Besuchs | Service-E-Mails: Tipps für den Einstieg, Erinnerung nach längerer Zeit ohne Besuch | Berechtigtes Interesse |
+| E-Mail, Zugangs- und Verlängerungsdaten | Ende eines geschenkten Zugangs, Hinweis vor der Verlängerung eines Jahresabonnements | Vertragserfüllung; gesetzliche Pflicht (Art. L.215-1 des französischen Verbrauchergesetzbuchs) |
+| E-Mail (Besucher eines Spots) | Versand des angeforderten Links | Einwilligung (Ihre Anfrage) |
+| E-Mail (Neuigkeiten von Spots Zen) | Versand der Neuigkeiten von Spots Zen | Einwilligung, jederzeit widerrufbar |
 
 ## 4. Auftragsverarbeiter (AVV)
 
@@ -44,7 +55,7 @@ Spots Zen nutzt folgende Auftragsverarbeiter, die alle vertraglichen Garantien g
 |---|---|---|
 | Supabase Inc. | Datenbank | EU (EU-Server) |
 | Stripe Inc. | Online-Zahlung | EU (EU-Server) |
-| Brevo (Sendinblue) | Transaktions-E-Mails | Frankreich |
+| Brevo (Sendinblue) | E-Mail-Versand und Kontaktverwaltung | Frankreich |
 | Cloudinary Inc. | Audio-Datei-Hosting | EU |
 | ElevenLabs Inc. | Sprachsynthese (Produktion) | EU |
 | Vercel Inc. | Hosting der Website und des Anwendungsservers | USA |
@@ -57,6 +68,8 @@ Spots Zen nutzt folgende Auftragsverarbeiter, die alle vertraglichen Garantien g
 - **Abonnentendaten**: 3 Jahre nach Ende der Geschäftsbeziehung
 - **Anonymisierter Hörverlauf**: 2 Jahre
 - **Kontaktformulardaten**: 1 Jahr nach letztem Kontakt
+- **Besucher, die den Link per E-Mail angefordert haben**: 3 Jahre nach der Anfrage
+- **Entscheidung, Neuigkeiten von Spots Zen zu erhalten**: bis zum Widerruf Ihrer Einwilligung (Abmeldelink oder Häkchen in „Mein Abonnement“ entfernt)
 - **Cookies**: maximal 13 Monate (gemäß CNIL-Empfehlungen)
 
 ## 6. Ihre Rechte

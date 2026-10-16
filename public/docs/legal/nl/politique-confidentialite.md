@@ -19,9 +19,15 @@ E-mail: bonjour@spotszen.fr
 - E-mail en voornaam
 - Luistersessies: anoniem geregistreerd (audio, duur, taal, stem), niet gekoppeld aan uw account
 - Voorkeurstaal
+- Datum van uw laatste bezoek aan de bibliotheek
+- Uw keuze om al dan niet nieuws van Spots Zen te ontvangen, en de datum van die keuze
 - Betalingsgegevens (uitsluitend beheerd door Stripe — niet opgeslagen door Spots Zen)
 - Stripe-identifier (klant-ID, abonnement-ID)
 - Verwijzingscode (indien van toepassing)
+
+### Bezoekers die de link per e-mail aanvragen (via een QR-code)
+- E-mail, spot waar de aanvraag vandaan komt, taal
+- Uw keuze om al dan niet nieuws van Spots Zen te ontvangen (vakje nooit vooraf aangevinkt)
 
 ### Contactformulieren
 - Naam, e-mail, type vestiging, behoeften
@@ -35,6 +41,11 @@ E-mail: bonjour@spotszen.fr
 | Betalingsgegevens | Facturering via Stripe | Uitvoering van overeenkomst |
 | Anonieme bezoekidentifier | Beheer van tijdelijke toegang | Gerechtvaardigd belang |
 | E-mail (contactformulier) | Beantwoording van het verzoek | Toestemming |
+| E-mail (contactformulier) | Ontvangstbevestiging van het verzoek | Toestemming |
+| Datum van laatste bezoek | Service-e-mails: tips om te beginnen, herinnering na een periode zonder bezoek | Gerechtvaardigd belang |
+| E-mail, toegangs- en verlengingsdata | Einde van een aangeboden toegang, bericht vóór de verlenging van een jaarabonnement | Uitvoering van overeenkomst; wettelijke verplichting (art. L.215-1 van het Franse consumentenwetboek) |
+| E-mail (bezoeker van een spot) | Versturen van de gevraagde link | Toestemming (uw aanvraag) |
+| E-mail (nieuws van Spots Zen) | Versturen van nieuws van Spots Zen | Toestemming, op elk moment intrekbaar |
 
 ## 4. Subverwerkers (VVA)
 
@@ -44,7 +55,7 @@ Spots Zen maakt gebruik van de volgende subverwerkers, die alle onderworpen zijn
 |---|---|---|
 | Supabase Inc. | Database | EU (EU-servers) |
 | Stripe Inc. | Online betaling | EU (EU-servers) |
-| Brevo (Sendinblue) | Transactionele e-mails | Frankrijk |
+| Brevo (Sendinblue) | Versturen van e-mails en contactbeheer | Frankrijk |
 | Cloudinary Inc. | Hosting audiobestanden | EU |
 | ElevenLabs Inc. | Stemmensynthese (productie) | EU |
 | Vercel Inc. | Hosting van de website en de applicatieserver | Verenigde Staten |
@@ -57,6 +68,8 @@ Spots Zen maakt gebruik van de volgende subverwerkers, die alle onderworpen zijn
 - **Abonneegegevens**: 3 jaar na het einde van de commerciële relatie
 - **Geanonimiseerde luistergeschiedenis**: 2 jaar
 - **Contactformuliergegevens**: 1 jaar na het laatste contact
+- **Bezoekers die de link per e-mail hebben aangevraagd**: 3 jaar na de aanvraag
+- **Keuze om nieuws van Spots Zen te ontvangen**: tot u uw toestemming intrekt (afmeldlink of vakje uitgevinkt in „Mijn abonnement”)
 - **Cookies**: maximaal 13 maanden (conform CNIL-aanbevelingen)
 
 ## 6. Uw rechten
