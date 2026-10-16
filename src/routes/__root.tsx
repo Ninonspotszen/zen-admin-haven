@@ -88,7 +88,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: i18n.t("home.meta.title") },
       { property: "og:description", content: i18n.t("home.meta.description") },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:site_name", content: "Spots Zen" },
+      // Image d'aperçu des liens partagés (WhatsApp, LinkedIn, SMS…), 1200 × 630 px, adresse absolue obligatoire.
+      { property: "og:image", content: "https://www.spotszen.fr/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Spots Zen, immersions audio bien-être" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://www.spotszen.fr/og-image.jpg" },
       // PWA : couleur de la barre du téléphone et nom sous l'icône d'écran d'accueil
       { name: "theme-color", content: "#1A2F1E" },
       { name: "mobile-web-app-capable", content: "yes" },
