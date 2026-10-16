@@ -359,7 +359,12 @@
     "privacy": "Privacybeleid",
     "cgv": "Algemene Verkoopvoorwaarden",
     "cookies": "Cookiebeleid",
-    "cancel": "Abonnement opzeggen"
+    "cancel": "Abonnement opzeggen",
+    "discover": {
+      "label": "Meer over Spots Zen",
+      "site": "Ontdek Spots Zen",
+      "pro": "Heeft u een accommodatie of bedrijf?"
+    }
   },
   "home": {
     "meta": {

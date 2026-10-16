@@ -359,7 +359,12 @@
     "privacy": "Política de privacidad",
     "cgv": "Condiciones Generales de Venta",
     "cookies": "Política de cookies",
-    "cancel": "Cancelar mi suscripción"
+    "cancel": "Cancelar mi suscripción",
+    "discover": {
+      "label": "Más sobre Spots Zen",
+      "site": "Descubrir Spots Zen",
+      "pro": "¿Tiene un establecimiento?"
+    }
   },
   "home": {
     "meta": {

@@ -255,7 +255,7 @@ function OffresPage() {
           </div>
         </section>
       </main>
-      <div className="text-[var(--o-sub)]"><AppLegalFooter /></div>
+      <div className="text-[var(--o-sub)]"><AppLegalFooter decouvrir /></div>
       <div className="flex justify-center pb-10"><LanguageSwitcher /></div>
     </div>
   );

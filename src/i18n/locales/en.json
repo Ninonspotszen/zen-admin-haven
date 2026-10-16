@@ -359,7 +359,12 @@
     "privacy": "Privacy Policy",
     "cgv": "Terms and Conditions of Sale",
     "cookies": "Cookie Policy",
-    "cancel": "Cancel my subscription"
+    "cancel": "Cancel my subscription",
+    "discover": {
+      "label": "Learn more about Spots Zen",
+      "site": "Discover Spots Zen",
+      "pro": "Do you run a venue?"
+    }
   },
   "home": {
     "meta": {
