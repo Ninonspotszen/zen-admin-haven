@@ -8,6 +8,8 @@ const PRICE_TO_FORMULE: Record<string, string> = {
 
 const TOLERANCE_SEC = 300;
 
+const escHtml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
 function timingSafeEqual(a: string, b: string) {
   if (a.length !== b.length) return false;
   let r = 0;
@@ -118,7 +120,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               if (email) row["email"] = email;
 
               const { data: existing } = await abonnes()
-                .select("id, spot_origine_id, stripe_subscription_id, prenom")
+                .select("id, spot_origine_id, stripe_subscription_id, prenom, langue_preferee")
                 .eq("id", userId)
                 .maybeSingle();
               // Email de bienvenue : une seule fois par abonnement (Stripe peut renvoyer l'événement).
@@ -140,9 +142,9 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               const destinataire = (row["email"] as string | undefined) || null;
               if (nouvelAbonnement && destinataire) {
                 const finEssai = toDate(trialEnd);
-                const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+                const { sendBrevoTemplate, sendBrevoInternalAlert, syncBrevoContact, modele } = await import("@/lib/brevo.server");
                 await sendBrevoTemplate({
-                  templateId: BREVO_TEMPLATES.bienvenueFr,
+                  templateId: modele("bienvenue", existing?.langue_preferee).templateId,
                   toEmail: destinataire,
                   toName: existing?.prenom ?? null,
                   params: {
@@ -151,20 +153,42 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
                     DATE_FIN_ESSAI: finEssai ? dateFr(finEssai) : null,
                   },
                 });
+                // Alerte pour Ninon + rangement dans la liste Brevo « Abonnés ».
+                await sendBrevoInternalAlert({
+                  interrupteur: "NOTIF_ABONNES_ACTIVE",
+                  subject: `Nouvel abonné · ${row["formule"] ?? "formule inconnue"}${finEssai ? " · essai" : ""}`,
+                  html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1c2e1e"><p>Nouvel abonnement : <b>${escHtml(destinataire)}</b> (${String(row["formule"] ?? "?")}).</p>${finEssai ? `<p>Fin de l'essai gratuit le ${dateFr(finEssai)}.</p>` : ""}${spotOrigine ? "<p>Venu d'un spot partenaire.</p>" : ""}<p style="color:#6b6b6b">Fiche dans l'admin, onglet « Abonnés ».</p></div>`,
+                });
+                await syncBrevoContact({ email: destinataire, prenom: existing?.prenom, extId: userId, listes: ["ABONNES"], retirerDe: ["ACCES_OFFERTS"] });
               }
             }
           } else if (event.type === "invoice.payment_failed") {
             const subId = idOf(obj.subscription) ?? obj.parent?.subscription_details?.subscription ?? null;
             if (subId) {
+              const { data: avant } = await abonnes().select("email, statut").eq("stripe_subscription_id", subId).maybeSingle();
               const { error } = await abonnes().update({ statut: "paiement_echoue" }).eq("stripe_subscription_id", subId);
               if (error) throw error;
+              if (avant?.email && avant.statut !== "paiement_echoue") {
+                // Stripe écrit lui-même au client (relances de paiement) ; ici on prévient seulement Ninon.
+                const { sendBrevoInternalAlert } = await import("@/lib/brevo.server");
+                await sendBrevoInternalAlert({
+                  interrupteur: "NOTIF_ABONNES_ACTIVE",
+                  subject: "Paiement en échec",
+                  html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1c2e1e"><p>Le paiement de <b>${escHtml(avant.email)}</b> a échoué. Stripe relance automatiquement la personne ; l'accès reste ouvert pendant ce temps.</p></div>`,
+                });
+              }
             }
           } else if (event.type === "customer.subscription.deleted") {
+            const { data: avant } = await abonnes().select("email").eq("stripe_subscription_id", obj.id).maybeSingle();
             const { error } = await abonnes().update({ statut: "resilie", date_fin_prevue: null }).eq("stripe_subscription_id", obj.id);
             if (error) throw error;
+            if (avant?.email) {
+              const { syncBrevoContact } = await import("@/lib/brevo.server");
+              await syncBrevoContact({ email: avant.email, retirerDe: ["ABONNES"] });
+            }
           } else if (event.type === "customer.subscription.updated") {
             const subId: string = obj.id;
-            const { data: row } = await abonnes().select("id, statut, date_fin_prevue, email, prenom").eq("stripe_subscription_id", subId).maybeSingle();
+            const { data: row } = await abonnes().select("id, statut, date_fin_prevue, email, prenom, langue_preferee").eq("stripe_subscription_id", subId).maybeSingle();
             if (row) {
               const periodEnd: number | null = obj.items?.data?.[0]?.current_period_end ?? obj.current_period_end ?? null;
               const priceId: string | undefined = obj.items?.data?.[0]?.price?.id;
@@ -185,12 +209,17 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               const newFin = upd["date_fin_prevue"] as string | null;
               if (!row.date_fin_prevue && newFin && row.email) {
                 const dateFin = dateFr(newFin);
-                const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+                const { sendBrevoTemplate, sendBrevoInternalAlert, modele } = await import("@/lib/brevo.server");
                 await sendBrevoTemplate({
-                  templateId: BREVO_TEMPLATES.resiliationFr,
+                  templateId: modele("resiliation", row.langue_preferee).templateId,
                   toEmail: row.email,
                   toName: row.prenom,
                   params: { PRENOM: row.prenom?.trim() || null, DATE_FIN: dateFin },
+                });
+                await sendBrevoInternalAlert({
+                  interrupteur: "NOTIF_ABONNES_ACTIVE",
+                  subject: "Résiliation programmée",
+                  html: `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1c2e1e"><p><b>${escHtml(row.email)}</b> a résilié son abonnement. Accès jusqu'au ${dateFin}.</p><p style="color:#6b6b6b">Un petit mot personnel peut parfois faire revenir quelqu'un : répondez depuis votre boîte.</p></div>`,
                 });
               }
             }

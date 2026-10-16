@@ -58,7 +58,7 @@ export const giftAccess = createServerFn({ method: "POST" })
 
     // Email « Accès offert » (Brevo n°5). Un échec d'envoi n'annule pas l'accès créé :
     // le résultat est renvoyé à l'admin pour qu'il sache si la personne a été prévenue.
-    const { sendBrevoTemplate, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
+    const { sendBrevoTemplate, syncBrevoContact, BREVO_TEMPLATES } = await import("@/lib/brevo.server");
     const { dateFr } = await import("@/lib/date-fr");
     const emailStatus = await sendBrevoTemplate({
       templateId: BREVO_TEMPLATES.accesOffertFr,
@@ -71,5 +71,6 @@ export const giftAccess = createServerFn({ method: "POST" })
         MESSAGE: data.message?.trim() || null,
       },
     });
+    await syncBrevoContact({ email: data.email, prenom: data.prenom, nom: data.nom, extId: userId, listes: ["ACCES_OFFERTS"] });
     return { ok: true, id: inserted.id, emailStatus };
   });

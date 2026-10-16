@@ -5,12 +5,15 @@ import { z } from "zod";
  * Formulaire /professionnels (livrable 7, automatisation déclenchée dans l'app) :
  * 1. la demande est enregistrée dans contact_requests (statut « nouvelle ») ;
  * 2. un email d'alerte part vers bonjour@spotszen.fr via Brevo, avec « Répondre » vers le prospect ;
- * 3. la demande apparaît en direct dans /admin/demandes.
+ * 3. la demande apparaît en direct dans /admin/demandes ;
+ * 4. la personne reçoit un accusé de réception (Brevo n°6, interrupteur EMAILS_ACTIFS) ;
+ * 5. le contact est rangé dans la liste Brevo « Prospects B2B » (interrupteur BREVO_SYNC_ACTIF).
  * Si l'email échoue, la demande reste enregistrée (rien n'est perdu) et l'échec est noté.
  */
 
 const SECTEURS = ["hebergements", "entreprises", "ecoles", "sante", "collectivites", "general"] as const;
-const opt = (max: number) => z.string().trim().max(max).optional().transform((v) => v || null);
+// nullish : le formulaire envoie null pour un champ laissé vide (avant : refusé par erreur).
+const opt = (max: number) => z.string().trim().max(max).nullish().transform((v) => v || null);
 
 const inputSchema = z.object({
   secteur: z.enum(SECTEURS),
@@ -20,6 +23,7 @@ const inputSchema = z.object({
   type_structure: opt(200),
   taille: opt(100),
   message: opt(5000),
+  langue: z.string().max(5).optional(),
   // Champ piège invisible : un humain le laisse vide, un robot le remplit.
   site_web: z.string().max(500).optional(),
 });
@@ -33,6 +37,16 @@ const SECTEUR_LABEL: Record<(typeof SECTEURS)[number], string> = {
   general: "Général",
 };
 
+// Qui profitera de Spots Zen, selon la cible : complète la phrase de l'accusé de réception.
+const PUBLIC_LABEL: Record<(typeof SECTEURS)[number], string> = {
+  hebergements: "clients",
+  entreprises: "collaborateurs",
+  ecoles: "étudiants",
+  sante: "patients",
+  collectivites: "habitants et visiteurs",
+  general: "visiteurs",
+};
+
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
 export const envoyerDemandeContact = createServerFn({ method: "POST" })
@@ -41,7 +55,7 @@ export const envoyerDemandeContact = createServerFn({ method: "POST" })
     if (data.site_web) return { ok: true as const }; // robot : on fait comme si, sans rien enregistrer
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { site_web: _piege, ...row } = data;
+    const { site_web: _piege, langue, ...row } = data;
     const { data: inserted, error } = await supabaseAdmin
       .from("contact_requests")
       .insert({ ...row, statut: "nouvelle" })
@@ -66,6 +80,20 @@ ${data.message ? `<p style="margin-top:16px;white-space:pre-wrap;border-left:3px
       html,
       replyTo: { email: data.email, name: data.nom },
     });
-    await supabaseAdmin.from("contact_requests").update({ notification: statut }).eq("id", inserted.id);
+
+    // Accusé de réception au prospect : la personne sait que sa demande est arrivée.
+    const { sendBrevoTemplate, syncBrevoContact, modele } = await import("@/lib/brevo.server");
+    const accuse = await sendBrevoTemplate({
+      templateId: modele("accuseB2b", langue).templateId,
+      toEmail: data.email,
+      toName: data.nom,
+      params: { ETABLISSEMENT: data.etablissement, PUBLIC: PUBLIC_LABEL[data.secteur] },
+    });
+    await supabaseAdmin
+      .from("contact_requests")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .update({ notification: statut, accuse_reception: accuse } as any)
+      .eq("id", inserted.id);
+    await syncBrevoContact({ email: data.email, nom: data.nom, listes: ["PROSPECTS_B2B"] });
     return { ok: true as const };
   });

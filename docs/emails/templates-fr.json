@@ -1,0 +1,37 @@
+{
+  "accuseB2b": {
+    "name": "B2B — Accusé de réception demande pro (FR)",
+    "tag": "accuse-reception-b2b",
+    "subject": "Nous avons bien reçu votre demande"
+  },
+  "accesJ7": {
+    "name": "B2C — Accès offert J-7 (FR)",
+    "tag": "acces-offert-j7",
+    "subject": "Votre accès Spots Zen se termine dans 7 jours"
+  },
+  "accesFin": {
+    "name": "B2C — Accès offert terminé (FR)",
+    "tag": "acces-offert-fin",
+    "subject": "Votre accès Spots Zen est arrivé à son terme"
+  },
+  "accueilJ3": {
+    "name": "B2C — Accueil J+3 (FR)",
+    "tag": "accueil-j3",
+    "subject": "Trois repères pour profiter de Spots Zen"
+  },
+  "relanceInactif": {
+    "name": "B2C — Relance inactivité (FR)",
+    "tag": "relance-inactivite",
+    "subject": "Une pause vous attend"
+  },
+  "rappelAnnuel": {
+    "name": "B2C — Rappel renouvellement annuel L.215-1 (FR)",
+    "tag": "rappel-annuel",
+    "subject": "Votre abonnement annuel sera renouvelé le {{ params.DATE_RENOUVELLEMENT }}"
+  },
+  "visiteurSpot": {
+    "name": "Visiteur spot — Vos immersions chez vous (FR)",
+    "tag": "visiteur-spot",
+    "subject": "Vos immersions Spots Zen, chez vous aussi"
+  }
+}

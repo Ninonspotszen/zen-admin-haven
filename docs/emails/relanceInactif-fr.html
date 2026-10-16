@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Une pause vous attend</title>
+</head>
+<body style="margin:0;padding:0;background-color:#FFFFFF;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;color:#FFFFFF;">Quelques minutes suffisent.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFFFFF;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background-color:#FFFFFF;">
+        <tr>
+          <td align="center" style="padding:0 0 24px 0;">
+            <a href="https://spotszen.fr" style="text-decoration:none;"><img src="https://jgfwbyxxozkymyvkgihg.supabase.co/storage/v1/object/public/Images/SpotsZen-logo-transparent-fonce.png" alt="Spots Zen" width="180" style="display:block;width:180px;max-width:180px;height:auto;border:0;"></a>
+          </td>
+        </tr>
+        <tr><td style="border-top:1px solid #2D5A27;font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+        <tr>
+          <td style="padding:32px 8px 8px 8px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;color:#1C2E1E;">
+            <h1 style="margin:0 0 24px 0;font-family:'Playfair Display',Georgia,serif;font-size:26px;line-height:34px;font-weight:500;color:#1C2E1E;">Et si vous preniez quelques minutes pour vous ?</h1>
+            <p style="margin:0 0 16px 0;">Bonjour{% if params.PRENOM %} {{ params.PRENOM }}{% endif %},</p><p style="margin:0 0 16px 0;">Cela fait un moment que vous n'avez pas pris de pause avec Spots Zen. Votre bibliothèque est toujours là, prête quand vous l'êtes.</p><p style="margin:0 0 12px 0;">Pas besoin de choisir : une immersion vous est recommandée selon le moment de la journée, il suffit d'appuyer sur lecture.</p>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:12px 8px 28px 8px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" bgcolor="#2D5A27" style="border-radius:999px;background-color:#2D5A27;">
+                  <a href="https://spotszen.fr/bibliotheque" style="display:inline-block;padding:14px 32px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:16px;font-weight:600;line-height:20px;color:#FFFFFF;text-decoration:none;border-radius:999px;">Reprendre une immersion</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 8px 32px 8px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;color:#1C2E1E;">
+            {% if params.PAYANT %}<p style="margin:0 0 16px 0;">Votre abonnement ne vous convient plus ? Vous pouvez le gérer ou le résilier à tout moment depuis « Mon abonnement », dans votre bibliothèque.</p>{% endif %}<p style="margin:0 0 24px 0;">Une question, une envie ? Répondez simplement à cet email, je vous lis.</p>
+            <p style="margin:0;">Ninon, fondatrice de Spots Zen</p>
+          </td>
+        </tr>
+        <tr><td style="border-top:1px solid #2D5A27;font-size:0;line-height:0;height:1px;">&nbsp;</td></tr>
+        <tr>
+          <td align="center" style="padding:20px 8px 0 8px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#5A6B5C;">
+            Spots Zen · <a href="mailto:bonjour@spotszen.fr" style="color:#5A6B5C;text-decoration:underline;">bonjour@spotszen.fr</a><br>
+            <a href="https://spotszen.fr/mentions-legales" style="color:#5A6B5C;text-decoration:underline;">Mentions légales</a> · <a href="https://spotszen.fr/politique-confidentialite" style="color:#5A6B5C;text-decoration:underline;">Politique de confidentialité</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

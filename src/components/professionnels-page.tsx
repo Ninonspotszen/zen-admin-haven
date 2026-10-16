@@ -50,7 +50,7 @@ function Heading({ eyebrow, children }: { eyebrow: string; children: ReactNode }
 
 function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: string; title: string; fields: FieldDef[]; cta: string; large?: boolean }) {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
@@ -60,6 +60,7 @@ function ContactForm({ secteur, title, fields, cta, large = false }: { secteur: 
       row[f.name] = row[f.name] ? `${row[f.name]} · ${v}` : v || null;
     }
     row["site_web"] = String(fd.get("site_web") ?? "");
+    row["langue"] = (i18n.language || "fr").slice(0, 2);
     setState("sending");
     try {
       await envoyerDemandeContact({ data: row as never });
