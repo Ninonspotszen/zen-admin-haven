@@ -135,11 +135,11 @@
       "cta": "Descubrir la suscripción"
     },
     "lead": {
-      "title": "¿Continuar en casa?",
-      "text": "Reciba por email el enlace para encontrar Spots Zen en casa, en su móvil o su ordenador.",
+      "title": "¿Le apetece prolongar la pausa en casa?",
+      "text": "Deje su dirección de email: recibirá el enlace para encontrar Spots Zen en casa, en su móvil o su ordenador.",
       "placeholder": "Su dirección de email",
       "newsletter": "También acepto recibir las novedades de Spots Zen por email (baja con un clic).",
-      "cta": "Recibir el enlace",
+      "cta": "Recibir el enlace por email",
       "sending": "Enviando…",
       "done": "Listo: el enlace va de camino a su bandeja de entrada.",
       "error": "Se ha producido un error. Inténtelo de nuevo en un momento.",

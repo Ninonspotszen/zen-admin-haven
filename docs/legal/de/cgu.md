@@ -14,7 +14,7 @@ Spots Zen ist eine Audio-Wellnessplattform, die geführte Meditationen, Atemübu
 - Über einen QR-Code oder NFC-Link in einem Partnerunternehmen (B2B-Zugang durch das Unternehmen bereitgestellt)
 - Über ein persönliches Abonnement (B2C-Zugang)
 
-Deutschsprachige Audioinhalte werden im Studio von Ninon Godin und Stefan Godin aufgenommen. Versionen in Fremdsprachen (Englisch, Deutsch, Niederländisch, Spanisch) werden durch KI-Sprachsynthese generiert.
+Französischsprachige Audioinhalte werden im Studio von Ninon Godin und Stefan Godin aufgenommen. Versionen in Fremdsprachen (Englisch, Deutsch, Niederländisch, Spanisch) werden per KI auf Grundlage dieser originalen menschlichen Stimmen synchronisiert.
 
 ## 3. Zugang zum Dienst
 

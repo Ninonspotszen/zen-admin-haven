@@ -31,6 +31,7 @@ type Abonne = {
   date_renouvellement: string | null;
   langue_preferee: string | null;
   derniere_connexion: string | null;
+  emails_stop: boolean | null;
 };
 
 export type EnvoiPrevu = { type: string; email: string; detail: string; statut?: EmailStatus | "deja_envoye" };
@@ -58,7 +59,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
 
   const { data: abonnesData, error } = await db
     .from("abonnes_b2c")
-    .select("id, email, prenom, statut, formule, created_at, date_fin_acces, date_fin_prevue, date_renouvellement, langue_preferee, derniere_connexion")
+    .select("id, email, prenom, statut, formule, created_at, date_fin_acces, date_fin_prevue, date_renouvellement, langue_preferee, derniere_connexion, emails_stop")
     .limit(5000);
   if (error) throw new Error(`lecture abonnes_b2c : ${error.message}`);
   const abonnes = (abonnesData ?? []) as Abonne[];
@@ -73,6 +74,7 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
     detail: string,
   ) {
     if (!a.email) return;
+    if (a.emails_stop && STOPPABLES.has(type)) return;
     const { templateId, langue } = modele(nom, a.langue_preferee);
     if (simulation) {
       const { data: deja } = await db.from("emails_automatiques").select("id").eq("cle", cle).maybeSingle();
@@ -96,6 +98,9 @@ export async function lancerRobotQuotidien(opts: { simulationForcee?: boolean } 
 
   const prenom = (a: Abonne) => a.prenom?.trim() || null;
   const offertValide = (a: Abonne) => (a.statut === "offert" || a.statut === "ambassadeur") && !!a.date_fin_acces;
+
+  // Emails d'accompagnement : non envoyés à qui a répondu « STOP ». Le rappel annuel (obligation légale) part toujours.
+  const STOPPABLES = new Set(["acces_j7", "acces_fin", "accueil_j3", "relance_inactif"]);
 
   for (const a of abonnes) {
     // 1. Accès offert : J-7

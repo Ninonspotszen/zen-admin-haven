@@ -57,7 +57,7 @@ Spots Zen uses the following sub-processors, all subject to contractual guarante
 | Stripe Inc. | Online payment | EU (EU servers) |
 | Brevo (Sendinblue) | Sending emails and contact management | France |
 | Cloudinary Inc. | Audio file hosting | EU |
-| ElevenLabs Inc. | Voice synthesis (production) | EU |
+| ElevenLabs Inc. | AI dubbing of the human voices into other languages (production, no user data sent) | EU |
 | Vercel Inc. | Website and application server hosting | United States |
 | Google (Google Ireland Ltd) | Sign-in with a Google account (optional) | EU / United States |
 | Short.io (Short.cm Inc.) | Short links for QR codes (click statistics) | EU / United States |

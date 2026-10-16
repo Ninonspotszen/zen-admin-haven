@@ -57,7 +57,7 @@ Spots Zen nutzt folgende Auftragsverarbeiter, die alle vertraglichen Garantien g
 | Stripe Inc. | Online-Zahlung | EU (EU-Server) |
 | Brevo (Sendinblue) | E-Mail-Versand und Kontaktverwaltung | Frankreich |
 | Cloudinary Inc. | Audio-Datei-Hosting | EU |
-| ElevenLabs Inc. | Sprachsynthese (Produktion) | EU |
+| ElevenLabs Inc. | KI-Synchronisation der menschlichen Stimmen in andere Sprachen (Produktion, keine Nutzerdaten übermittelt) | EU |
 | Vercel Inc. | Hosting der Website und des Anwendungsservers | USA |
 | Google (Google Ireland Ltd) | Anmeldung mit einem Google-Konto (optional) | EU / USA |
 | Short.io (Short.cm Inc.) | Kurzlinks der QR-Codes (Klickstatistiken) | EU / USA |

@@ -135,11 +135,11 @@
       "cta": "Découvrir l'abonnement"
     },
     "lead": {
-      "title": "Continuer chez vous ?",
-      "text": "Recevez par email le lien pour retrouver Spots Zen chez vous, sur votre téléphone ou votre ordinateur.",
+      "title": "Envie de prolonger la pause chez vous ?",
+      "text": "Laissez votre adresse email : vous recevrez le lien pour retrouver Spots Zen à la maison, sur votre téléphone ou votre ordinateur.",
       "placeholder": "Votre adresse email",
       "newsletter": "J'accepte aussi de recevoir les nouvelles de Spots Zen par email (désinscription en un clic).",
-      "cta": "Recevoir le lien",
+      "cta": "Recevoir le lien par email",
       "sending": "Envoi…",
       "done": "C'est noté : le lien arrive dans votre boîte mail.",
       "error": "Une erreur est survenue. Réessayez dans un instant.",

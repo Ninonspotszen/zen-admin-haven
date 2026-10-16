@@ -57,7 +57,7 @@ Spots Zen recurre a los siguientes subencargados, todos sujetos a garantías con
 | Stripe Inc. | Pago en línea | UE (servidores UE) |
 | Brevo (Sendinblue) | Envío de correos electrónicos y gestión de contactos | Francia |
 | Cloudinary Inc. | Alojamiento de archivos de audio | UE |
-| ElevenLabs Inc. | Síntesis de voz (producción) | UE |
+| ElevenLabs Inc. | Doblaje por IA de las voces humanas a otros idiomas (producción, sin transmisión de datos de usuarios) | UE |
 | Vercel Inc. | Alojamiento del sitio y del servidor de la aplicación | Estados Unidos |
 | Google (Google Ireland Ltd) | Inicio de sesión con una cuenta de Google (opcional) | UE / Estados Unidos |
 | Short.io (Short.cm Inc.) | Enlaces cortos de los códigos QR (estadísticas de clics) | UE / Estados Unidos |

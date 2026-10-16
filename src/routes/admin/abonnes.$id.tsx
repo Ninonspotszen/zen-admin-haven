@@ -79,6 +79,20 @@ function AbonneDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  // « STOP » reçu par email : plus d'emails d'accompagnement (les emails obligatoires continuent).
+  const stop = useMutation({
+    mutationFn: async (valeur: boolean) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await supabase.from("abonnes_b2c").update({ emails_stop: valeur } as any).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Préférence emails enregistrée");
+      qc.invalidateQueries({ queryKey: ["abonne", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const input = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30";
   const label = "mb-1 block text-xs font-semibold text-muted-foreground";
 
@@ -121,6 +135,23 @@ function AbonneDetail() {
               ? `Oui${(data as { newsletter_ok_le?: string | null }).newsletter_ok_le ? ` (depuis le ${fmtFr((data as { newsletter_ok_le?: string | null }).newsletter_ok_le)})` : ""}`
               : "Non"}
           </p>
+        </div>
+        <div className="sm:col-span-2">
+          <label className="flex items-start gap-2 text-sm text-foreground">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4"
+              checked={(data as { emails_stop?: boolean }).emails_stop === true}
+              disabled={stop.isPending}
+              onChange={(e) => stop.mutate(e.target.checked)}
+            />
+            <span>
+              A répondu « STOP » : ne plus envoyer les emails d'accompagnement
+              <span className="block text-xs text-muted-foreground">
+                Accueil J+3, relance, fin d'accès offert. Les emails de paiement, de résiliation et le rappel annuel obligatoire continuent.
+              </span>
+            </span>
+          </label>
         </div>
         <div>
           <span className={label}>Stripe customer ID</span>

@@ -135,11 +135,11 @@
       "cta": "Abonnement entdecken"
     },
     "lead": {
-      "title": "Zu Hause weiterhören?",
-      "text": "Erhalten Sie per E-Mail den Link, um Spots Zen zu Hause wiederzufinden, auf Ihrem Handy oder Computer.",
+      "title": "Möchten Sie die Pause zu Hause fortsetzen?",
+      "text": "Hinterlassen Sie Ihre E-Mail-Adresse: Sie erhalten den Link, um Spots Zen zu Hause wiederzufinden, auf Ihrem Handy oder Computer.",
       "placeholder": "Ihre E-Mail-Adresse",
       "newsletter": "Ich möchte außerdem Neuigkeiten von Spots Zen per E-Mail erhalten (Abmeldung mit einem Klick).",
-      "cta": "Link erhalten",
+      "cta": "Link per E-Mail erhalten",
       "sending": "Wird gesendet…",
       "done": "Erledigt: Der Link ist auf dem Weg in Ihr Postfach.",
       "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es gleich noch einmal.",

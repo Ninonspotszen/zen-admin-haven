@@ -57,7 +57,7 @@ Spots Zen fait appel aux sous-traitants suivants, tous soumis à des garanties c
 | Stripe Inc. | Paiement en ligne | UE (serveurs EU) |
 | Brevo (Sendinblue) | Envoi des emails et gestion des contacts | France |
 | Cloudinary Inc. | Hébergement fichiers audio | UE |
-| ElevenLabs Inc. | Synthèse vocale (production) | UE |
+| ElevenLabs Inc. | Doublage par IA des voix humaines dans les autres langues (production, aucune donnée d'utilisateur transmise) | UE |
 | Vercel Inc. | Hébergement du site et du serveur de l'application | États-Unis |
 | Google (Google Ireland Ltd) | Connexion avec un compte Google (facultative) | UE / États-Unis |
 | Short.io (Short.cm Inc.) | Liens courts des QR codes (statistiques de clics) | UE / États-Unis |

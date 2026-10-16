@@ -57,7 +57,7 @@ Spots Zen maakt gebruik van de volgende subverwerkers, die alle onderworpen zijn
 | Stripe Inc. | Online betaling | EU (EU-servers) |
 | Brevo (Sendinblue) | Versturen van e-mails en contactbeheer | Frankrijk |
 | Cloudinary Inc. | Hosting audiobestanden | EU |
-| ElevenLabs Inc. | Stemmensynthese (productie) | EU |
+| ElevenLabs Inc. | AI-nasynchronisatie van de menselijke stemmen in andere talen (productie, geen gebruikersgegevens verzonden) | EU |
 | Vercel Inc. | Hosting van de website en de applicatieserver | Verenigde Staten |
 | Google (Google Ireland Ltd) | Inloggen met een Google-account (optioneel) | EU / Verenigde Staten |
 | Short.io (Short.cm Inc.) | Korte links van de QR-codes (klikstatistieken) | EU / Verenigde Staten |

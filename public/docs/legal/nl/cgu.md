@@ -14,7 +14,7 @@ Spots Zen is een audio-wellnessplatform dat begeleide meditaties, ademoefeningen
 - Via een QR-code of NFC-link in een partnervestiging (B2B-toegang verleend door de vestiging)
 - Via een persoonlijk abonnement (B2C-toegang)
 
-Nederlandstalige audio-inhoud wordt opgenomen in een studio door Ninon Godin en Stefan Godin. Versies in vreemde talen (Engels, Duits, Nederlands, Spaans) worden gegenereerd door AI-stemmensynthese.
+Franstalige audio-inhoud wordt opgenomen in een studio door Ninon Godin en Stefan Godin. Versies in vreemde talen (Engels, Duits, Nederlands, Spaans) worden met AI nagesynchroniseerd op basis van deze originele menselijke stemmen.
 
 ## 3. Toegang tot de dienst
 

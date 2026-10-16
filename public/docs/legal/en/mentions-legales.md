@@ -36,7 +36,7 @@ All content on spotszen.fr (audio, texts, visuals, brand) is the exclusive prope
 
 The **Spots Zen** brand is a French trademark registered with the INPI under number 5297206 (filed on 12/09/2026).
 
-French-language audio recordings are produced by Ninon Godin and Stefan Godin, recorded in a studio in Lacanau, France. Musical compositions are created by Benoît Courti as a service contract and belong to Spots Zen. Translated versions in other languages use AI-generated synthetic voices (ElevenLabs).
+French-language audio recordings are produced by Ninon Godin and Stefan Godin, recorded in a studio in Lacanau, France. Musical compositions are created by Benoît Courti as a service contract and belong to Spots Zen. Versions in other languages are dubbed by AI (ElevenLabs) from these original human voices.
 
 ## Mediation
 

@@ -10,7 +10,10 @@
 ALTER TABLE public.abonnes_b2c
   ADD COLUMN IF NOT EXISTS derniere_connexion timestamptz,
   ADD COLUMN IF NOT EXISTS newsletter_ok boolean NOT NULL DEFAULT false,
-  ADD COLUMN IF NOT EXISTS newsletter_ok_le timestamptz; -- preuve du consentement (RGPD art. 7.1)
+  ADD COLUMN IF NOT EXISTS newsletter_ok_le timestamptz, -- preuve du consentement (RGPD art. 7.1)
+  -- La personne a répondu « STOP » : plus d'emails d'accompagnement (J+3, relance, J-7, fin d'accès).
+  -- Les emails obligatoires (paiement, résiliation, rappel annuel L.215-1) continuent.
+  ADD COLUMN IF NOT EXISTS emails_stop boolean NOT NULL DEFAULT false;
 
 -- Appelée par la bibliothèque à chaque ouverture : note la visite et la langue choisie.
 -- SECURITY DEFINER limité à la ligne de l'utilisateur connecté et à ces deux colonnes.
