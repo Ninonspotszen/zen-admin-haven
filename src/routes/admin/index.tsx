@@ -64,7 +64,12 @@ async function fetchDashboard(): Promise<DashboardData> {
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).eq("statut", "actif"),
     supabase.from("abonnes_b2c").select("id", { count: "exact", head: true }).gte("created_at", monthStart),
     supabase.from("abonnes_b2c").select("statut"),
-    supabase.from("contact_requests").select("id", { count: "exact", head: true }).neq("statut", "traitee"),
+    // À traiter = nouvelle demande, ou prochaine action prévue aujourd'hui ou avant (pipeline B2B ouvert).
+    supabase
+      .from("contact_requests")
+      .select("id", { count: "exact", head: true })
+      .not("statut", "in", "(client,perdue,traitee)")
+      .or(`statut.eq.nouvelle,prochaine_action.lte.${new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Paris" })}`),
     supabase.from("clients").select("id, nom, date_pilote_fin").eq("statut", "Pilote").lte("date_pilote_fin", in30).not("date_pilote_fin", "is", null).order("date_pilote_fin"),
     supabase.from("abonnes_b2c").select("id, email, date_fin_acces").in("statut", ["offert", "ambassadeur"]).gte("date_fin_acces", today).lte("date_fin_acces", in7).not("date_fin_acces", "is", null).order("date_fin_acces"),
     supabase.from("clients").select("id", { count: "exact", head: true }).eq("statut_paiement", "Virement reçu"),

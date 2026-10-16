@@ -106,6 +106,23 @@ function AbonneDetail() {
           <p className="text-sm uppercase text-foreground">{data.langue_preferee ?? "fr"}</p>
         </div>
         <div>
+          <span className={label}>Dernière connexion</span>
+          <p className="text-sm text-foreground">
+            {(() => {
+              const v = (data as { derniere_connexion?: string | null }).derniere_connexion;
+              return v ? new Date(v).toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "medium", timeStyle: "short" }) : "—";
+            })()}
+          </p>
+        </div>
+        <div>
+          <span className={label}>Newsletter</span>
+          <p className="text-sm text-foreground">
+            {(data as { newsletter_ok?: boolean }).newsletter_ok
+              ? `Oui${(data as { newsletter_ok_le?: string | null }).newsletter_ok_le ? ` (depuis le ${fmtFr((data as { newsletter_ok_le?: string | null }).newsletter_ok_le)})` : ""}`
+              : "Non"}
+          </p>
+        </div>
+        <div>
           <span className={label}>Stripe customer ID</span>
           <p className="break-all text-sm text-foreground">{data.stripe_customer_id ?? "—"}</p>
         </div>

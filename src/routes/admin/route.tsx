@@ -35,6 +35,7 @@ const TABS = [
   { to: "/admin/abonnes", label: "Abonnés", exact: false },
   { to: "/admin/spots", label: "Spots", exact: false },
   { to: "/admin/demandes", label: "Demandes", exact: false },
+  { to: "/admin/emails", label: "Emails", exact: false },
 ] as const;
 
 function AdminLayout() {

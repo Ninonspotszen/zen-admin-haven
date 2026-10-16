@@ -25,6 +25,7 @@ import { Route as PolitiqueCookiesRouteImport } from './routes/politique-cookies
 import { Route as ProfessionnelsRouteImport } from './routes/professionnels'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminDemandesRouteImport } from './routes/admin/demandes'
+import { Route as AdminEmailsRouteImport } from './routes/admin/emails'
 import { Route as SpotsIdRouteImport } from './routes/spots.$id'
 import { Route as AdminAbonnesIndexRouteImport } from './routes/admin/abonnes.index'
 import { Route as AdminAbonnesIdRouteImport } from './routes/admin/abonnes.$id'
@@ -35,6 +36,7 @@ import { Route as AdminClientsIdRouteImport } from './routes/admin/clients.$id'
 import { Route as AdminSpotsIndexRouteImport } from './routes/admin/spots.index'
 import { Route as AdminSpotsIdRouteImport } from './routes/admin/spots.$id'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
+import { Route as ApiPublicCronQuotidienRouteImport } from './routes/api/public/cron/quotidien'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -117,6 +119,11 @@ const AdminDemandesRoute = AdminDemandesRouteImport.update({
   path: '/demandes',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminEmailsRoute = AdminEmailsRouteImport.update({
+  id: '/emails',
+  path: '/emails',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const SpotsIdRoute = SpotsIdRouteImport.update({
   id: '/spots/$id',
   path: '/spots/$id',
@@ -167,6 +174,11 @@ const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
   path: '/api/public/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronQuotidienRoute = ApiPublicCronQuotidienRouteImport.update({
+  id: '/api/public/cron/quotidien',
+  path: '/api/public/cron/quotidien',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -184,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/emails': typeof AdminEmailsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -195,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/spots/': typeof AdminSpotsIndexRoute
+  '/api/public/cron/quotidien': typeof ApiPublicCronQuotidienRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -211,6 +225,7 @@ export interface FileRoutesByTo {
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/emails': typeof AdminEmailsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -222,6 +237,7 @@ export interface FileRoutesByTo {
   '/admin/audios': typeof AdminAudiosIndexRoute
   '/admin/clients': typeof AdminClientsIndexRoute
   '/admin/spots': typeof AdminSpotsIndexRoute
+  '/api/public/cron/quotidien': typeof ApiPublicCronQuotidienRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -240,6 +256,7 @@ export interface FileRoutesById {
   '/politique-cookies': typeof PolitiqueCookiesRoute
   '/professionnels': typeof ProfessionnelsRoute
   '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/emails': typeof AdminEmailsRoute
   '/spots/$id': typeof SpotsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/abonnes/$id': typeof AdminAbonnesIdRoute
@@ -251,6 +268,7 @@ export interface FileRoutesById {
   '/admin/audios/': typeof AdminAudiosIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/spots/': typeof AdminSpotsIndexRoute
+  '/api/public/cron/quotidien': typeof ApiPublicCronQuotidienRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -270,6 +288,7 @@ export interface FileRouteTypes {
     | '/politique-cookies'
     | '/professionnels'
     | '/admin/demandes'
+    | '/admin/emails'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -281,6 +300,7 @@ export interface FileRouteTypes {
     | '/admin/audios/'
     | '/admin/clients/'
     | '/admin/spots/'
+    | '/api/public/cron/quotidien'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -297,6 +317,7 @@ export interface FileRouteTypes {
     | '/politique-cookies'
     | '/professionnels'
     | '/admin/demandes'
+    | '/admin/emails'
     | '/spots/$id'
     | '/admin'
     | '/admin/abonnes/$id'
@@ -308,6 +329,7 @@ export interface FileRouteTypes {
     | '/admin/audios'
     | '/admin/clients'
     | '/admin/spots'
+    | '/api/public/cron/quotidien'
   id:
     | '__root__'
     | '/'
@@ -325,6 +347,7 @@ export interface FileRouteTypes {
     | '/politique-cookies'
     | '/professionnels'
     | '/admin/demandes'
+    | '/admin/emails'
     | '/spots/$id'
     | '/admin/'
     | '/admin/abonnes/$id'
@@ -336,6 +359,7 @@ export interface FileRouteTypes {
     | '/admin/audios/'
     | '/admin/clients/'
     | '/admin/spots/'
+    | '/api/public/cron/quotidien'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -355,6 +379,7 @@ export interface RootRouteChildren {
   ProfessionnelsRoute: typeof ProfessionnelsRoute
   SpotsIdRoute: typeof SpotsIdRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
+  ApiPublicCronQuotidienRoute: typeof ApiPublicCronQuotidienRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -471,6 +496,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDemandesRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/emails': {
+      id: '/admin/emails'
+      path: '/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AdminEmailsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/spots/$id': {
       id: '/spots/$id'
       path: '/spots/$id'
@@ -541,11 +573,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/quotidien': {
+      id: '/api/public/cron/quotidien'
+      path: '/api/public/cron/quotidien'
+      fullPath: '/api/public/cron/quotidien'
+      preLoaderRoute: typeof ApiPublicCronQuotidienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AdminRouteRouteChildren {
   AdminDemandesRoute: typeof AdminDemandesRoute
+  AdminEmailsRoute: typeof AdminEmailsRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminAbonnesIdRoute: typeof AdminAbonnesIdRoute
   AdminAudiosIdRoute: typeof AdminAudiosIdRoute
@@ -559,6 +599,7 @@ interface AdminRouteRouteChildren {
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminDemandesRoute: AdminDemandesRoute,
+  AdminEmailsRoute: AdminEmailsRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminAbonnesIdRoute: AdminAbonnesIdRoute,
   AdminAudiosIdRoute: AdminAudiosIdRoute,
@@ -591,6 +632,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfessionnelsRoute: ProfessionnelsRoute,
   SpotsIdRoute: SpotsIdRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
+  ApiPublicCronQuotidienRoute: ApiPublicCronQuotidienRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

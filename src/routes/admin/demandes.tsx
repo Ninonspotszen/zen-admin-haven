@@ -15,11 +15,25 @@ export const Route = createFileRoute("/admin/demandes")({
   component: DemandesPage,
 });
 
+// Pipeline commercial B2B, dans l'ordre du parcours. « traitee » reste pour les demandes sans suite commerciale.
 const STATUTS = [
   { v: "nouvelle", label: "Nouvelle", cls: "bg-amber-100 text-amber-800" },
-  { v: "en_cours", label: "En cours", cls: "bg-blue-100 text-blue-800" },
-  { v: "traitee", label: "Traitée", cls: "bg-green-100 text-green-800" },
+  { v: "en_cours", label: "Contactée", cls: "bg-blue-100 text-blue-800" },
+  { v: "demo", label: "Démo / rendez-vous", cls: "bg-indigo-100 text-indigo-800" },
+  { v: "devis", label: "Devis envoyé", cls: "bg-purple-100 text-purple-800" },
+  { v: "pilote", label: "Pilote en cours", cls: "bg-teal-100 text-teal-800" },
+  { v: "client", label: "Client signé", cls: "bg-green-100 text-green-800" },
+  { v: "perdue", label: "Perdue", cls: "bg-zinc-200 text-zinc-700" },
+  { v: "traitee", label: "Classée (sans suite)", cls: "bg-zinc-100 text-zinc-600" },
 ] as const;
+const FERMEES = ["client", "perdue", "traitee"];
+const aujourdhui = () => new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Paris" });
+
+type Demande = {
+  id: string; created_at: string; secteur: string; nom: string | null; email: string | null; etablissement: string | null;
+  type_structure: string | null; taille: string | null; message: string | null; statut: string; notification: string | null;
+  accuse_reception: string | null; note: string | null; prochaine_action: string | null;
+};
 const SECTEUR: Record<string, string> = {
   hebergements: "Hébergement touristique",
   entreprises: "Entreprise",
@@ -28,6 +42,7 @@ const SECTEUR: Record<string, string> = {
   collectivites: "Collectivité",
   general: "Général",
 };
+const ACCUSE: Record<string, string> = { sent: "envoyé", disabled: "désactivé", failed: "en échec" };
 const NOTIF: Record<string, string> = {
   sent: "alerte email envoyée",
   disabled: "alerte email désactivée",
@@ -36,18 +51,18 @@ const NOTIF: Record<string, string> = {
 
 function DemandesPage() {
   const qc = useQueryClient();
-  const [filtre, setFiltre] = useState<"a_traiter" | "toutes">("a_traiter");
+  const [filtre, setFiltre] = useState<"a_traiter" | "ouvertes" | "toutes">("ouvertes");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["contact_requests"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("contact_requests")
-        .select("id, created_at, secteur, nom, email, etablissement, type_structure, taille, message, statut, notification")
+        .select("id, created_at, secteur, nom, email, etablissement, type_structure, taille, message, statut, notification, accuse_reception, note, prochaine_action" as "id")
         .order("created_at", { ascending: false })
         .limit(200);
       if (error) throw error;
-      return data;
+      return data as unknown as Demande[];
     },
   });
 
@@ -65,32 +80,46 @@ function DemandesPage() {
   }, [qc]);
 
   const changer = useMutation({
-    mutationFn: async ({ id, statut }: { id: string; statut: string }) => {
-      const { error } = await supabase.from("contact_requests").update({ statut }).eq("id", id);
+    mutationFn: async ({ id, ...champs }: { id: string; statut?: string; note?: string | null; prochaine_action?: string | null }) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await supabase.from("contact_requests").update(champs as any).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["contact_requests"] });
       qc.invalidateQueries({ queryKey: ["admin-dashboard"] });
     },
-    onError: (e: Error) => toast.error(`Statut non enregistré : ${e.message}`),
+    onError: (e: Error) => toast.error(`Modification non enregistrée : ${e.message}`),
   });
 
-  const lignes = (data ?? []).filter((d) => filtre === "toutes" || d.statut !== "traitee");
-  const aTraiter = (data ?? []).filter((d) => d.statut !== "traitee").length;
+  const jour = aujourdhui();
+  const estATraiter = (d: Demande) => !FERMEES.includes(d.statut) && (d.statut === "nouvelle" || (!!d.prochaine_action && d.prochaine_action <= jour));
+  const tout = data ?? [];
+  const lignes = tout.filter((d) => filtre === "toutes" || (filtre === "ouvertes" ? !FERMEES.includes(d.statut) : estATraiter(d)));
+  const aTraiter = tout.filter(estATraiter).length;
+  const ouvertes = tout.filter((d) => !FERMEES.includes(d.statut)).length;
+  const parEtape = STATUTS.map((s) => ({ ...s, n: tout.filter((d) => d.statut === s.v).length }));
 
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="font-serif text-3xl text-foreground">Demandes de contact</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Reçues depuis le formulaire de la page Professionnels. Chaque nouvelle demande vous est aussi envoyée par email.
+        Reçues depuis le formulaire de la page Professionnels, puis suivies étape par étape jusqu'à la signature.
       </p>
+
+      {/* Entonnoir : combien de prospects à chaque étape */}
+      <ol className="mt-6 flex flex-wrap gap-2" aria-label="Pipeline commercial">
+        {parEtape.map((s) => (
+          <li key={s.v} className={`rounded-full px-3 py-1 text-xs font-semibold ${s.cls}`}>{s.label} · {s.n}</li>
+        ))}
+      </ol>
 
       <div className="mt-6 flex gap-2" role="group" aria-label="Filtrer les demandes">
         {(
           [
             ["a_traiter", `À traiter (${aTraiter})`],
-            ["toutes", `Toutes (${data?.length ?? 0})`],
+            ["ouvertes", `En cours (${ouvertes})`],
+            ["toutes", `Toutes (${tout.length})`],
           ] as const
         ).map(([v, label]) => (
           <button
@@ -113,7 +142,7 @@ function DemandesPage() {
         <p className="mt-6 text-sm text-muted-foreground">Chargement…</p>
       ) : lignes.length === 0 ? (
         <p className="mt-6 rounded-2xl border bg-card p-6 text-center text-sm text-muted-foreground">
-          {filtre === "a_traiter" ? "Aucune demande à traiter." : "Aucune demande reçue pour l'instant."}
+          {filtre === "toutes" ? "Aucune demande reçue pour l'instant." : "Aucune demande dans cette vue."}
         </p>
       ) : (
         <ul className="mt-6 space-y-4">
@@ -127,6 +156,7 @@ function DemandesPage() {
                       {new Date(d.created_at).toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "medium", timeStyle: "short" })} ·{" "}
                       {SECTEUR[d.secteur] ?? d.secteur}
                       {d.notification ? ` · ${NOTIF[d.notification] ?? d.notification}` : ""}
+                      {d.accuse_reception ? ` · accusé de réception : ${ACCUSE[d.accuse_reception] ?? d.accuse_reception}` : ""}
                     </p>
                     <p className="mt-1 font-serif text-lg text-foreground">{d.etablissement || d.nom || "Sans nom"}</p>
                     <p className="text-sm text-muted-foreground">
@@ -149,6 +179,30 @@ function DemandesPage() {
                   </div>
                 </div>
                 {d.message && <p className="mt-3 whitespace-pre-wrap border-l-2 border-primary/40 pl-3 text-sm text-foreground">{d.message}</p>}
+                <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
+                  <label className="block text-xs text-muted-foreground">
+                    Note de suivi
+                    <textarea
+                      defaultValue={d.note ?? ""}
+                      rows={2}
+                      onBlur={(e) => {
+                        const v = e.target.value.trim() || null;
+                        if (v !== (d.note ?? null)) changer.mutate({ id: d.id, note: v });
+                      }}
+                      placeholder="Ex. : appel le 20/10, intéressée par 3 spots, rappeler après validation du budget"
+                      className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm text-foreground"
+                    />
+                  </label>
+                  <label className="block text-xs text-muted-foreground">
+                    Prochaine action
+                    <input
+                      type="date"
+                      defaultValue={d.prochaine_action ?? ""}
+                      onChange={(e) => changer.mutate({ id: d.id, prochaine_action: e.target.value || null })}
+                      className={`mt-1 block rounded-xl border bg-background px-3 py-2 text-sm text-foreground ${d.prochaine_action && d.prochaine_action <= jour && !FERMEES.includes(d.statut) ? "border-amber-500" : "border-input"}`}
+                    />
+                  </label>
+                </div>
                 {d.email && (
                   <a
                     href={`mailto:${d.email}?subject=${encodeURIComponent("Votre demande Spots Zen")}`}
