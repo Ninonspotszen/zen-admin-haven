@@ -389,9 +389,9 @@
     "concept": {
       "eyebrow": "UNE NOUVELLE FAÇON DE FAIRE UNE PAUSE",
       "h2": "Les bons audios, au bon moment, au bon endroit.",
-      "p1": "En pause. En vacances. Loin du quotidien…",
-      "p2": "Spots Zen est né pour eux…",
-      "p3": "L'audio s'adapte à l'heure de votre connexion…",
+      "p1": "En pause. En vacances. Loin du quotidien. Certains moments de la journée n'attendent qu'une chose : qu'on leur fasse de la place.",
+      "p2": "Spots Zen est né pour eux. Une bibliothèque resserrée d'immersions audio bien-être, accessible là où ses utilisateurs sont déjà.",
+      "p3": "L'audio s'adapte à l'heure de votre connexion pour vous guider dans l'énergie du moment. Pour vous, pour vos enfants, vos clients ou vos collaborateurs.",
       "note": "Une expérience pensée pour vos visiteurs.",
       "phones": {
         "ariaLabel": "Aperçu de la bibliothèque et du lecteur Spots Zen",
@@ -412,7 +412,7 @@
         "cta": "DÉCOUVRIR L'EXPÉRIENCE"
       },
       "quote": {
-        "text": "« Les scénarios s'appuient sur des techniques puissantes reconnues de relaxation… »",
+        "text": "« Les scénarios s'appuient sur des techniques puissantes reconnues de relaxation. Nos voix sont enregistrées en studio et chaque musique est composée sur mesure pour donner à ces moments toute leur profondeur. »",
         "eyebrow": "L'EXIGENCE DERRIÈRE CHAQUE ÉCOUTE"
       },
       "items": [
@@ -523,7 +523,7 @@
       "eyebrow": "UN PROJET, UNE QUESTION, UNE IDÉE ?",
       "overImg": "PRENONS LE TEMPS D'ÉCHANGER",
       "h2": "On en parle de vive voix ?",
-      "body": "Chaque lieu est différent. Racontez-moi le vôtre…",
+      "body": "Chaque lieu est différent. Racontez-moi le vôtre, et imaginons ensemble comment y faire une place au bien-être.",
       "role": "Fondatrice de Spots Zen",
       "cta": "Prendre rendez-vous",
       "img": {
