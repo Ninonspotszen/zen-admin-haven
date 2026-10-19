@@ -61,7 +61,6 @@ Spots Zen recurre a los siguientes subencargados, todos sujetos a garantías con
 | ElevenLabs Inc. | Doblaje por IA de las voces humanas a otros idiomas (producción, sin transmisión de datos de usuarios) | UE |
 | Vercel Inc. | Alojamiento del sitio y del servidor de la aplicación | Estados Unidos |
 | Google (Google Ireland Ltd) | Inicio de sesión con una cuenta de Google (opcional) | UE / Estados Unidos |
-| Short.io (Short.cm Inc.) | Enlaces cortos de los códigos QR (estadísticas de clics) | UE / Estados Unidos |
 | Anthropic PBC | Traducción asistida del catálogo de audio (no se envían datos personales) | Estados Unidos |
 
 ## 5. Período de conservación
@@ -93,7 +92,7 @@ Los datos se alojan en servidores seguros. Los accesos están protegidos mediant
 
 ## 8. Transferencias fuera de la UE
 
-Algunos subencargados (Vercel, Google, Short.io, Cloudinary, ElevenLabs) pueden tratar datos fuera de la UE. Estas transferencias están reguladas por cláusulas contractuales tipo (CCT) conformes con el RGPD.
+Algunos subencargados (Vercel, Google, Cloudinary, ElevenLabs) pueden tratar datos fuera de la UE. Estas transferencias están reguladas por cláusulas contractuales tipo (CCT) conformes con el RGPD.
 
 ## 9. Contacto
 

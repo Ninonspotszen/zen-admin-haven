@@ -61,7 +61,6 @@ Spots Zen fait appel aux sous-traitants suivants, tous soumis à des garanties c
 | ElevenLabs Inc. | Doublage par IA des voix humaines dans les autres langues (production, aucune donnée d'utilisateur transmise) | UE |
 | Vercel Inc. | Hébergement du site et du serveur de l'application | États-Unis |
 | Google (Google Ireland Ltd) | Connexion avec un compte Google (facultative) | UE / États-Unis |
-| Short.io (Short.cm Inc.) | Liens courts des QR codes (statistiques de clics) | UE / États-Unis |
 | Anthropic PBC | Traduction assistée du catalogue audio (aucune donnée personnelle transmise) | États-Unis |
 
 ## 5. Durée de conservation
@@ -93,7 +92,7 @@ Les données sont hébergées sur des serveurs sécurisés. Les accès sont prot
 
 ## 8. Transferts hors UE
 
-Certains sous-traitants (Vercel, Google, Short.io, Cloudinary, ElevenLabs) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types (CCT) conformes au RGPD.
+Certains sous-traitants (Vercel, Google, Cloudinary, ElevenLabs) peuvent traiter des données hors UE. Ces transferts sont encadrés par des clauses contractuelles types (CCT) conformes au RGPD.
 
 ## 9. Contact
 

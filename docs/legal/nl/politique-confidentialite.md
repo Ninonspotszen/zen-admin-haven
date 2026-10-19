@@ -61,7 +61,6 @@ Spots Zen maakt gebruik van de volgende subverwerkers, die alle onderworpen zijn
 | ElevenLabs Inc. | AI-nasynchronisatie van de menselijke stemmen in andere talen (productie, geen gebruikersgegevens verzonden) | EU |
 | Vercel Inc. | Hosting van de website en de applicatieserver | Verenigde Staten |
 | Google (Google Ireland Ltd) | Inloggen met een Google-account (optioneel) | EU / Verenigde Staten |
-| Short.io (Short.cm Inc.) | Korte links van de QR-codes (klikstatistieken) | EU / Verenigde Staten |
 | Anthropic PBC | AI-ondersteunde vertaling van de audiocatalogus (geen persoonsgegevens verzonden) | Verenigde Staten |
 
 ## 5. Bewaartermijnen
@@ -93,7 +92,7 @@ Gegevens worden gehost op beveiligde servers. Toegang is beschermd door authenti
 
 ## 8. Overdrachten buiten de EU
 
-Sommige subverwerkers (Vercel, Google, Short.io, Cloudinary, ElevenLabs) kunnen gegevens buiten de EU verwerken. Deze overdrachten worden geregeld door standaard contractuele clausules (SCC) conform de AVG.
+Sommige subverwerkers (Vercel, Google, Cloudinary, ElevenLabs) kunnen gegevens buiten de EU verwerken. Deze overdrachten worden geregeld door standaard contractuele clausules (SCC) conform de AVG.
 
 ## 9. Contact
 

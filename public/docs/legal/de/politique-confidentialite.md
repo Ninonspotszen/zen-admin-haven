@@ -61,7 +61,6 @@ Spots Zen nutzt folgende Auftragsverarbeiter, die alle vertraglichen Garantien g
 | ElevenLabs Inc. | KI-Synchronisation der menschlichen Stimmen in andere Sprachen (Produktion, keine Nutzerdaten übermittelt) | EU |
 | Vercel Inc. | Hosting der Website und des Anwendungsservers | USA |
 | Google (Google Ireland Ltd) | Anmeldung mit einem Google-Konto (optional) | EU / USA |
-| Short.io (Short.cm Inc.) | Kurzlinks der QR-Codes (Klickstatistiken) | EU / USA |
 | Anthropic PBC | KI-gestützte Übersetzung des Audiokatalogs (keine personenbezogenen Daten übermittelt) | USA |
 
 ## 5. Aufbewahrungsfristen
@@ -93,7 +92,7 @@ Die Daten werden auf sicheren Servern gehostet. Der Zugang ist durch Authentifiz
 
 ## 8. Übermittlungen außerhalb der EU
 
-Einige Auftragsverarbeiter (Vercel, Google, Short.io, Cloudinary, ElevenLabs) können Daten außerhalb der EU verarbeiten. Diese Übermittlungen werden durch Standardvertragsklauseln (SCC) gemäß DSGVO geregelt.
+Einige Auftragsverarbeiter (Vercel, Google, Cloudinary, ElevenLabs) können Daten außerhalb der EU verarbeiten. Diese Übermittlungen werden durch Standardvertragsklauseln (SCC) gemäß DSGVO geregelt.
 
 ## 9. Kontakt
 

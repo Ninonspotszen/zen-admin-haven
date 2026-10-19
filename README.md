@@ -19,7 +19,7 @@ Application web progressive (PWA) avec trois espaces : la page d'un spot pour le
 | Paiement | Stripe (abonnements, portail client, webhook) |
 | Emails | Brevo (emails de connexion via SMTP, emails transactionnels) |
 | Audio | Cloudinary (hébergement des fichiers) · ElevenLabs (production des voix traduites) |
-| QR codes | Short.io (liens permanents imprimés) |
+| QR codes | Lien direct `www.spotszen.fr/spots/{id}`, généré dans l'admin (PNG + SVG) |
 | Traductions de l'interface | i18next (FR, EN, DE, NL, ES) |
 | IA | API Claude d'Anthropic (modèle Haiku 5.5) : traduction assistée du catalogue |
 

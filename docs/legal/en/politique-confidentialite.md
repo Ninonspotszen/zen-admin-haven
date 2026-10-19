@@ -61,7 +61,6 @@ Spots Zen uses the following sub-processors, all subject to contractual guarante
 | ElevenLabs Inc. | AI dubbing of the human voices into other languages (production, no user data sent) | EU |
 | Vercel Inc. | Website and application server hosting | United States |
 | Google (Google Ireland Ltd) | Sign-in with a Google account (optional) | EU / United States |
-| Short.io (Short.cm Inc.) | Short links for QR codes (click statistics) | EU / United States |
 | Anthropic PBC | AI-assisted translation of the audio catalogue (no personal data sent) | United States |
 
 ## 5. Retention Period
@@ -93,7 +92,7 @@ Data is hosted on secure servers. Access is protected by authentication and Supa
 
 ## 8. Transfers Outside the EU
 
-Some sub-processors (Vercel, Google, Short.io, Cloudinary, ElevenLabs) may process data outside the EU. These transfers are governed by standard contractual clauses (SCCs) compliant with the GDPR.
+Some sub-processors (Vercel, Google, Cloudinary, ElevenLabs) may process data outside the EU. These transfers are governed by standard contractual clauses (SCCs) compliant with the GDPR.
 
 ## 9. Contact
 
