@@ -306,6 +306,10 @@
       "library": "Retour à ma bibliothèque",
       "spot": "Retour au spot",
       "home": "Retour à l'accueil"
+    },
+    "card": {
+      "trial": "Votre carte vous est demandée pour préparer la suite, mais rien n'est prélevé pendant votre mois offert. Nous vous prévenons 7 jours avant sa fin, et vous pouvez arrêter à tout moment, sans frais.",
+      "noTrial": "Sans engagement, résiliable à tout moment."
     }
   },
   "access": {

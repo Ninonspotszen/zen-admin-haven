@@ -306,6 +306,10 @@
       "library": "Back to my library",
       "spot": "Back to the spot",
       "home": "Back to home"
+    },
+    "card": {
+      "trial": "We ask for your card so everything is ready afterwards, but nothing is charged during your free month. We'll remind you 7 days before it ends, and you can stop at any time, free of charge.",
+      "noTrial": "No commitment, cancel anytime."
     }
   },
   "access": {

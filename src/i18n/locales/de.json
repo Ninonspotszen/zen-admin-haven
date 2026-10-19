@@ -306,6 +306,10 @@
       "library": "Zurück zu meiner Bibliothek",
       "spot": "Zurück zum Spot",
       "home": "Zurück zur Startseite"
+    },
+    "card": {
+      "trial": "Wir fragen nach Ihrer Karte, damit danach alles bereit ist, aber während Ihres kostenlosen Monats wird nichts abgebucht. Wir erinnern Sie 7 Tage vor dem Ende, und Sie können jederzeit kostenlos kündigen.",
+      "noTrial": "Ohne Verpflichtung, jederzeit kündbar."
     }
   },
   "access": {

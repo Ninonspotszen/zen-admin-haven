@@ -306,6 +306,10 @@
       "library": "Volver a mi biblioteca",
       "spot": "Volver al spot",
       "home": "Volver al inicio"
+    },
+    "card": {
+      "trial": "Le pedimos su tarjeta para dejarlo todo listo, pero no se cobra nada durante su mes gratuito. Le avisamos 7 días antes de que termine y puede cancelar en cualquier momento, sin coste.",
+      "noTrial": "Sin compromiso, cancelable en cualquier momento."
     }
   },
   "access": {

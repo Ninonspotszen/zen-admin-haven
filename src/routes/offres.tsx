@@ -109,6 +109,7 @@ function OffresPage() {
      Accès en cours → bibliothèque ; sinon venu d'un spot → ce spot ; sinon → accueil. */
   const [retour, setRetour] = useState<{ href: string; label: string }>({ href: "/", label: "offers.back.home" });
   const [connecte, setConnecte] = useState(false);
+  const [dejaEssai, setDejaEssai] = useState(false);
   useEffect(() => {
     (async () => {
       const param = new URLSearchParams(window.location.search).get("spot_origine_id");
@@ -116,8 +117,10 @@ function OffresPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
       setConnecte(true);
-      const { data } = await supabase.from("abonnes_b2c").select("statut").eq("id", session.user.id).maybeSingle();
+      const { data } = await supabase.from("abonnes_b2c").select("statut, stripe_subscription_id").eq("id", session.user.id).maybeSingle();
       const statut = (data as { statut?: string | null } | null)?.statut;
+      /* Même règle que le serveur (checkout.functions.ts) : un compte qui a déjà eu un abonnement Stripe n'a plus de mois offert. */
+      if ((data as { stripe_subscription_id?: string | null } | null)?.stripe_subscription_id) setDejaEssai(true);
       if (statut && ["actif", "offert", "ambassadeur", "paiement_echoue"].includes(statut)) {
         setRetour({ href: "/bibliotheque", label: "offers.back.library" });
       }
@@ -213,6 +216,11 @@ function OffresPage() {
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
           </div>
         </section>
+        {/* Mention de la carte bancaire (brief du 19/10) : dite avant le clic, masquée si le mois offert est déjà utilisé */}
+        <p className="mx-auto mt-4 flex max-w-2xl items-start justify-center gap-2 px-6 text-center text-[12px] leading-relaxed text-[var(--o-sub)] md:text-[13px]">
+          <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
+          <span>{t(dejaEssai ? "offers.card.noTrial" : "offers.card.trial")}</span>
+        </p>
         <p className="mt-3 px-6 text-center text-[12px] text-[var(--o-sub)]">{t("offers.cgvNotice")} <Link to="/cgv" className="underline underline-offset-2">{t("offers.cgvLink")}</Link>.</p>
 
         {/* BENEFITS */}

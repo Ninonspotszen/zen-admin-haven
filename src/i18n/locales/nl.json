@@ -306,6 +306,10 @@
       "library": "Terug naar mijn bibliotheek",
       "spot": "Terug naar de spot",
       "home": "Terug naar de startpagina"
+    },
+    "card": {
+      "trial": "We vragen om uw kaart zodat alles daarna klaarstaat, maar tijdens uw gratis maand wordt er niets afgeschreven. We sturen u 7 dagen voor het einde een herinnering, en u kunt op elk moment kosteloos stoppen.",
+      "noTrial": "Zonder verplichting, op elk moment opzegbaar."
     }
   },
   "access": {
