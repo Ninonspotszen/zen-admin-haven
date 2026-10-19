@@ -295,7 +295,9 @@
     },
     "cta": {
       "final": "Comenzar mi primer mes gratuito",
-      "legal": "Luego 5 €/mes · Sin compromiso · Cancelable en cualquier momento"
+      "legal": "Luego 5 €/mes · Sin compromiso · Cancelable en cualquier momento",
+      "finalNoTrial": "Suscribirme a Spots Zen",
+      "legalNoTrial": "5 €/mes · Sin compromiso · Cancelable en cualquier momento"
     },
     "error": {
       "payment": "El pago no pudo iniciarse. Inténtelo de nuevo en un momento."

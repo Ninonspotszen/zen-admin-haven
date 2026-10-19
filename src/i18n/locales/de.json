@@ -295,7 +295,9 @@
     },
     "cta": {
       "final": "Meinen ersten Monat kostenlos beginnen",
-      "legal": "Danach 5 €/Monat · Ohne Verpflichtung · Jederzeit kündbar"
+      "legal": "Danach 5 €/Monat · Ohne Verpflichtung · Jederzeit kündbar",
+      "finalNoTrial": "Spots Zen abonnieren",
+      "legalNoTrial": "5 €/Monat · Ohne Verpflichtung · Jederzeit kündbar"
     },
     "error": {
       "payment": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es gleich erneut."

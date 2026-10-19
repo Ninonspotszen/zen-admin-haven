@@ -295,7 +295,9 @@
     },
     "cta": {
       "final": "Start my first month free",
-      "legal": "Then €5/month · No commitment · Cancel anytime"
+      "legal": "Then €5/month · No commitment · Cancel anytime",
+      "finalNoTrial": "Subscribe to Spots Zen",
+      "legalNoTrial": "€5/month · No commitment · Cancel anytime"
     },
     "error": {
       "payment": "Payment could not be started. Please try again in a moment."

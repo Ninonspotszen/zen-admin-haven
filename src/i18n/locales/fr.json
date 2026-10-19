@@ -295,7 +295,9 @@
     },
     "cta": {
       "final": "Commencer mon premier mois gratuit",
-      "legal": "Puis 5 €/mois · Sans engagement · Résiliable à tout moment"
+      "legal": "Puis 5 €/mois · Sans engagement · Résiliable à tout moment",
+      "finalNoTrial": "M'abonner à Spots Zen",
+      "legalNoTrial": "5 €/mois · Sans engagement · Résiliable à tout moment"
     },
     "error": {
       "payment": "Le paiement n'a pas pu démarrer. Réessayez dans un instant."

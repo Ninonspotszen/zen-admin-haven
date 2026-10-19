@@ -295,7 +295,9 @@
     },
     "cta": {
       "final": "Mijn eerste maand gratis beginnen",
-      "legal": "Daarna 5 €/maand · Zonder verplichting · Op elk moment opzegbaar"
+      "legal": "Daarna 5 €/maand · Zonder verplichting · Op elk moment opzegbaar",
+      "finalNoTrial": "Abonneren op Spots Zen",
+      "legalNoTrial": "5 €/maand · Zonder verplichting · Op elk moment opzegbaar"
     },
     "error": {
       "payment": "De betaling kon niet worden gestart. Probeer het over een ogenblik opnieuw."

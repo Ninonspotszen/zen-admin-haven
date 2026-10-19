@@ -194,16 +194,19 @@ function OffresPage() {
         </section>
 
         {/* PROMO */}
-        <p className="flex items-center justify-center gap-2 px-6 text-center text-sm font-semibold text-[var(--o-promo)]">
-          <Leaf className="h-4 w-4 shrink-0" aria-hidden />{t("offers.promo.badge")}
-        </p>
+        {/* Mentions du mois offert masquées pour un compte qui l'a déjà utilisé (le serveur ne le redonne pas) */}
+        {!dejaEssai && (
+          <p className="flex items-center justify-center gap-2 px-6 text-center text-sm font-semibold text-[var(--o-promo)]">
+            <Leaf className="h-4 w-4 shrink-0" aria-hidden />{t("offers.promo.badge")}
+          </p>
+        )}
 
         {/* PRICING */}
         <section className="mt-5 grid grid-cols-2 gap-3.5 px-6 md:mx-auto md:mt-8 md:max-w-2xl md:gap-6">
           <div className="ocard flex flex-col rounded-2xl p-5 md:p-8">
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-eyebrow)]">{t("offers.plan.monthly.label")}</p>
             <p className="serif mt-2 text-[24px] md:text-[36px]">5 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perMonth")}</span></p>
-            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.monthly.promo")}</span>
+            {!dejaEssai && <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.monthly.promo")}</span>}
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)] md:text-[14px]">{t("offers.plan.monthly.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full border border-[var(--o-promo)] text-sm font-semibold text-[var(--o-promo)]">{t("offers.plan.monthly.cta")}</button>
           </div>
@@ -211,7 +214,7 @@ function OffresPage() {
             <span className="absolute -top-2.5 right-3 rounded-full bg-[#2D5A27] px-2.5 py-0.5 text-[10px] font-semibold uppercase text-[#F8F6F2]">{t("offers.plan.annual.badge")}</span>
             <p className="text-[11px] uppercase tracking-wider text-[var(--o-promo)]">{t("offers.plan.annual.label")}</p>
             <p className="serif mt-2 text-[24px] md:text-[36px]">49 €<span className="ml-1 font-sans text-[12px] text-[var(--o-sub)]">{t("offers.plan.perYear")}</span></p>
-            <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.annual.promo")}</span>
+            {!dejaEssai && <span className="mt-2 self-start rounded-full bg-[#2D5A27]/10 px-2 py-0.5 text-[11px] text-[var(--o-promo)]">{t("offers.plan.annual.promo")}</span>}
             <p className="mt-3 flex-1 text-[12px] text-[var(--o-sub)] md:text-[14px]">{t("offers.plan.annual.desc")}</p>
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("annuel")} className="w-full disabled:opacity-60 mt-4 flex min-h-[44px] items-center justify-center rounded-full bg-[#2D5A27] text-sm font-semibold text-[#F8F6F2]">{t("offers.plan.annual.cta")}</button>
           </div>
@@ -266,9 +269,9 @@ function OffresPage() {
         <section className="mt-12 px-6 md:mx-auto md:mt-16 md:max-w-xl">
           <div className="ocard rounded-2xl p-6 text-center md:p-8">
             <button type="button" disabled={busy !== null} onClick={() => startCheckout("mensuel")} className="w-full disabled:opacity-60 flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-[#2D5A27] px-5 text-[15px] font-semibold text-[#F8F6F2]">
-              {t("offers.cta.final")} <ArrowRight className="h-4 w-4" aria-hidden />
+              {t(dejaEssai ? "offers.cta.finalNoTrial" : "offers.cta.final")} <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
-            <p className="mt-3 text-[12px] text-[var(--o-sub)]">{t("offers.cta.legal")}</p>
+            <p className="mt-3 text-[12px] text-[var(--o-sub)]">{t(dejaEssai ? "offers.cta.legalNoTrial" : "offers.cta.legal")}</p>
             <p className="mt-3 text-center text-[12px] text-[var(--o-sub)]">{t("offers.cgvNotice")} <Link to="/cgv" className="underline underline-offset-2">{t("offers.cgvLink")}</Link>.</p>
           </div>
         </section>
