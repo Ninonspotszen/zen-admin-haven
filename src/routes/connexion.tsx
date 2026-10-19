@@ -227,7 +227,7 @@ function ConnexionPage() {
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
                 placeholder={t("auth.code.placeholder")}
                 aria-describedby={codeError ? "code-error" : undefined}
-                className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-center text-base tracking-[0.3em] text-[var(--szc-fg)] outline-none placeholder:tracking-normal placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)]"
+                className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-center text-base tracking-[0.3em] text-[var(--szc-fg)] outline-none placeholder:tracking-normal placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)] focus-visible:ring-2 focus-visible:ring-[var(--szc-brand)]/30"
               />
               {codeError && <p id="code-error" role="alert" className="mt-3 text-center text-sm text-[#B4452F]">{codeError}</p>}
               <button
@@ -259,7 +259,7 @@ function ConnexionPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("auth.email.placeholder")}
-              className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-sm text-[var(--szc-fg)] outline-none placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)]"
+              className="mt-2 h-12 w-full rounded-full border border-[var(--szc-border)] bg-transparent px-5 text-sm text-[var(--szc-fg)] outline-none placeholder:text-[var(--szc-muted)] focus:border-[var(--szc-brand)] focus-visible:ring-2 focus-visible:ring-[var(--szc-brand)]/30"
             />
             {error && <p className="mt-3 text-center text-sm text-[#B4452F]">{error}</p>}
             <button

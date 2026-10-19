@@ -9,7 +9,7 @@
   --p-light-muted: rgba(255,255,255,0.6);
   --p-light-sub: rgba(255,255,255,0.8);
   --p-light-border: rgba(255,255,255,0.2);
-  --p-best: #8B9467;
+  --p-best: #6B7449; /* assombri le 19/10 : texte blanc à 5:1 (WCAG AA) */
   --p-shade: rgba(28,46,58,0.66);
   --p-play: rgba(255,255,255,0.85);
   --p-shadow: 0 20px 60px rgba(0,0,0,0.15);
@@ -102,6 +102,7 @@
 .sz-particuliers .p-faq-item + .p-faq-item { border-top: 1px solid var(--p-border); }
 .sz-particuliers .p-faq-question { width: 100%; display: grid; grid-template-columns: minmax(0,1fr) auto; text-align: left; height: auto; padding: 24px; color: var(--p-text); background: transparent; white-space: normal; line-height: 1.6; box-shadow: none; font-size: 13px; }
 .sz-particuliers .p-faq-question:hover { background: var(--p-sand); }
+.sz-particuliers .p-faq-question:focus-visible { outline: 2px solid var(--p-brand); outline-offset: -2px; } /* repère clavier (audit WCAG 19/10) */
 .sz-particuliers .p-faq-question svg { border: 1px solid var(--p-border); border-radius: 50%; width: 24px; height: 24px; padding: 4px; transition: transform 200ms; }
 .sz-particuliers .p-faq-question[aria-expanded=true] svg { transform: rotate(45deg); }
 .sz-particuliers .p-faq-answer { padding: 0 24px 24px; color: var(--p-muted); }

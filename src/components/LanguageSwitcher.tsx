@@ -15,7 +15,7 @@ export function LanguageSwitcher() {
             onClick={() => handleChange(lang)}
             aria-current={currentLang === lang ? 'true' : undefined}
             className={`text-xs font-medium tracking-wide transition-opacity ${
-              currentLang === lang ? 'opacity-100 underline underline-offset-2' : 'opacity-50 hover:opacity-80'
+              currentLang === lang ? 'opacity-100 underline underline-offset-2' : 'opacity-90 hover:opacity-100'
             }`}
           >
             {LANG_LABELS[lang]}

@@ -12,6 +12,8 @@
   --home-surface: oklch(0.989 0.003 84);
   --home-linen: oklch(0.951 0.008 84);
   --home-gold: oklch(0.786 0.04 88);
+  /* Or foncé pour les petits textes (numéros 01, 02…) : 4,9:1 sur blanc, WCAG AA (audit du 19/10). L'or clair reste pour les décors. */
+  --home-gold-text: #7D6F4D;
   --home-footer: oklch(0.294 0.033 239);
   --home-mint: oklch(0.738 0.024 172);
   --home-photo-shade: oklch(0.235 0.029 219 / 73%);
@@ -115,7 +117,7 @@ body:has(.sz-home) { background-color: #FFFFFF; }
 .home-craft-row { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 110px; }
 .home-craft-copy { max-width: 420px; padding-inline: 20px; }
 .home-craft-reverse .home-craft-copy { order: 2; }
-.home-number { font-size: 10px; color: var(--home-gold); display: block; margin-bottom: 22px; }
+.home-number { font-size: 10px; color: var(--home-gold-text); display: block; margin-bottom: 22px; }
 .home-craft-copy .home-eyebrow { font-size: 8px; }
 .home-craft-copy h3 { margin: 14px 0 20px; }
 .home-craft-copy > p:not(.home-eyebrow) { color: var(--muted-foreground); font-size: 13px; }
@@ -141,7 +143,7 @@ body:has(.sz-home) { background-color: #FFFFFF; }
 .home-benefit { border: 1px solid var(--border); background: var(--background); border-radius: 12px; padding: 28px 30px; min-height: 195px; }
 .home-benefit > div { display: flex; align-items: center; justify-content: space-between; }
 .home-benefit svg { width: 21px; height: 21px; color: var(--primary); stroke-width: 1.4; }
-.home-benefit > div span { font-size: 10px; color: var(--home-gold); }
+.home-benefit > div span { font-size: 10px; color: var(--home-gold-text); }
 .home-benefit h3 { font-size: 21px; margin: 22px 0 8px; }
 .home-benefit p { color: var(--muted-foreground); font-size: 11px; line-height: 1.8; }
 .sz-home .home-video-main { max-width: 820px; margin-inline: auto; aspect-ratio: 16 / 9; }
@@ -153,7 +155,7 @@ body:has(.sz-home) { background-color: #FFFFFF; }
 .home-audio-image > span { position: absolute; left: 12px; bottom: 12px; width: 30px; height: 30px; display: grid; place-items: center; background: var(--background); color: var(--primary); border-radius: 50%; }
 .home-audio-image svg { width: 16px; height: 16px; }
 .home-audio-moment { display: flex; justify-content: space-between; font-size: 9px; color: var(--primary); margin-top: 18px; font-weight: 600; }
-.home-audio-moment span:last-child { color: var(--home-gold); }
+.home-audio-moment span:last-child { color: var(--home-gold-text); }
 .home-audio h3 { font-size: 19px; margin: 12px 0 24px; min-height: 46px; }
 .home-audio > p { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted-foreground); }
 .home-audio > p svg { width: 13px; height: 13px; }

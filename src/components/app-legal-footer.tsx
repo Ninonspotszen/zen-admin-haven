@@ -9,7 +9,7 @@ const linkCls = "py-1 underline-offset-2 hover:underline";
 export function AppLegalFooter({ decouvrir = false }: { decouvrir?: boolean }) {
   const { t } = useTranslation();
   return (
-    <footer className="mx-auto max-w-md px-5 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-center text-[12px] leading-6 text-current opacity-70">
+    <footer className="mx-auto max-w-md px-5 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] text-center text-[12px] leading-6 text-current">
       {decouvrir && (
         <nav aria-label={t("footer.discover.label")} className="mb-2 flex flex-wrap items-center justify-center gap-x-2 text-[13px] font-medium">
           <a href="/" className={linkCls}>{t("footer.discover.site")}</a>
