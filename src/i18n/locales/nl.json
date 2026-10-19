@@ -925,7 +925,8 @@
         "fonction": "Uw functie",
         "message": "Bericht",
         "messageLibre": "Vrij bericht",
-        "taille": "Aantal personen"
+        "taille": "Capaciteit of aantal medewerkers",
+        "typeStructure": "Type instelling"
       },
       "generalOptions": [
         "Toeristische accommodatie",

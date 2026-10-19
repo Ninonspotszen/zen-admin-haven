@@ -925,7 +925,8 @@
         "fonction": "Ihre Funktion",
         "message": "Nachricht",
         "messageLibre": "Freie Nachricht",
-        "taille": "Anzahl Personen"
+        "taille": "Kapazität oder Mitarbeiterzahl",
+        "typeStructure": "Art der Einrichtung"
       },
       "generalOptions": [
         "Touristische Unterkunft",

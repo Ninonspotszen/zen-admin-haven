@@ -36,7 +36,7 @@ const sectors: Sector[] = [
 const generalFields: FieldDef[] = [
   { name: "nom", labelKey: "pro.form.field.nom" },
   { name: "email", labelKey: "pro.form.field.email", type: "email" },
-  { name: "type_structure", labelKey: "pro.form.field.etablissement", type: "select", optionsKey: "pro.form.generalOptions" },
+  { name: "type_structure", labelKey: "pro.form.field.typeStructure", type: "select", optionsKey: "pro.form.generalOptions" },
   { name: "etablissement", labelKey: "pro.form.field.etablissement" },
   { name: "taille", labelKey: "pro.form.field.taille" },
   { name: "message", labelKey: "pro.form.field.messageLibre", type: "textarea" },

@@ -925,7 +925,8 @@
         "fonction": "Votre fonction",
         "message": "Message",
         "messageLibre": "Message libre",
-        "taille": "Nombre de personnes"
+        "taille": "Capacité d’accueil ou effectif",
+        "typeStructure": "Type d’établissement"
       },
       "generalOptions": [
         "Hébergement touristique",

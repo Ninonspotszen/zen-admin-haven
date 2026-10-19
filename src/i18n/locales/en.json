@@ -925,7 +925,8 @@
         "fonction": "Your role",
         "message": "Message",
         "messageLibre": "Free message",
-        "taille": "Number of people"
+        "taille": "Capacity or number of staff",
+        "typeStructure": "Type of establishment"
       },
       "generalOptions": [
         "Tourist accommodation",

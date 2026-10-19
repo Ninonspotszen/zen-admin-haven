@@ -925,7 +925,8 @@
         "fonction": "Su función",
         "message": "Mensaje",
         "messageLibre": "Mensaje libre",
-        "taille": "Número de personas"
+        "taille": "Capacidad o plantilla",
+        "typeStructure": "Tipo de establecimiento"
       },
       "generalOptions": [
         "Alojamiento turístico",
