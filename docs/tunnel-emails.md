@@ -1,6 +1,6 @@
 # Tunnel emails et CRM Spots Zen
 
-*16/10/2026 — état préparé avant le lancement. Tous les modèles Brevo sont **inactifs** : rien ne part tant que Ninon ne les active pas et ne met pas `EMAILS_ACTIFS=true` dans Vercel.*
+*Mis à jour le 19/10/2026 — **en service depuis le lancement du 19/10** : les 50 modèles Brevo sont actifs et `EMAILS_ACTIFS`, `NOTIF_ABONNES_ACTIVE`, `NOTIF_RESUME_ACTIVE` valent `true` dans Vercel. Envoi testé (accès offert reçu).*
 
 ## 1. Schéma des parcours
 
@@ -16,7 +16,7 @@ flowchart TD
   end
 
   subgraph SPOT["Visiteur d'un spot (QR code)"]
-    Q[Écoute sur place] --> V["Formulaire « Recevoir le lien chez moi »"]
+    Q[Écoute sur place] --> V["Formulaire « Envie de prolonger la pause chez vous ? »"]
     V --> E12["n°12 Lien vers /offres rattaché au spot"]
     V -->|case cochée| L2[[Listes Brevo Visiteurs spots + Newsletter]]
     Q -->|accès expiré| O[/offres?spot_origine_id/]
@@ -68,7 +68,7 @@ Tant que `EMAILS_ACTIFS` ≠ `true`, le robot tourne en **simulation** : il calc
 
 ## 3. Langues
 
-Chaque email existe en 5 langues dans Brevo (tous inactifs). `src/lib/brevo.server.ts` → `MODELES` :
+Chaque email existe en 5 langues dans Brevo (tous actifs depuis le 19/10). `src/lib/brevo.server.ts` → `MODELES` :
 
 | Email | FR | EN | DE | NL | ES |
 |---|---|---|---|---|---|
@@ -93,8 +93,8 @@ Sources des traductions : `docs/emails/traductions/` (textes et script de géné
 2. Brevo → Contacts → Listes : créer « Abonnés », « Accès offerts », « Prospects B2B », « Visiteurs spots », « Newsletter » et noter leurs numéros.
 3. Vercel → Settings → Environment Variables : `CRON_SECRET` (longue chaîne aléatoire), `BREVO_LISTE_ABONNES`, `BREVO_LISTE_ACCES_OFFERTS`, `BREVO_LISTE_PROSPECTS_B2B`, `BREVO_LISTE_VISITEURS_SPOTS`, `BREVO_LISTE_NEWSLETTER`, puis `BREVO_SYNC_ACTIF=true`, `NOTIF_ABONNES_ACTIVE=true`, `NOTIF_RESUME_ACTIVE=true` quand Ninon le décide.
 4. Pousser le code, redéployer.
-5. Test sans envoi : `curl -H "Authorization: Bearer <CRON_SECRET>" "https://spotszen.fr/api/public/cron/quotidien?simulation=1"`.
-6. Au lancement : activer les modèles dans Brevo, puis `EMAILS_ACTIFS=true`.
+5. Test sans envoi : bouton « Lancer la simulation » dans Admin → Emails (ou `curl -H "Authorization: Bearer <CRON_SECRET>" "https://www.spotszen.fr/api/public/cron/quotidien?simulation=1"`).
+6. Au lancement : activer les modèles dans Brevo, puis `EMAILS_ACTIFS=true`. ✅ Fait le 19/10/2026.
 
 ## 5. Sources
 
