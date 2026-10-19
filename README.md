@@ -80,6 +80,7 @@ Hébergement sur **Vercel**, connecté à ce repo : chaque push sur `main` décl
 - Schéma de la base de données : [`docs/schema-era.md`](docs/schema-era.md)
 - Audit de sécurité : [`docs/audit-securite.md`](docs/audit-securite.md)
 - Audit d'accessibilité (WCAG 2.1 AA) : [`docs/audit-accessibilite.md`](docs/audit-accessibilite.md)
+- Maquettes Stitch (14 écrans, PWA et back-office) : [`docs/maquettes/`](docs/maquettes/README.md)
 - Tunnel emails et CRM : [`docs/tunnel-emails.md`](docs/tunnel-emails.md)
 - Tests et qualité : [`docs/qa-tests.md`](docs/qa-tests.md)
 - Feature IA (fiche 6 briques) : [`docs/fiche-6-briques-traduction-ia.md`](docs/fiche-6-briques-traduction-ia.md)
