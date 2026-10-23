@@ -82,6 +82,7 @@ Hébergement sur **Vercel**, connecté à ce repo : chaque push sur `main` décl
 - Audit d'accessibilité (WCAG 2.1 AA) : [`docs/audit-accessibilite.md`](docs/audit-accessibilite.md)
 - Maquettes Stitch (14 écrans, PWA et back-office) : [`docs/maquettes/`](docs/maquettes/README.md)
 - Tunnel emails et CRM : [`docs/tunnel-emails.md`](docs/tunnel-emails.md)
+- Agent boîte mail (workflow d'automatisation Claude) : [`docs/agent-boite-mail.md`](docs/agent-boite-mail.md)
 - Tests et qualité : [`docs/qa-tests.md`](docs/qa-tests.md)
 - Feature IA (fiche 6 briques) : [`docs/fiche-6-briques-traduction-ia.md`](docs/fiche-6-briques-traduction-ia.md)
 - Migrations SQL : [`supabase/migrations/`](supabase/migrations/)
