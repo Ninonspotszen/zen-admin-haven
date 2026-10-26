@@ -113,17 +113,24 @@ function AudiosPage() {
   const { data, isLoading, error } = useQuery({ queryKey: ["audios"], queryFn: fetchAudios });
   const audios = data?.rows ?? [];
 
+  /* Fichiers voix par langue : chaque immersion guidée compte 2 fichiers (voix féminine + masculine).
+     Les musiques (sans voix, un seul fichier pour toutes les langues) ne sont pas comptées. */
   const langStats = useMemo(() => {
-    const total = audios.length;
+    const voixNorm = (v: string | null) =>
+      v === "F" || v === "feminine" ? "F" : v === "M" || v === "masculine" ? "M" : null;
+    const trads = data?.traductions ?? [];
+    const guides = new Set(trads.filter((t) => voixNorm(t.voix)).map((t) => t.audio_id));
+    const total = guides.size * 2;
     const byLang = new Map<string, Set<string>>();
-    for (const t of data?.traductions ?? []) {
-      if (!t.cloudinary_url) continue;
+    for (const t of trads) {
+      const v = voixNorm(t.voix);
+      if (!v || !t.cloudinary_url || !guides.has(t.audio_id)) continue;
       const s = byLang.get(t.langue) ?? new Set<string>();
-      s.add(t.audio_id);
+      s.add(`${t.audio_id}:${v}`);
       byLang.set(t.langue, s);
     }
-    return LANGUES.map((l) => ({ langue: l, valides: byLang.get(l)?.size ?? 0, total }));
-  }, [data, audios.length]);
+    return LANGUES.map((l) => ({ langue: l, valides: byLang.get(l)?.size ?? 0, total, immersions: guides.size }));
+  }, [data]);
 
   const toggle = useMutation({
     mutationFn: async (a: AudioListRow) => {
@@ -337,7 +344,7 @@ function AudiosPage() {
           <h2 className="font-serif text-xl font-bold text-foreground">Traductions</h2>
         </div>
         <p className="mb-4 text-sm text-muted-foreground">
-          Fichiers audio validés (URL Cloudinary renseignée) par langue, sur {audios.length} audios au catalogue.
+          Fichiers voix validés (URL Cloudinary renseignée) par langue : {langStats[0]?.immersions ?? 0} immersions guidées × 2 voix. Les musiques, communes à toutes les langues, ne sont pas comptées.
         </p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {langStats.map((l) => {
