@@ -98,7 +98,7 @@ export function HomePage() {
 
     <main>
       <section className="home-hero"><img className="home-hero-image" src={forestLake} alt={t("home.hero.img.alt")} width={1920} height={1088} fetchPriority="high" /><div className="home-hero-shade" />
-        <div className="home-hero-content"><Picto light /><Eyebrow>{t("home.hero.eyebrow")}</Eyebrow><h1>{t("home.hero.h1")}</h1><p>{t("home.hero.copy")}</p><Cta href="#etablissements">{t("home.hero.cta.pro")}</Cta><Link className="home-hero-link" to="/offres">{t("home.hero.cta.perso")} <ArrowRight aria-hidden="true" /></Link></div>
+        <div className="home-hero-content"><Picto light /><Eyebrow>{t("home.hero.eyebrow")}</Eyebrow><h1>{t("home.hero.h1")}</h1><p>{t("home.hero.copy")}</p><Cta href="/professionnels">{t("home.hero.cta.pro")}</Cta><Link className="home-hero-link" to="/offres">{t("home.hero.cta.perso")} <ArrowRight aria-hidden="true" /></Link></div>
         <a className="home-scroll" href="#concept">{t("home.hero.scroll")}<span /></a>
       </section>
 
