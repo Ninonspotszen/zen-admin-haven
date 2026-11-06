@@ -194,6 +194,18 @@ function BibliothequePage() {
     })();
   }, [navigate]);
 
+  /* Retour dans l'app (remise au premier plan) ou lancement d'un audio = visite, pour ne pas relancer une abonnée active. */
+  useEffect(() => {
+    if (state !== "catalog") return;
+    const auRetour = () => { if (document.visibilityState === "visible") noterVisite(i18n.language?.slice(0, 2) ?? "fr", false); };
+    document.addEventListener("visibilitychange", auRetour);
+    window.addEventListener("pageshow", auRetour);
+    return () => { document.removeEventListener("visibilitychange", auRetour); window.removeEventListener("pageshow", auRetour); };
+  }, [state]);
+  useEffect(() => {
+    if (selected) noterVisite(i18n.language?.slice(0, 2) ?? "fr", false);
+  }, [selected]);
+
   const moment = currentMoment();
   const playable = audios.filter((a) => tradsFor(a, lang).length > 0);
   // Immersion recommandée selon le moment : mêmes choix que pour les spots (décision du 14/10/2026).
@@ -406,7 +418,13 @@ function BibliothequePage() {
 
 
 /** Note la visite et la langue (relances, emails dans la bonne langue). N'interrompt jamais la page. */
-function noterVisite(langue: string) {
+/* Dernière visite enregistrée (au plus une fois par heure, sauf changement de langue) :
+   l'app installée sur l'écran d'accueil reste souvent ouverte en arrière-plan, sans rechargement. */
+let derniereVisiteNotee = 0;
+function noterVisite(langue: string, force = true) {
+  const maintenant = Date.now();
+  if (!force && maintenant - derniereVisiteNotee < 60 * 60 * 1000) return;
+  derniereVisiteNotee = maintenant;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Promise.resolve((supabase as any).rpc("enregistrer_visite", { p_langue: langue })).catch(() => undefined);
 }
