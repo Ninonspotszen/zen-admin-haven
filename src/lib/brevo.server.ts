@@ -67,7 +67,8 @@ export async function sendBrevoTemplate(opts: {
       body: JSON.stringify({
         templateId: opts.templateId,
         to: [{ email: opts.toEmail, name: opts.toName ?? undefined }],
-        params,
+        // Brevo refuse un objet params vide (ex. accueil J+3 sans prénom) : on ne l'envoie que s'il contient quelque chose.
+        ...(Object.keys(params).length ? { params } : {}),
       }),
     });
     if (!res.ok) {
